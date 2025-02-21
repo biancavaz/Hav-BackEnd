@@ -21,16 +21,29 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    private String description;
+    private String property_description;
     private String property_type;
     private String purpose;
-    private String status;
+    private String property_status;
     private Double area;
     private Double price;
     private Double promotional_price;
-    private Boolean is_featured;
-    private String house_type;
+    private Boolean highlight;
+    private String property_category;
+
     @CreationTimestamp
     private LocalDateTime created_at;
+
+    @OneToOne
+    @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
+    private Address address;
+
+    @OneToOne
+    @JoinColumn(name = "taxes_id", referencedColumnName = "id", nullable = false)
+    private Taxes taxes;
+
+    @OneToOne
+    @JoinColumn(name = "property_feature_id", referencedColumnName = "id", nullable = false)
+    private PropertyFeature propertyFeatures;
 
 }

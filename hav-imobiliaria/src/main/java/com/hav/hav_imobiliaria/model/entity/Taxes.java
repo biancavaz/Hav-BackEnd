@@ -6,25 +6,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "taxes")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Taxes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private String email;
-    private String password;
-    private String cpf;
-    private String phone_number1;
-    private String phone_number2;
-    private Date birth_date;
+    private Double condominium_fee;
+    private Double iptu;
 
+    @OneToOne(mappedBy = "taxes")
+    private Property property;
 }

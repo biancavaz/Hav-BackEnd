@@ -8,23 +8,23 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "address")
+@Table(name = "property_feature")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Address {
+public class PropertyFeature {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String cep;
-    private String street;
-    private String neighborhood;
-    private String city;
-    private String state;
-    private String property_number;
-    private String complement;
+    private Boolean allows_pet;
+    private Integer bed_room;
+    private Integer living_room;
+    private Integer bath_room;
+    private Integer suite;
+    private Integer garage_space;
+    private Boolean is_furnished;
 
-    @OneToOne(mappedBy = "address")
+    @OneToOne(mappedBy = "property_feature")
     private Property property;
 }

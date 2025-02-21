@@ -6,25 +6,26 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Entity
-@Table(name = "address")
+@Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Address {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class UserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String cep;
-    private String street;
-    private String neighborhood;
-    private String city;
-    private String state;
-    private String property_number;
-    private String complement;
+    private String name;
+    private String email;
+    private String password;
+    private String cpf;
+    private String phone_number1;
+    private String phone_number2;
+    private Date birth_date;
 
-    @OneToOne(mappedBy = "address")
-    private Property property;
 }
