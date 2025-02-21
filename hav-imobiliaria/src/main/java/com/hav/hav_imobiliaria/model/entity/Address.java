@@ -6,25 +6,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "address")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private String email;
-    private String password;
-    private String cpf;
-    private String phone_number1;
-    private String phone_number2;
-    private Date birth_date;
+    private String cep;
+    private String street;
+    private String neighborhood;
+    private String city;
+    private String state;
+    private String number;
+    private String complement;
 
 }
