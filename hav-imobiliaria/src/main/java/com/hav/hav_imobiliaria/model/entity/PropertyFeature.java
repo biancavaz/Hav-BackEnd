@@ -25,6 +25,6 @@ public class PropertyFeature {
     private Integer garage_space;
     private Boolean is_furnished;
 
-    @OneToOne(mappedBy = "property_feature")
+    @OneToOne(mappedBy = "propertyFeatures")
     private Property property;
 }

@@ -16,4 +16,8 @@ public class Additionals {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "property_id", nullable = false)
+    private Property property;
 }
