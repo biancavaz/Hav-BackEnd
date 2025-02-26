@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Property {
+public class PropertyModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,17 +46,18 @@ public class Property {
     private LocalDateTime created_at;
 
     @OneToOne
-    @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
-    private Address address;
+    @JoinColumn(name = "property_address_id", nullable = false)
+    private PropertyAddressModel address;
 
     @OneToOne
-    @JoinColumn(name = "taxes_id", referencedColumnName = "id", nullable = false)
-    private Taxes taxes;
+    @JoinColumn(name = "taxes_id", nullable = false)
+    private TaxesModel taxes;
 
     @OneToOne
-    @JoinColumn(name = "property_feature_id", referencedColumnName = "id", nullable = false)
-    private PropertyFeature propertyFeatures;
+    @JoinColumn(name = "property_feature_id", nullable = false)
+    private PropertyFeatureModel propertyFeatures;
 
     @OneToMany(mappedBy = "property")
-    private List<Additionals> additionals;
+    private List<AdditionalsModel> additionals;
+
 }

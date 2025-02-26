@@ -8,23 +8,29 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "address")
+@Table(name = "user_address")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Address {
+public class UserAddressModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(nullable = false)
     private String cep;
+    @Column(nullable = false)
     private String street;
+    @Column(nullable = false)
     private String neighborhood;
+    @Column(nullable = false)
     private String city;
+    @Column(nullable = false)
     private String state;
+    @Column(nullable = false)
     private String property_number;
     private String complement;
 
     @OneToOne(mappedBy = "address")
-    private Property property;
+    private UserModel user;
 }
