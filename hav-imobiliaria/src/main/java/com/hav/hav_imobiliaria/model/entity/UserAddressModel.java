@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserAddressModel {
+
+    @OneToOne(mappedBy = "address")
+    @NotNull
+    private User user;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
