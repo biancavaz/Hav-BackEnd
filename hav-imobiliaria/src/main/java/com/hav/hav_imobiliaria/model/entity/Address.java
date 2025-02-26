@@ -1,42 +1,17 @@
 package com.hav.hav_imobiliaria.model.entity;
 
 import jakarta.persistence.*;
-<<<<<<< HEAD
-=======
 import jakarta.validation.constraints.NotNull;
->>>>>>> branch_da_bia
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-<<<<<<< HEAD
 @Data
 @Entity
 @Table(name = "address")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Address {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String cep;
-    private String street;
-    private String neighborhood;
-    private String city;
-    private String state;
-    private String number;
-    private String complement;
-
-=======
-
-@Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "address")
 @Builder
 public class Address {
 
@@ -64,5 +39,5 @@ public class Address {
     private String propertyNumber;
     @NotNull
     private String complement;
->>>>>>> branch_da_bia
+
 }

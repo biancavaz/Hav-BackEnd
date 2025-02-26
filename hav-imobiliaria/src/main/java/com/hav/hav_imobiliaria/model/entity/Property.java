@@ -11,11 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-<<<<<<< HEAD
-@Table(name = "property")
-=======
 @Table(name = "properties")
->>>>>>> branch_da_bia
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
