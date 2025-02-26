@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "additionals")
@@ -17,7 +19,6 @@ public class AdditionalsModel {
     private Integer id;
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "property_id", nullable = false)
-    private PropertyModel property;
+    @ManyToMany(mappedBy = "additionals")
+    private List<PropertyModel> properties;
 }

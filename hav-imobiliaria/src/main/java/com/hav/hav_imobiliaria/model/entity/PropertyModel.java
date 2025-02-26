@@ -57,7 +57,12 @@ public class PropertyModel {
     @JoinColumn(name = "property_feature_id", nullable = false)
     private PropertyFeatureModel propertyFeatures;
 
-    @OneToMany(mappedBy = "property")
+    @ManyToMany
+    @JoinTable(
+            name = "property_additionals",
+            joinColumns = @JoinColumn(name = "property_id"),
+            inverseJoinColumns = @JoinColumn(name = "additional_id")
+    )
     private List<AdditionalsModel> additionals;
 
 }
