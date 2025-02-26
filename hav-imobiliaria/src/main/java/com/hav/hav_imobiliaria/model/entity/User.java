@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "user") //desmuder para users
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
