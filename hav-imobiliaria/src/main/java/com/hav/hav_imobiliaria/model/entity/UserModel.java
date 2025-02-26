@@ -44,4 +44,7 @@ public class User {
 
 
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_address_id", nullable = false)
+    private UserAddressModel address;
 }
