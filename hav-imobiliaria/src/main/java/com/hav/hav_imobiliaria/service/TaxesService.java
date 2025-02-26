@@ -1,6 +1,6 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.model.entity.TaxesModel;
+import com.hav.hav_imobiliaria.model.entity.Taxes;
 import com.hav.hav_imobiliaria.repository.TaxesRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ public class TaxesService {
 
     private final TaxesRepository repository;
 
-    public TaxesModel create(TaxesModel taxesModel) {
+    public Taxes create(Taxes taxesModel) {
         return repository.save(taxesModel);
     }
 }

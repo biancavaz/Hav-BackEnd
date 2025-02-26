@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaxesModel {
+public class Taxes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Double condominium_fee;
+    private Double condominiumFee;
     private Double iptu;
 
     @OneToOne(mappedBy = "taxes")
-    private PropertyModel property;
+    private Property property;
 }
