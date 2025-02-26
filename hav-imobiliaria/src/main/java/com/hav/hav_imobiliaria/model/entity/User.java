@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,21 +11,37 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Inheritance(strategy = InheritanceType.JOINED) // herança
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_users", nullable = false, unique = true)
+    @NotNull
     private Integer id;
+
+    //@OneToOne
+    //@NotNull
+    //private Address address;
+
+    @NotNull
     private String name;
+    @NotNull
     private String email;
+    @NotNull
     private String password;
+    @NotNull
     private String cpf;
-    private String phone_number1;
-    private String phone_number2;
-    private Date birth_date;
+    @NotNull
+    private String celphone;
+    private String phoneNumber;
+    @NotNull
+    private Date birthDate;
+
+
 
 }
