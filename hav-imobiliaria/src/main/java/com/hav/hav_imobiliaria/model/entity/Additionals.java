@@ -2,24 +2,22 @@ package com.hav.hav_imobiliaria.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "taxes")
+@Table(name = "additionals")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class TaxesModel {
+public class Additionals {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Double condominium_fee;
-    private Double iptu;
+    private String name;
 
-    @OneToOne(mappedBy = "taxes")
-    private PropertyModel property;
+    @ManyToOne
+    @JoinColumn(name = "id_property", nullable = false)
+    private Property property;
 }

@@ -1,7 +1,6 @@
 package com.hav.hav_imobiliaria.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,15 +8,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "user_address")
+@Table(name = "property_address")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserAddressModel {
-
-    @OneToOne(mappedBy = "address")
-    @NotNull
-    private User user;
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +28,9 @@ public class UserAddressModel {
     @Column(nullable = false)
     private String state;
     @Column(nullable = false)
-    private String property_number;
+    private String propertyNumber;
     private String complement;
 
     @OneToOne(mappedBy = "address")
-    private UserModel user;
+    private Property property;
 }

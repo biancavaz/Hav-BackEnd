@@ -12,26 +12,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PropertyFeatureModel {
+public class PropertyFeature {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(nullable = false)
-    private Boolean allows_pet;
+    private Boolean allowsPet;
     @Column(nullable = false)
-    private Integer bed_room;
+    private Integer bedRoom;
     @Column(nullable = false)
-    private Integer living_room;
+    private Integer livingRoom;
     @Column(nullable = false)
-    private Integer bath_room;
+    private Integer bathRoom;
     @Column(nullable = false)
     private Integer suite;
     @Column(nullable = false)
-    private Integer garage_space;
+    private Integer garageSpace;
     @Column(nullable = false)
-    private Boolean is_furnished;
+    private Boolean isFurnished;
 
     @OneToOne(mappedBy = "propertyFeatures")
-    private PropertyModel property;
+    private Property property;
 }
