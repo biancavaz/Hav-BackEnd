@@ -17,7 +17,9 @@ public class Taxes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private Double condominiumFee;
+
     private Double iptu;
 
 //    @OneToOne(mappedBy = "taxes")

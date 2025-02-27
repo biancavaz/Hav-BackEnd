@@ -1,7 +1,6 @@
 package com.hav.hav_imobiliaria.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,8 +21,10 @@ public class CustumerOwner extends User {
     private Integer id;
 
     @NotNull
+    @Column(name = "juristic_person", nullable = false)
     private Boolean juristicPerson;
-    @NotNull
+
+    @Column(nullable = false, unique = true)
     private String cnpj;
 
 }

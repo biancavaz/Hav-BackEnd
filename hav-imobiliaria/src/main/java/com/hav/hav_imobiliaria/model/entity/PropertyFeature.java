@@ -17,19 +17,26 @@ public class PropertyFeature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false)
+
+    @Column(name = "allows_pet", nullable = false)
     private Boolean allowsPet;
-    @Column(nullable = false)
+
+    @Column(name = "bed_room", nullable = false)
     private Integer bedRoom;
-    @Column(nullable = false)
+
+    @Column(name = "living_room", nullable = false)
     private Integer livingRoom;
-    @Column(nullable = false)
+
+    @Column(name = "bath_room", nullable = false)
     private Integer bathRoom;
+
     @Column(nullable = false)
     private Integer suite;
-    @Column(nullable = false)
+
+    @Column(name = "garage_space", nullable = false)
     private Integer garageSpace;
-    @Column(nullable = false)
+
+    @Column(name = "is_furnished", nullable = false)
     private Boolean isFurnished;
 
 //    @OneToOne(mappedBy = "propertyFeatures")
