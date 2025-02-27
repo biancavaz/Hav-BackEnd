@@ -1,8 +1,8 @@
 package com.hav.hav_imobiliaria.service;
 
 import ch.qos.logback.core.net.server.Client;
-import com.hav.hav_imobiliaria.model.DTO.UserPostRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.UserPutRequestDTO;
+import com.hav.hav_imobiliaria.model.dto.UserPostRequestDTO;
+import com.hav.hav_imobiliaria.model.dto.UserPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.User;
 import com.hav.hav_imobiliaria.repository.UserRepository;
 import jakarta.validation.Valid;
