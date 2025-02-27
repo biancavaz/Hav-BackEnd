@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,32 +22,44 @@ public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
+
+    @Column(name = "property_description", nullable = false)
     private String propertyDescription;
-    @Column(nullable = false)
+
+    @Column(name = "property_type", nullable = false)
     private String propertyType;
+
     @Column(nullable = false)
     private String purpose;
-    @Column(nullable = false)
+
+    @Column(name = "property_status", nullable = false)
     private String propertyStatus;
+
     @Column(nullable = false)
     private Double area;
+
     @Column(nullable = false)
     private Double price;
-    @Column(nullable = false)
+
+    @Column(name = "promotional_price", nullable = false)
     private Double promotionalPrice;
+
     @Column(nullable = false)
     private Boolean highlight;
-    @Column(nullable = false)
+
+    @Column(name = "property_category", nullable = false)
     private String propertyCategory;
 
     @CreationTimestamp
+    @JsonIgnore
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToOne
-    @JoinColumn(name = "id_property_address", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_address", nullable = false)
     private Address address;
 
     @OneToOne
@@ -57,7 +70,12 @@ public class Property {
     @JoinColumn(name = "id_property_feature", nullable = false)
     private PropertyFeature propertyFeatures;
 
-    @OneToMany(mappedBy = "property")
+    @ManyToMany
+    @JoinTable(
+            name = "property_additionals",
+            joinColumns = @JoinColumn(name = "id_property"),
+            inverseJoinColumns = @JoinColumn(name = "id_additional")
+    )
     private List<Additionals> additionals;
 
 }
