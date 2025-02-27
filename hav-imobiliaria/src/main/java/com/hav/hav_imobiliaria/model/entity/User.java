@@ -16,7 +16,6 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Inheritance(strategy = InheritanceType.JOINED) // herança
-
 public class User {
 
         @Id
@@ -24,10 +23,6 @@ public class User {
         @Column(name = "id_users", nullable = false, unique = true)
         @NotNull
         private Integer id;
-
-        //@OneToOne
-        //@NotNull
-        //private Address address;
 
         @NotNull
         private String name;
@@ -44,9 +39,8 @@ public class User {
         private Date birthDate;
 
 
-
-        @OneToOne(cascade = CascadeType.ALL)
-        @JoinColumn(name = "id_address", nullable = false)
-        private Address address;
+//        @OneToMany(cascade = CascadeType.ALL)
+//        @JoinColumn(name = "id_address", nullable = false)
+//        private Address address;
 
 }

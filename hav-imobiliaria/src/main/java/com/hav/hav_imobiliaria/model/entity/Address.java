@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "property_address")
+@Table(name = "address")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -31,6 +31,10 @@ public class Address {
     private String propertyNumber;
     private String complement;
 
-    @OneToOne(mappedBy = "address")
-    private Property property;
+//    @OneToOne(mappedBy = "address")
+//    private Property property;
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    private User user;
 }
+

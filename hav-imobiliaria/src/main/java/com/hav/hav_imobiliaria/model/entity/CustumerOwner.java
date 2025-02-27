@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "customer_owner")
-@Builder
+//@Builder
 public class CustumerOwner extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_customer_owner")
     @NotNull
-    private int id;
+    private Integer id;
 
     @NotNull
     private Boolean juristicPerson;

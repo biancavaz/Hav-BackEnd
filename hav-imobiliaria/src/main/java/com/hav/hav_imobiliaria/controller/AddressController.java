@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 @AllArgsConstructor
-public class PropertyAddressController {
+public class AddressController {
 
 }

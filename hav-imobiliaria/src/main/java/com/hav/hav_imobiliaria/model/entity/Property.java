@@ -57,7 +57,7 @@ public class Property {
     @JoinColumn(name = "id_property_feature", nullable = false)
     private PropertyFeature propertyFeatures;
 
-    @OneToMany(mappedBy = "property")
-    private List<Additionals> additionals;
+//    @OneToMany(mappedBy = "property")
+//    private List<Additionals> additionals;
 
 }

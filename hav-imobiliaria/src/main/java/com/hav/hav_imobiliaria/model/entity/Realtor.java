@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "tb_realtor")
-@Builder
+@Table(name = "realtor")
+//@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Realtor extends User {
