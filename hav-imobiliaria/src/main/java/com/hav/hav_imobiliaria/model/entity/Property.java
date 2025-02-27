@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -62,15 +63,16 @@ public class Property {
     @JoinColumn(name = "id_address", nullable = false)
     private Address address;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_taxes", nullable = false)
     private Taxes taxes;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_property_feature", nullable = false)
     private PropertyFeature propertyFeatures;
 
-    @ManyToMany
+    @JsonManagedReference
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "property_additionals",
             joinColumns = @JoinColumn(name = "id_property"),

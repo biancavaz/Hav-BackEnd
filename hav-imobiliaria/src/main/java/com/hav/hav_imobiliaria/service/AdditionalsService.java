@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class AdditionalsService {
@@ -16,5 +18,9 @@ public class AdditionalsService {
     public Additionals create(@Valid AdditionalsPostRequestDTO additionalsDTO) {
         Additionals additionals = additionalsDTO.convert();
         return repository.save(additionals);
+    }
+
+    public List<Additionals> findAllyId(List<Integer> additionalsIds) {
+        return repository.findAllById(additionalsIds);
     }
 }

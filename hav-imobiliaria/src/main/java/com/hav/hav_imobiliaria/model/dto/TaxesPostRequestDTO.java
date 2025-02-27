@@ -6,7 +6,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public record TaxesPostRequestDTO(
         @PositiveOrZero @NotNull Double condominiumFee,
-            @PositiveOrZero @NotNull Double iptu) {
+        @PositiveOrZero @NotNull Double iptu) {
     public Taxes convert() {
         return Taxes.builder().condominiumFee(condominiumFee).iptu(iptu).build();
     }

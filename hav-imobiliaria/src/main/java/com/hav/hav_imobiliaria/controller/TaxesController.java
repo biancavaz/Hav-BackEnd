@@ -17,7 +17,7 @@ public class TaxesController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Taxes addTaxes(@RequestBody @Valid TaxesPostRequestDTO taxesDTO) {
+    public Taxes create(@RequestBody @Valid TaxesPostRequestDTO taxesDTO) {
         return service.create(taxesDTO);
     }
 }
