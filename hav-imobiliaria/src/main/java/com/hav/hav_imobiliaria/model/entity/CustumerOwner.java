@@ -17,10 +17,8 @@ public class CustumerOwner extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_customer_owner")
-    @NotNull
     private Integer id;
 
-    @NotNull
     @Column(name = "juristic_person", nullable = false)
     private Boolean juristicPerson;
 
