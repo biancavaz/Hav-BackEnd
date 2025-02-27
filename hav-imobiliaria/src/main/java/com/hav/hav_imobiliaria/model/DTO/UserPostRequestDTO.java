@@ -1,11 +1,12 @@
 package com.hav.hav_imobiliaria.model.DTO;
 
 import com.hav.hav_imobiliaria.model.entity.User;
+import jakarta.validation.constraints.NotNull;
 
 public record UserPostRequestDTO(
-        String name,
-        String email,
-        String password) {
+        @NotNull String name,
+        @NotNull String email,
+        @NotNull String password) {
 
     public User convert(){
         return User.builder()

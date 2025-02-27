@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
@@ -13,7 +14,7 @@ import java.util.Date;
 @Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder // usar essa notação quando tiver herança (pra n dar problema na dto)
 @Inheritance(strategy = InheritanceType.JOINED) // herança
 public class User {
 

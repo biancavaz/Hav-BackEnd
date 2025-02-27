@@ -1,4 +1,5 @@
 package com.hav.hav_imobiliaria.controller;
 
-public class Realtor {
+public class RealtorController {
+
 }

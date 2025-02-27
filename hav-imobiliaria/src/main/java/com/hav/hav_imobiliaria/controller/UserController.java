@@ -1,7 +1,11 @@
 package com.hav.hav_imobiliaria.controller;
 
+import com.hav.hav_imobiliaria.model.DTO.CustumerOwnerPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.RealtorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.UserPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.UserPutRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.CustumerOwner;
+import com.hav.hav_imobiliaria.model.entity.Realtor;
 import com.hav.hav_imobiliaria.model.entity.User;
 import com.hav.hav_imobiliaria.service.UserService;
 import jakarta.validation.Valid;
@@ -20,11 +24,20 @@ public class UserController {
 
     private UserService service;
 
-    @PostMapping
+    // REALTOR
+    @PostMapping("/signin/realtor")
     @ResponseStatus(HttpStatus.CREATED)
-    public User cadastroUser(
-            @RequestBody @Valid UserPostRequestDTO userPostDTO){
-        return service.createUser(userPostDTO);
+    public Realtor signinRealtor(
+            @RequestBody @Valid RealtorPostRequestDTO realtorPostDTO){
+        return service.createRealtor(realtorPostDTO);
+    }
+
+    //fazer um post para custumerOwner
+    @PostMapping("/signin/custumerOwner")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CustumerOwner signinCustumerOwner(
+            @RequestBody @Valid CustumerOwnerPostRequestDTO CustumerOwnerPostDTO){
+        return service.createCustumerOwner(CustumerOwnerPostDTO);
     }
 
     @PutMapping("/{id}")

@@ -1,8 +1,12 @@
 package com.hav.hav_imobiliaria.service;
 
 import ch.qos.logback.core.net.server.Client;
+import com.hav.hav_imobiliaria.model.DTO.CustumerOwnerPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.RealtorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.UserPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.UserPutRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.CustumerOwner;
+import com.hav.hav_imobiliaria.model.entity.Realtor;
 import com.hav.hav_imobiliaria.model.entity.User;
 import com.hav.hav_imobiliaria.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -21,10 +25,21 @@ public class UserService {
 
     private final UserRepository repository;
 
-    public User createUser(@Valid UserPostRequestDTO userPostDTO){
-        User user = userPostDTO.convert();
-        return repository.save(user);
+
+    public Realtor createRealtor(
+            @Valid RealtorPostRequestDTO realtorPostDTO) {
+
+        Realtor realtor = realtorPostDTO.convert();
+        return repository.save(realtor);
     }
+
+    public CustumerOwner createCustumerOwner(
+            @Valid CustumerOwnerPostRequestDTO custumerOwnerPostDTO) {
+
+        CustumerOwner custumerOwner = custumerOwnerPostDTO.convert();
+        return repository.save(custumerOwner);
+    }
+
 
     public User editUser(
             @NotNull @Positive Integer id,
@@ -57,4 +72,5 @@ public class UserService {
     public void remove(Integer id) {
         repository.deleteById(id);
     }
+
 }

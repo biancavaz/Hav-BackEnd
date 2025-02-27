@@ -1,4 +1,4 @@
-package com.hav.hav_imobiliaria.model.dto;
+package com.hav.hav_imobiliaria.model.DTO;
 
 import com.hav.hav_imobiliaria.model.entity.PropertyFeature;
 
