@@ -1,8 +1,8 @@
-package com.hav.hav_imobiliaria.model.entity;
+package com.hav.hav_imobiliaria.model.entity.Users;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -13,12 +13,11 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Table(name = "customer_owner")
 @SuperBuilder
-@DiscriminatorValue("custumerOwner")
-public class CustumerOwner extends User {
+public class Custumer extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_customer_owner")
+    @Column(name = "id_customer")
     private Integer id;
 
     @Column(name = "juristic_person")
@@ -27,5 +26,9 @@ public class CustumerOwner extends User {
     @Column(unique = true)
     private String cnpj;
 
-    //como fazer se eu quero poder criar um user sem ser juridico e quando eu quero criar um que seja juridico
+    @JsonManagedReference
+    @OneToOne(mappedBy = "user")
+    @JoinColumn(name = "id_users", nullable = false)
+    private User user;
+
 }

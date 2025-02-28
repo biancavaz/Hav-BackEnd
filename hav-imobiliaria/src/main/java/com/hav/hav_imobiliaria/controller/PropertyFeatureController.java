@@ -1,11 +1,8 @@
 package com.hav.hav_imobiliaria.controller;
 
 import com.hav.hav_imobiliaria.model.dto.PropertyFeaturePostRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.PropertyFeature;
 import com.hav.hav_imobiliaria.service.PropertyFeatureService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

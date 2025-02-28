@@ -1,10 +1,10 @@
-package com.hav.hav_imobiliaria.model.DTO.CustumerOwner;
+package com.hav.hav_imobiliaria.model.DTO.Custumer;
 
-import com.hav.hav_imobiliaria.model.entity.CustumerOwner;
+import com.hav.hav_imobiliaria.model.entity.Users.Custumer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public record CustumerOwnerPostRequestDTO(
+public record CustumerPostRequestDTO(
         @NotBlank String name,
         @NotBlank String email,
         @NotBlank String password,
@@ -12,8 +12,8 @@ public record CustumerOwnerPostRequestDTO(
         Boolean juristicPerson,
         @Pattern(regexp = "\\\\d{2}\\\\.\\\\d{3}\\\\.\\\\d{3}/\\\\d{4}-\\\\d{2}") String cnpj) {
 
-    public CustumerOwner convert(){
-        return CustumerOwner.builder()
+    public Custumer convert(){
+        return Custumer.builder()
                 .name(name)
                 .email(email)
                 .password(password)

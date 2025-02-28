@@ -1,6 +1,7 @@
-package com.hav.hav_imobiliaria.model.entity;
+package com.hav.hav_imobiliaria.model.entity.Properties;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hav.hav_imobiliaria.model.entity.Address;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

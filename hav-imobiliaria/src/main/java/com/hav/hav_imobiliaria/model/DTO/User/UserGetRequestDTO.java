@@ -1,4 +1,4 @@
 package com.hav.hav_imobiliaria.model.DTO.User;
 
-public record UserPutRequestDTO() {
+public record UserGetRequestDTO() {
 }

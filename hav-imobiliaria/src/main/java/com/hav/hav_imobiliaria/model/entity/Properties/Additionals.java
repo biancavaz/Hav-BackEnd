@@ -1,4 +1,4 @@
-package com.hav.hav_imobiliaria.model.entity;
+package com.hav.hav_imobiliaria.model.entity.Properties;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,22 +6,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
-@Table(name = "taxes")
+@Table(name = "additionals")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Taxes {
+public class Additionals {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Double condominiumFee;
+    @Column(nullable = false)
+    private String name;
 
-    private Double iptu;
-
-//    @OneToOne(mappedBy = "taxes")
-//    private Property property;
+    @ManyToMany(mappedBy = "additionals")
+    private List<Property> properties;
 }

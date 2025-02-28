@@ -1,8 +1,8 @@
-package com.hav.hav_imobiliaria.model.entity;
+package com.hav.hav_imobiliaria.model.entity.Users;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -16,7 +16,6 @@ import java.util.Date;
 @AllArgsConstructor
 @SuperBuilder // usar essa notação quando tiver herança (pra n dar problema na dto)
 @Inheritance(strategy = InheritanceType.JOINED) // herança
-@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
 public class User {
 
     @Id
@@ -44,6 +43,31 @@ public class User {
 
     @Column(name = "birth_date", nullable = false)
     private Date birthDate;
+
+    @JsonBackReference
+    @OneToOne(mappedBy = "user")
+    @JoinColumn(name = "id_realtor", nullable = false)
+    private Realtor realtor;
+
+    @JsonBackReference
+    @OneToOne(mappedBy = "user")
+    @JoinColumn(name = "id_custumerOwner", nullable = false)
+    private Custumer custumer;
+
+    @JsonBackReference
+    @OneToOne(mappedBy = "user")
+    @JoinColumn(name = "id_editor", nullable = false)
+    private Editor editor;
+
+    @JsonBackReference
+    @OneToOne(mappedBy = "user")
+    @JoinColumn(name = "id_adm", nullable = false)
+    private Adm adm;
+
+    @JsonBackReference
+    @OneToOne(mappedBy = "user")
+    @JoinColumn(name = "id_adm", nullable = false)
+    private Proprietor proprietor;
 
     //ainda n sei como fazer este
 //    @ManyToOne(cascade = CascadeType.ALL)

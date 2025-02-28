@@ -1,15 +1,15 @@
-package com.hav.hav_imobiliaria.model.DTO.CustumerOwner;
+package com.hav.hav_imobiliaria.model.DTO.Custumer;
 
-import com.hav.hav_imobiliaria.model.entity.CustumerOwner;
+import com.hav.hav_imobiliaria.model.entity.Users.Custumer;
 import jakarta.validation.constraints.NotBlank;
 
-public record CustumerOwnerPutRequestDTO(
+public record CustumerPutRequestDTO(
         @NotBlank String email,
         @NotBlank String password,
         @NotBlank String celphone) {
 
-    public CustumerOwner convert(){
-        return CustumerOwner.builder()
+    public Custumer convert(){
+        return Custumer.builder()
                 .email(email)
                 .password(password)
                 .celphone(celphone)

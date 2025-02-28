@@ -1,6 +1,6 @@
 package com.hav.hav_imobiliaria.repository;
 
-import com.hav.hav_imobiliaria.model.entity.Property;
+import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

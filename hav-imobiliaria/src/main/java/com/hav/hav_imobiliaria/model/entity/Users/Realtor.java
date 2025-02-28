@@ -1,9 +1,8 @@
-package com.hav.hav_imobiliaria.model.entity;
+package com.hav.hav_imobiliaria.model.entity.Users;
 
-import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -14,11 +13,20 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorValue("realtor")
 public class Realtor extends User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_realtor")
+    private Integer id;
 
     @Column(nullable = false, unique = true)
     private String creci;
+
+    @JsonManagedReference
+    @OneToOne
+    @Column(name = "id_users", nullable = false)
+    private User user;
 
 
 }

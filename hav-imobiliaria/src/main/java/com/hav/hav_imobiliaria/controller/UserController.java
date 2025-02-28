@@ -1,15 +1,6 @@
 package com.hav.hav_imobiliaria.controller;
 
-import com.hav.hav_imobiliaria.model.DTO.User.UserPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.User;
-import com.hav.hav_imobiliaria.service.UserService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

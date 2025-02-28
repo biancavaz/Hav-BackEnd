@@ -1,6 +1,6 @@
 package com.hav.hav_imobiliaria.model.DTO.PropertyFeature;
 
-import com.hav.hav_imobiliaria.model.entity.PropertyFeature;
+import com.hav.hav_imobiliaria.model.entity.Properties.PropertyFeature;
 
 public record PropertyFeaturePostRequestDTO(
         Boolean allowsPet,
