@@ -1,8 +1,8 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.model.dto.Property.PropertyGetResponseDTO;
-import com.hav.hav_imobiliaria.model.dto.Property.PropertyPostRequestDTO;
-import com.hav.hav_imobiliaria.model.dto.Property.PropertyPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Additionals;
 import com.hav.hav_imobiliaria.model.entity.CustomerOwner;
 import com.hav.hav_imobiliaria.model.entity.Property;
@@ -27,8 +27,8 @@ public class PropertyService {
 
     private final PropertyRepository repository;
     private final AdditionalsService additionalsService;
-//    private final Realtor realtorService;
-//    private final CustomerOwner customerOwnerService;
+    private final RealtorService realtorService;
+    private final CustomerOwnerService customerOwnerService;
 
     public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 
@@ -37,10 +37,10 @@ public class PropertyService {
         List<Additionals> additionals = additionalsService.findAllyById(propertyDTO.additionalsId());
         property.setAdditionals(additionals);
 
-//        List<Realtor> realtors = realtorService.findAllById(propertyDTO.realtorsId());
-//        property.setRealtors(realtors);
-//
-//        property.setOwner(customerOwnerService.findById(propertyDTO.ownerId()));
+        List<Realtor> realtors = realtorService.findAllById(propertyDTO.realtorsId());
+        property.setRealtors(realtors);
+
+        property.setOwner(customerOwnerService.findById(propertyDTO.ownerId()));
 
         String uniqueCode;
         do {

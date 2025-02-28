@@ -1,8 +1,5 @@
-<<<<<<<< HEAD:hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/dto/Address/AddressPostRequestDTO.java
-package com.hav.hav_imobiliaria.model.dto.Address;
-========
+
 package com.hav.hav_imobiliaria.model.DTO.Address;
->>>>>>>> main:hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Address/AddressPostRequestDTO.java
 
 import com.hav.hav_imobiliaria.model.entity.Address;
 import jakarta.validation.constraints.NotBlank;

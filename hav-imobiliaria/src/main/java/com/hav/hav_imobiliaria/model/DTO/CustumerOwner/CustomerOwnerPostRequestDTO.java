@@ -1,19 +1,19 @@
 package com.hav.hav_imobiliaria.model.DTO.CustumerOwner;
 
-import com.hav.hav_imobiliaria.model.entity.CustumerOwner;
+import com.hav.hav_imobiliaria.model.entity.CustomerOwner;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public record CustumerOwnerPostRequestDTO(
+public record CustomerOwnerPostRequestDTO(
         @NotBlank String name,
         @NotBlank String email,
         @NotBlank String password,
         @Pattern(regexp = "\\d{11}") String cpf,
         Boolean juristicPerson,
-        @Pattern(regexp = "\\\\d{2}\\\\.\\\\d{3}\\\\.\\\\d{3}/\\\\d{4}-\\\\d{2}") String cnpj) {
+        @Pattern(regexp = "\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}") String cnpj) {
 
-    public CustumerOwner convert(){
-        return CustumerOwner.builder()
+    public CustomerOwner convert(){
+        return CustomerOwner.builder()
                 .name(name)
                 .email(email)
                 .password(password)

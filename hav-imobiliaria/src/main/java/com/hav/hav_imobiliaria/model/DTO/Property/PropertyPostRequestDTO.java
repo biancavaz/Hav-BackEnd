@@ -1,8 +1,8 @@
-package com.hav.hav_imobiliaria.model.dto.Property;
+package com.hav.hav_imobiliaria.model.DTO.Property;
 
-import com.hav.hav_imobiliaria.model.dto.Address.AddressPostRequestDTO;
-import com.hav.hav_imobiliaria.model.dto.PropertyFeature.PropertyFeaturePostRequestDTO;
-import com.hav.hav_imobiliaria.model.dto.Taxes.TaxesPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

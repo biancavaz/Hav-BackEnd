@@ -1,6 +1,6 @@
 package com.hav.hav_imobiliaria.controller;
 
-import com.hav.hav_imobiliaria.model.dto.Address.AddressPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Address;
 import com.hav.hav_imobiliaria.service.AddressService;
 import jakarta.validation.Valid;

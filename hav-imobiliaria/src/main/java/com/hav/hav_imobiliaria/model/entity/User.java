@@ -46,8 +46,8 @@ public class User {
     private Date birthDate;
 
     //ainda n sei como fazer este
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "id_address", nullable = false)
-//    private Address address;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_address", nullable = false)
+    private Address address;
 
 }

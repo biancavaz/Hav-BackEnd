@@ -22,6 +22,6 @@ public class Taxes {
 
     private Double iptu;
 
-//    @OneToOne(mappedBy = "taxes")
-//    private Property property;
+    @OneToOne(mappedBy = "taxes")
+    private Property property;
 }

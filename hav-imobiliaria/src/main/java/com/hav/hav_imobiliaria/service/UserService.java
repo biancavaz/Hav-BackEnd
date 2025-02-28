@@ -1,6 +1,6 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.model.DTO.User.UserPutRequestDTO;
+// import com.hav.hav_imobiliaria.model.DTO.User.UserPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.User;
 import com.hav.hav_imobiliaria.repository.UserRepository;
 import jakarta.validation.Valid;

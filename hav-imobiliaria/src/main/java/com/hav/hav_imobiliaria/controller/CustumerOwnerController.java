@@ -1,10 +1,9 @@
 package com.hav.hav_imobiliaria.controller;
 
-import com.hav.hav_imobiliaria.model.DTO.CustumerOwner.CustumerOwnerPostRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.CustumerOwner.CustumerOwnerPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.CustumerOwner;
-import com.hav.hav_imobiliaria.model.entity.Realtor;
-import com.hav.hav_imobiliaria.service.CustumerOwnerService;
+import com.hav.hav_imobiliaria.model.DTO.CustumerOwner.CustomerOwnerPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.CustumerOwner.CustomerOwnerPutRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.CustomerOwner;
+import com.hav.hav_imobiliaria.service.CustomerOwnerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,43 +19,45 @@ import org.springframework.web.bind.annotation.*;
 public class CustumerOwnerController {
 
 
-    private CustumerOwnerService service;
+    private CustomerOwnerService service;
 
     @PostMapping("/signin")
     @ResponseStatus(HttpStatus.CREATED)
-    public CustumerOwner signinCustumerOwner(
-            @RequestBody @Valid CustumerOwnerPostRequestDTO CustumerOwnerPostDTO){
-        return service.createCustumerOwner(CustumerOwnerPostDTO);
+    public CustomerOwner signinCustumerOwner(
+            @RequestBody @Valid CustomerOwnerPostRequestDTO CustumerOwnerPostDTO) {
+        return service.createCustomerOwner(CustumerOwnerPostDTO);
     }
 
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CustumerOwner editCustumerOwner(
+    public CustomerOwner editCustumerOwner(
             @PathVariable Integer id,
-            @RequestBody @Valid CustumerOwnerPutRequestDTO custumerOwnerDTO){
-        return service.editCustumerOwner(id, custumerOwnerDTO);
+            @RequestBody @Valid CustomerOwnerPutRequestDTO custumerOwnerDTO) {
+        return service.editCustomerOwner(id, custumerOwnerDTO);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CustumerOwner alterCustumerOwner(
+    public CustomerOwner alterCustomerOwner(
             @PathVariable Integer id,
-            @RequestParam Integer idCustumerOwner){
-        return service.alterCustumerOwner(id, idCustumerOwner);
+            @RequestParam Integer idCustumerOwner) {
+        return service.alterCustomerOwner(id, idCustumerOwner);
     }
 
 
     @GetMapping("/page")
-    public Page<CustumerOwner> searchCustumerOwners(
+    public Page<CustomerOwner> searchCustumerOwners(
             @PageableDefault(
                     size = 10, //quantidade de itens por página
                     sort = "saldo", //o que vai ser listado
-                    direction= Sort.Direction.DESC, // tipo da ordem que vai ser mostrado
-                    page= 0 //começa mostrando a página 0
-            ) Pageable pageable){
-        return service.searchCustumerOwners(pageable);
-    };
+                    direction = Sort.Direction.DESC, // tipo da ordem que vai ser mostrado
+                    page = 0 //começa mostrando a página 0
+            ) Pageable pageable) {
+        return service.searchCustomerOwners(pageable);
+    }
+
+    ;
 
 //    @GetMapping("/{id}")
 //    @ResponseStatus(HttpStatus.OK)
@@ -68,8 +69,8 @@ public class CustumerOwnerController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeCustumerOwner(@PathVariable Integer id){
-        service.removeCustumerOwner(id);
+    public void removeCustomerOwner(@PathVariable Integer id) {
+        service.removeCustomerOwner(id);
     }
 
 }
