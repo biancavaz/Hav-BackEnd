@@ -1,18 +1,19 @@
 package com.hav.hav_imobiliaria.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "customer_owner")
-//@Builder
-public class CustumerOwner extends User {
+public class CustomerOwner extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +25,9 @@ public class CustumerOwner extends User {
 
     @Column(nullable = false, unique = true)
     private String cnpj;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "owner")
+    private List<Property> properties;
 
 }

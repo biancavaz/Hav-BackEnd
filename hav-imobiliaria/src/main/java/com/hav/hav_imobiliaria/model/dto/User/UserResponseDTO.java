@@ -1,4 +1,4 @@
-package com.hav.hav_imobiliaria.model.dto;
+package com.hav.hav_imobiliaria.model.dto.User;
 
 public record UserResponseDTO(
         Integer id,

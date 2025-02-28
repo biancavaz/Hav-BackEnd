@@ -24,6 +24,9 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "property_code", nullable = false, unique = true, length = 6)
+    private String propertyCode;
+
     @Column(nullable = false)
     private String title;
 
@@ -80,4 +83,17 @@ public class Property {
     )
     private List<Additionals> additionals;
 
+    @JsonManagedReference
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_owner")
+    private CustomerOwner owner;
+
+    @JsonManagedReference
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "property_realtors",
+            joinColumns = @JoinColumn(name = "id_property"),
+            inverseJoinColumns = @JoinColumn(name = "id_realtor")
+    )
+    private List<Realtor> realtors;
 }

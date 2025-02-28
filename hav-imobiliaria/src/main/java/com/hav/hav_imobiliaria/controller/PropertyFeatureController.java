@@ -1,6 +1,6 @@
 package com.hav.hav_imobiliaria.controller;
 
-import com.hav.hav_imobiliaria.model.dto.PropertyFeaturePostRequestDTO;
+import com.hav.hav_imobiliaria.model.dto.PropertyFeature.PropertyFeaturePostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.PropertyFeature;
 import com.hav.hav_imobiliaria.service.PropertyFeatureService;
 import jakarta.validation.Valid;
