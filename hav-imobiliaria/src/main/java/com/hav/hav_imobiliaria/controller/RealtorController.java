@@ -1,10 +1,10 @@
 package com.hav.hav_imobiliaria.controller;
 
-import com.hav.hav_imobiliaria.model.DTO.CustumerOwner.CustumerOwnerPostRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.CustumerOwner.CustumerOwnerPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.CustumerOwner;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Realtor;
-import com.hav.hav_imobiliaria.service.CustumerOwnerService;
+import com.hav.hav_imobiliaria.service.RealtorService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,61 +15,61 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/custumerOwner")
+@RequestMapping("/realtor")
 @AllArgsConstructor
-public class CustumerOwnerController {
+public class RealtorController {
 
+    private RealtorService service;
 
-    private CustumerOwnerService service;
-
+    // REALTOR
     @PostMapping("/signin")
     @ResponseStatus(HttpStatus.CREATED)
-    public CustumerOwner signinCustumerOwner(
-            @RequestBody @Valid CustumerOwnerPostRequestDTO CustumerOwnerPostDTO){
-        return service.createCustumerOwner(CustumerOwnerPostDTO);
+    public Realtor signinRealtor(
+            @RequestBody @Valid RealtorPostRequestDTO realtorPostDTO){
+        return service.createRealtor(realtorPostDTO);
     }
-
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CustumerOwner editCustumerOwner(
+    public Realtor editRealtor(
             @PathVariable Integer id,
-            @RequestBody @Valid CustumerOwnerPutRequestDTO custumerOwnerDTO){
-        return service.editCustumerOwner(id, custumerOwnerDTO);
+            @RequestBody @Valid RealtorPutRequestDTO realtorPutDTO){
+        return service.editRealtor(id, realtorPutDTO);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CustumerOwner alterCustumerOwner(
+    public Realtor alterarRealtor(
             @PathVariable Integer id,
-            @RequestParam Integer idCustumerOwner){
-        return service.alterCustumerOwner(id, idCustumerOwner);
+            @RequestParam Integer idrealtor){
+        return service.alterRealtor(id, idrealtor);
     }
 
-
     @GetMapping("/page")
-    public Page<CustumerOwner> searchCustumerOwners(
+    public Page<Realtor> searchRealtors(
             @PageableDefault(
                     size = 10, //quantidade de itens por página
                     sort = "saldo", //o que vai ser listado
                     direction= Sort.Direction.DESC, // tipo da ordem que vai ser mostrado
                     page= 0 //começa mostrando a página 0
             ) Pageable pageable){
-        return service.searchCustumerOwners(pageable);
+        return service.searchRealtors(pageable);
     };
 
 //    @GetMapping("/{id}")
 //    @ResponseStatus(HttpStatus.OK)
-//    public CustumerOwnerGetRequestDTO searchRealtor(
+//    public RealtorGetResponseDTO searchRealtor(
 //            @PathVariable Integer id){
-//        Realtor realtor = service.searchCustumerOwner(id);
+//        Realtor realtor = service.searchRealtor(id);
 //        return realtor.convert();
 //    }
 
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeCustumerOwner(@PathVariable Integer id){
-        service.removeCustumerOwner(id);
+    public void removeRealtor(@PathVariable Integer id){
+        service.remove(id);
     }
+
 
 }

@@ -3,8 +3,10 @@ package com.hav.hav_imobiliaria.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -13,7 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "customer_owner")
-public class CustomerOwner extends User {
+@SuperBuilder
+@DiscriminatorValue("custumerOwner")
+public class CustumerOwner extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

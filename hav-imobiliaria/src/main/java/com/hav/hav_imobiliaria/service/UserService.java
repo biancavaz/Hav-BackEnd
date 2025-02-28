@@ -1,7 +1,6 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.model.dto.User.UserPostRequestDTO;
-import com.hav.hav_imobiliaria.model.dto.User.UserPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.User.UserPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.User;
 import com.hav.hav_imobiliaria.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -18,42 +17,39 @@ import java.util.NoSuchElementException;
 @AllArgsConstructor
 public class UserService {
 
-    private final UserRepository repository;
+//    private final UserRepository repository;
+//
+//
+//    public User editUser(
+//            @NotNull @Positive Integer id,
+//            @Valid UserPutRequestDTO userPutDTO) {
+//
+//        if(repository.existsById(id)){
+//            User user = userPutDTO.convert();
+//            user.setId(id);
+//            return repository.save(user);
+//        }
+//        throw new NoSuchElementException();
+//    }
+//
+//    public User alterUsers(
+//            @NotNull @Positive Integer id,
+//            @NotNull @Positive Integer idUser) {
+//
+//        //essa tem que pensar
+//        return null;
+//    }
+//
+//    public Page<User> searchUsers(Pageable pageable) {
+//        return repository.findAll(pageable);
+//    }
+//
+//    public User searchUser(Integer id) {
+//        return repository.findById(id).orElseThrow(NoSuchElementException::new);
+//    }
+//
+//    public void remove(Integer id) {
+//        repository.deleteById(id);
+//    }
 
-    public User createUser(@Valid UserPostRequestDTO userPostDTO){
-        User user = userPostDTO.convert();
-        return repository.save(user);
-    }
-
-    public User editUser(
-            @NotNull @Positive Integer id,
-            @Valid UserPutRequestDTO userPutDTO) {
-
-        if(repository.existsById(id)){
-            User user = userPutDTO.convert();
-            user.setId(id);
-            return repository.save(user);
-        }
-        throw new NoSuchElementException();
-    }
-
-    public User alterUsers(
-            @NotNull @Positive Integer id,
-            @NotNull @Positive Integer idUser) {
-
-        //essa tem que pensar
-        return null;
-    }
-
-    public Page<User> searchUsers(Pageable pageable) {
-        return repository.findAll(pageable);
-    }
-
-    public User searchUser(Integer id) {
-        return repository.findById(id).orElseThrow(NoSuchElementException::new);
-    }
-
-    public void remove(Integer id) {
-        repository.deleteById(id);
-    }
 }
