@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "customer_owner")
 @SuperBuilder
-@DiscriminatorValue("custumerOwner")
+//@DiscriminatorValue("custumerOwner")
 public class CustomerOwner extends User {
 
     @Id
@@ -32,5 +33,10 @@ public class CustomerOwner extends User {
     @JsonBackReference
     @OneToMany(mappedBy = "owner")
     private List<Property> properties;
+
+    @JsonManagedReference
+    @OneToOne
+    @JoinColumn(name = "id_user", nullable = false)
+    private User user;
 
 }

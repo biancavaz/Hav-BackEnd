@@ -3,6 +3,7 @@ package com.hav.hav_imobiliaria.controller;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.User.UserPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Realtor;
 import com.hav.hav_imobiliaria.service.RealtorService;
 import jakarta.validation.Valid;
@@ -22,10 +23,10 @@ public class RealtorController {
     private RealtorService service;
 
     // REALTOR
-    @PostMapping("/signin")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Realtor signinRealtor(
-            @RequestBody @Valid RealtorPostRequestDTO realtorPostDTO){
+    public Realtor create(
+            @RequestBody @Valid RealtorPostRequestDTO realtorPostDTO) {
         return service.createRealtor(realtorPostDTO);
     }
 

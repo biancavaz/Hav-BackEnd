@@ -2,7 +2,9 @@ package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.User.UserPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Realtor;
+import com.hav.hav_imobiliaria.model.entity.User;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -20,19 +22,22 @@ import java.util.NoSuchElementException;
 public class RealtorService {
 
     private final RealtorRepository repository;
+    private final UserService userService;
 
-    public Realtor createRealtor(
-            @Valid RealtorPostRequestDTO realtorPostDTO) {
+    public Realtor createRealtor(@Valid RealtorPostRequestDTO realtorDTO) {
 
-        Realtor realtor = realtorPostDTO.convert();
+        User user = userService.create(realtorDTO.userDTO());
+
+        Realtor realtor = realtorDTO.convert();
+        realtor.setUser(user);
+
         return repository.save(realtor);
     }
-
 
     public Realtor editRealtor(
             @NotNull @Positive Integer id,
             @Valid RealtorPutRequestDTO realtorPutDTO) {
-        if(repository.existsById(id)){
+        if (repository.existsById(id)) {
             Realtor realtor = realtorPutDTO.convert();
             return repository.save(realtor);
         }

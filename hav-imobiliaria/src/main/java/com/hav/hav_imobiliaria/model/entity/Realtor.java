@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,9 +16,9 @@ import java.util.List;
 @Data
 @Table(name = "realtor")
 @SuperBuilder
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorValue("realtor")
+//@DiscriminatorValue("realtor")
 public class Realtor extends User {
 
     @Column(nullable = false, unique = true)
@@ -26,4 +27,9 @@ public class Realtor extends User {
     @JsonBackReference
     @ManyToMany(mappedBy = "realtors")
     private List<Property> properties;
+
+    @JsonManagedReference
+    @OneToOne
+    @JoinColumn(name = "id_user", nullable = false)
+    private User user;
 }

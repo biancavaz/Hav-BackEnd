@@ -62,6 +62,7 @@ public class Property {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @JsonManagedReference
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_address", nullable = false)
     private Address address;

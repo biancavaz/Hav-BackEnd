@@ -1,7 +1,9 @@
 package com.hav.hav_imobiliaria.service;
 
-// import com.hav.hav_imobiliaria.model.DTO.User.UserPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.User.UserPostRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.Address;
 import com.hav.hav_imobiliaria.model.entity.User;
+import com.hav.hav_imobiliaria.repository.AddressRepository;
 import com.hav.hav_imobiliaria.repository.UserRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,9 +19,18 @@ import java.util.NoSuchElementException;
 @AllArgsConstructor
 public class UserService {
 
-//    private final UserRepository repository;
-//
-//
+    private final UserRepository repository;
+    private final AddressRepository addressRepository;
+
+    public User create(@NotNull @Valid UserPostRequestDTO userDTO) {
+        Address address = addressRepository.save(userDTO.addressDTO().convert());
+
+        User user = userDTO.convert();
+        user.setAddress(address);
+
+        return repository.save(user);
+    }
+
 //    public User editUser(
 //            @NotNull @Positive Integer id,
 //            @Valid UserPutRequestDTO userPutDTO) {
