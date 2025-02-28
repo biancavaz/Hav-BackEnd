@@ -15,9 +15,9 @@ public class PropertyFeatureController {
 
     private final PropertyFeatureService service;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public PropertyFeature create(@RequestBody @Valid PropertyFeaturePostRequestDTO propertyFeatureDTO) {
-        return service.create(propertyFeatureDTO);
-    }
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public PropertyFeature create(@RequestBody @Valid PropertyFeaturePostRequestDTO propertyFeatureDTO) {
+//        return service.create(propertyFeatureDTO);
+//    }
 }

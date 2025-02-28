@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Table(name = "customer_owner")
 @SuperBuilder
+@DiscriminatorValue("custumerOwner")
 public class CustumerOwner extends User {
 
     @Id

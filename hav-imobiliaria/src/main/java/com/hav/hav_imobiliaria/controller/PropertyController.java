@@ -13,21 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping("/property")
 @AllArgsConstructor
 public class PropertyController {
 
-    private final PropertyService service;
 
-    @GetMapping
-    public Page<Property> searchProperty(
-            @PageableDefault(
-                    page = 0,
-                    size = 12,
-                    sort = "nome",
-                    direction = Sort.Direction.ASC) Pageable pageable){
-
-        return service.searchProperty(pageable);
-    }
 
 }

@@ -1,10 +1,9 @@
-package com.hav.hav_imobiliaria.model.dto;
+package com.hav.hav_imobiliaria.model.DTO.Address;
 
 import com.hav.hav_imobiliaria.model.entity.Address;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import org.springframework.web.bind.annotation.PostMapping;
 
 public record AddressPostRequestDTO(
         @NotBlank String cep,

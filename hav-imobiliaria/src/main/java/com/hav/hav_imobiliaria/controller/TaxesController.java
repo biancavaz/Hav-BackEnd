@@ -15,9 +15,10 @@ public class TaxesController {
 
     private TaxesService service;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Taxes addTaxes(@RequestBody @Valid TaxesPostRequestDTO taxesDTO) {
-        return service.create(taxesDTO);
-    }
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public Taxes addTaxes(
+//            @RequestBody @Valid TaxesPostRequestDTO taxesDTO) {
+//        return service.create(taxesDTO);
+//    }
 }

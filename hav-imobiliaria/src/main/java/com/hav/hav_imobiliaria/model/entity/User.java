@@ -16,6 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @SuperBuilder // usar essa notação quando tiver herança (pra n dar problema na dto)
 @Inheritance(strategy = InheritanceType.JOINED) // herança
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
 public class User {
 
     @Id
@@ -38,14 +39,15 @@ public class User {
     @Column(nullable = false)
     private String celphone;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "birth_date", nullable = false)
     private Date birthDate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_address", nullable = false)
-    private Address address;
+    //ainda n sei como fazer este
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "id_address", nullable = false)
+//    private Address address;
 
 }
