@@ -23,7 +23,7 @@ public class CustumerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Custumer signinCustumerOwner(
+    public Custumer createCustumer(
             @RequestBody @Valid CustumerPostRequestDTO CustumerOwnerPostDTO){
         return service.createCustumerOwner(CustumerOwnerPostDTO);
     }

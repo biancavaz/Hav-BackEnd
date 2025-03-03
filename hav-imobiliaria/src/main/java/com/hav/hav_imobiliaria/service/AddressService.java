@@ -13,7 +13,8 @@ public class AddressService {
 
     private final AddressRepository repository;
 
-    public Address create(@Valid AddressPostRequestDTO addressDTO) {
+    public Address create(
+            @Valid AddressPostRequestDTO addressDTO) {
         return repository.save(addressDTO.convert());
     }
 }

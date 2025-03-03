@@ -8,6 +8,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,13 +22,29 @@ import java.util.NoSuchElementException;
 public class RealtorService {
 
     private final RealtorRepository repository;
+    private final ModelMapper modelMapper;
 
-    public Realtor createRealtor(
-            @Valid RealtorPostRequestDTO realtorPostDTO) {
+    public RealtorPostRequestDTO createRealtor(RealtorPostRequestDTO realtorDTO) {
+        // Converter DTO para entidade usando Builder
+        Realtor realtor = Realtor.builder()
+                .name(realtorDTO.name())
+                .email(realtorDTO.email())
+                .password(realtorDTO.password())
+                .cpf(realtorDTO.cpf())
+                .celphone(realtorDTO.phone())
+                .creci(realtorDTO.creci())
+                .build();
 
-        Realtor realtor = realtorPostDTO.convert();
-        return repository.save(realtor);
+        Realtor savedRealtor = repository.save(realtor);
+        return modelMapper.map(savedRealtor, RealtorPostRequestDTO.class);
     }
+
+//    public Realtor createRealtor(
+//            @Valid RealtorPostRequestDTO realtorPostDTO) {
+//
+//        Realtor realtor = realtorPostDTO.convert();
+//        return repository.save(realtor);
+//    }
 
 
     public Realtor editRealtor(
@@ -46,7 +65,8 @@ public class RealtorService {
         //n sei como fazer
     }
 
-    public Page<Realtor> searchRealtors(Pageable pageable) {
+    public Page<Realtor> searchRealtors(
+            Pageable pageable) {
         return repository.findAll(pageable);
     }
 

@@ -51,7 +51,7 @@ public class User {
 
     @JsonBackReference
     @OneToOne(mappedBy = "user")
-    @JoinColumn(name = "id_custumerOwner", nullable = false)
+    @JoinColumn(name = "id_custumer", nullable = false)
     private Custumer custumer;
 
     @JsonBackReference

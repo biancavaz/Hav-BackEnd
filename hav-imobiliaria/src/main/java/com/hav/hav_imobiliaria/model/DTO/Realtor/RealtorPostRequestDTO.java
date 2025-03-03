@@ -7,15 +7,18 @@ public record RealtorPostRequestDTO(
         @NotBlank String name,
         @NotBlank String email,
         @NotBlank String password,
+        @NotBlank String cpf,
+        @NotBlank String phone,
+        @NotBlank Date birthDate,
         @NotBlank String creci
 ) {
 
-    public Realtor convert(){
-        return Realtor.builder()
-                .name(name)
-                .email(email)
-                .password(password)
-                .creci(creci)
-                .build();
-    }
+//    public Realtor convert(){
+//        return Realtor.builder()
+//                .name(name)
+//                .email(email)
+//                .password(password)
+//                .creci(creci)
+//                .build();
+//    }
 }
