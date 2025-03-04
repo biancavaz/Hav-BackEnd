@@ -2,6 +2,7 @@ package com.hav.hav_imobiliaria.model.entity.Users;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,7 @@ public class Realtor extends User {
 
     @JsonManagedReference
     @OneToOne
-    @Column(name = "id_users", nullable = false)
+    @JoinColumn(name = "id_users")
     private User user;
 
 

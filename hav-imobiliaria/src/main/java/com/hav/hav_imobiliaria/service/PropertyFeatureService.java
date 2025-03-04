@@ -1,6 +1,5 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.model.dto.PropertyFeaturePostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.PropertyFeature;
 import com.hav.hav_imobiliaria.repository.PropertyFeatureRepository;
 import lombok.AllArgsConstructor;
@@ -11,8 +10,8 @@ import org.springframework.stereotype.Service;
 public class PropertyFeatureService {
 
     private final PropertyFeatureRepository repository;
-
-    public PropertyFeature create(PropertyFeaturePostRequestDTO propertyFeatureDTO) {
-        return repository.save(propertyFeatureDTO.convert());
-    }
+//
+//    public PropertyFeature create(PropertyFeaturePostRequestDTO propertyFeatureDTO) {
+//        return repository.save(propertyFeatureDTO.convert());
+//    }
 }

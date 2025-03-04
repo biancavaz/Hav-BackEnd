@@ -20,57 +20,57 @@ public class EditorController {
 
     private final EditorService service;
 
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Editor createProprietor(
-            @RequestBody @Valid EditorPostDTO editorPostDTO){
-        return service.createEditor(editorPostDTO);
-    }
-
-    @PutMapping
-    @ResponseStatus(HttpStatus.OK)
-    public Editor editEditor(
-            @PathVariable Integer id,
-            @RequestBody @Valid EditorPutRequestDTO editorPutDTO){
-        return service.editEditor(id, editorPutDTO);
-    }
-
-
-    @PatchMapping
-    @ResponseStatus(HttpStatus.OK)
-    public Editor alterarEditor(
-            @PathVariable Integer id,
-            @RequestParam Integer idEditor){
-        return service.alterEditor(id, idEditor);
-    }
-
-
-    @GetMapping
-    public Page<Editor> searchEditor(
-            @PageableDefault(
-                    size = 10, //quantidade de itens por página
-                    sort = "saldo", //o que vai ser listado
-                    direction= Sort.Direction.DESC, // tipo da ordem que vai ser mostrado
-                    page= 0 //começa mostrando a página 0
-            ) Pageable pageable){
-        return service.searchEditor(pageable);
-    };
-
-
-    //    @GetMapping
-//    @RequestMapping("/{id}")
-//    public RealtorGetResponseDTO searchRealtor(
-////            @PathVariable Integer id){
-////        Realtor realtor = service.searchRealtor(id);
-//        return realtor.convert();
+//
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public Editor createProprietor(
+//            @RequestBody @Valid EditorPostDTO editorPostDTO){
+//        return service.createEditor(editorPostDTO);
 //    }
-
-    @DeleteMapping
-    @RequestMapping("/{id}")
-    public void removeEditor(@PathVariable Integer id){
-        service.remove(id);
-    }
+//
+//    @PutMapping
+//    @ResponseStatus(HttpStatus.OK)
+//    public Editor editEditor(
+//            @PathVariable Integer id,
+//            @RequestBody @Valid EditorPutRequestDTO editorPutDTO){
+//        return service.editEditor(id, editorPutDTO);
+//    }
+//
+//
+//    @PatchMapping
+//    @ResponseStatus(HttpStatus.OK)
+//    public Editor alterarEditor(
+//            @PathVariable Integer id,
+//            @RequestParam Integer idEditor){
+//        return service.alterEditor(id, idEditor);
+//    }
+//
+//
+//    @GetMapping
+//    public Page<Editor> searchEditor(
+//            @PageableDefault(
+//                    size = 10, //quantidade de itens por página
+//                    sort = "saldo", //o que vai ser listado
+//                    direction= Sort.Direction.DESC, // tipo da ordem que vai ser mostrado
+//                    page= 0 //começa mostrando a página 0
+//            ) Pageable pageable){
+//        return service.searchEditor(pageable);
+//    };
+//
+//
+//    //    @GetMapping
+////    @RequestMapping("/{id}")
+////    public RealtorGetResponseDTO searchRealtor(
+//////            @PathVariable Integer id){
+//////        Realtor realtor = service.searchRealtor(id);
+////        return realtor.convert();
+////    }
+//
+//    @DeleteMapping
+//    @RequestMapping("/{id}")
+//    public void removeEditor(@PathVariable Integer id){
+//        service.remove(id);
+//    }
 
 
 

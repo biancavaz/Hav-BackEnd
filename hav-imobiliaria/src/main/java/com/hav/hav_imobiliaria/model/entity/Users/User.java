@@ -1,7 +1,9 @@
 package com.hav.hav_imobiliaria.model.entity.Users;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.hav.hav_imobiliaria.model.entity.Address;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,37 +43,40 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "birth_date", nullable = false)
+    @Column(name = "birth_date")
     private Date birthDate;
+
+
 
     @JsonBackReference
     @OneToOne(mappedBy = "user")
-    @JoinColumn(name = "id_realtor", nullable = false)
+    @PrimaryKeyJoinColumn(name = "id_realtor")
     private Realtor realtor;
 
     @JsonBackReference
     @OneToOne(mappedBy = "user")
-    @JoinColumn(name = "id_custumer", nullable = false)
+    @PrimaryKeyJoinColumn(name = "id_custumer")
     private Custumer custumer;
 
     @JsonBackReference
     @OneToOne(mappedBy = "user")
-    @JoinColumn(name = "id_editor", nullable = false)
+    @PrimaryKeyJoinColumn(name = "id_editor")
     private Editor editor;
 
     @JsonBackReference
     @OneToOne(mappedBy = "user")
-    @JoinColumn(name = "id_adm", nullable = false)
+    @PrimaryKeyJoinColumn(name = "id_adm")
     private Adm adm;
 
     @JsonBackReference
     @OneToOne(mappedBy = "user")
-    @JoinColumn(name = "id_adm", nullable = false)
+    @PrimaryKeyJoinColumn(name = "id_Proprietor")
     private Proprietor proprietor;
 
-    //ainda n sei como fazer este
+//    @JsonBackReference
 //    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "id_address", nullable = false)
+//    @JoinColumn(name = "id_address")
 //    private Address address;
+
 
 }

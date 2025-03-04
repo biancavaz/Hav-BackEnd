@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.controller;
 
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
@@ -23,8 +24,9 @@ public class RealtorController {
     // REALTOR
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Realtor createRealtor(
+    public RealtorPostRequestDTO createRealtor(
             @RequestBody @Valid RealtorPostRequestDTO realtorPostDTO){
+        System.out.println("Recebido: " + realtorPostDTO);
         return service.createRealtor(realtorPostDTO);
     }
 
@@ -38,7 +40,7 @@ public class RealtorController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Realtor alterarRealtor(
+    public Realtor alterRealtor(
             @PathVariable Integer id,
             @RequestParam Integer idrealtor){
         return service.alterRealtor(id, idrealtor);
@@ -55,19 +57,18 @@ public class RealtorController {
         return service.searchRealtors(pageable);
     };
 
-//    @GetMapping("/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public RealtorGetResponseDTO searchRealtor(
-//            @PathVariable Integer id){
-//        Realtor realtor = service.searchRealtor(id);
-//        return realtor.convert();
-//    }
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public RealtorGetResponseDTO searchRealtor(@PathVariable Integer id) {
+        return service.searchRealtor(id);
+    }
 
 
-    @DeleteMapping("/{id}")
+
+        @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeRealtor(@PathVariable Integer id){
-        service.remove(id);
+        service.removeRealtor(id);
     }
 
 

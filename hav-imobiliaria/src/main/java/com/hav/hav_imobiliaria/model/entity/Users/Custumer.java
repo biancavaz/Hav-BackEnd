@@ -27,8 +27,8 @@ public class Custumer extends User {
     private String cnpj;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "user")
-    @JoinColumn(name = "id_users", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "id_users")
     private User user;
 
 }

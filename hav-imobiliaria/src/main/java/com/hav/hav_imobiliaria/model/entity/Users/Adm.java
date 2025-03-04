@@ -24,8 +24,8 @@ public class Adm extends User {
     private Integer id;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "user")
-    @JoinColumn(name = "id_users", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "id_users")
     private User user;
 
 }

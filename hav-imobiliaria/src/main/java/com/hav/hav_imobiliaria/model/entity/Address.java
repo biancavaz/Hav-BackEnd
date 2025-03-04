@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import jakarta.persistence.*;
@@ -45,7 +46,10 @@ public class Address {
     @OneToMany(mappedBy = "address")
     private List<Property> property;
 
-    @OneToMany(mappedBy = "address")
-    private List<User> user;
+//    @JsonBackReference
+//    @OneToMany(mappedBy = "address")
+//    private List<User> user;
+
+
 }
 

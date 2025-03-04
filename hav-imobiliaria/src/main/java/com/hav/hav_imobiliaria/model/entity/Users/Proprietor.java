@@ -8,12 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "proprietor")
 public class Proprietor extends User {
 
@@ -25,7 +26,7 @@ public class Proprietor extends User {
 
     @JsonManagedReference
     @OneToOne
-    @Column(name = "id_users", nullable = false)
+    @JoinColumn(name = "id_users", nullable = false)
     private User user;
 
 }
