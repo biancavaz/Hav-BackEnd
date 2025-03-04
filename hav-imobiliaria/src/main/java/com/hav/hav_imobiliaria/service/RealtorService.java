@@ -25,14 +25,10 @@ public class RealtorService {
     private final UserService userService;
 
     public Realtor createRealtor(@Valid RealtorPostRequestDTO realtorDTO) {
-
-        User user = userService.create(realtorDTO.userDTO());
-
-        Realtor realtor = realtorDTO.convert();
-        realtor.setUser(user);
-
-        return repository.save(realtor);
+       Realtor realtor = realtorDTO.convert();
+       return repository.save(realtor);
     }
+
 
     public Realtor editRealtor(
             @NotNull @Positive Integer id,

@@ -12,8 +12,17 @@ public record RealtorPostRequestDTO(
 
     public Realtor convert() {
         return Realtor.builder()
+                .name(userDTO.name())
+                .email(userDTO.email())
+                .password(userDTO.password())
+                .cpf(userDTO.cpf())
+                .celphone(userDTO.celphone())
+                .phoneNumber(userDTO.phoneNumber())
+                .birthDate(userDTO.birthDate())
+                .address(userDTO.addressDTO().convert())
                 .creci(creci)
-                .user(userDTO.convert())
                 .build();
     }
+
+
 }

@@ -26,10 +26,12 @@ public class UserService {
         Address address = addressRepository.save(userDTO.addressDTO().convert());
 
         User user = userDTO.convert();
+
         user.setAddress(address);
 
         return repository.save(user);
     }
+
 
 //    public User editUser(
 //            @NotNull @Positive Integer id,

@@ -15,9 +15,8 @@ import java.sql.Date;
 @Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder // usar essa notação quando tiver herança (pra n dar problema na dto)
-@Inheritance(strategy = InheritanceType.JOINED) // herança
-//@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
+@SuperBuilder
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
     @Id
@@ -50,11 +49,4 @@ public class User {
     @JoinColumn(name = "id_address", nullable = false)
     private Address address;
 
-    @JsonBackReference
-    @OneToOne(mappedBy = "user")
-    private Realtor realtor;
-
-    @JsonBackReference
-    @OneToOne(mappedBy = "user")
-    private CustomerOwner owner;
 }

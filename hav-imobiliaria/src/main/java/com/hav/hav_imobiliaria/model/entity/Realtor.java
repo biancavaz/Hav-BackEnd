@@ -1,11 +1,7 @@
 package com.hav.hav_imobiliaria.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -16,9 +12,7 @@ import java.util.List;
 @Data
 @Table(name = "realtor")
 @SuperBuilder
-//@AllArgsConstructor
 @NoArgsConstructor
-//@DiscriminatorValue("realtor")
 public class Realtor extends User {
 
     @Column(nullable = false, unique = true)
@@ -28,8 +22,8 @@ public class Realtor extends User {
     @ManyToMany(mappedBy = "realtors")
     private List<Property> properties;
 
-    @JsonManagedReference
-    @OneToOne
-    @JoinColumn(name = "id_user", nullable = false)
-    private User user;
+    public Realtor(UserBuilder<?, ?> user, String creci) {
+        super(user); // Passa o User para o construtor da superclasse
+        this.creci = creci;
+    }
 }
