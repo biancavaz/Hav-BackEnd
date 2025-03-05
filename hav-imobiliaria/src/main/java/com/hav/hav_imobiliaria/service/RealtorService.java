@@ -38,7 +38,14 @@ public class RealtorService {
         // Salvar a entidade e retornar a resposta
         Realtor savedRealtor = repository.save(realtor);
 
-        System.out.println("Convertido para entidade: " + realtor);
+        //testando só
+        System.out.println("Convertido para entidade: "
+                + savedRealtor
+                + realtor.getName()
+                + realtor.getEmail()
+                + realtor.getPassword()
+                + realtor.getCelphone()
+                +realtor.getCpf());
 
         return realtorDTO.convertToDTO(savedRealtor);
     }
