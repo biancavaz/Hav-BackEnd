@@ -43,7 +43,7 @@ public class CustumerController {
     public Customer alterCustumerOwner(
             @PathVariable Integer id,
             @RequestParam Integer idCustumerOwner) {
-        return service.alterCustomerOwner(id, idCustumerOwner);
+        return service.alterCustomer(id, idCustumerOwner);
     }
 
 
