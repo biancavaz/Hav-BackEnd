@@ -1,4 +1,4 @@
-package com.hav.hav_imobiliaria.model.entity;
+package com.hav.hav_imobiliaria.model.entity.Users;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -41,12 +41,41 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "birth_date", nullable = false)
     private Date birthDate;
 
-    @JsonManagedReference
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_address", nullable = false)
-    private Address address;
+
+
+    @JsonBackReference
+    @OneToOne(mappedBy = "user")
+    @PrimaryKeyJoinColumn(name = "id_realtor")
+    private Realtor realtor;
+
+    @JsonBackReference
+    @OneToOne(mappedBy = "user")
+    @PrimaryKeyJoinColumn(name = "id_custumer")
+    private Custumer custumer;
+
+    @JsonBackReference
+    @OneToOne(mappedBy = "user")
+    @PrimaryKeyJoinColumn(name = "id_editor")
+    private Editor editor;
+
+    @JsonBackReference
+    @OneToOne(mappedBy = "user")
+    @PrimaryKeyJoinColumn(name = "id_adm")
+    private Adm adm;
+
+    @JsonBackReference
+    @OneToOne(mappedBy = "user")
+    @PrimaryKeyJoinColumn(name = "id_Proprietor")
+    private Proprietor proprietor;
+
+//    @JsonBackReference
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "id_address")
+//    private Address address;
+
 
 }

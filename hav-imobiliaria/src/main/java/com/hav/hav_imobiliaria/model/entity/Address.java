@@ -1,6 +1,8 @@
 package com.hav.hav_imobiliaria.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.hav.hav_imobiliaria.model.entity.Properties.Property;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,7 +1,7 @@
 package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsPostRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Additionals;
+import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
 import com.hav.hav_imobiliaria.repository.AdditionalsRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

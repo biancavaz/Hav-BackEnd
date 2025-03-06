@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 public class PropertyFeatureService {
 
     private final PropertyFeatureRepository repository;
-
-    public PropertyFeature create(PropertyFeaturePostRequestDTO propertyFeatureDTO) {
-        return repository.save(propertyFeatureDTO.convert());
-    }
+//
+//    public PropertyFeature create(PropertyFeaturePostRequestDTO propertyFeatureDTO) {
+//        return repository.save(propertyFeatureDTO.convert());
+//    }
 }

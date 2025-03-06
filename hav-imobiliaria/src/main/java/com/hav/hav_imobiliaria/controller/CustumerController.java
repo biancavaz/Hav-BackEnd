@@ -1,9 +1,9 @@
 package com.hav.hav_imobiliaria.controller;
 
-import com.hav.hav_imobiliaria.model.DTO.CustumerOwner.CustomerOwnerPostRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.CustumerOwner.CustomerOwnerPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.CustomerOwner;
-import com.hav.hav_imobiliaria.service.CustomerOwnerService;
+import com.hav.hav_imobiliaria.model.DTO.Custumer.CustumerPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Custumer.CustumerPutRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.Users.Custumer;
+import com.hav.hav_imobiliaria.service.CustumerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,32 +14,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/custumerOwner")
+@RequestMapping("/custumer")
 @AllArgsConstructor
-public class CustumerOwnerController {
+public class CustumerController {
 
 
-    private CustomerOwnerService service;
+    private CustumerService service;
 
-    @PostMapping("/signin")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerOwner signinCustumerOwner(
-            @RequestBody @Valid CustomerOwnerPostRequestDTO CustumerOwnerPostDTO) {
-        return service.createCustomerOwner(CustumerOwnerPostDTO);
+    public CustumerPostRequestDTO createCustumer(
+            @RequestBody @Valid CustumerPostRequestDTO CustumerPostDTO){
+        System.out.println("Recebido: " + CustumerPostDTO);
+        return service.createCustumerOwner(CustumerPostDTO);
     }
 
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CustomerOwner editCustumerOwner(
+    public Custumer editCustumerOwner(
             @PathVariable Integer id,
-            @RequestBody @Valid CustomerOwnerPutRequestDTO custumerOwnerDTO) {
-        return service.editCustomerOwner(id, custumerOwnerDTO);
+            @RequestBody @Valid CustumerPutRequestDTO custumerOwnerDTO){
+        return service.editCustumerOwner(id, custumerOwnerDTO);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CustomerOwner alterCustomerOwner(
+    public Custumer alterCustumerOwner(
             @PathVariable Integer id,
             @RequestParam Integer idCustumerOwner) {
         return service.alterCustomerOwner(id, idCustumerOwner);
@@ -47,7 +48,7 @@ public class CustumerOwnerController {
 
 
     @GetMapping("/page")
-    public Page<CustomerOwner> searchCustumerOwners(
+    public Page<Custumer> searchCustumerOwners(
             @PageableDefault(
                     size = 10, //quantidade de itens por página
                     sort = "saldo", //o que vai ser listado
