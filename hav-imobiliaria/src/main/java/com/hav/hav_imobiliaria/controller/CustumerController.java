@@ -43,7 +43,7 @@ public class CustumerController {
     public Customer alterCustumerOwner(
             @PathVariable Integer id,
             @RequestParam Integer idCustumerOwner) {
-        return service.alterCustomerOwner(id, idCustumerOwner);
+        return service.alterCustomer(id, idCustumerOwner);
     }
 
 
@@ -55,7 +55,7 @@ public class CustumerController {
                     direction = Sort.Direction.DESC, // tipo da ordem que vai ser mostrado
                     page = 0 //começa mostrando a página 0
             ) Pageable pageable) {
-        return service.searchCustomerOwners(pageable);
+        return service.searchCustumers(pageable);
     }
 
     ;
@@ -71,7 +71,7 @@ public class CustumerController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeCustomerOwner(@PathVariable Integer id) {
-        service.removeCustomerOwner(id);
+        service.removeCustumer(id);
     }
 
 }
