@@ -1,6 +1,5 @@
 package com.hav.hav_imobiliaria.controller;
 
-import com.hav.hav_imobiliaria.service.PropertyFeatureService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

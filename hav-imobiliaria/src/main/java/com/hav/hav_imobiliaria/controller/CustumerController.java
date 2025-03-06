@@ -42,8 +42,8 @@ public class CustumerController {
     @ResponseStatus(HttpStatus.OK)
     public Custumer alterCustumerOwner(
             @PathVariable Integer id,
-            @RequestParam Integer idCustumerOwner){
-        return service.alterCustumerOwner(id, idCustumerOwner);
+            @RequestParam Integer idCustumerOwner) {
+        return service.alterCustomerOwner(id, idCustumerOwner);
     }
 
 
@@ -52,11 +52,13 @@ public class CustumerController {
             @PageableDefault(
                     size = 10, //quantidade de itens por página
                     sort = "saldo", //o que vai ser listado
-                    direction= Sort.Direction.DESC, // tipo da ordem que vai ser mostrado
-                    page= 0 //começa mostrando a página 0
-            ) Pageable pageable){
-        return service.searchCustumerOwners(pageable);
-    };
+                    direction = Sort.Direction.DESC, // tipo da ordem que vai ser mostrado
+                    page = 0 //começa mostrando a página 0
+            ) Pageable pageable) {
+        return service.searchCustomerOwners(pageable);
+    }
+
+    ;
 
 //    @GetMapping("/{id}")
 //    @ResponseStatus(HttpStatus.OK)
@@ -68,8 +70,8 @@ public class CustumerController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeCustumerOwner(@PathVariable Integer id){
-        service.removeCustumerOwner(id);
+    public void removeCustomerOwner(@PathVariable Integer id) {
+        service.removeCustomerOwner(id);
     }
 
 }
