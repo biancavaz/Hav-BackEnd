@@ -11,7 +11,6 @@ public record PropertyGetResponseDTO(
         @NotBlank String propertyType,
         @NotBlank String propertyStatus,
         @NotBlank String purpose,
-        List<Realtor> realtors,
-        CustomerOwner owner
+        String ownerName
 ) {
 }

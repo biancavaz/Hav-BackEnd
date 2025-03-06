@@ -74,8 +74,7 @@ public class PropertyService {
                         property.getPropertyType(),
                         property.getPropertyStatus(),
                         property.getPurpose(),
-                        property.getRealtors(),
-                        property.getOwner()
+                        property.getOwner() != null ? property.getOwner().getName() : ""
                 ))
                 .toList();
 
