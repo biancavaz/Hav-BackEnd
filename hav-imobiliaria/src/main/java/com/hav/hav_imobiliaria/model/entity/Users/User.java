@@ -2,6 +2,7 @@ package com.hav.hav_imobiliaria.model.entity.Users;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +23,6 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_users", nullable = false, unique = true)
     private Integer id;
 
     @Column(nullable = false)
@@ -78,6 +78,10 @@ public class User {
 //    @ManyToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "id_address")
 //    private Address address;
+    @JsonManagedReference
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_address", nullable = false)
+    private Address address;
 
 
 }

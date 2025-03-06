@@ -1,5 +1,7 @@
 package com.hav.hav_imobiliaria.controller;
 
+import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPostRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.Taxes;
 import com.hav.hav_imobiliaria.service.TaxesService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +13,9 @@ public class TaxesController {
 
     private TaxesService service;
 
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Taxes addTaxes(
-//            @RequestBody @Valid TaxesPostRequestDTO taxesDTO) {
-//        return service.create(taxesDTO);
-//    }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Taxes create(@RequestBody @Valid TaxesPostRequestDTO taxesDTO) {
+        return service.create(taxesDTO);
+    }
 }

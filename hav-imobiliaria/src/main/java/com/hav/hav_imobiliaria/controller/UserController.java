@@ -1,5 +1,11 @@
 package com.hav.hav_imobiliaria.controller;
 
+// import com.hav.hav_imobiliaria.model.DTO.User.UserPutRequestDTO;
+
+import com.hav.hav_imobiliaria.model.DTO.User.UserPostRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.User;
+import com.hav.hav_imobiliaria.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,6 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class UserController {
 
+    private UserService service;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public User create(@RequestBody @Valid UserPostRequestDTO userDTO) {
+        return service.create(userDTO);
+    }
 
     //VER COM O PROF
 

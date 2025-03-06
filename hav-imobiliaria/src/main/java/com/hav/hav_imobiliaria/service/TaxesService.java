@@ -1,6 +1,8 @@
 package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.entity.Properties.Taxes;
+import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPostRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.Taxes;
 import com.hav.hav_imobiliaria.repository.TaxesRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

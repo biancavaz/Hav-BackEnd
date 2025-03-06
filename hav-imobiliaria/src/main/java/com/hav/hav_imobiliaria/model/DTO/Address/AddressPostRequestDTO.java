@@ -1,3 +1,4 @@
+
 package com.hav.hav_imobiliaria.model.DTO.Address;
 
 import com.hav.hav_imobiliaria.model.entity.Address;

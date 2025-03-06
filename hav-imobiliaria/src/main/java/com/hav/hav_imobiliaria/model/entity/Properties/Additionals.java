@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.entity.Properties;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,7 @@ public class Additionals {
     @Column(nullable = false)
     private String name;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "additionals")
     private List<Property> properties;
 }

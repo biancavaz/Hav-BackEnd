@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,18 +41,17 @@ public class Address {
     @Column(nullable = false)
     private String state;
 
-    @Column(nullable = false, name = "property_number", unique = true)
+    @Column(nullable = false, name = "property_number")
     private Integer propertyNumber;
 
     private String complement;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "address")
     private List<Property> property;
 
-//    @JsonBackReference
-//    @OneToMany(mappedBy = "address")
-//    private List<User> user;
-
-
+    @JsonBackReference
+    @OneToMany(mappedBy = "address")
+    private List<User> users;
 }
 

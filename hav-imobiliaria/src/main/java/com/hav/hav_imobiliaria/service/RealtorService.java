@@ -5,6 +5,9 @@ import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
+import com.hav.hav_imobiliaria.model.DTO.User.UserPostRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.Realtor;
+import com.hav.hav_imobiliaria.model.entity.User;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -112,6 +116,12 @@ public class RealtorService {
         repository.deleteById(id);
     }
 
+    public List<Realtor> findAllById(List<Integer> integers) {
+        if (integers == null || integers.isEmpty()) {
+            return null;
+        }
+        return repository.findAllById(integers);
+    }
 
 //    public Realtor searchRealtor(Integer id) {
 //        return repository.findById(id).orElseThrow(NoSuchElementException::new);

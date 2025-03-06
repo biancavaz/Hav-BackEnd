@@ -30,4 +30,6 @@ public record RealtorPostRequestDTO(
                 realtor.getPhoneNumber()
         );
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.hav.hav_imobiliaria.model.entity.Properties;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hav.hav_imobiliaria.model.entity.Address;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,9 @@ public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "property_code", nullable = false, unique = true, length = 6)
+    private String propertyCode;
 
     @Column(nullable = false)
     private String title;
@@ -59,19 +63,20 @@ public class Property {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @JsonManagedReference
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_address", nullable = false)
     private Address address;
-
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_taxes", nullable = false)
     private Taxes taxes;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_property_feature", nullable = false)
     private PropertyFeature propertyFeatures;
 
-    @ManyToMany
+    @JsonManagedReference
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "property_additionals",
             joinColumns = @JoinColumn(name = "id_property"),
@@ -79,4 +84,17 @@ public class Property {
     )
     private List<Additionals> additionals;
 
+    @JsonManagedReference
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_owner")
+    private CustomerOwner owner;
+
+    @JsonManagedReference
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "property_realtors",
+            joinColumns = @JoinColumn(name = "id_property"),
+            inverseJoinColumns = @JoinColumn(name = "id_realtor")
+    )
+    private List<Realtor> realtors;
 }
