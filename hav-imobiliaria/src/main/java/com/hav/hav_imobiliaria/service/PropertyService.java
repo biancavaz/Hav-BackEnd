@@ -45,7 +45,7 @@ public class PropertyService {
         String uniqueCode;
         do {
             uniqueCode = generateUniquePropertyCode();
-        } while (repository.findByPropertyCode(uniqueCode));
+        } while (repository.existsByPropertyCode(uniqueCode));
         property.setPropertyCode(uniqueCode);
 
         return repository.save(property);
@@ -89,7 +89,7 @@ public class PropertyService {
     }
 
     public void deleteByPropertyCode(@NotNull String propertyCode) {
-        if (repository.findByPropertyCode(propertyCode)) {
+        if (repository.existsByPropertyCode(propertyCode)) {
             repository.deleteByPropertyCode(propertyCode);
         }
     }

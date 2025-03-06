@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface PropertyRepository extends JpaRepository<Property, Integer> {
-    boolean findByPropertyCode(String propertyCode);
+    boolean existsByPropertyCode(String propertyCode);
     void deleteByPropertyCode(String propertyCode);
 
     List<Property> findByPropertyCodeIn(List<String> propertyCodes);
