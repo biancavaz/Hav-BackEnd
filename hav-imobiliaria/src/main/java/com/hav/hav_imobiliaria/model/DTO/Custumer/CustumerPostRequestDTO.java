@@ -1,6 +1,6 @@
 package com.hav.hav_imobiliaria.model.DTO.Custumer;
 
-import com.hav.hav_imobiliaria.model.entity.Users.Custumer;
+import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -18,16 +18,16 @@ public record CustumerPostRequestDTO(
         @Pattern(regexp = "\\\\d{2}\\\\.\\\\d{3}\\\\.\\\\d{3}/\\\\d{4}-\\\\d{2}") String cnpj,
         String phoneNumber) {
 
-    public CustumerPostRequestDTO convertToDTO(Custumer custumer) {
+    public CustumerPostRequestDTO convertToDTO(Customer customer) {
         return new CustumerPostRequestDTO(
-                custumer.getName(),
-                custumer.getEmail(),
-                custumer.getPassword(),
-                custumer.getCelphone(),
-                custumer.getBirthDate(),
-                custumer.getCpf(),
-                custumer.getJuristicPerson(),
-                custumer.getCnpj(),
-                custumer.getPhoneNumber());
+                customer.getName(),
+                customer.getEmail(),
+                customer.getPassword(),
+                customer.getCelphone(),
+                customer.getBirthDate(),
+                customer.getCpf(),
+                customer.getJuristicPerson(),
+                customer.getCnpj(),
+                customer.getPhoneNumber());
     }
 }

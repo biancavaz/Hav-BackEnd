@@ -2,7 +2,7 @@ package com.hav.hav_imobiliaria.controller;
 
 import com.hav.hav_imobiliaria.model.DTO.Custumer.CustumerPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Custumer.CustumerPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Users.Custumer;
+import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.service.CustumerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -32,7 +32,7 @@ public class CustumerController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Custumer editCustumerOwner(
+    public Customer editCustumerOwner(
             @PathVariable Integer id,
             @RequestBody @Valid CustumerPutRequestDTO custumerOwnerDTO){
         return service.editCustumerOwner(id, custumerOwnerDTO);
@@ -40,7 +40,7 @@ public class CustumerController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Custumer alterCustumerOwner(
+    public Customer alterCustumerOwner(
             @PathVariable Integer id,
             @RequestParam Integer idCustumerOwner) {
         return service.alterCustomerOwner(id, idCustumerOwner);
@@ -48,7 +48,7 @@ public class CustumerController {
 
 
     @GetMapping("/page")
-    public Page<Custumer> searchCustumerOwners(
+    public Page<Customer> searchCustumerOwners(
             @PageableDefault(
                     size = 10, //quantidade de itens por página
                     sort = "saldo", //o que vai ser listado

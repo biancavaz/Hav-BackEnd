@@ -58,7 +58,7 @@ public class User {
     @JsonBackReference
     @OneToOne(mappedBy = "user")
     @PrimaryKeyJoinColumn(name = "id_custumer")
-    private Custumer custumer;
+    private Customer customer;
 
     @JsonBackReference
     @OneToOne(mappedBy = "user")

@@ -2,8 +2,7 @@ package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Custumer.CustumerPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Custumer.CustumerPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Users.Custumer;
-import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -30,43 +29,43 @@ public class CustumerService {
         System.out.println("Recebido no DTO: " + custumerPostDTO);
 
 
-        Custumer custumer = modelMapper.map(custumerPostDTO, Custumer.class);
-        Custumer savedCustumer = repository.save(custumer);
+        Customer customer = modelMapper.map(custumerPostDTO, Customer.class);
+        Customer savedCustomer = repository.save(customer);
 
         System.out.println("Convertido para entidade: "
-                + savedCustumer
-                + custumer.getName()
-                + custumer.getEmail()
-                + custumer.getPassword()
-                + custumer.getCelphone()
-                +custumer.getCpf());
+                + savedCustomer
+                + customer.getName()
+                + customer.getEmail()
+                + customer.getPassword()
+                + customer.getCelphone()
+                + customer.getCpf());
 
-        return custumerPostDTO.convertToDTO(savedCustumer);
+        return custumerPostDTO.convertToDTO(savedCustomer);
     }
 
 
 
 
 
-    public Custumer editCustumerOwner(
+    public Customer editCustumerOwner(
             @NotNull @Positive Integer id,
             @Valid CustumerPutRequestDTO custumerOwnerDTO) {
 
         if(repository.existsById(id)){
-            Custumer custumer = custumerOwnerDTO.convert();
-            custumer.setId(id);
-            return repository.save(custumer);
+            Customer customer = custumerOwnerDTO.convert();
+            customer.setId(id);
+            return repository.save(customer);
         }
         throw new NoSuchElementException();
     }
 
-    public Custumer alterCustumerOwner(
+    public Customer alterCustumerOwner(
             @NotNull @Positive Integer id,
             @NotNull @Positive Integer idCustumerOwner) {
         return null; //n sei como fazer
     }
 
-    public Page<Custumer> searchCustumerOwners(
+    public Page<Customer> searchCustumerOwners(
             Pageable pageable) {
         return repository.findAll(pageable);
     }
