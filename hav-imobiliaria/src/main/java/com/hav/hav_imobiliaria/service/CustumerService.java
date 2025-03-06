@@ -59,13 +59,13 @@ public class CustumerService {
         throw new NoSuchElementException();
     }
 
-    public Customer alterCustumerOwner(
+    public Customer alterCustomer(
             @NotNull @Positive Integer id,
-            @NotNull @Positive Integer idCustumerOwner) {
+            @NotNull @Positive Integer idCustumer) {
         return null; //n sei como fazer
     }
 
-    public Page<Customer> searchCustumerOwners(
+    public Page<Customer> searchCustumers(
             Pageable pageable) {
         return repository.findAll(pageable);
     }
@@ -75,7 +75,7 @@ public class CustumerService {
 //            @NotNull @Positive Integer id) {
 //    }
 
-    public void removeCustumerOwner(
+    public void removeCustumer(
             @NotNull @Positive Integer id) {
         repository.deleteById(id);
     }
