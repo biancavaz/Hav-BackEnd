@@ -3,7 +3,9 @@ package com.hav.hav_imobiliaria.controller;
 import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Taxes;
 import com.hav.hav_imobiliaria.service.TaxesService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

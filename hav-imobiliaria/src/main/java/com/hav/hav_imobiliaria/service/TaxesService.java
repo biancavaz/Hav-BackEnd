@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 public class TaxesService {
 
     private final TaxesRepository repository;
-//
-//    public Taxes create(@Valid TaxesPostRequestDTO taxesDTO) {
-//        return repository.save(taxesDTO.convert());
-//    }
+
+    public Taxes create(@Valid TaxesPostRequestDTO taxesDTO) {
+        return repository.save(taxesDTO.convert());
+    }
 }

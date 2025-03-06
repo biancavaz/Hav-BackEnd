@@ -1,6 +1,6 @@
 package com.hav.hav_imobiliaria.model.DTO.Taxes;
 
-import com.hav.hav_imobiliaria.model.entity.Properties.Taxes;
+import com.hav.hav_imobiliaria.model.entity.Taxes;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 

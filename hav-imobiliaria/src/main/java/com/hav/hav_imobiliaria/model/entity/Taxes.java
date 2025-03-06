@@ -1,4 +1,4 @@
-package com.hav.hav_imobiliaria.model.entity.Properties;
+package com.hav.hav_imobiliaria.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -3,7 +3,8 @@ package com.hav.hav_imobiliaria.controller;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
+import com.hav.hav_imobiliaria.model.DTO.User.UserPostRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.Realtor;
 import com.hav.hav_imobiliaria.service.RealtorService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -24,9 +25,8 @@ public class RealtorController {
     // REALTOR
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RealtorPostRequestDTO createRealtor(
-            @RequestBody @Valid RealtorPostRequestDTO realtorPostDTO){
-        System.out.println("Recebido: " + realtorPostDTO);
+    public Realtor create(
+            @RequestBody @Valid RealtorPostRequestDTO realtorPostDTO) {
         return service.createRealtor(realtorPostDTO);
     }
 
@@ -40,7 +40,7 @@ public class RealtorController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Realtor alterRealtor(
+    public Realtor alterarRealtor(
             @PathVariable Integer id,
             @RequestParam Integer idrealtor){
         return service.alterRealtor(id, idrealtor);
@@ -57,18 +57,19 @@ public class RealtorController {
         return service.searchRealtors(pageable);
     };
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public RealtorGetResponseDTO searchRealtor(@PathVariable Integer id) {
-        return service.searchRealtor(id);
-    }
-
+//    @GetMapping("/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public RealtorGetResponseDTO searchRealtor(
+//            @PathVariable Integer id){
+//        Realtor realtor = service.searchRealtor(id);
+//        return realtor.convert();
+//    }
 
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeRealtor(@PathVariable Integer id){
-        service.removeRealtor(id);
+        service.remove(id);
     }
 
 

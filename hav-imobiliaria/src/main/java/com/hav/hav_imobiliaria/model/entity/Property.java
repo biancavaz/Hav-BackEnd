@@ -1,4 +1,4 @@
-package com.hav.hav_imobiliaria.model.entity.Properties;
+package com.hav.hav_imobiliaria.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
