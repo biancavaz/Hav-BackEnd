@@ -1,15 +1,15 @@
 package com.hav.hav_imobiliaria.model.entity.Users;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.hav.hav_imobiliaria.model.entity.Address;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 @Data
 @Entity
@@ -43,7 +43,8 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "birth_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(name = "birth_date", nullable = false)
     private Date birthDate;
 
 

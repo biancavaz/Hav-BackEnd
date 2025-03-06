@@ -29,7 +29,7 @@ public class RealtorService {
     private final ModelMapper modelMapper;
 
     //CONSEGUIIIIIIII
-    public RealtorPostRequestDTO createRealtor(RealtorPostRequestDTO realtorDTO) {
+    public RealtorPostRequestDTO createRealtor(@Valid RealtorPostRequestDTO realtorDTO) {
         System.out.println("Recebido no DTO: " + realtorDTO);
 
         // Mapeamento do DTO para entidade usando o ModelMapper
@@ -49,6 +49,8 @@ public class RealtorService {
 
         return realtorDTO.convertToDTO(savedRealtor);
     }
+
+
 
     //falta o resto
     public Realtor editRealtor(

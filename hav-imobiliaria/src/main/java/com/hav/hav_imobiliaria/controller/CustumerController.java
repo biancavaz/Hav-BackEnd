@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/custumerOwner")
+@RequestMapping("/custumer")
 @AllArgsConstructor
 public class CustumerController {
 
@@ -23,9 +23,10 @@ public class CustumerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Custumer createCustumer(
-            @RequestBody @Valid CustumerPostRequestDTO CustumerOwnerPostDTO){
-        return service.createCustumerOwner(CustumerOwnerPostDTO);
+    public CustumerPostRequestDTO createCustumer(
+            @RequestBody @Valid CustumerPostRequestDTO CustumerPostDTO){
+        System.out.println("Recebido: " + CustumerPostDTO);
+        return service.createCustumerOwner(CustumerPostDTO);
     }
 
 
