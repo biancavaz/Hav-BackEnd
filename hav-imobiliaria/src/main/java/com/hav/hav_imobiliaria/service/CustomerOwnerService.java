@@ -61,7 +61,11 @@ public class CustomerOwnerService {
         repository.deleteById(id);
     }
 
-    public CustomerOwner findById(@Positive @NotNull Integer integer) {
-        return repository.findById(integer).get();
+    public CustomerOwner findById(Integer integer) {
+        if (integer == null) {
+            return null;
+        } else {
+            return repository.findById(integer).get();
+        }
     }
 }

@@ -66,7 +66,6 @@ public class Property {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_address", nullable = false)
     private Address address;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_taxes", nullable = false)
     private Taxes taxes;

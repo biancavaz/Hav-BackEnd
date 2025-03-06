@@ -57,7 +57,10 @@ public class RealtorService {
         repository.deleteById(id);
     }
 
-    public List<Realtor> findAllById(@Positive @NotNull List<Integer> integers) {
+    public List<Realtor> findAllById(List<Integer> integers) {
+        if (integers == null || integers.isEmpty()) {
+            return null;
+        }
         return repository.findAllById(integers);
     }
 
