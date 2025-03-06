@@ -1,20 +1,14 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
-import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Additionals;
-import com.hav.hav_imobiliaria.model.entity.CustomerOwner;
-import com.hav.hav_imobiliaria.model.entity.Property;
-import com.hav.hav_imobiliaria.model.entity.Realtor;
+import com.hav.hav_imobiliaria.model.DTO.Property.*;
+import com.hav.hav_imobiliaria.model.entity.*;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +23,7 @@ public class PropertyService {
     private final AdditionalsService additionalsService;
     private final RealtorService realtorService;
     private final CustomerOwnerService customerOwnerService;
+    private ModelMapper modelMapper = new ModelMapper();
 
     public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 
@@ -62,7 +57,7 @@ public class PropertyService {
 
         return String.format("%d%d%d%d%c%d", firstNumber, secondNumber, thirdNumber, fourthNumber, letter, lastNumber);
     }
-
+    //select imóveis
     public Page<PropertyGetResponseDTO> findAll(Pageable pageable) {
         // Busca todas as propriedades no banco de dados com paginação
         Page<Property> properties = repository.findAll(pageable);
@@ -83,6 +78,30 @@ public class PropertyService {
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
     }
 
+    public Page<PropertyListGetResponseDTO> findAllByFilter(PropertyFilterPostResponseDTO propertyDto, Pageable pageable){
+
+        Property property = modelMapper.map(propertyDto, Property.class);
+        System.out.println(property);
+
+        //criando o example matcher específico dos filtros do imóvel
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase()
+                .withIgnoreNullValues()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        //chamando o matcher
+        Example<Property> example = Example.of(property, matcher);
+
+        Page<Property> propertyList = repository.findAll(example, pageable);
+        //tranformando o page propery pro page da dto
+        Page<PropertyListGetResponseDTO> propertyListGetResponseDtos = propertyList.map(propertyx ->
+                modelMapper.map(propertyx, PropertyListGetResponseDTO.class)
+        );
+
+
+
+        return propertyListGetResponseDtos;
+    }
     public void delete(@Positive @NotNull Integer id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);

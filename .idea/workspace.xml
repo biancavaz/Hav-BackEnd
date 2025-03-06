@@ -5,38 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5975ec1d-4eb5-4e53-b884-0e58b9fd9a95" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Property/PropertyFilterPostResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Property/PropertyListGetResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/repository/PropertyEspecification.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/AdditionalsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/AdditionalsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/AddressController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/AddressController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/CustumerOwnerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/CustumerOwnerController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/PropertyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/PropertyController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/PropertyFeatureController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/PropertyFeatureController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/TaxesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/TaxesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Additionals/AdditionalsPostRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Additionals/AdditionalsPostRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Address/AddressPostRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Address/AddressPostRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/CustumerOwner/CustumerOwnerPostRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/CustumerOwner/CustomerOwnerPostRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/CustumerOwner/CustumerOwnerPutRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/CustumerOwner/CustomerOwnerPutRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Property/PropertyGetResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Property/PropertyGetResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Property/PropertyPostRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Property/PropertyPostRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Property/PropertyPutRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Property/PropertyPutRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/PropertyFeature/PropertyFeaturePostRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/PropertyFeature/PropertyFeaturePostRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Realtor/RealtorGetResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Realtor/RealtorGetResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Taxes/TaxesPostRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Taxes/TaxesPostRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/entity/Adm.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/entity/Adm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/entity/CustomerOwner.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/entity/CustomerOwner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/entity/Editor.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/entity/Editor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/entity/Taxes.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/entity/Taxes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/repository/CustumerOwnerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/repository/CustomerOwnerRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/AdditionalsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/AdditionalsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/AddressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/AddressService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/CustumerOwnerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/CustomerOwnerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/PropertyFeatureService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/PropertyFeatureService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/repository/PropertyRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/repository/PropertyRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/PropertyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/PropertyService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/RealtorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/RealtorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/TaxesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/TaxesService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/service/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +22,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Record" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -80,14 +56,17 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.HavImobiliariaApplication.executor": "Run",
-    "git-widget-placeholder": "Back-End-Rafael",
+    "git-widget-placeholder": "gabriel__branch",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/rafae/Documentos/GitHub/contaBancaria_SpringBoot",
+    "last_opened_file_path": "C:/Users/gabriel_v_marinho/Documents/GitHub/Hav-BackEnd",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -104,8 +83,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
-        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.189" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.189" />
       </set>
     </attachedChunks>
   </component>
@@ -120,6 +99,7 @@
       <workItem from="1740523373141" duration="12000" />
       <workItem from="1740660786870" duration="6473000" />
       <workItem from="1740750500744" duration="5226000" />
+      <workItem from="1741278671523" duration="7526000" />
     </task>
     <servers />
   </component>
