@@ -45,7 +45,7 @@ public class PropertyService {
         String uniqueCode;
         do {
             uniqueCode = generateUniquePropertyCode();
-        } while (repository.existsByPropertyCode(uniqueCode));
+        } while (repository.findByPropertyCode(uniqueCode));
         property.setPropertyCode(uniqueCode);
 
         return repository.save(property);
@@ -88,7 +88,20 @@ public class PropertyService {
         }
     }
 
-    public Property modifyProperty(@Positive @NotNull Integer id, PropertyPutRequestDTO propertyDTO) {
+    public void deleteByPropertyCode(@NotNull String propertyCode) {
+        if (repository.findByPropertyCode(propertyCode)) {
+            repository.deleteByPropertyCode(propertyCode);
+        }
+    }
+
+    public void deletePropertiesByPropertyCode(@NotNull List<String> propertyCodes) {
+        if (repository.findByPropertyCodeIn(propertyCodes) == null ||
+                repository.findByPropertyCodeIn(propertyCodes).isEmpty()) {
+            repository.deleteByPropertyCodeIn(propertyCodes);
+        }
+    }
+
+    public Property modifyProperty(@Positive @NotNull Integer id, @Valid PropertyPutRequestDTO propertyDTO) {
         if (repository.existsById(id)) {
             Property property = propertyDTO.convert();
             property.setId(id);

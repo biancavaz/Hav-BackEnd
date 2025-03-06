@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/property")
 @AllArgsConstructor
@@ -33,10 +35,22 @@ public class PropertyController {
         return service.findAll(pageable);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@Positive @NotNull Integer id) {
+    public void delete(@PathVariable @Positive @NotNull Integer id) {
         service.delete(id);
+    }
+
+    @DeleteMapping("/code/{propertyCode}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteByPropertyCode(@PathVariable @NotNull String propertyCode) {
+        service.deleteByPropertyCode(propertyCode);
+    }
+
+    @DeleteMapping("/code")
+    @ResponseStatus(HttpStatus.OK)
+    public void deletePropertiesByPropertyCode(@RequestParam @NotNull List<String> propertyCodes) {
+        service.deletePropertiesByPropertyCode(propertyCodes);
     }
 
     @PutMapping("/{id}")
