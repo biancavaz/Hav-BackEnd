@@ -5,7 +5,8 @@ import lombok.Data;
 @Data
 public class PropertyFilterPostResponseDTO {
     String propertyCode;
-    String price;
+    Double minPric;
+    Double maxPric;
     String propertyType;
     String propertyCategory;
     String propertyStatus;

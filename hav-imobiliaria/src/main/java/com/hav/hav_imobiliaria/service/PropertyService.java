@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
+import java.util.stream.Collectors;
+
 
 @Service
 @AllArgsConstructor
@@ -93,10 +95,27 @@ public class PropertyService {
         Example<Property> example = Example.of(property, matcher);
 
         Page<Property> propertyList = repository.findAll(example, pageable);
+
+
+        List <Property> propertyFinal = propertyList
+                .getContent().stream().filter(propertyFilterPrice ->
+
+                propertyFilterPrice.getPrice() >= propertyDto.getMinPric()
+                        && propertyFilterPrice.getPrice() <= propertyDto.getMaxPric()
+
+                ).collect(Collectors.toList());
+
+
+        //transforme o lista para page aqui
+
+        // Criando um novo Page a partir da lista filtrada
+        Page<Property> filteredPage = new PageImpl<>(propertyFinal, pageable, propertyFinal.size());
+
         //tranformando o page propery pro page da dto
-        Page<PropertyListGetResponseDTO> propertyListGetResponseDtos = propertyList.map(propertyx ->
+        Page<PropertyListGetResponseDTO> propertyListGetResponseDtos = filteredPage.map(propertyx ->
                 modelMapper.map(propertyx, PropertyListGetResponseDTO.class)
         );
+
 
 
 
