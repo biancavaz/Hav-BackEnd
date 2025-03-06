@@ -4,7 +4,6 @@ import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
-import com.hav.hav_imobiliaria.model.entity.User;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package com.hav.hav_imobiliaria.model.DTO.Custumer;
+package com.hav.hav_imobiliaria.model.DTO.Customer;
 
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import jakarta.validation.constraints.NotBlank;
