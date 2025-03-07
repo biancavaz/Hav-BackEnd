@@ -25,11 +25,12 @@ public class RealtorService {
     private final ModelMapper modelMapper;
 
     public RealtorPostRequestDTO createRealtor(@Valid RealtorPostRequestDTO realtorDTO) {
-        System.out.println("Recebido no DTO: " + realtorDTO);
 
         Realtor realtor = modelMapper.map(realtorDTO, Realtor.class);
 
         Realtor savedRealtor = repository.save(realtor);
+
+        System.out.println(savedRealtor);
 
         return realtorDTO.convertToDTO(savedRealtor);
     }

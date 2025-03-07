@@ -15,20 +15,10 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Customer extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_customer")
-    private Integer id;
-
     @Column(name = "juristic_person")
     private Boolean juristicPerson;
 
     @Column(unique = true)
     private String cnpj;
-
-    @JsonManagedReference
-    @OneToOne
-    @JoinColumn(name = "id_user")
-    private User user;
 
 }

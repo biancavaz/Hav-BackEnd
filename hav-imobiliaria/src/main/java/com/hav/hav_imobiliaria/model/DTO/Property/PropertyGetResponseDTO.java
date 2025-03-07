@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.DTO.Property;
 
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPostRequestDTO;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +13,7 @@ public record PropertyGetResponseDTO(
         @NotBlank String propertyType,
         @NotBlank String propertyStatus,
         @NotBlank String purpose,
-        @NotNull List<RealtorGetResponseDTO> realtorList
+        @NotNull List<RealtorGetResponseDTO> realtorList,
         @NotNull ProprietorGetResponseDTO proprietor
-        ) {
+) {
 }

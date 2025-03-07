@@ -3,12 +3,10 @@ package com.hav.hav_imobiliaria.service;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
-import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
-import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
-import com.hav.hav_imobiliaria.model.entity.*;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -89,8 +87,8 @@ public class PropertyService {
                                 ))
                                 .toList(),
                         new ProprietorGetResponseDTO(
-                                property.getProprietor().getId(),
                                 property.getProprietor().getName(),
+                                property.getProprietor().getEmail(),
                                 property.getProprietor().getCpf()
                         )
                 ))
