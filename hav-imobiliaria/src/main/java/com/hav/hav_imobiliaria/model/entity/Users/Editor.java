@@ -11,20 +11,10 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
 @Table(name = "editor")
 public class Editor extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
-    private Integer id;
-
-    @JsonManagedReference
-    @OneToOne
-    @JoinColumn(name = "id_users")
-    private User user;
 
 }

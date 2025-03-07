@@ -16,18 +16,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class Realtor extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_realtor")
-    private Integer id;
-
     @Column(nullable = false, unique = true)
     private String creci;
-
-    @JsonManagedReference
-    @OneToOne
-    @JoinColumn(name = "id_user")
-    private User user;
 
 
 }

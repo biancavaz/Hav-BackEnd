@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.controller;
 
 
+import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.service.EditorService;
@@ -20,13 +21,12 @@ public class EditorController {
 
     private final EditorService service;
 
-//
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Editor createProprietor(
-//            @RequestBody @Valid EditorPostDTO editorPostDTO){
-//        return service.createEditor(editorPostDTO);
-//    }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public EditorPostRequestDTO createProprietor(
+            @RequestBody @Valid EditorPostRequestDTO editorPostDTO){
+        return service.createEditor(editorPostDTO);
+    }
 //
 //    @PutMapping
 //    @ResponseStatus(HttpStatus.OK)

@@ -33,7 +33,6 @@ public class RealtorService {
 
         // Salvar a entidade e retornar a resposta
         Realtor savedRealtor = repository.save(realtor);
-
         //testando só
         System.out.println("Convertido para entidade: "
                 + savedRealtor
@@ -45,7 +44,6 @@ public class RealtorService {
 
         return realtorDTO.convertToDTO(savedRealtor);
     }
-
 
 
     //falta o resto
@@ -107,6 +105,8 @@ public class RealtorService {
             @NotNull @Positive Integer id) {
         repository.deleteById(id);
     }
+
+    
 
     public List<Realtor> findAllById(List<Integer> integers) {
         if (integers == null || integers.isEmpty()) {

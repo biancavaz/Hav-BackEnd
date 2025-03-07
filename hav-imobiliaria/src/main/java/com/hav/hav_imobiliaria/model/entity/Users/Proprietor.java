@@ -18,10 +18,6 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "proprietor")
 public class Proprietor extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_proprietor", nullable = false, unique = true)
-    private Integer id;
 
     @Column(name = "juristic_person")
     private Boolean juristicPerson;
@@ -29,9 +25,5 @@ public class Proprietor extends User {
     @Column(unique = true)
     private String cnpj;
 
-    @JsonManagedReference
-    @OneToOne
-    @JoinColumn(name = "id_user")
-    private User user;
 
 }
