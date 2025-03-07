@@ -18,8 +18,7 @@ public record RealtorPostRequestDTO(
         @NotBlank String creci,
         String phoneNumber,
         @NotNull Boolean archived,
-        AddressPostRequestDTO address
-) {
+        AddressPostRequestDTO address) {
 
     public RealtorPostRequestDTO convertToDTO(Realtor realtor) {
         return new RealtorPostRequestDTO(

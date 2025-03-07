@@ -46,18 +46,18 @@ public class RealtorService {
     }
 
 
-    //falta o resto
+    //consegui tbbbb ihuuul
     public Realtor editRealtor(
             @NotNull @Positive Integer id,
             @Valid RealtorPutRequestDTO realtorPutDTO) {
 
-        if(repository.existsById(id)){
-            // Converte o DTO para a entidade "Realtor" usando o ModelMapper.
-            Realtor realtor = modelMapper.map(realtorPutDTO, Realtor.class);
-            realtor.setId(id);
-            return repository.save(realtor);
-        }
-        throw new NoSuchElementException("Corretor com o ID " + id + " não encontrado.");
+        Realtor existingRealtor = repository.findById(id).orElseThrow(() ->
+                new NoSuchElementException("Corretor com o ID " + id + " não encontrado."));
+
+        // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
+        modelMapper.map(realtorPutDTO, existingRealtor);
+
+        return repository.save(existingRealtor);
     }
 
 
@@ -99,7 +99,7 @@ public class RealtorService {
                 .orElseThrow(() -> new NoSuchElementException("Realtor not found with id: " + id));
         return modelMapper.map(realtor, RealtorGetResponseDTO.class);  // Converte a entidade para DTO
     }
-    
+
 
     public void removeRealtor(
             @NotNull @Positive Integer id) {
