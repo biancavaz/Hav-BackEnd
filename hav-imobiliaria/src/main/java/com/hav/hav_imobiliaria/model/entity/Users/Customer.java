@@ -28,7 +28,7 @@ public class Customer extends User {
 
     @JsonManagedReference
     @OneToOne
-    @JoinColumn(name = "id_users")
+    @JoinColumn(name = "id_user")
     private User user;
 
 }

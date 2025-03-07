@@ -26,7 +26,7 @@ public class Realtor extends User {
 
     @JsonManagedReference
     @OneToOne
-    @JoinColumn(name = "id_users")
+    @JoinColumn(name = "id_user")
     private User user;
 
 

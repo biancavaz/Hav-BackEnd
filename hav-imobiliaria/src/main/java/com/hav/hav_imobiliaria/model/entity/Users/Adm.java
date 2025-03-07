@@ -20,12 +20,11 @@ public class Adm extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
-    @NotNull
     private Integer id;
 
     @JsonManagedReference
     @OneToOne
-    @JoinColumn(name = "id_users")
+    @JoinColumn(name = "id_user")
     private User user;
 
 }

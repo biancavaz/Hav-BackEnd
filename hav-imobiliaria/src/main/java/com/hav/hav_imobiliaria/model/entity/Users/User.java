@@ -48,6 +48,9 @@ public class User {
     @Column(name = "birth_date", nullable = false)
     private Date birthDate;
 
+    @Column(nullable = false)
+    private Boolean archived;
+
 
 
     @JsonBackReference
@@ -75,10 +78,6 @@ public class User {
     @PrimaryKeyJoinColumn(name = "id_Proprietor")
     private Proprietor proprietor;
 
-//    @JsonBackReference
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "id_address")
-//    private Address address;
     @JsonManagedReference
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_address", nullable = false)
