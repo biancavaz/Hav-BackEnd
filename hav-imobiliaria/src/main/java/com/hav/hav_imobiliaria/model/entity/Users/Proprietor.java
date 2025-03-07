@@ -24,13 +24,18 @@ public class Proprietor extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
-    @NotNull
+    @Column(name = "id_proprietor", nullable = false, unique = true)
     private Integer id;
+
+    @Column(name = "juristic_person")
+    private Boolean juristicPerson;
+
+    @Column(unique = true)
+    private String cnpj;
 
     @JsonManagedReference
     @OneToOne
-    @JoinColumn(name = "id_users", nullable = false)
+    @JoinColumn(name = "id_user")
     private User user;
 
     @JsonBackReference

@@ -20,7 +20,6 @@ public class Editor extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
-    @NotNull
     private Integer id;
 
     @JsonManagedReference

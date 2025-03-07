@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.DTO.Customer;
 
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +19,9 @@ public record CustumerPostRequestDTO(
         @Pattern(regexp = "\\\\d{2}\\\\.\\\\d{3}\\\\.\\\\d{3}/\\\\d{4}-\\\\d{2}") String cnpj,
         String phoneNumber
 ) {
+        String phoneNumber,
+        @NotNull Boolean archived,
+        AddressPostRequestDTO address) {
 
     public CustumerPostRequestDTO convertToDTO(Customer customer) {
         return new CustumerPostRequestDTO(
@@ -29,6 +33,8 @@ public record CustumerPostRequestDTO(
                 customer.getCpf(),
                 customer.getJuristicPerson(),
                 customer.getCnpj(),
-                customer.getPhoneNumber());
+                customer.getPhoneNumber(),
+                customer.getArchived(),
+                address);
     }
 }

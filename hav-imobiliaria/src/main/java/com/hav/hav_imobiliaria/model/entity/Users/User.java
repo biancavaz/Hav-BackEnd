@@ -48,6 +48,9 @@ public class User {
     @Column(name = "birth_date", nullable = false)
     private Date birthDate;
 
+    @Column(nullable = false)
+    private Boolean archived;
+
 
 
     @JsonBackReference
