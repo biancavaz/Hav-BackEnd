@@ -28,6 +28,4 @@ public class Realtor extends User {
     @OneToOne
     @JoinColumn(name = "id_users")
     private User user;
-
-
 }

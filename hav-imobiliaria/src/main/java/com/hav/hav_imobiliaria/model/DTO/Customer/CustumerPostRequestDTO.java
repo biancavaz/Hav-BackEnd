@@ -16,7 +16,8 @@ public record CustumerPostRequestDTO(
         @Pattern(regexp = "\\d{11}") String cpf,
         Boolean juristicPerson,
         @Pattern(regexp = "\\\\d{2}\\\\.\\\\d{3}\\\\.\\\\d{3}/\\\\d{4}-\\\\d{2}") String cnpj,
-        String phoneNumber) {
+        String phoneNumber
+) {
 
     public CustumerPostRequestDTO convertToDTO(Customer customer) {
         return new CustumerPostRequestDTO(
