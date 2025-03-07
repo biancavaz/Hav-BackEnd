@@ -37,6 +37,10 @@ public class ProprietorService {
         return proprietorDTO.convertToDTO(savedproprietor);
     }
 
+    public Proprietor findById(Integer integer) {
+        return repository.findById(integer).get();
+    }
+
 //    public Proprietor createProprietor(
 //            @Valid ProprietorPostDTO proprietorDTO) {
 //

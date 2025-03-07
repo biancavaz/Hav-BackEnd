@@ -5,6 +5,7 @@ import com.hav.hav_imobiliaria.model.entity.Address;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hav.hav_imobiliaria.model.entity.Address;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
+import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -90,8 +91,8 @@ public class Property {
 
     @JsonManagedReference
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_owner")
-    private Customer owner;
+    @JoinColumn(name = "id_proprietor")
+    private Proprietor proprietor;
 
     @JsonManagedReference
     @ManyToMany(cascade = CascadeType.ALL)

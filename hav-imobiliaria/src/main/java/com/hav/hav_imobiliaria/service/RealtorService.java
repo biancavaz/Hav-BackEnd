@@ -24,15 +24,13 @@ public class RealtorService {
     private final RealtorRepository repository;
     private final ModelMapper modelMapper;
 
-    //CONSEGUIIIIIIII
     public RealtorPostRequestDTO createRealtor(@Valid RealtorPostRequestDTO realtorDTO) {
-        System.out.println("Recebido no DTO: " + realtorDTO);
 
-        // Mapeamento do DTO para entidade usando o ModelMapper
         Realtor realtor = modelMapper.map(realtorDTO, Realtor.class);
 
-        // Salvar a entidade e retornar a resposta
         Realtor savedRealtor = repository.save(realtor);
+
+        System.out.println(savedRealtor);
         //testando só
         System.out.println("Convertido para entidade: "
                 + savedRealtor
@@ -51,13 +49,12 @@ public class RealtorService {
             @NotNull @Positive Integer id,
             @Valid RealtorPutRequestDTO realtorPutDTO) {
 
-        Realtor existingRealtor = repository.findById(id).orElseThrow(() ->
-                new NoSuchElementException("Corretor com o ID " + id + " não encontrado."));
-
-        // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
-        modelMapper.map(realtorPutDTO, existingRealtor);
-
-        return repository.save(existingRealtor);
+        if (repository.existsById(id)) {
+            Realtor realtor = modelMapper.map(realtorPutDTO, Realtor.class);
+            realtor.setId(id);
+            return repository.save(realtor);
+        }
+        throw new NoSuchElementException("Corretor com o ID " + id + " não encontrado.");
     }
 
 
@@ -71,13 +68,11 @@ public class RealtorService {
 //        throw new NoSuchElementException();
 //    }
 
-
     public Realtor alterRealtor(
             @NotNull @Positive Integer id,
             @NotNull @Positive Integer idrealtor) {
 
-        if(repository.existsById(id)){
-            // Recupera a entidade "Realtor" correspondente ao "id".
+        if (repository.existsById(id)) {
             Realtor realtor = repository.findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Corretor com ID " + id + " não encontrado."));
 
@@ -87,17 +82,15 @@ public class RealtorService {
         throw new NoSuchElementException("Corretor com ID " + id + " não encontrado.");
     }
 
-
     public Page<Realtor> searchRealtors(
             Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-
     public RealtorGetResponseDTO searchRealtor(Integer id) {
         Realtor realtor = repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Realtor not found with id: " + id));
-        return modelMapper.map(realtor, RealtorGetResponseDTO.class);  // Converte a entidade para DTO
+        return modelMapper.map(realtor, RealtorGetResponseDTO.class);
     }
 
 

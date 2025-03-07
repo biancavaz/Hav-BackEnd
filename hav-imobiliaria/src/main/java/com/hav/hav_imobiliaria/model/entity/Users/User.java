@@ -18,7 +18,7 @@ import java.sql.Date;
 @Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder // usar essa notação quando tiver herança (pra n dar problema na dto)
+@SuperBuilder
 @Inheritance(strategy = InheritanceType.JOINED) // herança
 public class User {
 
@@ -55,6 +55,5 @@ public class User {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_address", nullable = false)
     private Address address;
-
 
 }

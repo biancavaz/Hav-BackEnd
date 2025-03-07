@@ -21,12 +21,10 @@ public class RealtorController {
 
     private RealtorService service;
 
-    // REALTOR
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RealtorPostRequestDTO createRealtor(
-            @RequestBody @Valid RealtorPostRequestDTO realtorPostDTO){
-        System.out.println("Recebido: " + realtorPostDTO);
+            @RequestBody @Valid RealtorPostRequestDTO realtorPostDTO) {
         return service.createRealtor(realtorPostDTO);
     }
 
@@ -34,7 +32,7 @@ public class RealtorController {
     @ResponseStatus(HttpStatus.OK)
     public Realtor editRealtor(
             @PathVariable Integer id,
-            @RequestBody @Valid RealtorPutRequestDTO realtorPutDTO){
+            @RequestBody @Valid RealtorPutRequestDTO realtorPutDTO) {
         return service.editRealtor(id, realtorPutDTO);
     }
 
@@ -42,20 +40,22 @@ public class RealtorController {
     @ResponseStatus(HttpStatus.OK)
     public Realtor alterRealtor(
             @PathVariable Integer id,
-            @RequestParam Integer idrealtor){
+            @RequestParam Integer idrealtor) {
         return service.alterRealtor(id, idrealtor);
     }
 
     @GetMapping("/page")
     public Page<Realtor> searchRealtors(
             @PageableDefault(
-                    size = 10, //quantidade de itens por página
-                    sort = "saldo", //o que vai ser listado
-                    direction= Sort.Direction.DESC, // tipo da ordem que vai ser mostrado
-                    page= 0 //começa mostrando a página 0
-            ) Pageable pageable){
+                    size = 10,
+                    sort = "saldo",
+                    direction = Sort.Direction.DESC,
+                    page = 0
+            ) Pageable pageable) {
         return service.searchRealtors(pageable);
-    };
+    }
+
+    ;
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -66,7 +66,7 @@ public class RealtorController {
     //certo
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeRealtor(@PathVariable Integer id){
+    public void removeRealtor(@PathVariable Integer id) {
         service.removeRealtor(id);
     }
 

@@ -3,11 +3,10 @@ package com.hav.hav_imobiliaria.service;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
-import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
-import com.hav.hav_imobiliaria.model.entity.*;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -30,19 +29,18 @@ public class PropertyService {
     private final PropertyRepository repository;
     private final AdditionalsService additionalsService;
     private final RealtorService realtorService;
+    private final ProprietorService proprietorService;
     private ModelMapper modelMapper = new ModelMapper();
 
     public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 
         Property property = propertyDTO.convert();
 
-        List<Additionals> additionals = additionalsService.findAllyById(propertyDTO.additionalsId());
-        property.setAdditionals(additionals);
+        property.setAdditionals(additionalsService.findAllyById(propertyDTO.additionalsId()));
 
-        List<Realtor> realtors = realtorService.findAllById(propertyDTO.realtorsId());
-        property.setRealtors(realtors);
+        property.setRealtors(realtorService.findAllById(propertyDTO.realtorsId()));
 
-//        property.setOwner(customerOwnerService.findById(propertyDTO.ownerId()));
+        property.setProprietor(proprietorService.findById(propertyDTO.proprietorId()));
 
         String uniqueCode;
         do {
@@ -64,6 +62,7 @@ public class PropertyService {
 
         return String.format("%d%d%d%d%c%d", firstNumber, secondNumber, thirdNumber, fourthNumber, letter, lastNumber);
     }
+
     //select imóveis
     public Page<PropertyGetResponseDTO> findAll(Pageable pageable) {
         // Busca todas as propriedades no banco de dados com paginação
@@ -75,8 +74,23 @@ public class PropertyService {
                         property.getPropertyCode(),
                         property.getPropertyType(),
                         property.getPropertyStatus(),
-                        property.getPurpose()
-//                        property.getOwner() != null ? property.getOwner().getName() : ""
+                        property.getPurpose(),
+                        property.getRealtors().stream()
+                                .map(realtor -> new RealtorGetResponseDTO(
+                                        realtor.getName(),
+                                        realtor.getEmail(),
+                                        realtor.getCpf(),
+                                        realtor.getCelphone(),
+                                        realtor.getPhoneNumber(),
+                                        realtor.getBirthDate(),
+                                        realtor.getCreci()
+                                ))
+                                .toList(),
+                        new ProprietorGetResponseDTO(
+                                property.getProprietor().getName(),
+                                property.getProprietor().getEmail(),
+                                property.getProprietor().getCpf()
+                        )
                 ))
                 .toList();
 
@@ -84,7 +98,7 @@ public class PropertyService {
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
     }
 
-    public Page<PropertyListGetResponseDTO> findAllByFilter(PropertyFilterPostResponseDTO propertyDto, Pageable pageable){
+    public Page<PropertyListGetResponseDTO> findAllByFilter(PropertyFilterPostResponseDTO propertyDto, Pageable pageable) {
 
         Property property = modelMapper.map(propertyDto, Property.class);
         System.out.println(property);
@@ -100,15 +114,13 @@ public class PropertyService {
 
         Page<Property> propertyList = repository.findAll(example, pageable);
 
-
-        List <Property> propertyFinal = propertyList
+        List<Property> propertyFinal = propertyList
                 .getContent().stream().filter(propertyFilterPrice ->
 
-                propertyFilterPrice.getPrice() >= propertyDto.getMinPric()
-                        && propertyFilterPrice.getPrice() <= propertyDto.getMaxPric()
+                        propertyFilterPrice.getPrice() >= propertyDto.getMinPric()
+                                && propertyFilterPrice.getPrice() <= propertyDto.getMaxPric()
 
                 ).collect(Collectors.toList());
-
 
         //transforme o lista para page aqui
 
@@ -120,11 +132,9 @@ public class PropertyService {
                 modelMapper.map(propertyx, PropertyListGetResponseDTO.class)
         );
 
-
-
-
         return propertyListGetResponseDtos;
     }
+
     public void delete(@Positive @NotNull Integer id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);

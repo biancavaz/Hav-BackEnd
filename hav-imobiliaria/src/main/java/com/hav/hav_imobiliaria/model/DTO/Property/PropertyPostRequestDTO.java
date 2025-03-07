@@ -28,7 +28,7 @@ public record PropertyPostRequestDTO(
         @NotNull PropertyFeaturePostRequestDTO propertyFeaturesDTO,
         @NotNull List<Integer> additionalsId,
         List<Integer> realtorsId,
-        Integer ownerId
+        Integer proprietorId
 ) {
     public Property convert() {
         return Property.builder().propertyCode(null).title(title).
@@ -37,8 +37,7 @@ public record PropertyPostRequestDTO(
                 promotionalPrice(promotionalPrice).purpose(purpose).highlight(highlight).
                 propertyCategory(propertyCategory).
                 address(addressDTO.convert()).taxes(taxesDTO.convert()).
-                propertyFeatures(propertyFeaturesDTO.convert()).realtors(null)
-//                .owner(null)
+                propertyFeatures(propertyFeaturesDTO.convert())
                 .build();
     }
 }
