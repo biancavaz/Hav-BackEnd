@@ -4,6 +4,8 @@ import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
+import com.hav.hav_imobiliaria.model.DTO.Property.*;
+import com.hav.hav_imobiliaria.model.entity.Property;
 import com.hav.hav_imobiliaria.service.PropertyService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -33,6 +35,12 @@ public class PropertyController {
     @ResponseStatus(HttpStatus.OK)
     public Page<PropertyGetResponseDTO> findAll(Pageable pageable) {
         return service.findAll(pageable);
+    }
+
+    //endpoint para filtragem de imóveis
+    @GetMapping("/filter")
+    public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto, Pageable pageable){
+        return service.findAllByFilter(propertyDto, pageable);
     }
 
     @DeleteMapping("/{id}")
