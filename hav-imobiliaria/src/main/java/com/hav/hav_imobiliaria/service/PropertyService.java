@@ -34,8 +34,6 @@ public class PropertyService {
 
     public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 
-
-
         Property property = propertyDTO.convert();
 
         property.setAdditionals(additionalsService.findAllyById(propertyDTO.additionalsId()));
