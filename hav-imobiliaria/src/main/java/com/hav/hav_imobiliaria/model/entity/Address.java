@@ -3,6 +3,7 @@ package com.hav.hav_imobiliaria.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.User.User;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

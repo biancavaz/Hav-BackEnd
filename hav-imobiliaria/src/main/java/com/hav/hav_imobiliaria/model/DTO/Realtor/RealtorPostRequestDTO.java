@@ -2,26 +2,35 @@ package com.hav.hav_imobiliaria.model.DTO.Realtor;
 
 import com.hav.hav_imobiliaria.model.DTO.User.UserPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.User.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
+import java.util.Date;
 
 public record RealtorPostRequestDTO(
-        @NotNull UserPostRequestDTO userDTO,
-        @NotBlank String creci
+        @NotBlank String name,
+        @NotBlank String email,
+        @NotBlank String password,
+        @NotBlank String cpf,
+        @NotBlank String celphone,
+        @NotNull  Date birthDate,
+        @NotBlank String creci,
+        String phoneNumber
 ) {
 
-    public Realtor convert() {
-        return Realtor.builder()
-                .name(userDTO.name())
-                .email(userDTO.email())
-                .password(userDTO.password())
-                .cpf(userDTO.cpf())
-                .celphone(userDTO.celphone())
-                .phoneNumber(userDTO.phoneNumber())
-                .birthDate(userDTO.birthDate())
-                .address(userDTO.addressDTO().convert())
-                .creci(creci)
-                .build();
+    public RealtorPostRequestDTO convertToDTO(Realtor realtor) {
+        return new RealtorPostRequestDTO(
+                realtor.getName(),
+                realtor.getEmail(),
+                realtor.getPassword(),
+                realtor.getCpf(),
+                realtor.getCelphone(),
+                realtor.getBirthDate(),
+                realtor.getCreci(),
+                realtor.getPhoneNumber()
+        );
     }
 
 

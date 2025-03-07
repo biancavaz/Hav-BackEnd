@@ -2,6 +2,7 @@ package com.hav.hav_imobiliaria.model.DTO.Realtor;
 
 
 import com.hav.hav_imobiliaria.model.entity.User.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import jakarta.validation.constraints.NotBlank;
 
 public record RealtorPutRequestDTO(
