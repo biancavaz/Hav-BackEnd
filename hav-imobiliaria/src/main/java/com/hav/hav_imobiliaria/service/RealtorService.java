@@ -43,6 +43,8 @@ public class RealtorService {
         return realtorDTO.convertToDTO(savedRealtor);
     }
 
+
+    //consegui tbbbb ihuuul
     public Realtor editRealtor(
             @NotNull @Positive Integer id,
             @Valid RealtorPutRequestDTO realtorPutDTO) {
@@ -90,6 +92,7 @@ public class RealtorService {
                 .orElseThrow(() -> new NoSuchElementException("Realtor not found with id: " + id));
         return modelMapper.map(realtor, RealtorGetResponseDTO.class);
     }
+
 
     public void removeRealtor(
             @NotNull @Positive Integer id) {

@@ -63,6 +63,7 @@ public class RealtorController {
         return service.searchRealtor(id);
     }
 
+    //certo
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeRealtor(@PathVariable Integer id) {
