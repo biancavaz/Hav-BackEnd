@@ -37,7 +37,7 @@ public class PropertyController {
     }
 
     //endpoint para filtragem de imóveis
-    @GetMapping("/filter")
+    @PostMapping("/filter")
     public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto, Pageable pageable){
         return service.findAllByFilter(propertyDto, pageable);
     }
