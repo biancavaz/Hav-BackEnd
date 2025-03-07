@@ -20,7 +20,5 @@ public class AddressService {
         return repository.save(addressDTO.convert());
     }
 
-    public Address findById(@Positive @NotNull Integer id) {
-        return repository.findById(id).get();
-    }
+
 }
