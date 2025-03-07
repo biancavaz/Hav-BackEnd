@@ -31,6 +31,14 @@ public class RealtorService {
         Realtor savedRealtor = repository.save(realtor);
 
         System.out.println(savedRealtor);
+        //testando só
+        System.out.println("Convertido para entidade: "
+                + savedRealtor
+                + realtor.getName()
+                + realtor.getEmail()
+                + realtor.getPassword()
+                + realtor.getCelphone()
+                +realtor.getCpf());
 
         return realtorDTO.convertToDTO(savedRealtor);
     }
@@ -87,6 +95,8 @@ public class RealtorService {
             @NotNull @Positive Integer id) {
         repository.deleteById(id);
     }
+
+    
 
     public List<Realtor> findAllById(List<Integer> integers) {
         if (integers == null || integers.isEmpty()) {

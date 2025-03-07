@@ -22,6 +22,7 @@ import java.util.List;
 @Table(name = "proprietor")
 public class Proprietor extends User {
 
+
     @Column(name = "juristic_person")
     private Boolean juristicPerson;
 

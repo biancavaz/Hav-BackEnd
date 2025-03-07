@@ -16,4 +16,5 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "adm")
 public class Adm extends User {
 
+
 }

@@ -21,4 +21,5 @@ public class Customer extends User {
     @Column(unique = true)
     private String cnpj;
 
+
 }

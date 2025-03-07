@@ -16,4 +16,5 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "editor")
 public class Editor extends User {
 
+
 }
