@@ -5,7 +5,7 @@ import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
-import com.hav.hav_imobiliaria.model.entity.User.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
