@@ -1,7 +1,7 @@
 package com.hav.hav_imobiliaria.model.DTO.User;
 
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.User;
+import com.hav.hav_imobiliaria.model.entity.User.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

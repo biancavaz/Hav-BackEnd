@@ -3,7 +3,7 @@ package com.hav.hav_imobiliaria.controller;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Property;
+import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.service.PropertyService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

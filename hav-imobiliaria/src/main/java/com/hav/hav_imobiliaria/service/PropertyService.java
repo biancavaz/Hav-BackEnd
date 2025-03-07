@@ -3,10 +3,9 @@ package com.hav.hav_imobiliaria.service;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Additionals;
-import com.hav.hav_imobiliaria.model.entity.CustomerOwner;
-import com.hav.hav_imobiliaria.model.entity.Property;
-import com.hav.hav_imobiliaria.model.entity.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
+import com.hav.hav_imobiliaria.model.entity.Properties.Property;
+import com.hav.hav_imobiliaria.model.entity.User.Realtor;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +27,7 @@ public class PropertyService {
     private final PropertyRepository repository;
     private final AdditionalsService additionalsService;
     private final RealtorService realtorService;
-    private final CustomerOwnerService customerOwnerService;
+//    private final CustomerOwnerService customerOwnerService;
 
     public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 
@@ -40,7 +39,7 @@ public class PropertyService {
         List<Realtor> realtors = realtorService.findAllById(propertyDTO.realtorsId());
         property.setRealtors(realtors);
 
-        property.setOwner(customerOwnerService.findById(propertyDTO.ownerId()));
+//        property.setOwner(customerOwnerService.findById(propertyDTO.ownerId()));
 
         String uniqueCode;
         do {
@@ -73,8 +72,8 @@ public class PropertyService {
                         property.getPropertyCode(),
                         property.getPropertyType(),
                         property.getPropertyStatus(),
-                        property.getPurpose(),
-                        property.getOwner() != null ? property.getOwner().getName() : ""
+                        property.getPurpose()
+//                        property.getOwner() != null ? property.getOwner().getName() : ""
                 ))
                 .toList();
 

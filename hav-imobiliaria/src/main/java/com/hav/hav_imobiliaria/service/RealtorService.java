@@ -2,9 +2,7 @@ package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.User.UserPostRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Realtor;
-import com.hav.hav_imobiliaria.model.entity.User;
+import com.hav.hav_imobiliaria.model.entity.User.Realtor;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

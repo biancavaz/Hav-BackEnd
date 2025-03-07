@@ -1,6 +1,6 @@
 package com.hav.hav_imobiliaria.model.DTO.User;
 
-import com.hav.hav_imobiliaria.model.entity.User;
+import com.hav.hav_imobiliaria.model.entity.User.User;
 
 public record UserPutRequestDTO(
         String nome,

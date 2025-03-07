@@ -2,7 +2,7 @@ package com.hav.hav_imobiliaria.model.DTO.Property;
 
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPostRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Property;
+import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

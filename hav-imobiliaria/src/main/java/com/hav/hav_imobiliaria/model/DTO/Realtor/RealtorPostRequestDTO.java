@@ -1,7 +1,7 @@
 package com.hav.hav_imobiliaria.model.DTO.Realtor;
 
 import com.hav.hav_imobiliaria.model.DTO.User.UserPostRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Realtor;
+import com.hav.hav_imobiliaria.model.entity.User.Realtor;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
