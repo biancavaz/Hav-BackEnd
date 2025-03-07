@@ -30,8 +30,6 @@ public class PropertyService {
     private final PropertyRepository repository;
     private final AdditionalsService additionalsService;
     private final RealtorService realtorService;
-//    private final CustomerOwnerService customerOwnerService;
-    private final CustomerOwnerService customerOwnerService;
     private ModelMapper modelMapper = new ModelMapper();
 
     public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
