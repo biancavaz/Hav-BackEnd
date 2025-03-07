@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/custumer")
 @AllArgsConstructor
-public class CustumerController {
+public class CustomerController {
 
 
     private CustumerService service;
