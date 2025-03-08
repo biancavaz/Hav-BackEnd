@@ -18,5 +18,4 @@ public class Realtor extends User {
     @Column(nullable = false, unique = true)
     private String creci;
 
-
 }

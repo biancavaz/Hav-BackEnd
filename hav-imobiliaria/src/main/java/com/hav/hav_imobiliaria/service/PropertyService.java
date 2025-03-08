@@ -30,17 +30,20 @@ public class PropertyService {
     private final AdditionalsService additionalsService;
     private final RealtorService realtorService;
     private final ProprietorService proprietorService;
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper;
+    private final AddressService addressService;
+    private final PropertyFeatureService propertyFeatureService;
+    private final TaxesService taxesService;
 
     public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 
         Property property = propertyDTO.convert();
 
-        property.setAdditionals(additionalsService.findAllyById(propertyDTO.additionalsId()));
+        property.setAdditionals(additionalsService.findAllyById(propertyDTO.additionals()));
 
-        property.setRealtors(realtorService.findAllById(propertyDTO.realtorsId()));
+        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
 
-        property.setProprietor(proprietorService.findById(propertyDTO.proprietorId()));
+        property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
 
         String uniqueCode;
         do {

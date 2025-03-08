@@ -4,6 +4,8 @@ import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Taxes;
 import com.hav.hav_imobiliaria.repository.TaxesRepository;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

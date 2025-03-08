@@ -39,6 +39,6 @@ public class PropertyFeature {
     @Column(name = "is_furnished", nullable = false)
     private Boolean isFurnished;
 
-//    @OneToOne(mappedBy = "propertyFeatures")
-//    private Property property;
+    @OneToOne(mappedBy = "propertyFeatures")
+    private Property property;
 }

@@ -23,21 +23,21 @@ public record PropertyPostRequestDTO(
         @PositiveOrZero Double promotionalPrice,
         @NotNull Boolean highlight,
         @NotBlank String propertyCategory,
-        @NotNull AddressPostRequestDTO addressDTO,
-        @NotNull TaxesPostRequestDTO taxesDTO,
-        @NotNull PropertyFeaturePostRequestDTO propertyFeaturesDTO,
-        @NotNull List<Integer> additionalsId,
-        List<Integer> realtorsId,
-        Integer proprietorId
+        @NotNull AddressPostRequestDTO address,
+        @NotNull TaxesPostRequestDTO taxes,
+        @NotNull PropertyFeaturePostRequestDTO propertyFeatures,
+        @NotNull List<Integer> additionals,
+        List<Integer> realtors,
+        Integer proprietor
 ) {
     public Property convert() {
-        return Property.builder().propertyCode(null).title(title).
+        return Property.builder().title(title).
                 propertyDescription(propertyDescription).
                 propertyType(propertyType).propertyStatus(propertyStatus).area(area).price(price).
                 promotionalPrice(promotionalPrice).purpose(purpose).highlight(highlight).
                 propertyCategory(propertyCategory).
-                address(addressDTO.convert()).taxes(taxesDTO.convert()).
-                propertyFeatures(propertyFeaturesDTO.convert())
+                address(address.convert()).taxes(taxes.convert()).
+                propertyFeatures(propertyFeatures.convert())
                 .build();
     }
 }
