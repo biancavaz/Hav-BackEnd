@@ -1,7 +1,11 @@
 package com.hav.hav_imobiliaria.controller;
 
+import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerFilterPostResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Property.PropertyFilterPostResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.service.CustumerService;
 import jakarta.validation.Valid;
@@ -16,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/customer")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000/")
+
 public class CustomerController {
 
 
@@ -58,7 +64,10 @@ public class CustomerController {
         return service.searchCustumers(pageable);
     }
 
-    ;
+    @PostMapping("/filter")
+    public Page<CustomerListGetResponseDTO> findByFilter(@RequestBody CustomerFilterPostResponseDTO customerDto, Pageable pageable){
+        return service.findAllByFilter(customerDto, pageable);
+    }
 
 //    @GetMapping("/{id}")
 //    @ResponseStatus(HttpStatus.OK)
