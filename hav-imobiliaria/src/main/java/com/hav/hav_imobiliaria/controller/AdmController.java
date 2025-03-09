@@ -1,5 +1,7 @@
 package com.hav.hav_imobiliaria.controller;
 
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.service.AdmService;
@@ -18,13 +20,13 @@ import org.springframework.web.bind.annotation.*;
 public class AdmController {
 
     private final AdmService service;
-//
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Adm createAdm(
-//            @RequestBody @Valid AdmPostDTO admPostDTO){
-//        return service.createAdm(admPostDTO);
-//    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public AdmPostRequestDTO createAdm(
+            @RequestBody @Valid AdmPostRequestDTO admPostDTO){
+        return service.createAdm(admPostDTO);
+    }
 //
 //    @PutMapping
 //    @ResponseStatus(HttpStatus.OK)

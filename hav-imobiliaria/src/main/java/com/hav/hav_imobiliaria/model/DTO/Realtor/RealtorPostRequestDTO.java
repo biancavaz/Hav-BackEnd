@@ -1,9 +1,9 @@
 package com.hav.hav_imobiliaria.model.DTO.Realtor;
 
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
 
 import java.util.Date;
 
@@ -13,10 +13,11 @@ public record RealtorPostRequestDTO(
         @NotBlank String password,
         @NotBlank String cpf,
         @NotBlank String celphone,
-        @NotNull  Date birthDate,
+        @NotNull Date birthDate,
         @NotBlank String creci,
-        String phoneNumber
-) {
+        String phoneNumber,
+        @NotNull Boolean archived,
+        AddressPostRequestDTO address) {
 
     public RealtorPostRequestDTO convertToDTO(Realtor realtor) {
         return new RealtorPostRequestDTO(
@@ -27,8 +28,9 @@ public record RealtorPostRequestDTO(
                 realtor.getCelphone(),
                 realtor.getBirthDate(),
                 realtor.getCreci(),
-                realtor.getPhoneNumber()
-        );
+                realtor.getPhoneNumber(),
+                realtor.getArchived(),
+                address);
     }
 
 

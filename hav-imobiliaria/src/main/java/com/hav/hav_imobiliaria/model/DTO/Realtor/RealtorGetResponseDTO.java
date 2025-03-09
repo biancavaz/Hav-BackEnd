@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
 
 public record RealtorGetResponseDTO(
-        @NotBlank Integer id,
         @NotBlank String name,
         @NotBlank String email,
         @NotBlank String cpf,

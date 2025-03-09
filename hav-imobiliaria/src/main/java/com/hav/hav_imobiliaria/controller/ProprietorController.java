@@ -1,7 +1,11 @@
 package com.hav.hav_imobiliaria.controller;
 
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPostDTO;
+import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.service.ProprietorService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,12 +17,12 @@ public class ProprietorController {
     private final ProprietorService service;
 
 
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Proprietor createProprietor(
-//            @RequestBody @Valid ProprietorPostDTO proprietorDTO){
-//        return service.createProprietor(proprietorDTO);
-//    }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProprietorPostDTO createProprietor(
+            @RequestBody @Valid ProprietorPostDTO proprietorDTO){
+        return service.createProprietor(proprietorDTO);
+    }
 //
 //    @PutMapping("/{id}")
 //    @ResponseStatus(HttpStatus.OK)
