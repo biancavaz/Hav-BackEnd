@@ -29,6 +29,7 @@ public class PropertyService {
     private final PropertyRepository repository;
     private final AdditionalsService additionalsService;
     private final RealtorService realtorService;
+//    private final CustomerOwnerService customerOwnerService;
     private final ProprietorService proprietorService;
     private ModelMapper modelMapper;
 

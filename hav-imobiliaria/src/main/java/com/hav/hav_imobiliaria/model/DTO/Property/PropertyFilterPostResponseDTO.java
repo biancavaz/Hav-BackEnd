@@ -10,4 +10,18 @@ public class PropertyFilterPostResponseDTO {
     String propertyType;
     String propertyCategory;
     String propertyStatus;
+
+    public Double getMaxPric() {
+        if(this.maxPric==null || this.maxPric==2000000.0 ){
+            return 100000000.0;
+        }
+        return this.maxPric;
+    }
+
+    public Double getMinPric() {
+        if(this.minPric==null) {
+            return 100000.0;
+        }
+        return this.minPric;
+    }
 }
