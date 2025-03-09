@@ -3,6 +3,7 @@ package com.hav.hav_imobiliaria.service;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
+import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -23,8 +24,8 @@ public class CustumerService {
     private final ModelMapper modelMapper;
 
 
-    //a principio certo
-    public CustumerPostRequestDTO createCustumerOwner(
+    //CERTO
+    public CustumerPostRequestDTO createCustumer(
             @Valid CustumerPostRequestDTO custumerPostDTO) {
         System.out.println("Recebido no DTO: " + custumerPostDTO);
 
@@ -32,52 +33,44 @@ public class CustumerService {
         Customer customer = modelMapper.map(custumerPostDTO, Customer.class);
         Customer savedCustomer = repository.save(customer);
 
-        System.out.println("Convertido para entidade: "
-                + savedCustomer
-                + customer.getName()
-                + customer.getEmail()
-                + customer.getPassword()
-                + customer.getCelphone()
-                + customer.getCpf());
+        System.out.println("Convertido para entidade: " + savedCustomer);
 
         return custumerPostDTO.convertToDTO(savedCustomer);
     }
 
-
-
-
-
-    public Customer editCustumerOwner(
+    //certo
+    public Customer editCustumer(
             @NotNull @Positive Integer id,
-            @Valid CustumerPutRequestDTO custumerOwnerDTO) {
+            @Valid CustumerPutRequestDTO custumerDTO) {
 
-        if(repository.existsById(id)){
-            Customer customer = custumerOwnerDTO.convert();
-            customer.setId(id);
-            return repository.save(customer);
-        }
-        throw new NoSuchElementException();
+       Customer existingCustomer = repository.findById(id).orElseThrow(() ->
+        new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
+
+        // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
+       modelMapper.map(custumerDTO, existingCustomer);
+
+       return repository.save(existingCustomer);
     }
 
-    public Customer alterCustomer(
-            @NotNull @Positive Integer id,
-            @NotNull @Positive Integer idCustumer) {
-        return null; //n sei como fazer
-    }
-
-    public Page<Customer> searchCustumers(
-            Pageable pageable) {
-        return repository.findAll(pageable);
-    }
-
-
-//    public Realtor searchCustumerOwner(
-//            @NotNull @Positive Integer id) {
+//    public Customer alterCustomer(
+//            @NotNull @Positive Integer id,
+//            @NotNull @Positive Integer idCustumer) {
+//        return null; //n sei como fazer
 //    }
-
-    public void removeCustumer(
-            @NotNull @Positive Integer id) {
-        repository.deleteById(id);
-    }
+//
+//    public Page<Customer> searchCustumers(
+//            Pageable pageable) {
+//        return repository.findAll(pageable);
+//    }
+//
+//
+////    public Realtor searchCustumer(
+////            @NotNull @Positive Integer id) {
+////    }
+//
+//    public void removeCustumer(
+//            @NotNull @Positive Integer id) {
+//        repository.deleteById(id);
+//    }
 
 }

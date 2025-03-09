@@ -1,10 +1,8 @@
-package com.hav.hav_imobiliaria.model.DTO.Customer;
+package com.hav.hav_imobiliaria.model.DTO.Editor;
 
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Users.Customer;
-import jakarta.validation.constraints.NotBlank;
 
-public record CustumerPutRequestDTO(
+public record EditorPutRequestDTO(
         String email,
         String password,
         String celphone,

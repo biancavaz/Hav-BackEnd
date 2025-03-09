@@ -30,17 +30,17 @@ public class PropertyService {
     private final AdditionalsService additionalsService;
     private final RealtorService realtorService;
     private final ProprietorService proprietorService;
-    private ModelMapper modelMapper = new ModelMapper();
+    private ModelMapper modelMapper;
 
     public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 
         Property property = propertyDTO.convert();
 
-        property.setAdditionals(additionalsService.findAllyById(propertyDTO.additionalsId()));
+        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionalsId()));
 
-        property.setRealtors(realtorService.findAllById(propertyDTO.realtorsId()));
-
-        property.setProprietor(proprietorService.findById(propertyDTO.proprietorId()));
+//        property.setRealtors(realtorService.findAllById(propertyDTO.realtorsId()));
+//
+//        property.setProprietor(proprietorService.findById(propertyDTO.proprietorId()));
 
         String uniqueCode;
         do {
@@ -98,7 +98,9 @@ public class PropertyService {
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
     }
 
-    public Page<PropertyListGetResponseDTO> findAllByFilter(PropertyFilterPostResponseDTO propertyDto, Pageable pageable) {
+    public Page<PropertyListGetResponseDTO> findAllByFilter(
+            @Valid PropertyFilterPostResponseDTO propertyDto,
+            Pageable pageable) {
 
         Property property = modelMapper.map(propertyDto, Property.class);
         System.out.println(property);
@@ -134,6 +136,7 @@ public class PropertyService {
 
         return propertyListGetResponseDtos;
     }
+
 
     public void delete(@Positive @NotNull Integer id) {
         if (repository.existsById(id)) {

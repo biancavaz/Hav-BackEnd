@@ -1,8 +1,8 @@
 package com.hav.hav_imobiliaria.controller;
 
-import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
-import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPostRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Property.PropertyFilterPostResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.*;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.service.RealtorService;
 import jakarta.validation.Valid;
@@ -21,6 +21,7 @@ public class RealtorController {
 
     private RealtorService service;
 
+    //certo
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RealtorPostRequestDTO createRealtor(
@@ -28,6 +29,7 @@ public class RealtorController {
         return service.createRealtor(realtorPostDTO);
     }
 
+    //certo
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Realtor editRealtor(
@@ -36,39 +38,47 @@ public class RealtorController {
         return service.editRealtor(id, realtorPutDTO);
     }
 
-    @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Realtor alterRealtor(
-            @PathVariable Integer id,
-            @RequestParam Integer idrealtor) {
-        return service.alterRealtor(id, idrealtor);
-    }
 
-    @GetMapping("/page")
-    public Page<Realtor> searchRealtors(
-            @PageableDefault(
-                    size = 10,
-                    sort = "saldo",
-                    direction = Sort.Direction.DESC,
-                    page = 0
-            ) Pageable pageable) {
-        return service.searchRealtors(pageable);
-    }
+    //n é viável neste contexto
+//    @PatchMapping("/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Realtor alterRealtor(
+//            @PathVariable Integer id,
+//            @RequestParam Integer idrealtor) {
+//        return service.alterRealtor(id, idrealtor);
+//    }
 
-    ;
+//
+//    @GetMapping("/page")
+//    public Page<Realtor> searchRealtors(
+//            @PageableDefault(
+//                    size = 10,
+//                    sort = "saldo",
+//                    direction = Sort.Direction.DESC,
+//                    page = 0
+//            ) Pageable pageable) {
+//        return service.searchRealtors(pageable);
+//    }
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public RealtorGetResponseDTO searchRealtor(@PathVariable Integer id) {
-        return service.searchRealtor(id);
+    @GetMapping("/filter")
+    public Page<RealtorListGetResponseDTO> findByFilter(
+            @RequestBody RealtorFilterPostResponseDTO realtorDTO,
+            Pageable pageable){
+        return service.findAllByFilter(realtorDTO, pageable);
     }
-
-    //certo
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeRealtor(@PathVariable Integer id) {
-        service.removeRealtor(id);
-    }
+//
+//    @GetMapping("/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public RealtorGetResponseDTO searchRealtor(@PathVariable Integer id) {
+//        return service.searchRealtor(id);
+//    }
+//
+//    //certo
+//    @DeleteMapping("/{id}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void removeRealtor(@PathVariable Integer id) {
+//        service.removeRealtor(id);
+//    }
 
 
 }
