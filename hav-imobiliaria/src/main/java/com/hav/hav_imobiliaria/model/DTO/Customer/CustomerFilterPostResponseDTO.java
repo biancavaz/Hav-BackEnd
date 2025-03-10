@@ -7,6 +7,6 @@ public class CustomerFilterPostResponseDTO {
     String cpf;
     String name;
     String email;
-    Integer numberProperties;
-    String goal;
+    String celphone;
+    String status;
 }

@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class RealtorFilterPostResponseDTO {
+    String cpf;
     String name;
     String email;
     String celphone;
-    String cpf;
-    String phoneNumber;
+    String creci;
 }
