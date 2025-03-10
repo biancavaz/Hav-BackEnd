@@ -30,11 +30,13 @@ public class PropertyService {
     private final PropertyRepository repository;
     private final AdditionalsService additionalsService;
     private final RealtorService realtorService;
+//    private final CustomerOwnerService customerOwnerService;
     private final ProprietorService proprietorService;
     private final ModelMapper modelMapper;
     private final AddressService addressService;
     private final PropertyFeatureService propertyFeatureService;
     private final TaxesService taxesService;
+    private ModelMapper modelMapper;
 
     public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 
@@ -102,7 +104,9 @@ public class PropertyService {
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
     }
 
-    public Page<PropertyListGetResponseDTO> findAllByFilter(PropertyFilterPostResponseDTO propertyDto, Pageable pageable) {
+    public Page<PropertyListGetResponseDTO> findAllByFilter(
+            @Valid PropertyFilterPostResponseDTO propertyDto,
+            Pageable pageable) {
 
         Property property = modelMapper.map(propertyDto, Property.class);
         System.out.println(property);

@@ -23,7 +23,7 @@ public class AdditionalsService {
         return repository.save(additionals);
     }
 
-    public List<Additionals> findAllyById(List<Integer> additionalsIds) {
+    public List<Additionals> findAllById(List<Integer> additionalsIds) {
         return repository.findAllById(additionalsIds);
     }
 }

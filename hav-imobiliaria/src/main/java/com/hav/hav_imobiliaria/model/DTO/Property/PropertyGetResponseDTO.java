@@ -14,6 +14,6 @@ public record PropertyGetResponseDTO(
         @NotBlank String propertyStatus,
         @NotBlank String purpose,
         @NotNull List<RealtorGetResponseDTO> realtorList,
-        @NotNull ProprietorGetResponseDTO proprietor
-) {
+        @NotNull ProprietorGetResponseDTO proprietor) {
+
 }

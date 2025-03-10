@@ -1,7 +1,10 @@
 package com.hav.hav_imobiliaria.controller;
 
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Adm.AdmFilterPostResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Adm.AdmListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.service.AdmService;
@@ -27,14 +30,21 @@ public class AdmController {
             @RequestBody @Valid AdmPostRequestDTO admPostDTO){
         return service.createAdm(admPostDTO);
     }
-//
-//    @PutMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public Adm editAdm(
-//            @PathVariable Integer id,
-//            @RequestBody @Valid AdmPutRequestDTO admPutDTO){
-//        return service.editAdm(id, admPutDTO);
-//    }
+
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Adm editAdm(
+            @PathVariable Integer id,
+            @RequestBody @Valid AdmPutRequestDTO admPutDTO){
+        return service.editAdm(id, admPutDTO);
+    }
+
+    @PostMapping("/filter")
+    public Page<AdmListGetResponseDTO> findByFilter(@RequestBody AdmFilterPostResponseDTO admDto, Pageable pageable){
+        return service.findAllByFilter(pageable, admDto);
+    }
+
 //
 //
 //    @PatchMapping

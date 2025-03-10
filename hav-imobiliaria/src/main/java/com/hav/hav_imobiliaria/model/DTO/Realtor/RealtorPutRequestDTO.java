@@ -8,8 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 
 public record RealtorPutRequestDTO(
+        String name,
         String email,
-        String password,
         String celphone,
         String phoneNumber,
         Boolean archived,

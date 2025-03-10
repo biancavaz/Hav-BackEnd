@@ -35,7 +35,7 @@ public class AddressService {
             @Valid AddressPutRequestDTO addressDTO) {
 
         Address existingAddress = repository.findById(id).orElseThrow(() ->
-                new NoSuchElementException("Corretor com o ID " + id + " não encontrado."));
+                new NoSuchElementException("Enderço com o ID " + id + " não encontrado."));
 
         // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
         modelMapper.map(addressDTO, existingAddress);
