@@ -10,7 +10,6 @@ import java.util.Date;
 public record AdmPostRequestDTO(
         @NotBlank String name,
         @NotBlank String email,
-        @NotBlank String password,
         @NotBlank String cpf,
         @NotBlank String celphone,
         @NotNull Date birthDate,
@@ -23,7 +22,6 @@ public record AdmPostRequestDTO(
         return new AdmPostRequestDTO(
                 adm.getName(),
                 adm.getEmail(),
-                adm.getPassword(),
                 adm.getCpf(),
                 adm.getCelphone(),
                 adm.getBirthDate(),

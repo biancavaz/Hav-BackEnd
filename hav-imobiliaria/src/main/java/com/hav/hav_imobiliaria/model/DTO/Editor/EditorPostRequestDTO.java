@@ -10,7 +10,6 @@ import java.util.Date;
 public record EditorPostRequestDTO(
         @NotBlank String name,
         @NotBlank String email,
-        @NotBlank String password,
         @NotBlank String cpf,
         @NotBlank String celphone,
         @NotNull Date birthDate,
@@ -23,7 +22,6 @@ public record EditorPostRequestDTO(
         return new EditorPostRequestDTO(
                 editor.getName(),
                 editor.getEmail(),
-                editor.getPassword(),
                 editor.getCpf(),
                 editor.getCelphone(),
                 editor.getBirthDate(),

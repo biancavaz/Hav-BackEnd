@@ -10,17 +10,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "customer")
 @SuperBuilder
 public class Customer extends User {
 
-    @Column(name = "juristic_person")
-    private Boolean juristicPerson;
 
-    @Column(unique = true)
-    private String cnpj;
 
 
 }
