@@ -60,7 +60,7 @@ public class RealtorController {
 //        return service.searchRealtors(pageable);
 //    }
 
-    @GetMapping("/filter")
+    @PostMapping("/filter")
     public Page<RealtorListGetResponseDTO> findByFilter(
             @RequestBody RealtorFilterPostResponseDTO realtorDTO,
             Pageable pageable){

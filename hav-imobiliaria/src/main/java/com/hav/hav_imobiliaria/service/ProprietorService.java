@@ -1,8 +1,12 @@
 package com.hav.hav_imobiliaria.service;
 
+import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorFilterPostResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPostDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Address;
+import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.ProprietorRepository;
@@ -12,6 +16,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -55,6 +63,26 @@ public class ProprietorService {
         return repository.save(existingProprietor);
     }
 
+    public Page<ProprietorListGetResponseDTO> findAllByFilter(Pageable pageable, ProprietorFilterPostResponseDTO proprietorDto){
+        Proprietor proprietor = modelMapper.map(proprietorDto, Proprietor.class);
+
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase()
+                .withIgnoreNullValues()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example<Proprietor> example = Example.of(proprietor, matcher);
+
+        Page<Proprietor> proprietorList = repository.findAll(example, pageable);
+
+
+
+        Page<ProprietorListGetResponseDTO> proprietorListGetResponseDtos = proprietorList.map(proprietorx ->
+                modelMapper.map(proprietorx, ProprietorListGetResponseDTO.class)
+        );
+
+        return proprietorListGetResponseDtos;
+    }
 
 //    public Proprietor findById(Integer integer) {
 //        return repository.findById(integer).get();

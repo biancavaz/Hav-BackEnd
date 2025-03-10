@@ -1,11 +1,15 @@
 package com.hav.hav_imobiliaria.controller;
 
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorFilterPostResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPostDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.service.ProprietorService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +38,12 @@ public class ProprietorController {
             @PathVariable Integer id,
             @RequestBody @Valid ProprietorPutRequestDTO ProprietorPutDTO){
         return service.editProprietor(id, ProprietorPutDTO);
+    }
+
+
+    @PostMapping("/filter")
+    public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto, Pageable pageable){
+        return service.findAllByFilter(pageable, proprietorDto);
     }
 //
 //

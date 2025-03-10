@@ -1,8 +1,11 @@
 package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Adm.AdmFilterPostResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Adm.AdmListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
@@ -12,6 +15,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -54,5 +61,27 @@ public class AdmService {
         modelMapper.map(admPutDTO, existingAdm);
 
         return repository.save(existingAdm);
+    }
+
+    public Page<AdmListGetResponseDTO> findAllByFilter(Pageable pageable, AdmFilterPostResponseDTO admDto) {
+
+        Adm adm = modelMapper.map(admDto, Adm.class);
+
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase()
+                .withIgnoreNullValues()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example<Adm> example = Example.of(adm, matcher);
+
+        Page<Adm> admList = repository.findAll(example, pageable);
+
+
+
+        Page<AdmListGetResponseDTO> admListGetResponseDtos = admList.map(admx ->
+                modelMapper.map(admx, AdmListGetResponseDTO.class)
+        );
+
+        return admListGetResponseDtos;
     }
 }

@@ -88,20 +88,17 @@ public class CustumerService {
 
         Customer customer = modelMapper.map(costumerDto, Customer.class);
 
-        //criando o example matcher específico dos filtros do imóvel
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreCase()
                 .withIgnoreNullValues()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
-        //chamando o matcher
         Example<Customer> example = Example.of(customer, matcher);
 
         Page<Customer> customerList = repository.findAll(example, pageable);
 
 
 
-        //tranformando o page propery pro page da dto
         Page<CustomerListGetResponseDTO> costumerListGetResponseDtos = customerList.map(customerx ->
                 modelMapper.map(customerx, CustomerListGetResponseDTO.class)
         );

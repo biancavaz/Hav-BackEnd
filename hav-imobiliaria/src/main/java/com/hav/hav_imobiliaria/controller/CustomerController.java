@@ -47,16 +47,16 @@ public class CustomerController {
 
 
 //    @PatchMapping("/{id}")
-    @GetMapping("/page")
-    public Page<Customer> searchCustumerOwners(
-            @PageableDefault(
-                    size = 10, //quantidade de itens por página
-                    sort = "saldo", //o que vai ser listado
-                    direction = Sort.Direction.DESC, // tipo da ordem que vai ser mostrado
-                    page = 0 //começa mostrando a página 0
-            ) Pageable pageable) {
-        return service.searchCustumers(pageable);
-    }
+//    @GetMapping("/page")
+//    public Page<Customer> searchCustumerOwners(
+//            @PageableDefault(
+//                    size = 10, //quantidade de itens por página
+//                    sort = "saldo", //o que vai ser listado
+//                    direction = Sort.Direction.DESC, // tipo da ordem que vai ser mostrado
+//                    page = 0 //começa mostrando a página 0
+//            ) Pageable pageable) {
+//        return service.searchCustumers(pageable);
+//    }
 
     @PostMapping("/filter")
     public Page<CustomerListGetResponseDTO> findByFilter(@RequestBody CustomerFilterPostResponseDTO customerDto, Pageable pageable){

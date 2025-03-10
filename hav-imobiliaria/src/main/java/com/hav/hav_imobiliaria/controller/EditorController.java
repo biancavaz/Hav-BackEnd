@@ -1,6 +1,8 @@
 package com.hav.hav_imobiliaria.controller;
 
 
+import com.hav.hav_imobiliaria.model.DTO.Editor.EditorFilterPostResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Editor.EditorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
@@ -28,6 +30,11 @@ public class EditorController {
     public EditorPostRequestDTO createProprietor(
             @RequestBody @Valid EditorPostRequestDTO editorPostDTO){
         return service.createEditor(editorPostDTO);
+    }
+
+    @PostMapping("/filter")
+    public Page<EditorListGetResponseDTO> findByFilter(@RequestBody EditorFilterPostResponseDTO editorDto, Pageable pageable){
+        return service.findAllByFilter(pageable, editorDto);
     }
 
 

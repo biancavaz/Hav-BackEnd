@@ -8,5 +8,5 @@ public class RealtorFilterPostResponseDTO {
     String email;
     String celphone;
     String cpf;
-    String creci;
+    String phoneNumber;
 }
