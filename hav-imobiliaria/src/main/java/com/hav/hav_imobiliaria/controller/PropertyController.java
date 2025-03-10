@@ -12,6 +12,8 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +40,56 @@ public class PropertyController {
 
     //endpoint para filtragem de imóveis
     @GetMapping("/filter")
-    public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto, Pageable pageable){
+    public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto, Pageable pageable) {
         return service.findAllByFilter(propertyDto, pageable);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/search")
+    public Page<PropertyListGetResponseDTO> searchProperties(
+            @RequestParam(required = false) String propertyCode,
+            @RequestParam(required = false) String proprietorName,
+            @RequestParam(required = false) String propertyType,
+            @RequestParam(required = false) String purpose,
+            @RequestParam(required = false) String propertyStatus,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        PropertySearchCriteria criteria = new PropertySearchCriteria();
+        criteria.setPropertyCode(propertyCode);
+        criteria.setProprietorName(proprietorName);
+        criteria.setPropertyType(propertyType);
+        criteria.setPurpose(purpose);
+        criteria.setPropertyStatus(propertyStatus);
+        criteria.setMinPrice(minPrice);
+        criteria.setMaxPrice(maxPrice);
+
+        return service.searchProperties(criteria, pageable);
+    }
+
+    @GetMapping("/search-with-proprietor")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<PropertyListWithProprietorDTO> searchPropertiesWithProprietor(
+            @RequestParam(required = false) String propertyCode,
+            @RequestParam(required = false) String proprietorName,
+            @RequestParam(required = false) String propertyType,
+            @RequestParam(required = false) String purpose,
+            @RequestParam(required = false) String propertyStatus,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        PropertySearchCriteria criteria = new PropertySearchCriteria();
+        criteria.setPropertyCode(propertyCode);
+        criteria.setProprietorName(proprietorName);
+        criteria.setPropertyType(propertyType);
+        criteria.setPurpose(purpose);
+        criteria.setPropertyStatus(propertyStatus);
+        criteria.setMinPrice(minPrice);
+        criteria.setMaxPrice(maxPrice);
+
+        return service.searchPropertiesWithProprietor(criteria, pageable);
     }
 
     @DeleteMapping("/{id}")

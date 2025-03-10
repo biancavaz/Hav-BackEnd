@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.entity.Properties;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +40,7 @@ public class PropertyFeature {
     @Column(name = "is_furnished", nullable = false)
     private Boolean isFurnished;
 
+    @JsonBackReference
     @OneToOne(mappedBy = "propertyFeatures")
     private Property property;
 }

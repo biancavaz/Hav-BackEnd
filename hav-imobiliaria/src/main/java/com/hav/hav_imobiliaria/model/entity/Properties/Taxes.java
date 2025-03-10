@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.entity.Properties;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class Taxes {
 
     private Double iptu;
 
+    @JsonBackReference
     @OneToOne(mappedBy = "taxes")
     private Property property;
 }

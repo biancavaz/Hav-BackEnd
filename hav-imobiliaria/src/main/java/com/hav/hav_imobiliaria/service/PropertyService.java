@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -136,6 +137,43 @@ public class PropertyService {
         );
 
         return propertyListGetResponseDtos;
+    }
+
+    public Page<PropertyListGetResponseDTO> searchProperties(PropertySearchCriteria criteria, Pageable pageable) {
+        // Cria a Specification com os critérios de busca
+        Specification<Property> spec = PropertySpecifications.withCriteria(criteria);
+
+        // Busca as propriedades paginadas
+        Page<Property> propertyPage = repository.findAll(spec, pageable);
+
+        // Converte a página de Property para PropertyListGetResponseDTO
+        return propertyPage.map(this::convertToDTO);
+    }
+
+    private PropertyListGetResponseDTO convertToDTO(Property property) {
+        PropertyListGetResponseDTO dto = new PropertyListGetResponseDTO();
+        dto.setPropertyCode(property.getPropertyCode());
+        dto.setPrice(String.valueOf(property.getPrice())); // Converte o preço para String
+        dto.setPropertyType(property.getPropertyType());
+        dto.setPropertyCategory(property.getPropertyCategory());
+        dto.setPropertyStatus(property.getPropertyStatus());
+        return dto;
+    }
+
+    public Page<PropertyListWithProprietorDTO> searchPropertiesWithProprietor(PropertySearchCriteria criteria, Pageable pageable) {
+        Specification<Property> spec = PropertySpecifications.withCriteria(criteria);
+        Page<Property> propertyPage = repository.findAll(spec, pageable);
+        return propertyPage.map(this::convertToDTOWithProprietor);
+    }
+
+    private PropertyListWithProprietorDTO convertToDTOWithProprietor(Property property) {
+        PropertyListWithProprietorDTO dto = new PropertyListWithProprietorDTO();
+        dto.setPropertyCode(property.getPropertyCode());
+        dto.setProprietorName(property.getProprietor().getName()); // Obtém o nome do proprietário
+        dto.setPropertyType(property.getPropertyType());
+        dto.setPropertyCategory(property.getPropertyCategory());
+        dto.setPropertyStatus(property.getPropertyStatus());
+        return dto;
     }
 
     public void delete(@Positive @NotNull Integer id) {
