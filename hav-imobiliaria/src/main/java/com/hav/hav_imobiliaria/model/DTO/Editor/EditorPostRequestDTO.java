@@ -12,7 +12,6 @@ public record EditorPostRequestDTO(
         @NotBlank String email,
         @NotBlank String cpf,
         @NotBlank String celphone,
-        @NotNull Date birthDate,
         String phoneNumber,
         @NotNull Boolean archived,
         AddressPostRequestDTO address) {
@@ -24,7 +23,6 @@ public record EditorPostRequestDTO(
                 editor.getEmail(),
                 editor.getCpf(),
                 editor.getCelphone(),
-                editor.getBirthDate(),
                 editor.getPhoneNumber(),
                 editor.getArchived(),
                 address);

@@ -12,7 +12,6 @@ public record AdmPostRequestDTO(
         @NotBlank String email,
         @NotBlank String cpf,
         @NotBlank String celphone,
-        @NotNull Date birthDate,
         String phoneNumber,
         @NotNull Boolean archived,
         AddressPostRequestDTO address) {
@@ -24,7 +23,6 @@ public record AdmPostRequestDTO(
                 adm.getEmail(),
                 adm.getCpf(),
                 adm.getCelphone(),
-                adm.getBirthDate(),
                 adm.getPhoneNumber(),
                 adm.getArchived(),
                 address);
