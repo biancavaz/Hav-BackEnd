@@ -23,8 +23,7 @@ import java.util.List;
 public class Proprietor extends User {
 
 
-    @Column(name = "juristic_person")
-    private Boolean juristicPerson;
+
 
     @Column(unique = true)
     private String cnpj;

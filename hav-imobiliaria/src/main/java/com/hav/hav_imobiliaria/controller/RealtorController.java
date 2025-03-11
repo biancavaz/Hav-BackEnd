@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/realtor")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000/")
+
 public class RealtorController {
 
     private RealtorService service;

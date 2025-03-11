@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/adm")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000/")
+
 public class AdmController {
 
     private final AdmService service;

@@ -85,8 +85,6 @@ public class PropertyService {
                                         realtor.getEmail(),
                                         realtor.getCpf(),
                                         realtor.getCelphone(),
-                                        realtor.getPhoneNumber(),
-                                        realtor.getBirthDate(),
                                         realtor.getCreci()
                                 ))
                                 .toList(),

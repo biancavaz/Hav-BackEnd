@@ -48,7 +48,6 @@ public class EditorService {
                 + savededitor
                 + editor.getName()
                 + editor.getEmail()
-                + editor.getPassword()
                 + editor.getCelphone()
                 +editor.getCpf());
 

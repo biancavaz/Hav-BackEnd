@@ -32,10 +32,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String cpf;
 
     @Column(nullable = false)
@@ -44,9 +41,7 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @Column(name = "birth_date", nullable = false)
-    private Date birthDate;
+
 
     @Column(nullable = false)
     private Boolean archived;
