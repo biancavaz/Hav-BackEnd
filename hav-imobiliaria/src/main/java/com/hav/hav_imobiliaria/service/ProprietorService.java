@@ -84,9 +84,9 @@ public class ProprietorService {
         return proprietorListGetResponseDtos;
     }
 
-//    public Proprietor findById(Integer integer) {
-//        return repository.findById(integer).get();
-//    }
+    public Proprietor findById(Integer integer) {
+        return repository.findById(integer).get();
+    }
 
 //    public Proprietor createProprietor(
 //            @Valid ProprietorPostDTO proprietorDTO) {

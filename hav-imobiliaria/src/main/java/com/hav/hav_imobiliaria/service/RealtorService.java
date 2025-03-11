@@ -138,12 +138,12 @@ public class RealtorService {
 //
 //
 //
-//    public List<Realtor> findAllById(List<Integer> integers) {
-//        if (integers == null || integers.isEmpty()) {
-//            return null;
-//        }
-//        return repository.findAllById(integers);
-//    }
+    public List<Realtor> findAllById(List<Integer> integers) {
+        if (integers == null || integers.isEmpty()) {
+            return null;
+        }
+        return repository.findAllById(integers);
+    }
 
 //    public Realtor searchRealtor(Integer id) {
 //        return repository.findById(id).orElseThrow(NoSuchElementException::new);

@@ -30,19 +30,17 @@ public class PropertyService {
     private final PropertyRepository repository;
     private final AdditionalsService additionalsService;
     private final RealtorService realtorService;
-//    private final CustomerOwnerService customerOwnerService;
     private final ProprietorService proprietorService;
     private final ModelMapper modelMapper;
     private final AddressService addressService;
     private final PropertyFeatureService propertyFeatureService;
     private final TaxesService taxesService;
-    private ModelMapper modelMapper;
 
     public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 
         Property property = propertyDTO.convert();
 
-        property.setAdditionals(additionalsService.findAllyById(propertyDTO.additionals()));
+        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
 
         property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
 
@@ -157,7 +155,7 @@ public class PropertyService {
     private PropertyListGetResponseDTO convertToDTO(Property property) {
         PropertyListGetResponseDTO dto = new PropertyListGetResponseDTO();
         dto.setPropertyCode(property.getPropertyCode());
-        dto.setPrice(String.valueOf(property.getPrice())); // Converte o preço para String
+        dto.setPrice(Double.valueOf(String.valueOf(property.getPrice()))); // Converte o preço para String
         dto.setPropertyType(property.getPropertyType());
         dto.setPropertyCategory(property.getPropertyCategory());
         dto.setPropertyStatus(property.getPropertyStatus());
