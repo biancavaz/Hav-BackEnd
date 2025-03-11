@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/editor")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000/")
+
 public class EditorController {
 
     private final EditorService service;
