@@ -8,6 +8,7 @@ import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -163,5 +164,11 @@ public class PropertyService {
             return repository.save(property);
         }
         throw new NoSuchElementException();
+    }
+
+    @Transactional
+    public void removeList(List<Integer> idList) {
+        repository.deleteByIdIn(idList);
+
     }
 }

@@ -10,6 +10,7 @@ import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.ProprietorRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -82,6 +84,11 @@ public class ProprietorService {
         );
 
         return proprietorListGetResponseDtos;
+    }
+
+    @Transactional
+    public void removeList(List<Integer> idList) {
+        repository.deleteByIdIn(idList);
     }
 
 //    public Proprietor findById(Integer integer) {

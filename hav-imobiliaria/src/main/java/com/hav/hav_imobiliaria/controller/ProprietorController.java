@@ -13,10 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/proprietor")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000/")
 public class ProprietorController {
 
 
@@ -83,4 +84,9 @@ public class ProprietorController {
 //    public void removeProprietor(@PathVariable Integer id){
 //        service.remove(id);
 //    }
+    @DeleteMapping
+    @RequestMapping
+    public void removeProprietorList(@RequestBody List<Integer> idList){
+        service.removeList(idList);
+    }
 }

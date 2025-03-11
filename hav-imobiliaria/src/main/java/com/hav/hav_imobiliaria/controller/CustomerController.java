@@ -17,10 +17,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/customer")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000/")
 
 public class CustomerController {
 
@@ -98,5 +99,9 @@ public class CustomerController {
 //    public void removeCustomerOwner(@PathVariable Integer id) {
 //        service.removeCustumer(id);
 //    }
-
+        @DeleteMapping
+        @RequestMapping
+        public void removeCustomerList(@RequestBody List<Integer> idList){
+            service.removeList(idList);
+        }
 }

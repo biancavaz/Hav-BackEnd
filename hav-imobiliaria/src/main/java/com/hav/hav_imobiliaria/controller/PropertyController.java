@@ -20,7 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/property")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000/")
 
 public class PropertyController {
 
@@ -50,16 +49,22 @@ public class PropertyController {
         service.delete(id);
     }
 
-    @DeleteMapping("/code/{propertyCode}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteByPropertyCode(@PathVariable @NotNull String propertyCode) {
-        service.deleteByPropertyCode(propertyCode);
-    }
-
-    @DeleteMapping("/code")
-    @ResponseStatus(HttpStatus.OK)
-    public void deletePropertiesByPropertyCode(@RequestParam @NotNull List<String> propertyCodes) {
-        service.deletePropertiesByPropertyCode(propertyCodes);
+//    @DeleteMapping("/code/{propertyCode}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void deleteByPropertyCode(@PathVariable @NotNull String propertyCode) {
+//        service.deleteByPropertyCode(propertyCode);
+//    }
+//
+//
+//    @DeleteMapping("/code")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void deletePropertiesByPropertyCode(@RequestParam @NotNull List<String> propertyCodes) {
+//        service.deletePropertiesByPropertyCode(propertyCodes);
+//    }
+    @DeleteMapping
+    @RequestMapping
+    public void removePropertyList(@RequestBody List<Integer> idList){
+        service.removeList(idList);
     }
 
     @PutMapping("/{id}")
