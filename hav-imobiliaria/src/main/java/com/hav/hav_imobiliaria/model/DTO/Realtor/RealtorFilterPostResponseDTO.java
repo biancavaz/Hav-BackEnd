@@ -9,4 +9,6 @@ public class RealtorFilterPostResponseDTO {
     String email;
     String celphone;
     String creci;
+    boolean archived;
+
 }

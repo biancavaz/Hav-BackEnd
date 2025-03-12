@@ -9,4 +9,6 @@ public class EditorFilterPostResponseDTO {
     String email;
     String celphone;
     String phoneNumber;
+    boolean archived;
+
 }

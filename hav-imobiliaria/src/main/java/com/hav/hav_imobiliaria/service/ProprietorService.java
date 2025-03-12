@@ -74,6 +74,7 @@ public class ProprietorService {
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
         Example<Proprietor> example = Example.of(proprietor, matcher);
+        System.out.println(example.toString());
 
         Page<Proprietor> proprietorList = repository.findAll(example, pageable);
 

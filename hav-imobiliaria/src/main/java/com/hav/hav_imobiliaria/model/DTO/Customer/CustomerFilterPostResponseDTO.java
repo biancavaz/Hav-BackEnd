@@ -9,4 +9,6 @@ public class CustomerFilterPostResponseDTO {
     String email;
     String celphone;
     String status;
+    boolean archived;
+
 }

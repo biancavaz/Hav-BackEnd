@@ -9,4 +9,5 @@ public class ProprietorFilterPostResponseDTO {
     String email;
     Integer numberProperties;
     String goal;
+    boolean archived;
 }

@@ -10,4 +10,6 @@ public class AdmFilterPostResponseDTO {
     String email;
     String celphone;
     String phoneNumber;
+    boolean archived;
+
 }
