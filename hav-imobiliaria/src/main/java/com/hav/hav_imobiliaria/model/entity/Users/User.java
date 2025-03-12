@@ -53,4 +53,9 @@ public class User {
     public @NotNull boolean getArchived() {
         return this.archived;
     }
+
+    public void changeArchiveStatus(){
+        this.archived = !this.archived;
+    }
+
 }

@@ -5,7 +5,9 @@ import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.*;
 import com.hav.hav_imobiliaria.model.entity.Address;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
+import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -107,6 +109,11 @@ public class RealtorService {
         repository.deleteByIdIn(idList);
     }
 
+    public void changeArchiveStatus(List<Integer> realtorIds) {
+        List<Realtor> realtors = repository.findAllById(realtorIds);
+        realtors.forEach(User::changeArchiveStatus);
+        repository.saveAll(realtors);
+    }
 
 //    public Realtor alterRealtor(
 //            @NotNull @Positive Integer id,

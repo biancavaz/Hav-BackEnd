@@ -44,6 +44,10 @@ public class PropertyController {
     public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto, Pageable pageable){
         return service.findAllByFilter(propertyDto, pageable);
     }
+    @PatchMapping("/changeArchiveStatus")
+    public void changeArchiveStatus(@RequestBody List<Integer> propertyIds){
+        service.changeArchiveStatus(propertyIds);
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
