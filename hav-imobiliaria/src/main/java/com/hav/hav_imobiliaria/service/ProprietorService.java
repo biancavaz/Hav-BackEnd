@@ -67,6 +67,7 @@ public class ProprietorService {
         return repository.save(existingProprietor);
     }
 
+
     public Page<ProprietorListGetResponseDTO> findAllByFilter(Pageable pageable, ProprietorFilterPostResponseDTO proprietorDto) {
         Proprietor proprietor = modelMapper.map(proprietorDto, Proprietor.class);
 

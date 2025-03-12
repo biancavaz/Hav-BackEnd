@@ -20,9 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProprietorController {
 
-
     private final ProprietorService service;
-
 
     //certo
     @PostMapping
@@ -47,6 +45,7 @@ public class ProprietorController {
     public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto, Pageable pageable){
         return service.findAllByFilter(pageable, proprietorDto);
     }
+
     @PatchMapping("/changeArchiveStatus")
     public void changeArchiveStatus(@RequestBody List<Integer> proprietorIds){
         service.changeArchiveStatus(proprietorIds);

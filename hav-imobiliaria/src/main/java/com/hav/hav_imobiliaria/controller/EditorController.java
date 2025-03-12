@@ -36,10 +36,11 @@ public class EditorController {
     }
 
     @PostMapping("/filter")
-    public Page<EditorListGetResponseDTO> findByFilter(@RequestBody EditorFilterPostResponseDTO editorDto, Pageable pageable){
-
+    public Page<EditorListGetResponseDTO> findByFilter(
+            @RequestBody EditorFilterPostResponseDTO editorDto, Pageable pageable){
         return service.findAllByFilter(pageable, editorDto);
     }
+
     @PatchMapping("/changeArchiveStatus")
     public void changeArchiveStatus(@RequestBody List<Integer> editorIds){
         service.changeArchiveStatus(editorIds);
