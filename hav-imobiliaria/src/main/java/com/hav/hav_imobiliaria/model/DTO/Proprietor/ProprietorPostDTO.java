@@ -24,7 +24,7 @@ public record ProprietorPostDTO(
         String cpf,
         @CNPJ(message = "CNPJ inválido")
         String cnpj,
-        @Pattern(regexp = "^\\+55\\d{10}$",
+        @Pattern(regexp = "\\d{10}$",
                 message = "Telefone inválido")
         String phoneNumber,
         Boolean archived,

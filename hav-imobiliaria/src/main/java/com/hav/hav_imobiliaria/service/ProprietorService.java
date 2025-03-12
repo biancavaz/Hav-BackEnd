@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.service;
 
+import com.hav.hav_imobiliaria.Exceptions.BusinessException;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorListGetResponseDTO;
@@ -14,7 +15,6 @@ import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.ProprietorRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -35,22 +35,30 @@ public class ProprietorService {
     private final ProprietorRepository repository;
     private final ModelMapper modelMapper;
 
-
-    //certo
-    public ProprietorPostDTO createProprietor(@Valid ProprietorPostDTO proprietorDTO) {
+    public ProprietorPostDTO createProprietor(@Valid ProprietorPostDTO proprietorDTO) throws Exception {
         System.out.println("Recebido no DTO: " + proprietorDTO);
 
-        // Mapeamento do DTO para entidade usando o ModelMapper
-        Proprietor proprietor = modelMapper.map(proprietorDTO, Proprietor.class);
+        if (proprietorDTO.cpf() == null && proprietorDTO.cnpj() == null) {
+            throw new BusinessException("CPF e CNPJ não podem ser ambos nulos.");
+        } else if (proprietorDTO.cpf() != null && proprietorDTO.cnpj() != null) {
+            throw new BusinessException("CPF e CNPJ não podem ser ambos preenchidos.");
+        } else if (proprietorDTO.cpf() != null && repository.existsByCpf(proprietorDTO.cpf())) {
+            throw new BusinessException("CPF já cadastrado.");
+        } else if (proprietorDTO.cnpj() != null && repository.existsByCnpj(proprietorDTO.cnpj())) {
+            throw new BusinessException("CNPJ já cadastrado.");
+        } else {
+            // Mapeamento do DTO para entidade usando o ModelMapper
+            Proprietor proprietor = modelMapper.map(proprietorDTO, Proprietor.class);
 
-        // Salvar a entidade e retornar a resposta
-        Proprietor savedproprietor = repository.save(proprietor);
+            // Salvar a entidade e retornar a resposta
+            Proprietor savedproprietor = repository.save(proprietor);
 
-        //testando só
-        System.out.println("Convertido para entidade: "
-                + savedproprietor);
+            //testando só
+            System.out.println("Convertido para entidade: "
+                    + savedproprietor);
 
-        return proprietorDTO.convertToDTO(savedproprietor);
+            return proprietorDTO.convertToDTO(savedproprietor);
+        }
     }
 
     //certo

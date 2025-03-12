@@ -27,7 +27,7 @@ public record RealtorPostRequestDTO(
         @Pattern(regexp = "\\d{10}$",
                 message = "Telefone inválido")
         String phoneNumber,
-        Boolean archived,
+        boolean archived,
         @Valid AddressPostRequestDTO address
 ) {
     public RealtorPostRequestDTO convertToDTO(Realtor realtor) {

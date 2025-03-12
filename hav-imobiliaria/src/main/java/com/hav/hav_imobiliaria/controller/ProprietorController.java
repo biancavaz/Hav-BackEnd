@@ -28,7 +28,7 @@ public class ProprietorController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProprietorPostDTO createProprietor(
-            @RequestBody @Valid ProprietorPostDTO proprietorDTO){
+            @RequestBody @Valid ProprietorPostDTO proprietorDTO) throws Exception {
         return service.createProprietor(proprietorDTO);
     }
 
