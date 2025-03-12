@@ -14,10 +14,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/realtor")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000/")
 
 public class RealtorController {
 
@@ -81,6 +82,10 @@ public class RealtorController {
 //    public void removeRealtor(@PathVariable Integer id) {
 //        service.removeRealtor(id);
 //    }
-
+        @DeleteMapping
+        @RequestMapping
+        public void removeRealtorList(@RequestBody List<Integer> idList){
+            service.removeList(idList);
+        }
 
 }

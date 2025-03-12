@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class PropertyListGetResponseDTO {
+    Integer id;
     String propertyCode;
     Double price;
     String propertyType;

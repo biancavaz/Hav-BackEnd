@@ -7,6 +7,7 @@ import com.hav.hav_imobiliaria.model.entity.Address;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -90,6 +91,10 @@ public class RealtorService {
         );
 
         return realtorListGetResponseDTOS;
+    }
+    @Transactional
+    public void removeList(List<Integer> idList) {
+        repository.deleteByIdIn(idList);
     }
 
 

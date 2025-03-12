@@ -17,10 +17,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/editor")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000/")
 
 public class EditorController {
 
@@ -85,7 +86,11 @@ public class EditorController {
 //        service.remove(id);
 //    }
 
-
+    @DeleteMapping
+    @RequestMapping
+    public void removeEditorList(@RequestBody List<Integer> idList){
+        service.removeList(idList);
+    }
 
 
 }

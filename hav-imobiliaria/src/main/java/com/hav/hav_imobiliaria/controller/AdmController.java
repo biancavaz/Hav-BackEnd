@@ -17,10 +17,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/adm")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000/")
 
 public class AdmController {
 
@@ -84,6 +85,10 @@ public class AdmController {
 //        service.remove(id);
 //    }
 
-
+    @DeleteMapping
+    @RequestMapping
+    public void removeAdmList(@RequestBody List<Integer> idList){
+        service.removeList(idList);
+    }
 
 }

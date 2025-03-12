@@ -11,6 +11,7 @@ import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.repository.EditorRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -86,6 +87,12 @@ public class EditorService {
         );
 
         return editorListGetResponseDtos;
+
+    }
+
+    @Transactional
+    public void removeList(List<Integer> idList) {
+        repository.deleteByIdIn(idList);
 
     }
 }

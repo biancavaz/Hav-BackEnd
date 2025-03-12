@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class AdmListGetResponseDTO {
+    Integer id;
     String cpf;
     String name;
     String email;

@@ -17,4 +17,7 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
 
     List<Property> findByPropertyCodeIn(List<String> propertyCodes);
     void deleteByPropertyCodeIn(List<String> propertyCodes);
+
+    void deleteByIdIn(List<Integer> ids);
+
 }
