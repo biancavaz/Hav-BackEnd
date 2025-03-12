@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PropertyRepository extends JpaRepository<Property, Integer>, JpaSpecificationExecutor<Property> {
+public interface PropertyRepository extends JpaRepository<Property, Integer> {
     boolean existsByPropertyCode(String propertyCode);
     void deleteByPropertyCode(String propertyCode);
 

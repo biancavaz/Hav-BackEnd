@@ -41,10 +41,8 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-
-
     @Column(nullable = false)
-    private Boolean archived;
+    private Boolean archived = false;
 
     @JsonManagedReference
     @ManyToOne(cascade = CascadeType.ALL)

@@ -54,10 +54,10 @@ public class Property {
     private Double price;
 
     @Column(name = "promotional_price", nullable = false)
-    private Double promotionalPrice;
+    private Double promotionalPrice = 0.0;
 
     @Column(nullable = false)
-    private Boolean highlight;
+    private Boolean highlight = false;
 
     @Column(name = "property_category", nullable = false)
     private String propertyCategory;

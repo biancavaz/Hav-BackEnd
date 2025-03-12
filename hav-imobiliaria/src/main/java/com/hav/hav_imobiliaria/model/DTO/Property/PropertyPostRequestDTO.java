@@ -13,22 +13,22 @@ import java.util.List;
 
 public record PropertyPostRequestDTO(
         String propertyCode,
-        @NotBlank String title,
-        @NotBlank String propertyDescription,
-        @NotBlank String propertyType,
-        @NotBlank String purpose,
-        @NotBlank String propertyStatus,
-        @Positive @NotNull Double area,
-        @Positive @NotNull Double price,
-        @PositiveOrZero Double promotionalPrice,
+        @NotBlank(message = "Título não pode estar em branco") String title,
+        @NotBlank(message = "Descrição não pode estar em branco") String propertyDescription,
+        @NotBlank(message = "Tipo de propriedade não pode estar em branco") String propertyType,
+        @NotBlank(message = "Finalidade não pode estar em branco") String purpose,
+        @NotBlank(message = "Status não pode estar em branco") String propertyStatus,
+        @Positive(message = "Área deve ser positiva") @NotNull Double area,
+        @Positive(message = "Preço deve ser positivo") @NotNull Double price,
+        @PositiveOrZero(message = "Preço deve ser positivo ou zero") Double promotionalPrice,
         @NotNull Boolean highlight,
-        @NotBlank String propertyCategory,
+        @NotBlank(message = "Categoria não pode estar em branco") String propertyCategory,
         @NotNull AddressPostRequestDTO address,
         @NotNull TaxesPostRequestDTO taxes,
         @NotNull PropertyFeaturePostRequestDTO propertyFeatures,
         @NotNull List<Integer> additionals,
-        List<Integer> realtors,
-        Integer proprietor
+        @NotNull List<Integer> realtors,
+        @Positive @NotNull Integer proprietor
 ) {
     public Property convert() {
         return Property.builder().title(title).

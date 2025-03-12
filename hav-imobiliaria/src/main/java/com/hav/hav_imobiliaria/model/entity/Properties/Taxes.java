@@ -19,9 +19,9 @@ public class Taxes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Double condominiumFee;
+    private Double condominiumFee = 0.0;
 
-    private Double iptu;
+    private Double iptu = 0.0;
 
     @JsonBackReference
     @OneToOne(mappedBy = "taxes")
