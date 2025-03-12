@@ -7,6 +7,8 @@ import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
+import com.hav.hav_imobiliaria.model.entity.Users.Editor;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -171,5 +173,10 @@ public class PropertyService {
     public void removeList(List<Integer> idList) {
         repository.deleteByIdIn(idList);
 
+    }
+    public void changeArchiveStatus(List<Integer> propertuyIds) {
+        List<Property> properties = repository.findAllById(propertuyIds);
+        properties.forEach(Property::changeArchiveStatus);
+        repository.saveAll(properties);
     }
 }

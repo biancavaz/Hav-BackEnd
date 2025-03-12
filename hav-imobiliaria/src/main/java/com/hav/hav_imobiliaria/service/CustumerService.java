@@ -6,8 +6,10 @@ import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
+import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -58,6 +60,8 @@ public class CustumerService {
 
        return repository.save(existingCustomer);
     }
+
+
 
 //    public Customer alterCustomer(
 //            @NotNull @Positive Integer id,
@@ -111,5 +115,10 @@ public class CustumerService {
     public void removeList(List<Integer> idList) {
         repository.deleteByIdIn(idList);
 
+    }
+    public void changeArchiveStatus(List<Integer> customerIds) {
+        List<Customer> customers = repository.findAllById(customerIds);
+        customers.forEach(User::changeArchiveStatus);
+        repository.saveAll(customers);
     }
 }

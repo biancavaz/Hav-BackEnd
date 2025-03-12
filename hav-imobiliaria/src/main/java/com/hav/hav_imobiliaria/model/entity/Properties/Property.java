@@ -67,6 +67,9 @@ public class Property {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private boolean archived;
+
     @JsonManagedReference
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_address", nullable = false)
@@ -102,4 +105,9 @@ public class Property {
             inverseJoinColumns = @JoinColumn(name = "id_realtor")
     )
     private List<Realtor> realtors;
+
+    public void changeArchiveStatus(){
+        this.archived = !this.archived;
+    }
+
 }

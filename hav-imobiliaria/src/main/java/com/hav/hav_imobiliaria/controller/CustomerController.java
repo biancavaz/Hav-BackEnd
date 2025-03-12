@@ -6,6 +6,7 @@ import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
+import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.service.CustumerService;
 import jakarta.validation.Valid;
@@ -47,6 +48,7 @@ public class CustomerController {
     }
 
 
+
 //    @PatchMapping("/{id}")
 //    @GetMapping("/page")
 //    public Page<Customer> searchCustumerOwners(
@@ -62,6 +64,10 @@ public class CustomerController {
     @PostMapping("/filter")
     public Page<CustomerListGetResponseDTO> findByFilter(@RequestBody CustomerFilterPostResponseDTO customerDto, Pageable pageable){
         return service.findAllByFilter(customerDto, pageable);
+    }
+    @PatchMapping("/changeArchiveStatus")
+    public void changeArchiveStatus(@RequestBody List<Integer> customerIds){
+        service.changeArchiveStatus(customerIds);
     }
 
 //    @GetMapping("/{id}")

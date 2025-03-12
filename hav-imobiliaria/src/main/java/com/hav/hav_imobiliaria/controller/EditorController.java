@@ -40,7 +40,10 @@ public class EditorController {
 
         return service.findAllByFilter(pageable, editorDto);
     }
-
+    @PatchMapping("/changeArchiveStatus")
+    public void changeArchiveStatus(@RequestBody List<Integer> editorIds){
+        service.changeArchiveStatus(editorIds);
+    }
 
     //certo
     @PutMapping("/{id}")

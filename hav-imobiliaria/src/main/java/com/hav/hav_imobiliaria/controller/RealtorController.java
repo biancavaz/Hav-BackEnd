@@ -71,6 +71,10 @@ public class RealtorController {
         System.out.println(realtorDTO.toString());
         return service.findAllByFilter(realtorDTO, pageable);
     }
+    @PatchMapping("/changeArchiveStatus")
+    public void changeArchiveStatus(@RequestBody List<Integer> realtorIds){
+        service.changeArchiveStatus(realtorIds);
+    }
 //
 //    @GetMapping("/{id}")
 //    @ResponseStatus(HttpStatus.OK)

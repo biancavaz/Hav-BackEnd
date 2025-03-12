@@ -47,6 +47,11 @@ public class AdmController {
     public Page<AdmListGetResponseDTO> findByFilter(@RequestBody AdmFilterPostResponseDTO admDto, Pageable pageable){
         return service.findAllByFilter(pageable, admDto);
     }
+    @PatchMapping("/changeArchiveStatus")
+    public void changeArchiveStatus(@RequestBody List<Integer> admIds){
+        service.changeArchiveStatus(admIds);
+    }
+
 
 //
 //

@@ -7,9 +7,7 @@ import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
-import com.hav.hav_imobiliaria.model.entity.Users.Customer;
-import com.hav.hav_imobiliaria.model.entity.Users.Editor;
-import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
+import com.hav.hav_imobiliaria.model.entity.Users.*;
 import com.hav.hav_imobiliaria.repository.EditorRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -94,5 +92,10 @@ public class EditorService {
     public void removeList(List<Integer> idList) {
         repository.deleteByIdIn(idList);
 
+    }
+    public void changeArchiveStatus(List<Integer> editorIds) {
+        List<Editor> editors = repository.findAllById(editorIds);
+        editors.forEach(User::changeArchiveStatus);
+        repository.saveAll(editors);
     }
 }
