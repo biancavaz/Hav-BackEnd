@@ -16,7 +16,7 @@ public record RealtorPostRequestDTO(
         @NotBlank(message = "E-mail não pode estar em branco")
         @Email(message = "E-mail inválido")
         String email,
-        @CPF(message = "CPF inválido")
+//        @CPF(message = "CPF inválido")
         @NotBlank(message = "CPF não pode estar em branco")
         String cpf,
         @NotNull(message = "Celular inválido")

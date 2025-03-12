@@ -2,15 +2,14 @@ package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
-import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPostRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
-import com.hav.hav_imobiliaria.model.entity.Properties.Property;
-import com.hav.hav_imobiliaria.model.entity.Users.Adm;
+import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -33,8 +31,8 @@ public class CustumerService {
 
 
     //CERTO
-    public CustumerPostRequestDTO createCustumer(
-            @Valid CustumerPostRequestDTO custumerPostDTO) {
+    public CustomerPostRequestDTO createCustumer(
+            @Valid CustomerPostRequestDTO custumerPostDTO) {
         System.out.println("Recebido no DTO: " + custumerPostDTO);
 
 
@@ -50,7 +48,7 @@ public class CustumerService {
     //certo
     public Customer editCustumer(
             @NotNull @Positive Integer id,
-            @Valid CustumerPutRequestDTO custumerDTO) {
+            @Valid CustomerPutRequestDTO custumerDTO) {
 
        Customer existingCustomer = repository.findById(id).orElseThrow(() ->
         new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
@@ -61,28 +59,6 @@ public class CustumerService {
        return repository.save(existingCustomer);
     }
 
-
-
-//    public Customer alterCustomer(
-//            @NotNull @Positive Integer id,
-//            @NotNull @Positive Integer idCustumer) {
-//        return null; //n sei como fazer
-//    }
-//
-//    public Page<Customer> searchCustumers(
-//            Pageable pageable) {
-//        return repository.findAll(pageable);
-//    }
-//
-//
-////    public Realtor searchCustumer(
-////            @NotNull @Positive Integer id) {
-////    }
-//
-//    public void removeCustumer(
-//            @NotNull @Positive Integer id) {
-//        repository.deleteById(id);
-//    }
 
     public void removeCustumer(
             @NotNull @Positive Integer id) {
@@ -116,9 +92,18 @@ public class CustumerService {
         repository.deleteByIdIn(idList);
 
     }
+
     public void changeArchiveStatus(List<Integer> customerIds) {
         List<Customer> customers = repository.findAllById(customerIds);
         customers.forEach(User::changeArchiveStatus);
         repository.saveAll(customers);
+    }
+
+    public CustomerPutRequestDTO findCustomerById(Integer id) {
+        Customer customer = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+
+        // Converte a entidade Realtor para o DTO
+        return modelMapper.map(customer, CustomerPutRequestDTO.class);
     }
 }

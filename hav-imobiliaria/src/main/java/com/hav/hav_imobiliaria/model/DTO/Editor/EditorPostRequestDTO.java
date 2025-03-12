@@ -19,7 +19,7 @@ public record EditorPostRequestDTO(
         @NotBlank(message = "Celular não pode estar em branco")
         @Pattern(regexp = "\\d{11}$", message = "Celular inválido")
         String celphone,
-        @CPF(message = "CPF inválido")
+//        @CPF(message = "CPF inválido")
         @NotBlank(message = "CPF não pode estar em branco")
         String cpf,
         @Pattern(regexp = "\\d{10}$",

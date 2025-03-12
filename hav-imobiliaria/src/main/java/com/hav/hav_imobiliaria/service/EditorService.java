@@ -6,9 +6,11 @@ import com.hav.hav_imobiliaria.model.DTO.Editor.EditorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Users.*;
 import com.hav.hav_imobiliaria.repository.EditorRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -93,9 +95,18 @@ public class EditorService {
         repository.deleteByIdIn(idList);
 
     }
+
     public void changeArchiveStatus(List<Integer> editorIds) {
         List<Editor> editors = repository.findAllById(editorIds);
         editors.forEach(User::changeArchiveStatus);
         repository.saveAll(editors);
+    }
+
+    public EditorPutRequestDTO findEditorById(Integer id) {
+        Editor editor = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Realtor not found"));
+
+        // Converte a entidade Realtor para o DTO
+        return modelMapper.map(editor, EditorPutRequestDTO.class);
     }
 }
