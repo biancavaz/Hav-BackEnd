@@ -99,9 +99,10 @@ public class ProprietorService {
         proprietors.forEach(User::changeArchiveStatus);
         repository.saveAll(proprietors);
     }
-//    public Proprietor findById(Integer integer) {
-//        return repository.findById(integer).get();
-//    }
+
+    public Proprietor findById(Integer integer) {
+        return repository.findById(integer).get();
+    }
 
 //    public Proprietor createProprietor(
 //            @Valid ProprietorPostDTO proprietorDTO) {
