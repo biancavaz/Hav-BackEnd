@@ -5,9 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public record TaxesPostRequestDTO(
-        @PositiveOrZero @NotNull Double condominiumFee,
-        @PositiveOrZero @NotNull Double iptu) {
-
+        @PositiveOrZero(message = "Condomínio deve ser positivo ou zero")
+        @NotNull(message = "Condomínio não pode estar em branco")
+        Double condominiumFee,
+        @PositiveOrZero(message = "IPTU deve ser positivo ou zero")
+        @NotNull(message = "IPTU não pode estar em branco")
+        Double iptu
+) {
     public Taxes convert() {
         return Taxes.builder()
                 .condominiumFee(condominiumFee)

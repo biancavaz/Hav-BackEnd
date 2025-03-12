@@ -9,8 +9,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 
-import java.util.Date;
-
 public record RealtorPostRequestDTO(
         @NotBlank(message = "Nome não pode estar em branco")
         @Pattern(regexp = "^[A-Za-zÀ-ÿ]{2,}( [A-Za-zÀ-ÿ]{2,})+$", message = "Nome inválido")
@@ -19,17 +17,19 @@ public record RealtorPostRequestDTO(
         @Email(message = "E-mail inválido")
         String email,
         @CPF(message = "CPF inválido")
+        @NotBlank(message = "CPF não pode estar em branco")
         String cpf,
         @NotNull(message = "Celular inválido")
-        @Pattern(regexp = "^\\+55\\d{11}$", message = "Celular inválido")
+        @Pattern(regexp = "\\d{11}$", message = "Celular inválido")
         String celphone,
-        @NotBlank String creci,
-        @Pattern(regexp = "^\\+55\\d{10}$",
+        @NotBlank(message = "CRECI não pode estar em branco")
+        String creci,
+        @Pattern(regexp = "\\d{10}$",
                 message = "Telefone inválido")
         String phoneNumber,
         Boolean archived,
-        @Valid AddressPostRequestDTO address) {
-
+        @Valid AddressPostRequestDTO address
+) {
     public RealtorPostRequestDTO convertToDTO(Realtor realtor) {
         return new RealtorPostRequestDTO(
                 realtor.getName(),

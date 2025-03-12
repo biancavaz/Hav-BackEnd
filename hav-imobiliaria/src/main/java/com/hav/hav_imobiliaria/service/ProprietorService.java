@@ -65,7 +65,7 @@ public class ProprietorService {
         return repository.save(existingProprietor);
     }
 
-    public Page<ProprietorListGetResponseDTO> findAllByFilter(Pageable pageable, ProprietorFilterPostResponseDTO proprietorDto){
+    public Page<ProprietorListGetResponseDTO> findAllByFilter(Pageable pageable, ProprietorFilterPostResponseDTO proprietorDto) {
         Proprietor proprietor = modelMapper.map(proprietorDto, Proprietor.class);
 
         ExampleMatcher matcher = ExampleMatcher.matching()
@@ -76,7 +76,6 @@ public class ProprietorService {
         Example<Proprietor> example = Example.of(proprietor, matcher);
 
         Page<Proprietor> proprietorList = repository.findAll(example, pageable);
-
 
 
         Page<ProprietorListGetResponseDTO> proprietorListGetResponseDtos = proprietorList.map(proprietorx ->
@@ -91,9 +90,9 @@ public class ProprietorService {
         repository.deleteByIdIn(idList);
     }
 
-//    public Proprietor findById(Integer integer) {
-//        return repository.findById(integer).get();
-//    }
+    public Proprietor findById(Integer integer) {
+        return repository.findById(integer).get();
+    }
 
 //    public Proprietor createProprietor(
 //            @Valid ProprietorPostDTO proprietorDTO) {
