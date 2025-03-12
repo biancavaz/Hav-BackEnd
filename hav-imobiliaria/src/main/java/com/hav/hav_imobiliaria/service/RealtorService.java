@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -72,11 +73,18 @@ public class RealtorService {
     public Page<RealtorListGetResponseDTO> findAllByFilter(
             @Valid RealtorFilterPostResponseDTO realtorDTO,
             Pageable pageable) {
+        System.out.printf(realtorDTO.toString());
+        Realtor realtor = modelMapper.map(realtorDTO, Realtor.class);
 
         // Criar o exemplo de filtro usando o RealtorMatcher
-        Example<Realtor> example = realtorMatcher.createRealtorExample(realtorDTO);
-
+//criando o example matcher específico dos filtros do imóvel
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase()
+                .withIgnoreNullValues()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
         // Chama o repositório usando o exemplo com filtro
+        Example<Realtor> example = Example.of(realtor, matcher);
+
         Page<Realtor> realtorPage = repository.findAll(example, pageable);
 
         // Aqui você pode aplicar filtros adicionais, como preço (se houver)
@@ -85,9 +93,11 @@ public class RealtorService {
         // Criar uma nova página filtrada
         Page<Realtor> filteredPage = new PageImpl<>(filteredRealtors, pageable, filteredRealtors.size());
 
+        System.out.printf(filteredPage.getContent().getFirst().toString());
+
         // Transformar o resultado final na DTO que será retornado
-        Page<RealtorListGetResponseDTO> realtorListGetResponseDTOS = filteredPage.map(realtor ->
-                modelMapper.map(realtor, RealtorListGetResponseDTO.class)
+        Page<RealtorListGetResponseDTO> realtorListGetResponseDTOS = filteredPage.map(realtorx ->
+                modelMapper.map(realtorx, RealtorListGetResponseDTO.class)
         );
 
         return realtorListGetResponseDTOS;

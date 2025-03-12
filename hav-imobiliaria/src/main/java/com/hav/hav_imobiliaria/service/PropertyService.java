@@ -113,6 +113,7 @@ public class PropertyService {
 
         //chamando o matcher
         Example<Property> example = Example.of(property, matcher);
+        System.out.println(example.toString());
 
         Page<Property> propertyList = repository.findAll(example, pageable);
 

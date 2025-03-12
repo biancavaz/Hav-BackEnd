@@ -13,7 +13,7 @@ public record EditorPostRequestDTO(
         @NotBlank String cpf,
         @NotBlank String celphone,
         String phoneNumber,
-        @NotNull Boolean archived,
+        @NotNull boolean archived,
         AddressPostRequestDTO address) {
 
 

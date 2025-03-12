@@ -67,6 +67,8 @@ public class RealtorController {
     public Page<RealtorListGetResponseDTO> findByFilter(
             @RequestBody RealtorFilterPostResponseDTO realtorDTO,
             Pageable pageable){
+        System.out.println("primeiro");
+        System.out.println(realtorDTO.toString());
         return service.findAllByFilter(realtorDTO, pageable);
     }
 //
