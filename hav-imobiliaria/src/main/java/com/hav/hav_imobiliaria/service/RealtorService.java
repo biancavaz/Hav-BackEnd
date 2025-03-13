@@ -31,9 +31,7 @@ public class RealtorService {
 
     private final RealtorRepository repository;
     private final ModelMapper modelMapper;
-    private final RealtorMather realtorMatcher;
 
-    //certo
     public RealtorPostRequestDTO createRealtor(
             @Valid RealtorPostRequestDTO realtorDTO) {
 
@@ -57,8 +55,6 @@ public class RealtorService {
         return realtorDTO.convertToDTO(savedRealtor);
     }
 
-
-    //consegui tbbbb ihuuul
     public Realtor editRealtor(
             @NotNull @Positive Integer id,
             @Valid RealtorPutRequestDTO realtorPutDTO) {
@@ -71,7 +67,6 @@ public class RealtorService {
 
         return repository.save(existingRealtor);
     }
-
 
     public Page<RealtorListGetResponseDTO> findAllByFilter(
             @Valid RealtorFilterPostResponseDTO realtorDTO,
@@ -106,6 +101,7 @@ public class RealtorService {
 
         return realtorListGetResponseDTOS;
     }
+
     @Transactional
     public void removeList(List<Integer> idList) {
         repository.deleteByIdIn(idList);
@@ -117,7 +113,6 @@ public class RealtorService {
         repository.saveAll(realtors);
     }
 
-
     public List<Realtor> findAllById(List<Integer> integers) {
         if (integers == null || integers.isEmpty()) {
             return null;
@@ -125,7 +120,6 @@ public class RealtorService {
         return repository.findAllById(integers);
     }
 
-    // Metodo para buscar o Realtor e retornar um DTO
     public RealtorPutRequestDTO findRealtorById(Integer id) {
         Realtor realtor = repository.findById(id).get();
 

@@ -21,6 +21,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
@@ -41,84 +42,25 @@ public class PropertyService {
     private final TaxesService taxesService;
 
 
-    //teste
-    public Property create(PropertyPostRequestDTO propertyDTO) {
 
-        // Usando ModelMapper para mapear diretamente o DTO (Record) para a entidade Property
-        Property property = modelMapper.map(propertyDTO, Property.class);
+    public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 
-        // Configurando os relacionamentos manualmente
+        Property property = propertyDTO.convert();
+
         property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
+
         property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
 
-        // Pegando o proprietário
-        Proprietor proprietor = proprietorService.findById(propertyDTO.proprietor());
-        property.setProprietor(proprietor);
+        property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
 
-        // Atualizando o número de imóveis do proprietário
-        proprietor.incrementPropertyCount();
-        proprietorService.save(proprietor);  // Salvando o proprietário com o contador atualizado
-
-        // Gerando o código único
-        String uniqueCode;
-        do {
-            uniqueCode = generateUniquePropertyCode();
-        } while (repository.existsByPropertyCode(uniqueCode));
-        property.setPropertyCode(uniqueCode);
+        property.setPropertyCode(generateUniqueCode());
 
         return repository.save(property);
     }
 
-//    public Property create(PropertyPostRequestDTO propertyDTO) {
-//
-//        // Usando ModelMapper para mapear diretamente o DTO (Record) para a entidade Property
-//        Property property = modelMapper.map(propertyDTO, Property.class);
-//
-//        // Configurando os relacionamentos manualmente
-//        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
-//        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
-//        property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
-//
-//        // Gerando o código único
-//        String uniqueCode;
-//        do {
-//            uniqueCode = generateUniquePropertyCode();
-//        } while (repository.existsByPropertyCode(uniqueCode));
-//        property.setPropertyCode(uniqueCode);
-//
-//        return repository.save(property);
-//    }
-
-
-//    public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
-//
-//        Property property = propertyDTO.convert();
-//
-//        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
-//
-//        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
-//
-//        property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
-//
-//        String uniqueCode;
-//        do {
-//            uniqueCode = generateUniquePropertyCode();
-//        } while (repository.existsByPropertyCode(uniqueCode));
-//        property.setPropertyCode(uniqueCode);
-//
-//        return repository.save(property);
-//    }
-
-    private String generateUniquePropertyCode() {
-        Random random = new Random();
-        int firstNumber = random.nextInt(10); // número (0-9)
-        int secondNumber = random.nextInt(10); // número (0-9)
-        int thirdNumber = random.nextInt(10); // número (0-9)
-        int fourthNumber = random.nextInt(10); // número (0-9)
-        char letter = (char) (random.nextInt(26) + 'A'); // Letra aleatória de A-Z
-        int lastNumber = random.nextInt(10);
-
-        return String.format("%d%d%d%d%c%d", firstNumber, secondNumber, thirdNumber, fourthNumber, letter, lastNumber);
+    private String generateUniqueCode() {
+        long timestamp = Instant.now().toEpochMilli();
+        return String.valueOf(timestamp);
     }
 
     //select imóveis
@@ -196,32 +138,11 @@ public class PropertyService {
 
 
 
-    //teste
-    public void delete(Integer id) {
-        // Encontrar a propriedade
-        Property property = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Property not found"));
-
-        // Encontrar o proprietário da propriedade
-        Proprietor proprietor = property.getProprietor();
-
-        // Decrementar o número de propriedades do proprietário
-        if (proprietor != null) {
-            proprietor.decrementPropertyCount(); // Decrementando o número de imóveis
-            proprietorService.save(proprietor); // Salvando o proprietário com o contador atualizado
+    public void delete(@Positive @NotNull Integer id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
         }
-
-        // Excluir a propriedade
-        repository.delete(property);
     }
-
-//
-//
-//    public void delete(@Positive @NotNull Integer id) {
-//        if (repository.existsById(id)) {
-//            repository.deleteById(id);
-//        }
-//    }
 
 
     public void deleteByPropertyCode(@NotNull String propertyCode) {
@@ -237,10 +158,15 @@ public class PropertyService {
         }
     }
 
-    public Property modifyProperty(@Positive @NotNull Integer id, @Valid PropertyPutRequestDTO propertyDTO) {
+    //modelmapper
+    public Property modifyProperty(
+            @Positive @NotNull Integer id,
+            @Valid PropertyPutRequestDTO propertyDTO) {
+
         if (repository.existsById(id)) {
-            Property property = propertyDTO.convert();
-            property.setId(id);
+            //mapear o DTO para a entidade Property
+            Property property = modelMapper.map(propertyDTO, Property.class);
+            property.setId(id);  // Atribui o ID manualmente
             return repository.save(property);
         }
         throw new NoSuchElementException();

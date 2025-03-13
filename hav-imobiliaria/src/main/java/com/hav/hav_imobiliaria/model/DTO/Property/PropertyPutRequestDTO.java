@@ -25,12 +25,12 @@ public record PropertyPutRequestDTO(
         @NotNull PropertyFeaturePostRequestDTO propertyFeaturesDTO,
         @Positive @NotNull List<Integer> additionalsId
 ) {
-    public Property convert() {
-        return Property.builder().title(title).
-                propertyDescription(propertyDescription).propertyType(propertyType).
-                propertyStatus(propertyStatus).area(area).price(price).
-                promotionalPrice(promotionalPrice).purpose(purpose).highlight(highlight).
-                propertyCategory(propertyCategory).taxes(taxesDTO.convert()).
-                propertyFeatures(propertyFeaturesDTO.convert()).build();
-    }
+//    public Property convert() {
+//        return Property.builder().title(title).
+//                propertyDescription(propertyDescription).propertyType(propertyType).
+//                propertyStatus(propertyStatus).area(area).price(price).
+//                promotionalPrice(promotionalPrice).purpose(purpose).highlight(highlight).
+//                propertyCategory(propertyCategory).taxes(taxesDTO.convert()).
+//                propertyFeatures(propertyFeaturesDTO.convert()).build();
+//    }
 }

@@ -53,14 +53,14 @@ public record PropertyPostRequestDTO(
         @NotNull(message = "Proprietário inválido")
         Integer proprietor
 ) {
-//    public Property convert() {
-//        return Property.builder().title(title).
-//                propertyDescription(propertyDescription).
-//                propertyType(propertyType).propertyStatus(propertyStatus).area(area).price(price).
-//                promotionalPrice(promotionalPrice).purpose(purpose).highlight(highlight).
-//                propertyCategory(propertyCategory).
-//                address(address.convert()).taxes(taxes.convert()).
-//                propertyFeatures(propertyFeatures.convert())
-//                .build();
-//    }
+    public Property convert() {
+        return Property.builder().title(title).
+                propertyDescription(propertyDescription).
+                propertyType(propertyType).propertyStatus(propertyStatus).area(area).price(price).
+                promotionalPrice(promotionalPrice).purpose(purpose).highlight(highlight).
+                propertyCategory(propertyCategory).
+                address(address.convert()).taxes(taxes.convert()).
+                propertyFeatures(propertyFeatures.convert())
+                .build();
+    }
 }

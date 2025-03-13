@@ -12,8 +12,10 @@ public record TaxesPostRequestDTO(
         @NotNull(message = "IPTU não pode estar em branco")
         Double iptu
 ) {
+
     public Taxes convert() {
-        return Taxes.builder()
+        return Taxes
+                .builder()
                 .condominiumFee(condominiumFee)
                 .iptu(iptu)
                 .build();

@@ -29,11 +29,10 @@ public class EditorController {
 
     private final EditorService service;
 
-    //certo
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EditorPostRequestDTO createProprietor(
-            @RequestBody @Valid EditorPostRequestDTO editorPostDTO){
+            @RequestBody @Valid EditorPostRequestDTO editorPostDTO) {
         return service.createEditor(editorPostDTO);
     }
 
@@ -44,16 +43,15 @@ public class EditorController {
     }
 
     @PatchMapping("/changeArchiveStatus")
-    public void changeArchiveStatus(@RequestBody List<Integer> editorIds){
+    public void changeArchiveStatus(@RequestBody List<Integer> editorIds) {
         service.changeArchiveStatus(editorIds);
     }
 
-    //certo
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Editor editEditor(
             @PathVariable Integer id,
-            @RequestBody @Valid EditorPutRequestDTO editorPutDTO){
+            @RequestBody @Valid EditorPutRequestDTO editorPutDTO) {
         return service.editEditor(id, editorPutDTO);
     }
 
@@ -68,10 +66,9 @@ public class EditorController {
 //        return service.searchEditor(pageable);
 //    };
 
-
     @DeleteMapping
     @RequestMapping
-    public void removeEditorList(@RequestBody List<Integer> idList){
+    public void removeEditorList(@RequestBody List<Integer> idList) {
         service.removeList(idList);
     }
 

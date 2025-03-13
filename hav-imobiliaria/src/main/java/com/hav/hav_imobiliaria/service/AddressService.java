@@ -23,13 +23,6 @@ public class AddressService {
     private final ModelMapper modelMapper;
 
 
-
-//
-//    public Address create(
-//            @Valid AddressPostRequestDTO addressDTO) {
-//        return repository.save(addressDTO.convert());
-//    }
-
     public Address editAddress(
             @NotNull @Positive Integer id,
             @Valid AddressPutRequestDTO addressDTO) {

@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.DTO.Realtor;
 
+import com.hav.hav_imobiliaria.Exceptions.RealtorExceptions.ValidRealtor;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import jakarta.validation.Valid;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 
+@ValidRealtor
 public record RealtorPostRequestDTO(
         @NotBlank(message = "Nome não pode estar em branco")
         @Pattern(regexp = "^[A-Za-zÀ-ÿ]{2,}( [A-Za-zÀ-ÿ]{2,})+$", message = "Nome inválido")
@@ -27,7 +29,7 @@ public record RealtorPostRequestDTO(
         @Pattern(regexp = "\\d{10}$",
                 message = "Telefone inválido")
         String phoneNumber,
-        Boolean archived,
+        boolean archived,
         @Valid AddressPostRequestDTO address
 ) {
     public RealtorPostRequestDTO convertToDTO(Realtor realtor) {
@@ -41,6 +43,4 @@ public record RealtorPostRequestDTO(
                 realtor.getArchived(),
                 address);
     }
-
-
 }

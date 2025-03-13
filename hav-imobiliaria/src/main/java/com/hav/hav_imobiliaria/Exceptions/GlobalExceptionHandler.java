@@ -1,34 +1,34 @@
-package com.hav.hav_imobiliaria.globalExceptionsHandler;
+package com.hav.hav_imobiliaria.Exceptions;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Captura erros de validação do @Valid
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException ex) {
-        List<Map<String, String>> errors = ex.getBindingResult().getFieldErrors()
+    public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Erro de validação");
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
                 .stream()
-                .map(error -> Map.of("field", error.getField(), "message", Objects.requireNonNull(error.getDefaultMessage())))
-                .toList();
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.toList());
 
-        Map<String, Object> response = Map.of(
-                "status", HttpStatus.BAD_REQUEST.value(),
-                "message", "Erro de validação",
-                "errors", errors
-        );
+        response.put("errors", errors);
 
-        return ResponseEntity.badRequest().body(response);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     // Captura erros quando o objeto já existe no banco de dados

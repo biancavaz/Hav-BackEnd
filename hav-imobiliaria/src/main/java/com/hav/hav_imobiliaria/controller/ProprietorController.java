@@ -24,38 +24,34 @@ public class ProprietorController {
 
     private final ProprietorService service;
 
-    //certo
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProprietorPostDTO createProprietor(
-            @RequestBody @Valid ProprietorPostDTO proprietorDTO){
+            @RequestBody @Valid ProprietorPostDTO proprietorDTO) {
         return service.createProprietor(proprietorDTO);
     }
 
-
-    //certo
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Proprietor editProprietor(
             @PathVariable Integer id,
-            @RequestBody @Valid ProprietorPutRequestDTO ProprietorPutDTO){
+            @RequestBody @Valid ProprietorPutRequestDTO ProprietorPutDTO) {
         return service.editProprietor(id, ProprietorPutDTO);
     }
 
-
     @PostMapping("/filter")
-    public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto, Pageable pageable){
+    public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto, Pageable pageable) {
         return service.findAllByFilter(pageable, proprietorDto);
     }
 
     @PatchMapping("/changeArchiveStatus")
-    public void changeArchiveStatus(@RequestBody List<Integer> proprietorIds){
+    public void changeArchiveStatus(@RequestBody List<Integer> proprietorIds) {
         service.changeArchiveStatus(proprietorIds);
     }
 
     @DeleteMapping
     @RequestMapping
-    public void removeProprietorList(@RequestBody List<Integer> idList){
+    public void removeProprietorList(@RequestBody List<Integer> idList) {
         service.removeList(idList);
     }
 

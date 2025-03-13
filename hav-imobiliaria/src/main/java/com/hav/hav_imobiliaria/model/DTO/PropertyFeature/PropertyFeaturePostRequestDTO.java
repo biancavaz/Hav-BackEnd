@@ -22,10 +22,18 @@ public record PropertyFeaturePostRequestDTO(
         @NotNull(message = "Número de espaços de garagem inválido")
         @PositiveOrZero(message = "Número deve ser positivo ou zero")
         Integer garageSpace,
-        @NotNull(message = "Imóvel mobiliado inválido") Boolean isFurnished
-) {
+        @NotNull(message = "Imóvel mobiliado inválido") Boolean isFurnished) {
+
     public PropertyFeature convert() {
-        return PropertyFeature.builder().allowsPet(allowsPet).bedRoom(bedRoom).livingRoom(livingRoom).
-                bathRoom(bathRoom).garageSpace(garageSpace).suite(suite).isFurnished(isFurnished).build();
+            return PropertyFeature
+                    .builder()
+                    .allowsPet(allowsPet)
+                    .bedRoom(bedRoom)
+                    .livingRoom(livingRoom)
+                    .suite(suite)
+                    .bathRoom(bathRoom)
+                    .garageSpace(garageSpace)
+                    .isFurnished(isFurnished)
+                    .build();
     }
 }

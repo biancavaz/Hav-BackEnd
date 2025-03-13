@@ -16,7 +16,6 @@ import com.hav.hav_imobiliaria.repository.ProprietorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -37,8 +36,6 @@ public class ProprietorService {
     private final ProprietorRepository repository;
     private final ModelMapper modelMapper;
 
-
-    //certo
     public ProprietorPostDTO createProprietor(@Valid ProprietorPostDTO proprietorDTO) {
         System.out.println("Recebido no DTO: " + proprietorDTO);
 

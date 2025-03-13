@@ -26,7 +26,6 @@ public class RealtorController {
 
     private RealtorService service;
 
-    //certo
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RealtorPostRequestDTO createRealtor(
@@ -34,7 +33,6 @@ public class RealtorController {
         return service.createRealtor(realtorPostDTO);
     }
 
-    //certo
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Realtor editRealtor(
