@@ -12,6 +12,7 @@ import com.hav.hav_imobiliaria.service.CustumerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -62,7 +63,10 @@ public class CustomerController {
 //    }
 
     @PostMapping("/filter")
-    public Page<CustomerListGetResponseDTO> findByFilter(@RequestBody CustomerFilterPostResponseDTO customerDto, Pageable pageable){
+    public Page<CustomerListGetResponseDTO> findByFilter(@RequestBody CustomerFilterPostResponseDTO customerDto,
+                                                         @RequestParam Integer page){
+        Pageable pageable = PageRequest.of(page, 10);
+        System.out.printf(pageable.toString());
         return service.findAllByFilter(customerDto, pageable);
     }
     @PatchMapping("/changeArchiveStatus")
