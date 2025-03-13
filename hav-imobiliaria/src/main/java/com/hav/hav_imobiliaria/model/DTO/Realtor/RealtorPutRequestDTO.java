@@ -7,11 +7,11 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
-public record RealtorPutRequestDTO(
-        String name,
-        String email,
-        String celphone,
-        String phoneNumber,
-        AddressPostRequestDTO address) {
+public class RealtorPutRequestDTO{
+        String name;
+        String email;
+        String celphone;
+        String phoneNumber;
+        AddressPostRequestDTO address;
 
 }
