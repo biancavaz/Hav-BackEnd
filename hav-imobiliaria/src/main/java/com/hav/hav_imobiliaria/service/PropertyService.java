@@ -8,6 +8,7 @@ import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
+import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import jakarta.transaction.Transactional;
@@ -51,6 +52,26 @@ public class PropertyService {
         property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
 
         // Gera um código único para a propriedade
+
+    //teste
+    public Property create(PropertyPostRequestDTO propertyDTO) {
+
+        // Usando ModelMapper para mapear diretamente o DTO (Record) para a entidade Property
+        Property property = modelMapper.map(propertyDTO, Property.class);
+
+        // Configurando os relacionamentos manualmente
+        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
+        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
+
+        // Pegando o proprietário
+        Proprietor proprietor = proprietorService.findById(propertyDTO.proprietor());
+        property.setProprietor(proprietor);
+
+        // Atualizando o número de imóveis do proprietário
+        proprietor.incrementPropertyCount();
+        proprietorService.save(proprietor);  // Salvando o proprietário com o contador atualizado
+
+        // Gerando o código único
         String uniqueCode;
         do {
             uniqueCode = generateUniquePropertyCode();
@@ -61,6 +82,46 @@ public class PropertyService {
         return repository.save(property);
     }
 //
+//    public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
+//
+//        Property property = propertyDTO.convert();
+//
+//        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
+//
+//        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
+//
+//        property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
+//
+//        String uniqueCode;
+//        do {
+//            uniqueCode = generateUniquePropertyCode();
+//        } while (repository.existsByPropertyCode(uniqueCode));
+//        property.setPropertyCode(uniqueCode);
+//
+//        return repository.save(property);
+//    }
+
+//    public Property create(PropertyPostRequestDTO propertyDTO) {
+//
+//        // Usando ModelMapper para mapear diretamente o DTO (Record) para a entidade Property
+//        Property property = modelMapper.map(propertyDTO, Property.class);
+//
+//        // Configurando os relacionamentos manualmente
+//        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
+//        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
+//        property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
+//
+//        // Gerando o código único
+//        String uniqueCode;
+//        do {
+//            uniqueCode = generateUniquePropertyCode();
+//        } while (repository.existsByPropertyCode(uniqueCode));
+//        property.setPropertyCode(uniqueCode);
+//
+//        return repository.save(property);
+//    }
+
+
 //    public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 //
 //        Property property = propertyDTO.convert();
@@ -165,11 +226,35 @@ public class PropertyService {
         return propertyListGetResponseDtos;
     }
 
-    public void delete(@Positive @NotNull Integer id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
+
+
+    //teste
+    public void delete(Integer id) {
+        // Encontrar a propriedade
+        Property property = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Property not found"));
+
+        // Encontrar o proprietário da propriedade
+        Proprietor proprietor = property.getProprietor();
+
+        // Decrementar o número de propriedades do proprietário
+        if (proprietor != null) {
+            proprietor.decrementPropertyCount(); // Decrementando o número de imóveis
+            proprietorService.save(proprietor); // Salvando o proprietário com o contador atualizado
         }
+
+        // Excluir a propriedade
+        repository.delete(property);
     }
+
+//
+//
+//    public void delete(@Positive @NotNull Integer id) {
+//        if (repository.existsById(id)) {
+//            repository.deleteById(id);
+//        }
+//    }
+
 
     public void deleteByPropertyCode(@NotNull String propertyCode) {
         if (repository.existsByPropertyCode(propertyCode)) {

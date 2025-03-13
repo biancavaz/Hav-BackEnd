@@ -6,7 +6,7 @@ public record ProprietorPutRequestDTO(
         String name,
         String email,
         String celphone,
+        String purpose,
         String phoneNumber,
         AddressPostRequestDTO address) {
-
 }
