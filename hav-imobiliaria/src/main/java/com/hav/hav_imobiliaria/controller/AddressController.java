@@ -17,12 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class AddressController {
 
     private final AddressService service;
-//
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Address create(@RequestBody @Valid AddressPostRequestDTO addressDTO) {
-//        return service.create(addressDTO);
-//    }
+
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)

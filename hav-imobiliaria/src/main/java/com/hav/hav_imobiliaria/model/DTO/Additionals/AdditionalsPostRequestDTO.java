@@ -7,7 +7,5 @@ public record AdditionalsPostRequestDTO(
         @NotBlank(message = "Nome não pode estar em branco")
         String name
 ) {
-    public Additionals convert() {
-        return Additionals.builder().name(name).build();
-    }
+
 }

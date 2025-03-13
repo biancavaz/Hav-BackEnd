@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +16,10 @@ public class TaxesService {
 
     private final TaxesRepository repository;
 
+    private final ModelMapper modelMapper;
+
     public Taxes create(@Valid TaxesPostRequestDTO taxesDTO) {
-        return repository.save(taxesDTO.convert());
+        Taxes taxes = modelMapper.map(taxesDTO, Taxes.class);
+        return repository.save(taxes);
     }
 }

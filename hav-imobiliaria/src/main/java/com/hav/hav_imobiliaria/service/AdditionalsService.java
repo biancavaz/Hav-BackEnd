@@ -19,6 +19,7 @@ public class AdditionalsService {
     private final ModelMapper modelMapper;
 
     public Additionals create(@Valid AdditionalsPostRequestDTO additionalsDTO) {
+
         Additionals additionals = modelMapper.map(additionalsDTO, Additionals.class);
         return repository.save(additionals);
     }

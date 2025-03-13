@@ -24,9 +24,5 @@ public record AddressPostRequestDTO(
         Integer propertyNumber,
         String complement
 ) {
-    public Address convert() {
-        return Address.builder().cep(cep).street(street).
-                neighborhood(neighborhood).city(city).state(state).
-                propertyNumber(propertyNumber).complement(complement).build();
-    }
+
 }
