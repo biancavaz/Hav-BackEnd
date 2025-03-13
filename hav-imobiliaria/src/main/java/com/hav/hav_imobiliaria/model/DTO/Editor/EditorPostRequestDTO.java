@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.DTO.Editor;
 
+import com.hav.hav_imobiliaria.Exceptions.EditorExceptions.ValidEditor;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import jakarta.validation.Valid;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 
+@ValidEditor
 public record EditorPostRequestDTO(
         @NotBlank(message = "Nome não pode estar em branco")
         @Pattern(regexp = "^[A-Za-zÀ-ÿ]{2,}( [A-Za-zÀ-ÿ]{2,})+$", message = "Nome inválido")
