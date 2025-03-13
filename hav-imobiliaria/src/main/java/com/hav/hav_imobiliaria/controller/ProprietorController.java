@@ -10,6 +10,7 @@ import com.hav.hav_imobiliaria.service.ProprietorService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,9 @@ public class ProprietorController {
     }
 
     @PostMapping("/filter")
-    public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto, Pageable pageable) {
+    public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto,
+                                                           @RequestParam Integer page){
+        Pageable pageable = PageRequest.of(page, 10);
         return service.findAllByFilter(pageable, proprietorDto);
     }
 
