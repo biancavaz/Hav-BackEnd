@@ -17,4 +17,5 @@ import lombok.experimental.SuperBuilder;
 public class Adm extends User {
 
 
+
 }

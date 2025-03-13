@@ -100,10 +100,10 @@ public class AdmService {
     }
 
     public AdmPutRequestDTO findAdmById(Integer id) {
-        Adm adm = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Realtor not found"));
-
-        // Converte a entidade Realtor para o DTO
+        Adm adm = repository.findById(id).get();
+        System.out.println(adm.getClass());
+        // Converte a entidade adm para o DTO
+        System.out.println(modelMapper.map(adm, AdmPutRequestDTO.class).toString());
         return modelMapper.map(adm, AdmPutRequestDTO.class);
     }
 }

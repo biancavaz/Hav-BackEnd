@@ -76,10 +76,10 @@ public class AdmController {
 
     @GetMapping
     @RequestMapping("{id}")
-    public ResponseEntity<AdmPutRequestDTO> getRealtor(
+    public AdmPutRequestDTO getAdm(
             @PathVariable Integer id){
-
         AdmPutRequestDTO admDTO = service.findAdmById(id);
-        return ResponseEntity.ok(admDTO);
+        System.out.println(admDTO);
+        return admDTO;
     }
 }
