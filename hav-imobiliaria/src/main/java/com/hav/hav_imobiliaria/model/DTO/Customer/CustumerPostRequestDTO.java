@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.DTO.Customer;
 
+import com.hav.hav_imobiliaria.Exceptions.CustomerExceptions.ValidCustomer;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import jakarta.validation.Valid;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 
+@ValidCustomer
 public record CustumerPostRequestDTO(
         @NotBlank(message = "Nome não pode estar em branco")
         String name,
