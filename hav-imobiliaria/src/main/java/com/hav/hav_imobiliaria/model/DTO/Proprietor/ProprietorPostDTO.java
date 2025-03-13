@@ -26,7 +26,6 @@ public record ProprietorPostDTO(
         String cnpj,
         @Pattern(regexp = "^\\+55\\d{10}$",
                 message = "Telefone inválido")
-        String purpose,
         String phoneNumber,
         Boolean archived,
         @Valid
@@ -40,7 +39,6 @@ public record ProprietorPostDTO(
                 proprietor.getCelphone(),
                 proprietor.getCpf(),
                 proprietor.getCnpj(),
-                proprietor.getPurpose(),
                 proprietor.getPhoneNumber(),
                 proprietor.getArchived(),
                 address);

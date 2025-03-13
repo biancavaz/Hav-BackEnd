@@ -41,105 +41,25 @@ public class PropertyService {
     private final TaxesService taxesService;
 
 
-    //modelmapper
-    public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
-        // Converte o DTO para a entidade Property usando ModelMapper
-        Property property = modelMapper.map(propertyDTO, Property.class);
 
-        // Configura os adicionais, corretores e proprietário após a conversão
+    public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
+
+        Property property = propertyDTO.convert();
+
         property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
+
         property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
+
         property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
 
-        // Gera um código único para a propriedade
-
-    //teste
-    public Property create(PropertyPostRequestDTO propertyDTO) {
-
-        // Usando ModelMapper para mapear diretamente o DTO (Record) para a entidade Property
-        Property property = modelMapper.map(propertyDTO, Property.class);
-
-        // Configurando os relacionamentos manualmente
-        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
-        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
-
-        // Pegando o proprietário
-        Proprietor proprietor = proprietorService.findById(propertyDTO.proprietor());
-        property.setProprietor(proprietor);
-
-        // Atualizando o número de imóveis do proprietário
-        proprietor.incrementPropertyCount();
-        proprietorService.save(proprietor);  // Salvando o proprietário com o contador atualizado
-
-        // Gerando o código único
         String uniqueCode;
         do {
             uniqueCode = generateUniquePropertyCode();
         } while (repository.existsByPropertyCode(uniqueCode));
         property.setPropertyCode(uniqueCode);
 
-        // Salva a propriedade no repositório
         return repository.save(property);
     }
-//
-//    public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
-//
-//        Property property = propertyDTO.convert();
-//
-//        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
-//
-//        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
-//
-//        property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
-//
-//        String uniqueCode;
-//        do {
-//            uniqueCode = generateUniquePropertyCode();
-//        } while (repository.existsByPropertyCode(uniqueCode));
-//        property.setPropertyCode(uniqueCode);
-//
-//        return repository.save(property);
-//    }
-
-//    public Property create(PropertyPostRequestDTO propertyDTO) {
-//
-//        // Usando ModelMapper para mapear diretamente o DTO (Record) para a entidade Property
-//        Property property = modelMapper.map(propertyDTO, Property.class);
-//
-//        // Configurando os relacionamentos manualmente
-//        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
-//        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
-//        property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
-//
-//        // Gerando o código único
-//        String uniqueCode;
-//        do {
-//            uniqueCode = generateUniquePropertyCode();
-//        } while (repository.existsByPropertyCode(uniqueCode));
-//        property.setPropertyCode(uniqueCode);
-//
-//        return repository.save(property);
-//    }
-
-
-//    public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
-//
-//        Property property = propertyDTO.convert();
-//
-//        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
-//
-//        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
-//
-//        property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
-//
-//        String uniqueCode;
-//        do {
-//            uniqueCode = generateUniquePropertyCode();
-//        } while (repository.existsByPropertyCode(uniqueCode));
-//        property.setPropertyCode(uniqueCode);
-//
-//        return repository.save(property);
-//    }
 
     private String generateUniquePropertyCode() {
         Random random = new Random();
@@ -228,32 +148,11 @@ public class PropertyService {
 
 
 
-    //teste
-    public void delete(Integer id) {
-        // Encontrar a propriedade
-        Property property = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Property not found"));
-
-        // Encontrar o proprietário da propriedade
-        Proprietor proprietor = property.getProprietor();
-
-        // Decrementar o número de propriedades do proprietário
-        if (proprietor != null) {
-            proprietor.decrementPropertyCount(); // Decrementando o número de imóveis
-            proprietorService.save(proprietor); // Salvando o proprietário com o contador atualizado
+    public void delete(@Positive @NotNull Integer id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
         }
-
-        // Excluir a propriedade
-        repository.delete(property);
     }
-
-//
-//
-//    public void delete(@Positive @NotNull Integer id) {
-//        if (repository.existsById(id)) {
-//            repository.deleteById(id);
-//        }
-//    }
 
 
     public void deleteByPropertyCode(@NotNull String propertyCode) {
@@ -275,7 +174,7 @@ public class PropertyService {
             @Valid PropertyPutRequestDTO propertyDTO) {
 
         if (repository.existsById(id)) {
-            // Usando o ModelMapper para mapear o DTO para a entidade Property
+            //mapear o DTO para a entidade Property
             Property property = modelMapper.map(propertyDTO, Property.class);
             property.setId(id);  // Atribui o ID manualmente
             return repository.save(property);

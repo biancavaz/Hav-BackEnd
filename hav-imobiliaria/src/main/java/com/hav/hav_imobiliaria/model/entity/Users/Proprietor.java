@@ -25,26 +25,39 @@ public class Proprietor extends User {
     @Column(unique = true)
     private String cnpj;
 
-    @Column(name = "number_Properties")
-    private int numberProperties;
-
-    @Column(nullable = false)
-    private String purpose;
-
     @JsonBackReference
     @OneToMany(mappedBy = "proprietor")
     private List<Property> properties;
 
-    
-    public void incrementPropertyCount() {
-        this.numberProperties++;
+
+    public Integer numberOfProperty() {
+        return properties.size();
     }
 
-    // Metodo para decrementar o número de imóveis (se necessário em uma exclusão)
-    public void decrementPropertyCount() {
-        if (this.numberProperties > 0) {
-            this.numberProperties--;
+    private String definirPropósito() {
+        boolean temVenda = false;
+        boolean temLocacao = false;
+
+        // Percorrendo todos os imóveis para verificar os propósitos
+        for (Property property : properties) {
+            if (property.getPurpose().equals("venda")) {
+                temVenda = true;
+            } else if (property.getPurpose().equals("locacao")) {
+                temLocacao = true;
+            }
+        }
+
+        // Definindo o propósito com base nos imóveis encontrados
+        if (temVenda && temLocacao) {
+            return "Misto";
+        } else if (temVenda) {
+            return "Venda";
+        } else if (temLocacao) {
+            return "Locação";
+        } else {
+            return "nenhum";
         }
     }
+
 
 }

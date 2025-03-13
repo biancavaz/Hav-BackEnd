@@ -13,4 +13,11 @@ public record TaxesPostRequestDTO(
         Double iptu
 ) {
 
+    public Taxes convert() {
+        return Taxes
+                .builder()
+                .condominiumFee(condominiumFee)
+                .iptu(iptu)
+                .build();
+    }
 }

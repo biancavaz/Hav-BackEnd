@@ -24,4 +24,16 @@ public record PropertyFeaturePostRequestDTO(
         Integer garageSpace,
         @NotNull(message = "Imóvel mobiliado inválido") Boolean isFurnished) {
 
+    public PropertyFeature convert() {
+            return PropertyFeature
+                    .builder()
+                    .allowsPet(allowsPet)
+                    .bedRoom(bedRoom)
+                    .livingRoom(livingRoom)
+                    .suite(suite)
+                    .bathRoom(bathRoom)
+                    .garageSpace(garageSpace)
+                    .isFurnished(isFurnished)
+                    .build();
+    }
 }
