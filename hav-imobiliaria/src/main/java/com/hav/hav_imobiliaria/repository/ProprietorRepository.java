@@ -13,4 +13,6 @@ public interface ProprietorRepository extends JpaRepository<Proprietor, Integer>
     boolean existsByCpf(String cpf);
 
     boolean existsByCnpj(String cnpj);
+
+    boolean existsByEmail(String email);
 }

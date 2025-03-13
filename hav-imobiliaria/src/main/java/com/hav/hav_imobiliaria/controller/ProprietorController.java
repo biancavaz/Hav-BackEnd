@@ -28,7 +28,7 @@ public class ProprietorController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProprietorPostDTO createProprietor(
-            @RequestBody @Valid ProprietorPostDTO proprietorDTO) throws Exception {
+            @RequestBody @Valid ProprietorPostDTO proprietorDTO) {
         return service.createProprietor(proprietorDTO);
     }
 
@@ -38,17 +38,18 @@ public class ProprietorController {
     @ResponseStatus(HttpStatus.OK)
     public Proprietor editProprietor(
             @PathVariable Integer id,
-            @RequestBody @Valid ProprietorPutRequestDTO ProprietorPutDTO){
+            @RequestBody @Valid ProprietorPutRequestDTO ProprietorPutDTO) {
         return service.editProprietor(id, ProprietorPutDTO);
     }
 
 
     @PostMapping("/filter")
-    public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto, Pageable pageable){
+    public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto, Pageable pageable) {
         return service.findAllByFilter(pageable, proprietorDto);
     }
+
     @PatchMapping("/changeArchiveStatus")
-    public void changeArchiveStatus(@RequestBody List<Integer> proprietorIds){
+    public void changeArchiveStatus(@RequestBody List<Integer> proprietorIds) {
         service.changeArchiveStatus(proprietorIds);
     }
 
@@ -74,13 +75,14 @@ public class ProprietorController {
 //        return service.searchProprietor(pageable);
 //    };
 //
-////    @GetMapping
-////    @RequestMapping("/{id}")
-////    public RealtorGetResponseDTO searchRealtor(
-//////            @PathVariable Integer id){
-//////        Realtor realtor = service.searchRealtor(id);
-////        return realtor.convert();
-////    }
+
+    /// /    @GetMapping
+    /// /    @RequestMapping("/{id}")
+    /// /    public RealtorGetResponseDTO searchRealtor(
+    /// ///            @PathVariable Integer id){
+    /// ///        Realtor realtor = service.searchRealtor(id);
+    /// /        return realtor.convert();
+    /// /    }
 //
 //
 //
@@ -91,7 +93,7 @@ public class ProprietorController {
 //    }
     @DeleteMapping
     @RequestMapping
-    public void removeProprietorList(@RequestBody List<Integer> idList){
+    public void removeProprietorList(@RequestBody List<Integer> idList) {
         service.removeList(idList);
     }
 }
