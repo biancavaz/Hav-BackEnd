@@ -25,8 +25,26 @@ public class Proprietor extends User {
     @Column(unique = true)
     private String cnpj;
 
+    @Column(name = "number_Properties")
+    private int numberProperties;
+
+    @Column(nullable = false)
+    private String purpose;
+
     @JsonBackReference
     @OneToMany(mappedBy = "proprietor")
     private List<Property> properties;
+
+    
+    public void incrementPropertyCount() {
+        this.numberProperties++;
+    }
+
+    // Metodo para decrementar o número de imóveis (se necessário em uma exclusão)
+    public void decrementPropertyCount() {
+        if (this.numberProperties > 0) {
+            this.numberProperties--;
+        }
+    }
 
 }
