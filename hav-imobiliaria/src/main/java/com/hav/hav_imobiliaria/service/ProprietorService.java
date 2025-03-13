@@ -103,9 +103,6 @@ public class ProprietorService {
         repository.saveAll(proprietors);
     }
 
-    public Proprietor findById(Integer integer) {
-        return repository.findById(integer).get();
-    }
 
     public ProprietorPutRequestDTO findProprietorById(Integer id) {
         Proprietor proprietor = repository.findById(id)
@@ -113,5 +110,15 @@ public class ProprietorService {
 
         // Converte a entidade Realtor para o DTO
         return modelMapper.map(proprietor, ProprietorPutRequestDTO.class);
+    }
+
+    // Metodo para salvar ou atualizar o Proprietário
+    public Proprietor save(Proprietor proprietor) {
+        return repository.save(proprietor);
+    }
+
+    // Metodo para buscar Proprietário por ID
+    public Proprietor findById(Integer id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Proprietor not found"));
     }
 }
