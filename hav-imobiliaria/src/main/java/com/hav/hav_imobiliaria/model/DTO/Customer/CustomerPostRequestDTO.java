@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 
 @ValidCustomer
-public record CustumerPostRequestDTO(
+public record CustomerPostRequestDTO(
         @NotBlank(message = "Nome não pode estar em branco")
         String name,
         @Email(message = "E-mail inválido")

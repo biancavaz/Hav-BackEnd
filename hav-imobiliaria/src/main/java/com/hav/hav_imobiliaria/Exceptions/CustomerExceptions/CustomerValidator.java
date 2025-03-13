@@ -1,13 +1,13 @@
 package com.hav.hav_imobiliaria.Exceptions.CustomerExceptions;
 
-import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPostRequestDTO;
 import com.hav.hav_imobiliaria.repository.*;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class CustomerValidator implements ConstraintValidator<ValidCustomer, CustumerPostRequestDTO> {
+public class CustomerValidator implements ConstraintValidator<ValidCustomer, CustomerPostRequestDTO> {
 
     private final RealtorRepository realtorRepository;
     private final ProprietorRepository proprietorRepository;
@@ -16,7 +16,7 @@ public class CustomerValidator implements ConstraintValidator<ValidCustomer, Cus
     private final AdmRepository admRepository;
 
     @Override
-    public boolean isValid(CustumerPostRequestDTO customerDTO, ConstraintValidatorContext context) {
+    public boolean isValid(CustomerPostRequestDTO customerDTO, ConstraintValidatorContext context) {
         boolean isValid = true;
 
         if (customerDTO.cpf() != null &&
