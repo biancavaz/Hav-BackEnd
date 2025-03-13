@@ -12,8 +12,6 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,13 +37,13 @@ public class PropertyController {
         return service.findAll(pageable);
     }
 
-    //endpoint para filtragem de imóveis
     @PostMapping("/filter")
-    public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto, Pageable pageable){
+    public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto, Pageable pageable) {
         return service.findAllByFilter(propertyDto, pageable);
     }
+
     @PatchMapping("/changeArchiveStatus")
-    public void changeArchiveStatus(@RequestBody List<Integer> propertyIds){
+    public void changeArchiveStatus(@RequestBody List<Integer> propertyIds) {
         service.changeArchiveStatus(propertyIds);
     }
 
@@ -55,21 +53,9 @@ public class PropertyController {
         service.delete(id);
     }
 
-//    @DeleteMapping("/code/{propertyCode}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void deleteByPropertyCode(@PathVariable @NotNull String propertyCode) {
-//        service.deleteByPropertyCode(propertyCode);
-//    }
-//
-//
-//    @DeleteMapping("/code")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void deletePropertiesByPropertyCode(@RequestParam @NotNull List<String> propertyCodes) {
-//        service.deletePropertiesByPropertyCode(propertyCodes);
-//    }
     @DeleteMapping
     @RequestMapping
-    public void removePropertyList(@RequestBody List<Integer> idList){
+    public void removePropertyList(@RequestBody List<Integer> idList) {
         service.removeList(idList);
     }
 

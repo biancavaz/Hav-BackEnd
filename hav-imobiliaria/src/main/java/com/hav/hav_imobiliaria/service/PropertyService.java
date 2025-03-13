@@ -21,6 +21,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
@@ -52,25 +53,14 @@ public class PropertyService {
 
         property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
 
-        String uniqueCode;
-        do {
-            uniqueCode = generateUniquePropertyCode();
-        } while (repository.existsByPropertyCode(uniqueCode));
-        property.setPropertyCode(uniqueCode);
+        property.setPropertyCode(generateUniqueCode());
 
         return repository.save(property);
     }
 
-    private String generateUniquePropertyCode() {
-        Random random = new Random();
-        int firstNumber = random.nextInt(10); // número (0-9)
-        int secondNumber = random.nextInt(10); // número (0-9)
-        int thirdNumber = random.nextInt(10); // número (0-9)
-        int fourthNumber = random.nextInt(10); // número (0-9)
-        char letter = (char) (random.nextInt(26) + 'A'); // Letra aleatória de A-Z
-        int lastNumber = random.nextInt(10);
-
-        return String.format("%d%d%d%d%c%d", firstNumber, secondNumber, thirdNumber, fourthNumber, letter, lastNumber);
+    private String generateUniqueCode() {
+        long timestamp = Instant.now().toEpochMilli();
+        return String.valueOf(timestamp);
     }
 
     //select imóveis

@@ -10,4 +10,9 @@ import java.util.List;
 public interface ProprietorRepository extends JpaRepository<Proprietor, Integer> {
     void deleteByIdIn(List<Integer> ids);
 
+    boolean existsByCpf(String cpf);
+
+    boolean existsByCnpj(String cnpj);
+
+    boolean existsByEmail(String email);
 }

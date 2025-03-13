@@ -8,4 +8,7 @@ import java.util.List;
 public interface EditorRepository extends JpaRepository<Editor, Integer> {
     void deleteByIdIn(List<Integer> ids);
 
+    boolean existsByCpf(String cpf);
+
+    boolean existsByEmail(String email);
 }
