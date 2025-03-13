@@ -8,6 +8,7 @@ import com.hav.hav_imobiliaria.service.RealtorService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -46,7 +47,9 @@ public class RealtorController {
     @PostMapping("/filter")
     public Page<RealtorListGetResponseDTO> findByFilter(
             @RequestBody RealtorFilterPostResponseDTO realtorDTO,
-            Pageable pageable){
+            @RequestParam Integer page){
+        System.out.println(realtorDTO);
+        Pageable pageable = PageRequest.of(page, 10);
         return service.findAllByFilter(realtorDTO, pageable);
     }
 
@@ -65,10 +68,11 @@ public class RealtorController {
 
     @GetMapping
     @RequestMapping("{id}")
-    public ResponseEntity<RealtorPutRequestDTO> getRealtor(
+    public RealtorPutRequestDTO getRealtor(
             @PathVariable Integer id){
-
+        System.out.println("----------");
         RealtorPutRequestDTO realtorDTO = service.findRealtorById(id);
-        return ResponseEntity.ok(realtorDTO);
+        System.out.println(realtorDTO);
+        return realtorDTO;
     }
 }

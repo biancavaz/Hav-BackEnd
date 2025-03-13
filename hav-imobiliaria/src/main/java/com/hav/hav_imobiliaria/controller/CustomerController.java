@@ -67,7 +67,7 @@ public class CustomerController {
 
     @GetMapping
     @RequestMapping("{id}")
-    public ResponseEntity<CustomerPutRequestDTO> getRealtor(
+    public ResponseEntity<CustomerPutRequestDTO> getCustomer(
             @PathVariable Integer id){
 
         CustomerPutRequestDTO customerDTO = service.findCustomerById(id);

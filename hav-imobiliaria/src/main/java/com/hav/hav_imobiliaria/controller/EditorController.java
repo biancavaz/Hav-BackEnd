@@ -77,7 +77,7 @@ public class EditorController {
 
     @GetMapping
     @RequestMapping("{id}")
-    public ResponseEntity<EditorPutRequestDTO> getRealtor(
+    public ResponseEntity<EditorPutRequestDTO> getEditor(
             @PathVariable Integer id){
 
         EditorPutRequestDTO editorDTO = service.findEditorById(id);

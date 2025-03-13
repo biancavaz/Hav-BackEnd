@@ -76,6 +76,7 @@ public class RealtorService {
     public Page<RealtorListGetResponseDTO> findAllByFilter(
             @Valid RealtorFilterPostResponseDTO realtorDTO,
             Pageable pageable) {
+
         System.out.printf(realtorDTO.toString());
         Realtor realtor = modelMapper.map(realtorDTO, Realtor.class);
 
@@ -126,8 +127,7 @@ public class RealtorService {
 
     // Metodo para buscar o Realtor e retornar um DTO
     public RealtorPutRequestDTO findRealtorById(Integer id) {
-        Realtor realtor = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Realtor not found"));
+        Realtor realtor = repository.findById(id).get();
 
         // Converte a entidade Realtor para o DTO
         return modelMapper.map(realtor, RealtorPutRequestDTO.class);
