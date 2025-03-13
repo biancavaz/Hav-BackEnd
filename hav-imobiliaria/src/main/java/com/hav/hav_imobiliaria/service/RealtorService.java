@@ -9,6 +9,7 @@ import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -115,61 +116,21 @@ public class RealtorService {
         repository.saveAll(realtors);
     }
 
-//    public Realtor alterRealtor(
-//            @NotNull @Positive Integer id,
-//            @NotNull @Positive Integer idrealtor,
-//            @RequestBody RealtorPatchRequestDTO realtorDTO) {
-//
-//        if (repository.existsById(id)) {
-//
-//            // Recupera a entidade existente do banco de dados
-//            Realtor realtor = repository.findById(id)
-//                    .orElseThrow(() -> new NoSuchElementException("Corretor com ID " + id + " não encontrado."));
-//
-//            // Atualiza os campos da entidade usando ModelMapper, ignorando os campos nulos
-//            modelMapper.map(realtorDTO, realtor);
-//
-//
-//            // Altere o idrealtor, que aparentemente é um campo de atualização
-//            realtor.setId(idrealtor);
-//
-//            // Salve a entidade atualizada de volta ao repositório
-//            return repository.save(realtor);
-//        }
-//
-//        throw new NoSuchElementException("Corretor com ID " + id + " não encontrado.");
-//    }
 
-//
-//    public Page<Realtor> searchRealtors(
-//            Pageable pageable) {
-//        return repository.findAll(pageable);
-//    }
-//
-//    public RealtorGetResponseDTO searchRealtor(Integer id) {
-//        Realtor realtor = repository.findById(id)
-//                .orElseThrow(() -> new NoSuchElementException("Realtor not found with id: " + id));
-//        return modelMapper.map(realtor, RealtorGetResponseDTO.class);
-//    }
-//
-//
-//    public void removeRealtor(
-//            @NotNull @Positive Integer id) {
-//        repository.deleteById(id);
-//    }
-//
-//
-//
-//    public List<Realtor> findAllById(List<Integer> integers) {
-//        if (integers == null || integers.isEmpty()) {
-//            return null;
-//        }
-//        return repository.findAllById(integers);
-//    }
+    public List<Realtor> findAllById(List<Integer> integers) {
+        if (integers == null || integers.isEmpty()) {
+            return null;
+        }
+        return repository.findAllById(integers);
+    }
 
-//    public Realtor searchRealtor(Integer id) {
-//        return repository.findById(id).orElseThrow(NoSuchElementException::new);
-//    }
+    // Metodo para buscar o Realtor e retornar um DTO
+    public RealtorPutRequestDTO findRealtorById(Integer id) {
+        Realtor realtor = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Realtor not found"));
 
+        // Converte a entidade Realtor para o DTO
+        return modelMapper.map(realtor, RealtorPutRequestDTO.class);
+    }
 
 }

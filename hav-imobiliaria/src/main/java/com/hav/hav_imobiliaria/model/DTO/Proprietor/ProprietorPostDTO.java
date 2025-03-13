@@ -2,25 +2,36 @@ package com.hav.hav_imobiliaria.model.DTO.Proprietor;
 
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-
-import java.util.Date;
+import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.br.CPF;
 
 public record ProprietorPostDTO(
-        @NotBlank String name,
-        @NotBlank String email,
-        @NotNull String celphone,
-        @Pattern(regexp = "^(\\d{11})?$") String cpf,
-        @Pattern(regexp = "^(\\d{14})?$") String cnpj,
+        @NotBlank(message = "Nome não pode estar em branco")
+        @Pattern(regexp = "^[A-Za-zÀ-ÿ]{2,}( [A-Za-zÀ-ÿ]{2,})+$", message = "Nome inválido")
+        String name,
+        @NotBlank(message = "E-mail não pode estar em branco")
+        @Email(message = "E-mail inválido")
+        String email,
+        @NotBlank(message = "Celular não pode estar em branco")
+        @Pattern(regexp = "\\d{11}$", message = "Celular inválido")
+        String celphone,
+//        @CPF(message = "CPF inválido")
+        String cpf,
+        @CNPJ(message = "CNPJ inválido")
+        String cnpj,
+        @Pattern(regexp = "^\\+55\\d{10}$",
+                message = "Telefone inválido")
         String phoneNumber,
-        @NotNull Boolean archived,
+        Boolean archived,
+        @Valid
+        @NotNull(message = "Endereço inválido")
         AddressPostRequestDTO address
 ) {
-
-
-
     public ProprietorPostDTO convertToDTO(Proprietor proprietor) {
         return new ProprietorPostDTO(
                 proprietor.getName(),

@@ -5,13 +5,24 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public record PropertyFeaturePostRequestDTO(
-        @NotNull Boolean allowsPet,
-        @NotNull @PositiveOrZero Integer bedRoom,
-        @NotNull @PositiveOrZero Integer livingRoom,
-        @NotNull @PositiveOrZero Integer suite,
-        @NotNull @PositiveOrZero Integer bathRoom,
-        @NotNull @PositiveOrZero Integer garageSpace,
-        @NotNull Boolean isFurnished
+        @NotNull(message = "Permite Pet inválido")
+        Boolean allowsPet,
+        @NotNull(message = "Número de quartos inválido")
+        @PositiveOrZero(message = "Número deve ser positivo ou zero")
+        Integer bedRoom,
+        @NotNull(message = "Número de salas inválido")
+        @PositiveOrZero(message = "Número deve ser positivo ou zero")
+        Integer livingRoom,
+        @NotNull(message = "Número de suites inválido")
+        @PositiveOrZero(message = "Número deve ser positivo ou zero")
+        Integer suite,
+        @NotNull(message = "Número de banheiros inválido")
+        @PositiveOrZero(message = "Número deve ser positivo ou zero")
+        Integer bathRoom,
+        @NotNull(message = "Número de espaços de garagem inválido")
+        @PositiveOrZero(message = "Número deve ser positivo ou zero")
+        Integer garageSpace,
+        @NotNull(message = "Imóvel mobiliado inválido") Boolean isFurnished
 ) {
     public PropertyFeature convert() {
         return PropertyFeature.builder().allowsPet(allowsPet).bedRoom(bedRoom).livingRoom(livingRoom).

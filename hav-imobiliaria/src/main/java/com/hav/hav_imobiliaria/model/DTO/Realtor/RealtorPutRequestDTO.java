@@ -12,7 +12,6 @@ public record RealtorPutRequestDTO(
         String email,
         String celphone,
         String phoneNumber,
-        Boolean archived,
         AddressPostRequestDTO address) {
 
 }

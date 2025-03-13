@@ -4,7 +4,9 @@ import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
 import com.hav.hav_imobiliaria.repository.AdditionalsRepository;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +16,10 @@ import java.util.List;
 public class AdditionalsService {
 
     private final AdditionalsRepository repository;
+    private final ModelMapper modelMapper;
 
     public Additionals create(@Valid AdditionalsPostRequestDTO additionalsDTO) {
-        Additionals additionals = additionalsDTO.convert();
+        Additionals additionals = modelMapper.map(additionalsDTO, Additionals.class);
         return repository.save(additionals);
     }
 

@@ -17,6 +17,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,19 +33,21 @@ public class PropertyService {
     private final PropertyRepository repository;
     private final AdditionalsService additionalsService;
     private final RealtorService realtorService;
-//    private final CustomerOwnerService customerOwnerService;
     private final ProprietorService proprietorService;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+    private final AddressService addressService;
+    private final PropertyFeatureService propertyFeatureService;
+    private final TaxesService taxesService;
 
     public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 
         Property property = propertyDTO.convert();
 
-        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionalsId()));
+        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
 
-//        property.setRealtors(realtorService.findAllById(propertyDTO.realtorsId()));
-//
-//        property.setProprietor(proprietorService.findById(propertyDTO.proprietorId()));
+        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
+
+        property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
 
         String uniqueCode;
         do {
@@ -139,7 +142,6 @@ public class PropertyService {
 
         return propertyListGetResponseDtos;
     }
-
 
     public void delete(@Positive @NotNull Integer id) {
         if (repository.existsById(id)) {

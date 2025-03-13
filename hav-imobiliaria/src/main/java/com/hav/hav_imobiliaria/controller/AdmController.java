@@ -5,6 +5,7 @@ import com.hav.hav_imobiliaria.model.DTO.Adm.AdmFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.service.AdmService;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,16 +54,6 @@ public class AdmController {
         service.changeArchiveStatus(admIds);
     }
 
-
-//
-//
-//    @PatchMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public Adm alterarAdm(
-//            @PathVariable Integer id,
-//            @RequestParam Integer idAdm){
-//        return service.alterAdm(id, idAdm);
-//    }
 //
 //
 //    @GetMapping
@@ -75,20 +67,6 @@ public class AdmController {
 //        return service.searchAdm(pageable);
 //    };
 //
-//
-//    //    @GetMapping
-////    @RequestMapping("/{id}")
-////    public RealtorGetResponseDTO searchRealtor(
-//    ////            @PathVariable Integer id){
-//    ////        Realtor realtor = service.searchRealtor(id);
-////        return realtor.convert();
-////    }
-//
-//    @DeleteMapping
-//    @RequestMapping("/{id}")
-//    public void removeAdm(@PathVariable Integer id){
-//        service.remove(id);
-//    }
 
     @DeleteMapping
     @RequestMapping
@@ -96,4 +74,12 @@ public class AdmController {
         service.removeList(idList);
     }
 
+    @GetMapping
+    @RequestMapping("{id}")
+    public ResponseEntity<AdmPutRequestDTO> getRealtor(
+            @PathVariable Integer id){
+
+        AdmPutRequestDTO admDTO = service.findAdmById(id);
+        return ResponseEntity.ok(admDTO);
+    }
 }

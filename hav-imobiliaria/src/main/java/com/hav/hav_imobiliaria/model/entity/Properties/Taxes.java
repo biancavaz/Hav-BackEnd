@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.entity.Properties;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,10 +19,11 @@ public class Taxes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Double condominiumFee;
+    private Double condominiumFee = 0.0;
 
-    private Double iptu;
+    private Double iptu = 0.0;
 
+    @JsonBackReference
     @OneToOne(mappedBy = "taxes")
     private Property property;
 }

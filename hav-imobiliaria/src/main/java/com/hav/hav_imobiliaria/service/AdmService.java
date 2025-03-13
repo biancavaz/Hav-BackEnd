@@ -6,11 +6,10 @@ import com.hav.hav_imobiliaria.model.DTO.Adm.AdmListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
-import com.hav.hav_imobiliaria.model.entity.Users.Adm;
-import com.hav.hav_imobiliaria.model.entity.Users.Customer;
-import com.hav.hav_imobiliaria.model.entity.Users.Editor;
-import com.hav.hav_imobiliaria.model.entity.Users.User;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.Users.*;
 import com.hav.hav_imobiliaria.repository.AdmRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -98,5 +97,13 @@ public class AdmService {
         List<Adm> admins = repository.findAllById(admIds);
         admins.forEach(User::changeArchiveStatus);
         repository.saveAll(admins);
+    }
+
+    public AdmPutRequestDTO findAdmById(Integer id) {
+        Adm adm = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Realtor not found"));
+
+        // Converte a entidade Realtor para o DTO
+        return modelMapper.map(adm, AdmPutRequestDTO.class);
     }
 }

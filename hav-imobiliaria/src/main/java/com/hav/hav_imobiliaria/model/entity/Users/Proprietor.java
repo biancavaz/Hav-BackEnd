@@ -22,9 +22,6 @@ import java.util.List;
 @Table(name = "proprietor")
 public class Proprietor extends User {
 
-
-
-
     @Column(unique = true)
     private String cnpj;
 
