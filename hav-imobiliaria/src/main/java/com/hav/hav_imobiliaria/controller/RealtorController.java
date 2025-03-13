@@ -24,7 +24,6 @@ public class RealtorController {
 
     private RealtorService service;
 
-    //certo
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RealtorPostRequestDTO createRealtor(
@@ -32,7 +31,6 @@ public class RealtorController {
         return service.createRealtor(realtorPostDTO);
     }
 
-    //certo
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Realtor editRealtor(
@@ -40,7 +38,6 @@ public class RealtorController {
             @RequestBody @Valid RealtorPutRequestDTO realtorPutDTO) {
         return service.editRealtor(id, realtorPutDTO);
     }
-
 
     //n é viável neste contexto
 //    @PatchMapping("/{id}")
@@ -66,16 +63,17 @@ public class RealtorController {
     @PostMapping("/filter")
     public Page<RealtorListGetResponseDTO> findByFilter(
             @RequestBody RealtorFilterPostResponseDTO realtorDTO,
-            Pageable pageable){
+            Pageable pageable) {
         System.out.println("primeiro");
         System.out.println(realtorDTO.toString());
         return service.findAllByFilter(realtorDTO, pageable);
     }
+
     @PatchMapping("/changeArchiveStatus")
-    public void changeArchiveStatus(@RequestBody List<Integer> realtorIds){
+    public void changeArchiveStatus(@RequestBody List<Integer> realtorIds) {
         service.changeArchiveStatus(realtorIds);
     }
-//
+
 //    @GetMapping("/{id}")
 //    @ResponseStatus(HttpStatus.OK)
 //    public RealtorGetResponseDTO searchRealtor(@PathVariable Integer id) {
@@ -88,10 +86,11 @@ public class RealtorController {
 //    public void removeRealtor(@PathVariable Integer id) {
 //        service.removeRealtor(id);
 //    }
-        @DeleteMapping
-        @RequestMapping
-        public void removeRealtorList(@RequestBody List<Integer> idList){
-            service.removeList(idList);
-        }
+
+    @DeleteMapping
+    @RequestMapping
+    public void removeRealtorList(@RequestBody List<Integer> idList) {
+        service.removeList(idList);
+    }
 
 }

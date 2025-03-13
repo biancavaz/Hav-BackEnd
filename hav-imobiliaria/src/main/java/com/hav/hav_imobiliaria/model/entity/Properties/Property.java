@@ -29,7 +29,7 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "property_code", nullable = false, unique = true, length = 6)
+    @Column(name = "property_code", nullable = false, unique = true)
     private String propertyCode;
 
     @Column(nullable = false)

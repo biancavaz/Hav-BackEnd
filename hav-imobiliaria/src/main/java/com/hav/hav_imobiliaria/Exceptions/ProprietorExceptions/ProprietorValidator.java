@@ -1,8 +1,7 @@
 package com.hav.hav_imobiliaria.Exceptions.ProprietorExceptions;
 
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPostDTO;
-import com.hav.hav_imobiliaria.repository.ProprietorRepository;
-import com.hav.hav_imobiliaria.repository.RealtorRepository;
+import com.hav.hav_imobiliaria.repository.*;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.AllArgsConstructor;
@@ -10,8 +9,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ProprietorValidator implements ConstraintValidator<ValidProprietor, ProprietorPostDTO> {
 
+    private final RealtorRepository realtorRepository;
     private final ProprietorRepository proprietorRepository;
-    private final RealtorRepository realtorRepository; // Adicione o repositório de Realtor
+    private final CustumerRepository customerRepository;
+    private final EditorRepository editorRepository;
+    private final AdmRepository admRepository;
 
     @Override
     public boolean isValid(ProprietorPostDTO proprietorDTO, ConstraintValidatorContext context) {
@@ -33,7 +35,10 @@ public class ProprietorValidator implements ConstraintValidator<ValidProprietor,
             return false;
         } else if (proprietorDTO.cpf() != null &&
                 (proprietorRepository.existsByCpf(proprietorDTO.cpf()) ||
-                        realtorRepository.existsByCpf(proprietorDTO.cpf()))) {
+                        realtorRepository.existsByCpf(proprietorDTO.cpf()) ||
+                        customerRepository.existsByCpf(proprietorDTO.cpf()) ||
+                        editorRepository.existsByCpf(proprietorDTO.cpf()) ||
+                        admRepository.existsByCpf(proprietorDTO.cpf()))) {
             context.buildConstraintViolationWithTemplate("CPF já cadastrado")
                     .addPropertyNode("cpf")
                     .addConstraintViolation();
@@ -45,7 +50,10 @@ public class ProprietorValidator implements ConstraintValidator<ValidProprietor,
             return false;
         } else if (proprietorDTO.email() != null &&
                 (proprietorRepository.existsByEmail(proprietorDTO.email()) ||
-                        realtorRepository.existsByEmail(proprietorDTO.email()))) {
+                        realtorRepository.existsByEmail(proprietorDTO.email()) ||
+                        customerRepository.existsByEmail(proprietorDTO.email()) ||
+                        editorRepository.existsByEmail(proprietorDTO.email()) ||
+                        admRepository.existsByEmail(proprietorDTO.email()))) {
             context.buildConstraintViolationWithTemplate("E-mail já cadastrado")
                     .addPropertyNode("email")
                     .addConstraintViolation();

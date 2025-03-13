@@ -27,30 +27,29 @@ public class EditorController {
 
     private final EditorService service;
 
-    //certo
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EditorPostRequestDTO createProprietor(
-            @RequestBody @Valid EditorPostRequestDTO editorPostDTO){
+            @RequestBody @Valid EditorPostRequestDTO editorPostDTO) {
         return service.createEditor(editorPostDTO);
     }
 
     @PostMapping("/filter")
-    public Page<EditorListGetResponseDTO> findByFilter(@RequestBody EditorFilterPostResponseDTO editorDto, Pageable pageable){
+    public Page<EditorListGetResponseDTO> findByFilter(@RequestBody EditorFilterPostResponseDTO editorDto, Pageable pageable) {
 
         return service.findAllByFilter(pageable, editorDto);
     }
+
     @PatchMapping("/changeArchiveStatus")
-    public void changeArchiveStatus(@RequestBody List<Integer> editorIds){
+    public void changeArchiveStatus(@RequestBody List<Integer> editorIds) {
         service.changeArchiveStatus(editorIds);
     }
 
-    //certo
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Editor editEditor(
             @PathVariable Integer id,
-            @RequestBody @Valid EditorPutRequestDTO editorPutDTO){
+            @RequestBody @Valid EditorPutRequestDTO editorPutDTO) {
         return service.editEditor(id, editorPutDTO);
     }
 //
@@ -77,12 +76,12 @@ public class EditorController {
 //
 //
 //    //    @GetMapping
-////    @RequestMapping("/{id}")
-////    public RealtorGetResponseDTO searchRealtor(
-//////            @PathVariable Integer id){
-//////        Realtor realtor = service.searchRealtor(id);
-////        return realtor.convert();
-////    }
+//    @RequestMapping("/{id}")
+//   public RealtorGetResponseDTO searchRealtor(
+//           @PathVariable Integer id){
+//        Realtor realtor = service.searchRealtor(id);
+//       return realtor.convert();
+//    }
 //
 //    @DeleteMapping
 //    @RequestMapping("/{id}")
@@ -92,7 +91,7 @@ public class EditorController {
 
     @DeleteMapping
     @RequestMapping
-    public void removeEditorList(@RequestBody List<Integer> idList){
+    public void removeEditorList(@RequestBody List<Integer> idList) {
         service.removeList(idList);
     }
 

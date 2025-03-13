@@ -20,11 +20,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ProprietorController {
 
-
     private final ProprietorService service;
 
-
-    //certo
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProprietorPostDTO createProprietor(
@@ -32,8 +29,6 @@ public class ProprietorController {
         return service.createProprietor(proprietorDTO);
     }
 
-
-    //certo
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Proprietor editProprietor(
@@ -41,7 +36,6 @@ public class ProprietorController {
             @RequestBody @Valid ProprietorPutRequestDTO ProprietorPutDTO) {
         return service.editProprietor(id, ProprietorPutDTO);
     }
-
 
     @PostMapping("/filter")
     public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto, Pageable pageable) {
@@ -53,9 +47,6 @@ public class ProprietorController {
         service.changeArchiveStatus(proprietorIds);
     }
 
-//
-//
-//
 //    @PatchMapping("/{id}")
 //    @ResponseStatus(HttpStatus.OK)
 //    public Proprietor alterarProprietor(
@@ -76,13 +67,13 @@ public class ProprietorController {
 //    };
 //
 
-    /// /    @GetMapping
-    /// /    @RequestMapping("/{id}")
-    /// /    public RealtorGetResponseDTO searchRealtor(
-    /// ///            @PathVariable Integer id){
-    /// ///        Realtor realtor = service.searchRealtor(id);
-    /// /        return realtor.convert();
-    /// /    }
+    //    @GetMapping
+    //    @RequestMapping("/{id}")
+    //    public RealtorGetResponseDTO searchRealtor(
+    //            @PathVariable Integer id){
+    //        Realtor realtor = service.searchRealtor(id);
+    //        return realtor.convert();
+    //    }
 //
 //
 //
@@ -91,6 +82,7 @@ public class ProprietorController {
 //    public void removeProprietor(@PathVariable Integer id){
 //        service.remove(id);
 //    }
+
     @DeleteMapping
     @RequestMapping
     public void removeProprietorList(@RequestBody List<Integer> idList) {
