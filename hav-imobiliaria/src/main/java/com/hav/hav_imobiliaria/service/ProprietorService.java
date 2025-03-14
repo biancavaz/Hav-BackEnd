@@ -80,10 +80,18 @@ public class ProprietorService {
 
         Page<Proprietor> proprietorList = repository.findAll(example, pageable);
 
-
         Page<ProprietorListGetResponseDTO> proprietorListGetResponseDtos = proprietorList.map(proprietorx ->
                 modelMapper.map(proprietorx, ProprietorListGetResponseDTO.class)
         );
+
+        for(int i=0; i<proprietorList.getContent().size(); i++ ){
+            proprietorListGetResponseDtos.getContent().get(i)
+                    .setNumberOfProperty(proprietorList.getContent()
+                            .get(i).numberOfProperty());
+            proprietorListGetResponseDtos.getContent().get(i)
+                    .setPurpose(proprietorList.getContent()
+                            .get(i).getPurpose());
+        }
 
         return proprietorListGetResponseDtos;
     }

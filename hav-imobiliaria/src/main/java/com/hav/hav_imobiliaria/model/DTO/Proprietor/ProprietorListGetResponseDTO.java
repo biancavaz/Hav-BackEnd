@@ -8,7 +8,11 @@ public class ProprietorListGetResponseDTO {
     String cpf;
     String name;
     String email;
-    String goal;
     Integer numberOfProperty;
-    String definirPropósito;
+    String purpose;
+
+
+
+
+
 }
