@@ -20,14 +20,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -70,6 +68,8 @@ public class ProprietorService {
     public Page<ProprietorListGetResponseDTO> findAllByFilter(Pageable pageable, ProprietorFilterPostResponseDTO proprietorDto) {
         Proprietor proprietor = modelMapper.map(proprietorDto, Proprietor.class);
 
+        System.out.println(proprietorDto);
+
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreCase()
                 .withIgnoreNullValues()
@@ -79,13 +79,19 @@ public class ProprietorService {
         System.out.println(example.toString());
 
         Page<Proprietor> proprietorList = repository.findAll(example, pageable);
+        System.out.println("after repository");
 
         Page<ProprietorListGetResponseDTO> proprietorListGetResponseDtos = proprietorList.map(proprietorx ->
                 modelMapper.map(proprietorx, ProprietorListGetResponseDTO.class)
 
         );
 
+
+
+
+
         for(int i=0; i<proprietorList.getContent().size(); i++ ){
+
 
             if(proprietorList.getContent().get(i).getCpf()==null) {
                 proprietorListGetResponseDtos.getContent().get(i).setDocument(proprietorList.getContent().get(i).getCnpj());
@@ -99,6 +105,16 @@ public class ProprietorService {
             proprietorListGetResponseDtos.getContent().get(i)
                     .setPurpose(proprietorList.getContent()
                             .get(i).getPurpose());
+        }
+
+        if(proprietorDto.getNumberOfProperty() != null) {
+            List<ProprietorListGetResponseDTO> filteredPage = proprietorListGetResponseDtos
+                    .map(proprietorx -> modelMapper.map(proprietorx, ProprietorListGetResponseDTO.class))
+                    .filter(dto -> dto.getNumberOfProperty() == proprietorDto.getNumberOfProperty())  // Filter where numberOfProperties == 4
+                    .stream().collect(Collectors.toList());
+
+            proprietorListGetResponseDtos = new PageImpl<>(filteredPage, pageable, filteredPage.size());
+
         }
 
         return proprietorListGetResponseDtos;

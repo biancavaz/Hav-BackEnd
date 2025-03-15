@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Data
@@ -26,8 +27,10 @@ public class Proprietor extends User {
     private String cnpj;
 
     @JsonBackReference
+
     @OneToMany(mappedBy = "proprietor")
     private List<Property> properties;
+
 
 
     public Integer numberOfProperty() {

@@ -27,6 +27,9 @@ public record PropertyPostRequestDTO(
         @Positive(message = "Área deve ser positiva")
         @NotNull(message = "Área inválida")
         Double area,
+        @Positive(message = "Andares deve ser positivo")
+        @NotNull(message = "Número de andares inválido")
+        Integer floors,
         @Positive(message = "Preço deve ser positivo")
         @NotNull(message = "Preço inválido")
         Double price,
@@ -45,7 +48,7 @@ public record PropertyPostRequestDTO(
         @Valid
         @NotNull(message = "Características inválidas")
         PropertyFeaturePostRequestDTO propertyFeatures,
-        @NotNull(message = "Ids adicionais inválidos")
+
         List<Integer> additionals,
         @NotNull(message = "Ids corretores inválidos")
         List<Integer> realtors,
@@ -58,7 +61,7 @@ public record PropertyPostRequestDTO(
                 propertyDescription(propertyDescription).
                 propertyType(propertyType).propertyStatus(propertyStatus).area(area).price(price).
                 promotionalPrice(promotionalPrice).purpose(purpose).highlight(highlight).
-                propertyCategory(propertyCategory).
+                propertyCategory(propertyCategory).floors(floors).
                 address(address.convert()).taxes(taxes.convert()).
                 propertyFeatures(propertyFeatures.convert())
                 .build();

@@ -38,6 +38,9 @@ public class Property {
     @Column(name = "property_description", nullable = false)
     private String propertyDescription;
 
+    @Column(name = "floors", nullable = false)
+    private Integer floors;
+
     @Column(name = "property_type", nullable = false)
     private String propertyType;
 
@@ -95,6 +98,7 @@ public class Property {
     @JsonManagedReference
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_proprietor")
+
     private Proprietor proprietor;
 
     @JsonManagedReference

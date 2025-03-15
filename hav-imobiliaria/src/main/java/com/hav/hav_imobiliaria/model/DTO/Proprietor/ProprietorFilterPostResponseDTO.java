@@ -8,7 +8,7 @@ public class ProprietorFilterPostResponseDTO {
     String cnpj;
     String name;
     String email;
-    Integer numberProperties;
+    Integer numberOfProperty;
     String goal;
     boolean archived;
 }
