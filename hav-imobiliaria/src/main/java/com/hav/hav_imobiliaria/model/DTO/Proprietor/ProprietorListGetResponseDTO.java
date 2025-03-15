@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ProprietorListGetResponseDTO {
     Integer id;
-    String cpf;
+    String document; //cpf e cnpj
     String name;
     String email;
     Integer numberOfProperty;
@@ -13,6 +13,7 @@ public class ProprietorListGetResponseDTO {
 
 
 
-
-
+    public void setDocument(String document) {
+        this.document = document;
+    }
 }

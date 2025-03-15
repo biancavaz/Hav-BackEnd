@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ProprietorFilterPostResponseDTO {
     String cpf;
+    String cnpj;
     String name;
     String email;
     Integer numberProperties;

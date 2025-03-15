@@ -82,9 +82,17 @@ public class ProprietorService {
 
         Page<ProprietorListGetResponseDTO> proprietorListGetResponseDtos = proprietorList.map(proprietorx ->
                 modelMapper.map(proprietorx, ProprietorListGetResponseDTO.class)
+
         );
 
         for(int i=0; i<proprietorList.getContent().size(); i++ ){
+
+            if(proprietorList.getContent().get(i).getCpf()==null) {
+                proprietorListGetResponseDtos.getContent().get(i).setDocument(proprietorList.getContent().get(i).getCnpj());
+            }else{
+                proprietorListGetResponseDtos.getContent().get(i).setDocument(proprietorList.getContent().get(i).getCpf());
+            }
+
             proprietorListGetResponseDtos.getContent().get(i)
                     .setNumberOfProperty(proprietorList.getContent()
                             .get(i).numberOfProperty());
