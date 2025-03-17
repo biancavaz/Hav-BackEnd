@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.br.CPF;
 @ValidCustomer
 public record CustumerPostRequestDTO(
         @NotBlank(message = "Nome não pode estar em branco")
+        @Pattern(regexp = "^[A-Za-zÀ-ÿ]{2,}( [A-Za-zÀ-ÿ]{2,})+$", message = "Nome inválido")
         String name,
         @Email(message = "E-mail inválido")
         @NotBlank(message = "E-mail não pode estar em branco")
