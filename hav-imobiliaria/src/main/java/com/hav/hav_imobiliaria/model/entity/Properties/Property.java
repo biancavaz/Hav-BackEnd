@@ -57,13 +57,13 @@ public class Property {
     private Double price;
 
     @Column(name = "promotional_price", nullable = false)
-    private Double promotionalPrice = 0.0;
+    private Double promotionalPrice;
 
     @Column(nullable = false)
-    private Boolean highlight = false;
+    private Boolean highlight;
 
-    @Column(name = "property_category", nullable = false)
-    private String propertyCategory;
+//    @Column(name = "property_category", nullable = false)
+//    private String propertyCategory;
 
     @CreationTimestamp
     @JsonIgnore

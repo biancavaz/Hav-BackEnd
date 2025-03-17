@@ -86,16 +86,9 @@ public class RealtorService {
 
         Page<Realtor> realtorPage = repository.findAll(example, pageable);
 
-        // Aqui você pode aplicar filtros adicionais, como preço (se houver)
-        List<Realtor> filteredRealtors = realtorPage.getContent(); // A lista de corretores
-
-        // Criar uma nova página filtrada
-        Page<Realtor> filteredPage = new PageImpl<>(filteredRealtors, pageable, filteredRealtors.size());
-
-        System.out.printf(filteredPage.getContent().getFirst().toString());
 
         // Transformar o resultado final na DTO que será retornado
-        Page<RealtorListGetResponseDTO> realtorListGetResponseDTOS = filteredPage.map(realtorx ->
+        Page<RealtorListGetResponseDTO> realtorListGetResponseDTOS = realtorPage.map(realtorx ->
                 modelMapper.map(realtorx, RealtorListGetResponseDTO.class)
         );
 

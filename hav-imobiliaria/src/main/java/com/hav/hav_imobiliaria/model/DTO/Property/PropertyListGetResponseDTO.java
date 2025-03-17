@@ -8,6 +8,6 @@ public class PropertyListGetResponseDTO {
     String propertyCode;
     Double price;
     String propertyType;
-    String propertyCategory;
+    String purpose;
     String propertyStatus;
 }

@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,10 @@ public class PropertyController {
     }
 
     @PostMapping("/filter")
-    public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto, Pageable pageable) {
+    public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto,
+                                                         @RequestParam  Integer page) {
+        Pageable pageable = PageRequest.of(page, 10);
+
         return service.findAllByFilter(propertyDto, pageable);
     }
 
