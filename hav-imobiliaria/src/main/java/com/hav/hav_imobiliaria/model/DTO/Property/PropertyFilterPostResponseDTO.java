@@ -14,7 +14,7 @@ public class PropertyFilterPostResponseDTO {
 
 
     public Double getMaxPric() {
-        if(this.maxPric==null || this.maxPric==2000000.0 ){
+        if(this.maxPric==null){
             return 100000000.0;
         }
         return this.maxPric;
@@ -22,7 +22,7 @@ public class PropertyFilterPostResponseDTO {
 
     public Double getMinPric() {
         if(this.minPric==null) {
-            return 100000.0;
+            return 0.0;
         }
         return this.minPric;
     }

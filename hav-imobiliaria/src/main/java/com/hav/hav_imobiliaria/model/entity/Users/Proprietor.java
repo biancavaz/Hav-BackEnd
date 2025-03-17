@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Data
@@ -26,23 +27,25 @@ public class Proprietor extends User {
     private String cnpj;
 
     @JsonBackReference
+
     @OneToMany(mappedBy = "proprietor")
     private List<Property> properties;
+
 
 
     public Integer numberOfProperty() {
         return properties.size();
     }
 
-    private String definirPropósito() {
+    public String getPurpose() {
         boolean temVenda = false;
         boolean temLocacao = false;
 
         // Percorrendo todos os imóveis para verificar os propósitos
         for (Property property : properties) {
-            if (property.getPurpose().equals("venda")) {
+            if (property.getPurpose().equalsIgnoreCase("venda")) {
                 temVenda = true;
-            } else if (property.getPurpose().equals("locacao")) {
+            } else if (property.getPurpose().equalsIgnoreCase("locacao")) {
                 temLocacao = true;
             }
         }
@@ -55,7 +58,7 @@ public class Proprietor extends User {
         } else if (temLocacao) {
             return "Locação";
         } else {
-            return "nenhum";
+            return "Nenhum";
         }
     }
 

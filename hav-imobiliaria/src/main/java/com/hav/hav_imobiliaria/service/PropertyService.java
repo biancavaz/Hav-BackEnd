@@ -46,8 +46,10 @@ public class PropertyService {
     public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
 
         Property property = propertyDTO.convert();
+        if(property.getAdditionals() != null && property.getAdditionals().size() > 0) {
+            property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
 
-        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
+        }
 
         property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
 
@@ -101,7 +103,6 @@ public class PropertyService {
             Pageable pageable) {
 
         Property property = modelMapper.map(propertyDto, Property.class);
-        System.out.println(property);
 
         //criando o example matcher específico dos filtros do imóvel
         ExampleMatcher matcher = ExampleMatcher.matching()
@@ -111,25 +112,32 @@ public class PropertyService {
 
         //chamando o matcher
         Example<Property> example = Example.of(property, matcher);
-        System.out.println(example.toString());
 
-        Page<Property> propertyList = repository.findAll(example, pageable);
 
-        List<Property> propertyFinal = propertyList
-                .getContent().stream().filter(propertyFilterPrice ->
+        List<Property> allProperties = repository.findAll(example);
 
-                        propertyFilterPrice.getPrice() >= propertyDto.getMinPric()
-                                && propertyFilterPrice.getPrice() <= propertyDto.getMaxPric()
 
-                ).collect(Collectors.toList());
+
+        List<Property> filteredAllProperties = allProperties.stream()
+                .filter(propertyPrice -> propertyPrice.getPrice() >= propertyDto.getMinPric()
+                                                && propertyPrice.getPrice() <= propertyDto.getMaxPric() ) // Compare prices
+                .collect(Collectors.toList());
 
         //transforme o lista para page aqui
 
+        int start = pageable.getPageNumber() * pageable.getPageSize(); // Calculando o índice de início
+        int end = Math.min(start + pageable.getPageSize(), filteredAllProperties.size());
+
+        System.out.println(start);
+        System.out.println(end);
+
+        List<Property> pageProperty = filteredAllProperties.subList(start, end);
+
         // Criando um novo Page a partir da lista filtrada
-        Page<Property> filteredPage = new PageImpl<>(propertyFinal, pageable, propertyFinal.size());
+        Page<Property> propertyFinal = new PageImpl<>(pageProperty, pageable, filteredAllProperties.size());
 
         //tranformando o page propery pro page da dto
-        Page<PropertyListGetResponseDTO> propertyListGetResponseDtos = filteredPage.map(propertyx ->
+        Page<PropertyListGetResponseDTO> propertyListGetResponseDtos = propertyFinal.map(propertyx ->
                 modelMapper.map(propertyx, PropertyListGetResponseDTO.class)
         );
 

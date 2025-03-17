@@ -40,6 +40,9 @@ public class Property {
     @Column(name = "property_description", nullable = false)
     private String propertyDescription;
 
+    @Column(name = "floors", nullable = false)
+    private Integer floors;
+
     @Column(name = "property_type", nullable = false)
     private String propertyType;
 
@@ -56,13 +59,13 @@ public class Property {
     private Double price;
 
     @Column(name = "promotional_price", nullable = false)
-    private Double promotionalPrice = 0.0;
+    private Double promotionalPrice;
 
     @Column(nullable = false)
-    private Boolean highlight = false;
+    private Boolean highlight;
 
-    @Column(name = "property_category", nullable = false)
-    private String propertyCategory;
+//    @Column(name = "property_category", nullable = false)
+//    private String propertyCategory;
 
     @CreationTimestamp
     @JsonIgnore
@@ -98,12 +101,13 @@ public class Property {
     private List<Additionals> additionals;
 
     @JsonManagedReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "id_proprietor")
+
     private Proprietor proprietor;
 
     @JsonManagedReference
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(
             name = "property_realtors",
             joinColumns = @JoinColumn(name = "id_property"),

@@ -4,7 +4,6 @@ import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorFilterPostResponse
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPostDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.service.ProprietorService;
 import jakarta.validation.Valid;
@@ -43,6 +42,7 @@ public class ProprietorController {
     @PostMapping("/filter")
     public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto,
                                                            @RequestParam Integer page){
+        System.out.println(proprietorDto);
         Pageable pageable = PageRequest.of(page, 10);
         return service.findAllByFilter(pageable, proprietorDto);
     }
