@@ -1,9 +1,11 @@
 package com.hav.hav_imobiliaria.model.entity.Properties;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hav.hav_imobiliaria.model.entity.Address;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hav.hav_imobiliaria.model.entity.Address;
+import com.hav.hav_imobiliaria.model.entity.S3File;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
@@ -79,6 +81,9 @@ public class Property {
     @JoinColumn(name = "id_taxes", nullable = false)
     private Taxes taxes;
 
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<S3File> s3Files;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_property_feature", nullable = false)
     private PropertyFeature propertyFeatures;
@@ -104,6 +109,8 @@ public class Property {
             joinColumns = @JoinColumn(name = "id_property"),
             inverseJoinColumns = @JoinColumn(name = "id_realtor")
     )
+
+
     private List<Realtor> realtors;
 
     public void changeArchiveStatus(){
