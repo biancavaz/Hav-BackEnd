@@ -96,13 +96,13 @@ public class Property {
     private List<Additionals> additionals;
 
     @JsonManagedReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "id_proprietor")
 
     private Proprietor proprietor;
 
     @JsonManagedReference
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(
             name = "property_realtors",
             joinColumns = @JoinColumn(name = "id_property"),

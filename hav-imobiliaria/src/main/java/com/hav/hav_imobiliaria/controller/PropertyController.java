@@ -60,6 +60,7 @@ public class PropertyController {
     @DeleteMapping
     @RequestMapping
     public void removePropertyList(@RequestBody List<Integer> idList) {
+        System.out.println(idList);
         service.removeList(idList);
     }
 
