@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.controller;
 
+import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -69,5 +71,13 @@ public class PropertyController {
     public Property modifyProperty(@Positive @NotNull @PathVariable Integer id,
                                    @Valid PropertyPutRequestDTO propertyDTO) {
         return service.modifyProperty(id, propertyDTO);
+    }
+    @GetMapping
+    @RequestMapping("{id}")
+    public ResponseEntity<PropertyPutRequestDTO> getProperty(
+            @PathVariable Integer id){
+
+        PropertyPutRequestDTO propertyDto = service.findPropertyById(id);
+        return ResponseEntity.ok(propertyDto);
     }
 }

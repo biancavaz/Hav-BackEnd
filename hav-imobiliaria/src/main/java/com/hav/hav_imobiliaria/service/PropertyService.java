@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.service;
 
+import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
@@ -11,6 +12,7 @@ import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -190,5 +192,12 @@ public class PropertyService {
         List<Property> properties = repository.findAllById(propertuyIds);
         properties.forEach(Property::changeArchiveStatus);
         repository.saveAll(properties);
+    }
+
+    public PropertyPutRequestDTO findPropertyById(Integer id) {
+        Property property = repository.findById(id).get();
+
+        // Converte a entidade Realtor para o DTO
+        return modelMapper.map(property, PropertyPutRequestDTO.class);
     }
 }
