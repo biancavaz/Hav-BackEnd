@@ -1,16 +1,10 @@
 package com.hav.hav_imobiliaria.model.DTO.Property;
 
-import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsPutRequestDto;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPropertyPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPropertyPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
-import com.hav.hav_imobiliaria.model.entity.Properties.Property;
-import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -37,9 +31,9 @@ public class PropertyPutRequestDTO{
         @NotNull
         PropertyFeaturePutRequestDTO propertyFeatures;
         @NotNull AddressPutRequestDTO address;
-        @NotNull List<RealtorPutRequestDTO> realtors;
+        @NotNull List<RealtorPropertyPutRequestDTO> realtors;
         @NotNull
-        ProprietorPutRequestDTO proprietor;
+        ProprietorPropertyPutRequestDTO proprietor;
 
 //        List<AdditionalsPutRequestDto> additionals;
 
