@@ -20,25 +20,25 @@ public class PropertyFeature {
     private Integer id;
 
     @Column(name = "allows_pet", nullable = false)
-    private Boolean allowsPet = false;
+    private Boolean allowsPet ;
 
     @Column(name = "bed_room", nullable = false)
-    private Integer bedRoom = 0;
+    private Integer bedRoom ;
 
     @Column(name = "living_room", nullable = false)
-    private Integer livingRoom = 0;
+    private Integer livingRoom ;
 
     @Column(name = "bath_room", nullable = false)
-    private Integer bathRoom = 0;
+    private Integer bathRoom ;
 
     @Column(nullable = false)
-    private Integer suite = 0;
+    private Integer suite ;
 
     @Column(name = "garage_space", nullable = false)
-    private Integer garageSpace = 0;
+    private Integer garageSpace ;
 
     @Column(name = "is_furnished", nullable = false)
-    private Boolean isFurnished = false;
+    private Boolean isFurnished;
 
     @JsonBackReference
     @OneToOne(mappedBy = "propertyFeatures")

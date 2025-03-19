@@ -115,10 +115,14 @@ public class Property {
     )
 
 
+
     private List<Realtor> realtors;
 
     public void changeArchiveStatus(){
         this.archived = !this.archived;
     }
 
+    public PropertyFeature getPropertyFeatures() {
+        return propertyFeatures;
+    }
 }
