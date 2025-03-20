@@ -37,7 +37,7 @@ public class CustumerService {
         Customer savedCustomer = repository.save(customer);
 
         if (image != null) {
-            imageService.uploadImages(savedCustomer.getId(), image);
+            imageService.uploadUserImage(savedCustomer.getId(), image);
         }
 
         return custumerPostDTO.convertToDTO(savedCustomer);
@@ -47,16 +47,14 @@ public class CustumerService {
             @NotNull @Positive Integer id,
             @Valid CustumerPutRequestDTO custumerDTO) {
 
-       Customer existingCustomer = repository.findById(id).orElseThrow(() ->
-        new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
+        Customer existingCustomer = repository.findById(id).orElseThrow(() ->
+                new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
 
         // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
-       modelMapper.map(custumerDTO, existingCustomer);
+        modelMapper.map(custumerDTO, existingCustomer);
 
-       return repository.save(existingCustomer);
+        return repository.save(existingCustomer);
     }
-
-
 
 //    public Customer alterCustomer(
 //            @NotNull @Positive Integer id,
@@ -70,9 +68,10 @@ public class CustumerService {
 //    }
 //
 //
-////    public Realtor searchCustumer(
-////            @NotNull @Positive Integer id) {
-////    }
+
+    //    public Realtor searchCustumer(
+    //            @NotNull @Positive Integer id) {
+    //    }
 //
 //    public void removeCustumer(
 //            @NotNull @Positive Integer id) {
@@ -97,20 +96,17 @@ public class CustumerService {
 
         Page<Customer> customerList = repository.findAll(example, pageable);
 
-
-
         Page<CustomerListGetResponseDTO> costumerListGetResponseDtos = customerList.map(customerx ->
                 modelMapper.map(customerx, CustomerListGetResponseDTO.class)
         );
-
         return costumerListGetResponseDtos;
     }
 
     @Transactional
     public void removeList(List<Integer> idList) {
         repository.deleteByIdIn(idList);
-
     }
+
     public void changeArchiveStatus(List<Integer> customerIds) {
         List<Customer> customers = repository.findAllById(customerIds);
         customers.forEach(User::changeArchiveStatus);

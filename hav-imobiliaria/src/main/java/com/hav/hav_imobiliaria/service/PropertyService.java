@@ -49,9 +49,8 @@ public class PropertyService {
 
         Property savedProperty = repository.save(property);
 
-        // Salva as imagens associadas à propriedade
         if (images != null && !images.isEmpty()) {
-            imageService.uploadImages(savedProperty.getId(), images);
+            imageService.uploadPropertyImages(savedProperty.getId(), images);
         }
 
         return savedProperty;
@@ -62,7 +61,6 @@ public class PropertyService {
         return String.valueOf(timestamp);
     }
 
-    //select imóveis
     public Page<PropertyGetResponseDTO> findAll(Pageable pageable) {
         // Busca todas as propriedades no banco de dados com paginação
         Page<Property> properties = repository.findAll(pageable);

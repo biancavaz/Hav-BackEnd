@@ -40,7 +40,7 @@ public class AdmService {
         Adm savedadm = repository.save(adm);
 
         if (image != null) {
-            imageService.uploadImages(savedadm.getId(), image);
+            imageService.uploadUserImage(savedadm.getId(), image);
         }
 
         return admPostDTO.convertToDTO(adm);

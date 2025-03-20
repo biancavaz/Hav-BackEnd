@@ -34,7 +34,7 @@ public class RealtorService {
         Realtor savedRealtor = repository.save(realtor);
 
         if (image != null) {
-            imageService.uploadImages(savedRealtor.getId(), image);
+            imageService.uploadUserImage(savedRealtor.getId(), image);
         }
 
         return realtorDTO.convertToDTO(savedRealtor);

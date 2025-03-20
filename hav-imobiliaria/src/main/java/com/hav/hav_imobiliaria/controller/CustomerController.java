@@ -33,8 +33,6 @@ public class CustomerController {
         return service.createCustumer(CustumerPostDTO, image);
     }
 
-
-    //certo
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Customer editCustumerOwner(
@@ -42,7 +40,6 @@ public class CustomerController {
             @RequestBody @Valid CustumerPutRequestDTO custumerDTO) {
         return service.editCustumer(id, custumerDTO);
     }
-
 
 //    @PatchMapping("/{id}")
 //    @GetMapping("/page")
@@ -89,19 +86,20 @@ public class CustomerController {
 //    ;
 //
 
-    /// /    @GetMapping("/{id}")
-    /// /    @ResponseStatus(HttpStatus.OK)
-    /// /    public CustumerOwnerGetRequestDTO searchRealtor(
-    /// /            @PathVariable Integer id){
-    /// /        Realtor realtor = service.searchCustumerOwner(id);
-    /// /        return realtor.convert();
-    /// /    }
+    //   @GetMapping("/{id}")
+    //   @ResponseStatus(HttpStatus.OK)
+    //   public CustumerOwnerGetRequestDTO searchRealtor(
+    //           @PathVariable Integer id){
+    //       Realtor realtor = service.searchCustumerOwner(id);
+    //       return realtor.convert();
+    //   }
 //
 //    @DeleteMapping("/{id}")
 //    @ResponseStatus(HttpStatus.NO_CONTENT)
 //    public void removeCustomerOwner(@PathVariable Integer id) {
 //        service.removeCustumer(id);
 //    }
+
     @DeleteMapping
     @RequestMapping
     public void removeCustomerList(@RequestBody List<Integer> idList) {

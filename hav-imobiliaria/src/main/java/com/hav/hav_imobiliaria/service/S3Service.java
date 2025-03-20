@@ -30,6 +30,7 @@ public class S3Service {
 
             return key;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("Erro ao enviar arquivo para o S3", e);
         }
     }

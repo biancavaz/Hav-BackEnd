@@ -39,7 +39,7 @@ public class ProprietorService {
         Proprietor savedproprietor = repository.save(proprietor);
 
         if (image != null) {
-            imageService.uploadImages(savedproprietor.getId(), image);
+            imageService.uploadUserImage(savedproprietor.getId(), image);
         }
 
         return proprietorDTO.convertToDTO(savedproprietor);

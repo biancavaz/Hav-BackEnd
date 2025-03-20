@@ -24,7 +24,7 @@ public class AwsConfig {
 
     @Bean
     public S3Client s3Client() {
-        String endpointUrl = "https://buckethav.s3.us-east-2.amazonaws.com";
+        String endpointUrl = "https://s3.us-east-2.amazonaws.com";
 
         return S3Client.builder()
                 .region(Region.of(awsRegion))

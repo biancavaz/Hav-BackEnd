@@ -24,7 +24,7 @@ public class RealtorController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public RealtorPostRequestDTO createRealtor(
-            @RequestPart @Valid RealtorPostRequestDTO realtorPostDTO,
+            @RequestPart("realtor") @Valid RealtorPostRequestDTO realtorPostDTO,
             @RequestPart(value = "image", required = false) MultipartFile image
     ) {
         return service.createRealtor(realtorPostDTO, image);

@@ -31,27 +31,23 @@ public class EditorService {
             @Valid EditorPostRequestDTO editorPostDTO,
             MultipartFile image) {
 
-        // Mapeamento do DTO para entidade usando o ModelMapper
         Editor editor = modelMapper.map(editorPostDTO, Editor.class);
 
-        // Salvar a entidade e retornar a resposta
         Editor savededitor = repository.save(editor);
 
         if (image != null) {
-            imageService.uploadImages(savededitor.getId(), image);
+            imageService.uploadUserImage(savededitor.getId(), image);
         }
 
         return editorPostDTO.convertToDTO(savededitor);
     }
 
-    //certo
     public Editor editEditor(
             @Positive @NotNull Integer id, @Valid EditorPutRequestDTO editorPutDTO) {
 
         Editor existingEditor = repository.findById(id).orElseThrow(() ->
                 new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
 
-        // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
         modelMapper.map(editorPutDTO, existingEditor);
 
         return repository.save(existingEditor);
