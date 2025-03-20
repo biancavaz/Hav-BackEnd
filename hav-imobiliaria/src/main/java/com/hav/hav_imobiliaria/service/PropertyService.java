@@ -7,8 +7,6 @@ import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
-import com.hav.hav_imobiliaria.model.entity.Users.Editor;
-import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -17,13 +15,12 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 
@@ -36,11 +33,9 @@ public class PropertyService {
     private final RealtorService realtorService;
     private final ProprietorService proprietorService;
     private final ModelMapper modelMapper;
-    private final AddressService addressService;
-    private final PropertyFeatureService propertyFeatureService;
-    private final TaxesService taxesService;
+    private final ImageService imageService;
 
-    public Property create(@Valid PropertyPostRequestDTO propertyDTO) {
+    public Property create(@Valid PropertyPostRequestDTO propertyDTO, List<MultipartFile> images) {
 
         Property property = propertyDTO.convert();
 
@@ -52,7 +47,14 @@ public class PropertyService {
 
         property.setPropertyCode(generateUniqueCode());
 
-        return repository.save(property);
+        Property savedProperty = repository.save(property);
+
+        // Salva as imagens associadas à propriedade
+        if (images != null && !images.isEmpty()) {
+            imageService.uploadImages(savedProperty.getId(), images);
+        }
+
+        return savedProperty;
     }
 
     private String generateUniqueCode() {
@@ -136,19 +138,6 @@ public class PropertyService {
     public void delete(@Positive @NotNull Integer id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
-        }
-    }
-
-    public void deleteByPropertyCode(@NotNull String propertyCode) {
-        if (repository.existsByPropertyCode(propertyCode)) {
-            repository.deleteByPropertyCode(propertyCode);
-        }
-    }
-
-    public void deletePropertiesByPropertyCode(@NotNull List<String> propertyCodes) {
-        if (repository.findByPropertyCodeIn(propertyCodes) == null ||
-                repository.findByPropertyCodeIn(propertyCodes).isEmpty()) {
-            repository.deleteByPropertyCodeIn(propertyCodes);
         }
     }
 

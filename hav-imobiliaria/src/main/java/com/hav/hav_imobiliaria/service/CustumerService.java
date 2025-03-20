@@ -4,11 +4,7 @@ import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
-import com.hav.hav_imobiliaria.model.entity.Properties.Property;
-import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
-import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
 import jakarta.transaction.Transactional;
@@ -19,10 +15,10 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -30,24 +26,23 @@ public class CustumerService {
 
     private final CustumerRepository repository;
     private final ModelMapper modelMapper;
+    private final ImageService imageService;
 
-
-    //CERTO
     public CustumerPostRequestDTO createCustumer(
-            @Valid CustumerPostRequestDTO custumerPostDTO) {
-        System.out.println("Recebido no DTO: " + custumerPostDTO);
-
+            @Valid CustumerPostRequestDTO custumerPostDTO,
+            MultipartFile image) {
 
         Customer customer = modelMapper.map(custumerPostDTO, Customer.class);
-        System.out.println(customer);
+
         Customer savedCustomer = repository.save(customer);
 
-        System.out.println("Convertido para entidade: " + savedCustomer);
+        if (image != null) {
+            imageService.uploadImages(savedCustomer.getId(), image);
+        }
 
         return custumerPostDTO.convertToDTO(savedCustomer);
     }
 
-    //certo
     public Customer editCustumer(
             @NotNull @Positive Integer id,
             @Valid CustumerPutRequestDTO custumerDTO) {

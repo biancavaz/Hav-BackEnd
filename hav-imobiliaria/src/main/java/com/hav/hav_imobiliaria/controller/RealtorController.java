@@ -1,7 +1,5 @@
 package com.hav.hav_imobiliaria.controller;
 
-import com.hav.hav_imobiliaria.model.DTO.Property.PropertyFilterPostResponseDTO;
-import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.*;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.service.RealtorService;
@@ -9,26 +7,27 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/realtor")
 @AllArgsConstructor
-
 public class RealtorController {
 
     private RealtorService service;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public RealtorPostRequestDTO createRealtor(
-            @RequestBody @Valid RealtorPostRequestDTO realtorPostDTO) {
-        return service.createRealtor(realtorPostDTO);
+            @RequestPart @Valid RealtorPostRequestDTO realtorPostDTO,
+            @RequestPart(value = "image", required = false) MultipartFile image
+    ) {
+        return service.createRealtor(realtorPostDTO, image);
     }
 
     @PutMapping("/{id}")

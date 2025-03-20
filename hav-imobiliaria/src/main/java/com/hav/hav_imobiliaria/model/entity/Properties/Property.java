@@ -3,8 +3,6 @@ package com.hav.hav_imobiliaria.model.entity.Properties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hav.hav_imobiliaria.model.entity.Address;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.hav.hav_imobiliaria.model.entity.Address;
-import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import jakarta.persistence.*;
@@ -106,7 +104,10 @@ public class Property {
     )
     private List<Realtor> realtors;
 
-    public void changeArchiveStatus(){
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ImageProperty> imageProperties;
+
+    public void changeArchiveStatus() {
         this.archived = !this.archived;
     }
 

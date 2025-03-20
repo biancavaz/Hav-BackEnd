@@ -82,6 +82,12 @@
             <artifactId>modelmapper</artifactId>
             <version>3.1.0</version> <!-- Verifique a versão mais recente -->
         </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>2.20.148</version> <!-- Use a versão mais recente -->
+        </dependency>
+
     </dependencies>
 
     <build>

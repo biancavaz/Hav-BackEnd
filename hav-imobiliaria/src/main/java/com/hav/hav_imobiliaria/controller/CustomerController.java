@@ -4,37 +4,33 @@ import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Property.PropertyFilterPostResponseDTO;
-import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
-import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.service.CustumerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/customer")
 @AllArgsConstructor
-
 public class CustomerController {
 
     private CustumerService service;
 
-    //certo
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustumerPostRequestDTO createCustumer(
-            @RequestBody @Valid CustumerPostRequestDTO CustumerPostDTO){
-        System.out.println("Recebido: " + CustumerPostDTO);
-        return service.createCustumer(CustumerPostDTO);
+    public CustumerPostRequestDTO createCustomer(
+            @RequestPart("customer") @Valid CustumerPostRequestDTO CustumerPostDTO,
+            @RequestPart(value = "image", required = false) MultipartFile image
+    ) {
+        return service.createCustumer(CustumerPostDTO, image);
     }
 
 
@@ -43,10 +39,9 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.OK)
     public Customer editCustumerOwner(
             @PathVariable Integer id,
-            @RequestBody @Valid CustumerPutRequestDTO custumerDTO){
+            @RequestBody @Valid CustumerPutRequestDTO custumerDTO) {
         return service.editCustumer(id, custumerDTO);
     }
-
 
 
 //    @PatchMapping("/{id}")
@@ -62,11 +57,12 @@ public class CustomerController {
 //    }
 
     @PostMapping("/filter")
-    public Page<CustomerListGetResponseDTO> findByFilter(@RequestBody CustomerFilterPostResponseDTO customerDto, Pageable pageable){
+    public Page<CustomerListGetResponseDTO> findByFilter(@RequestBody CustomerFilterPostResponseDTO customerDto, Pageable pageable) {
         return service.findAllByFilter(customerDto, pageable);
     }
+
     @PatchMapping("/changeArchiveStatus")
-    public void changeArchiveStatus(@RequestBody List<Integer> customerIds){
+    public void changeArchiveStatus(@RequestBody List<Integer> customerIds) {
         service.changeArchiveStatus(customerIds);
     }
 
@@ -92,22 +88,23 @@ public class CustomerController {
 //
 //    ;
 //
-////    @GetMapping("/{id}")
-////    @ResponseStatus(HttpStatus.OK)
-////    public CustumerOwnerGetRequestDTO searchRealtor(
-////            @PathVariable Integer id){
-////        Realtor realtor = service.searchCustumerOwner(id);
-////        return realtor.convert();
-////    }
+
+    /// /    @GetMapping("/{id}")
+    /// /    @ResponseStatus(HttpStatus.OK)
+    /// /    public CustumerOwnerGetRequestDTO searchRealtor(
+    /// /            @PathVariable Integer id){
+    /// /        Realtor realtor = service.searchCustumerOwner(id);
+    /// /        return realtor.convert();
+    /// /    }
 //
 //    @DeleteMapping("/{id}")
 //    @ResponseStatus(HttpStatus.NO_CONTENT)
 //    public void removeCustomerOwner(@PathVariable Integer id) {
 //        service.removeCustumer(id);
 //    }
-        @DeleteMapping
-        @RequestMapping
-        public void removeCustomerList(@RequestBody List<Integer> idList){
-            service.removeList(idList);
-        }
+    @DeleteMapping
+    @RequestMapping
+    public void removeCustomerList(@RequestBody List<Integer> idList) {
+        service.removeList(idList);
+    }
 }

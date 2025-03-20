@@ -1,12 +1,9 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
-import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Users.*;
 import com.hav.hav_imobiliaria.repository.EditorRepository;
 import jakarta.transaction.Transactional;
@@ -17,10 +14,10 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -28,13 +25,11 @@ public class EditorService {
 
     private final EditorRepository repository;
     private final ModelMapper modelMapper;
+    private final ImageService imageService;
 
-
-    //certo
     public EditorPostRequestDTO createEditor(
-            @Valid EditorPostRequestDTO editorPostDTO) {
-
-        System.out.println("Recebido no DTO: " + editorPostDTO);
+            @Valid EditorPostRequestDTO editorPostDTO,
+            MultipartFile image) {
 
         // Mapeamento do DTO para entidade usando o ModelMapper
         Editor editor = modelMapper.map(editorPostDTO, Editor.class);
@@ -42,13 +37,9 @@ public class EditorService {
         // Salvar a entidade e retornar a resposta
         Editor savededitor = repository.save(editor);
 
-        //testando só
-        System.out.println("Convertido para entidade: "
-                + savededitor
-                + editor.getName()
-                + editor.getEmail()
-                + editor.getCelphone()
-                +editor.getCpf());
+        if (image != null) {
+            imageService.uploadImages(savededitor.getId(), image);
+        }
 
         return editorPostDTO.convertToDTO(savededitor);
     }

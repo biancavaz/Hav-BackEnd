@@ -1,11 +1,6 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.matcher.RealtorMather;
-import com.hav.hav_imobiliaria.model.DTO.Property.PropertyListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.*;
-import com.hav.hav_imobiliaria.model.entity.Address;
-import com.hav.hav_imobiliaria.model.entity.Properties.Property;
-import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
@@ -14,15 +9,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
-import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -30,34 +23,23 @@ public class RealtorService {
 
     private final RealtorRepository repository;
     private final ModelMapper modelMapper;
-    private final RealtorMather realtorMatcher;
+    private final ImageService imageService;
 
-    //certo
     public RealtorPostRequestDTO createRealtor(
-            @Valid RealtorPostRequestDTO realtorDTO) {
+            @Valid RealtorPostRequestDTO realtorDTO,
+            MultipartFile image) {
 
-        // Usando o ModelMapper para converter o DTO (realtorDTO) para uma entidade (Realtor).
         Realtor realtor = modelMapper.map(realtorDTO, Realtor.class);
 
-        // Salvando a entidade convertida no banco de dados através do repositório.
         Realtor savedRealtor = repository.save(realtor);
 
-        System.out.println(savedRealtor);
-        //testando só
-        System.out.println("Convertido para entidade: "
-                + savedRealtor
-                +savedRealtor.getName()
-                +savedRealtor.getEmail()
-                +savedRealtor.getCpf()
-                + savedRealtor.getCelphone()
-                + savedRealtor.getCreci()
-                + savedRealtor.getAddress());
+        if (image != null) {
+            imageService.uploadImages(savedRealtor.getId(), image);
+        }
 
         return realtorDTO.convertToDTO(savedRealtor);
     }
 
-
-    //consegui tbbbb ihuuul
     public Realtor editRealtor(
             @NotNull @Positive Integer id,
             @Valid RealtorPutRequestDTO realtorPutDTO) {
@@ -104,6 +86,7 @@ public class RealtorService {
 
         return realtorListGetResponseDTOS;
     }
+
     @Transactional
     public void removeList(List<Integer> idList) {
         repository.deleteByIdIn(idList);
@@ -140,7 +123,7 @@ public class RealtorService {
 //        throw new NoSuchElementException("Corretor com ID " + id + " não encontrado.");
 //    }
 
-//
+    //
 //    public Page<Realtor> searchRealtors(
 //            Pageable pageable) {
 //        return repository.findAll(pageable);
