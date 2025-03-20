@@ -12,8 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,11 +25,13 @@ public class ProprietorController {
 
     private final ProprietorService service;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ProprietorPostDTO createProprietor(
-            @RequestBody @Valid ProprietorPostDTO proprietorDTO) {
-        return service.createProprietor(proprietorDTO);
+            @RequestPart("proprietor") @Valid ProprietorPostDTO proprietorDTO,
+            @RequestPart(value = "image", required = false) MultipartFile image
+    ) {
+        return service.createProprietor(proprietorDTO, image);
     }
 
     @PutMapping("/{id}")

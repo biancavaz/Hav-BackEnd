@@ -1,16 +1,10 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPostDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Address;
-import com.hav.hav_imobiliaria.model.entity.Properties.Property;
-import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
-import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.ProprietorRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -33,24 +28,22 @@ public class ProprietorService {
 
     private final ProprietorRepository repository;
     private final ModelMapper modelMapper;
+    private final ImageService imageService;
 
-    public ProprietorPostDTO createProprietor(@Valid ProprietorPostDTO proprietorDTO) {
-        System.out.println("Recebido no DTO: " + proprietorDTO);
+    public ProprietorPostDTO createProprietor(@Valid ProprietorPostDTO proprietorDTO,
+                                              MultipartFile image) {
 
-        // Mapeamento do DTO para entidade usando o ModelMapper
         Proprietor proprietor = modelMapper.map(proprietorDTO, Proprietor.class);
 
-        // Salvar a entidade e retornar a resposta
         Proprietor savedproprietor = repository.save(proprietor);
 
-        //testando só
-        System.out.println("Convertido para entidade: "
-                + savedproprietor);
+        if (image != null) {
+            imageService.uploadUserImage(savedproprietor.getId(), image);
+        }
 
         return proprietorDTO.convertToDTO(savedproprietor);
     }
 
-    //certo
     public Proprietor editProprietor(
             @Positive @NotNull Integer id,
             @Valid ProprietorPutRequestDTO proprietorPutDTO) {

@@ -7,33 +7,32 @@ import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
-import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.service.EditorService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/editor")
 @AllArgsConstructor
-
 public class EditorController {
 
     private final EditorService service;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public EditorPostRequestDTO createProprietor(
-            @RequestBody @Valid EditorPostRequestDTO editorPostDTO) {
-        return service.createEditor(editorPostDTO);
+    public EditorPostRequestDTO createEditor(
+            @RequestPart("editor") @Valid EditorPostRequestDTO editorPostDTO,
+            @RequestPart(value = "image", required = false) MultipartFile image
+    ) {
+        return service.createEditor(editorPostDTO, image);
     }
 
     @PostMapping("/filter")
