@@ -1,13 +1,11 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
-import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Users.*;
+import com.hav.hav_imobiliaria.model.entity.Users.Adm;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.AdmRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -21,6 +19,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -31,27 +30,23 @@ public class AdmService {
 
     private final AdmRepository repository;
     private final ModelMapper modelMapper;
+    private final ImageService imageService;
 
-    //certo
     public AdmPostRequestDTO createAdm(
-            @Valid AdmPostRequestDTO admPostDTO) {
+            @Valid AdmPostRequestDTO admPostDTO,
+            MultipartFile image) {
 
-        System.out.println("Recebido no DTO: " + admPostDTO);
-
-        // Mapeamento do DTO para entidade usando o ModelMapper
         Adm adm = modelMapper.map(admPostDTO, Adm.class);
 
-        // Salvar a entidade e retornar a resposta
         Adm savedadm = repository.save(adm);
 
-        //testando só
-        System.out.println("Convertido para entidade: "
-                + savedadm);
+        if (image != null) {
+            imageService.uploadUserImage(savedadm.getId(), image);
+        }
 
         return admPostDTO.convertToDTO(adm);
     }
 
-    //certo
     public Adm editAdm(
             @Positive @NotNull Integer id,
             @Valid AdmPutRequestDTO admPutDTO) {
@@ -77,7 +72,6 @@ public class AdmService {
         Example<Adm> example = Example.of(adm, matcher);
 
         Page<Adm> admList = repository.findAll(example, pageable);
-
 
 
         Page<AdmListGetResponseDTO> admListGetResponseDtos = admList.map(admx ->
