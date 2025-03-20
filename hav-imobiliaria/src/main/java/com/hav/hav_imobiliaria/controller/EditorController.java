@@ -5,7 +5,6 @@ import com.hav.hav_imobiliaria.model.DTO.Editor.EditorFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.service.EditorService;
 import jakarta.validation.Valid;
@@ -14,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

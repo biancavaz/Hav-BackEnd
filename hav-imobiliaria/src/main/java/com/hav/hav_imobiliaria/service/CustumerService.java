@@ -2,8 +2,8 @@ package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
-import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPostRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
@@ -29,8 +29,8 @@ public class CustumerService {
     private final ModelMapper modelMapper;
     private final ImageService imageService;
 
-    public CustumerPostRequestDTO createCustumer(
-            @Valid CustumerPostRequestDTO custumerPostDTO,
+    public CustomerPostRequestDTO createCustumer(
+            @Valid CustomerPostRequestDTO custumerPostDTO,
             MultipartFile image) {
 
         Customer customer = modelMapper.map(custumerPostDTO, Customer.class);

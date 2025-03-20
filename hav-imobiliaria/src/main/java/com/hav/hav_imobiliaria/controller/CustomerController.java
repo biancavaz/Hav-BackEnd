@@ -2,14 +2,13 @@ package com.hav.hav_imobiliaria.controller;
 
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
-import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPostRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Customer.CustumerPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.service.CustumerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,18 +26,18 @@ public class CustomerController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustumerPostRequestDTO createCustomer(
-            @RequestPart("customer") @Valid CustumerPostRequestDTO CustumerPostDTO,
+    public CustomerPostRequestDTO createCustomer(
+            @RequestPart("customer") @Valid CustomerPostRequestDTO CustomerPostDTO,
             @RequestPart(value = "image", required = false) MultipartFile image
     ) {
-        return service.createCustumer(CustumerPostDTO, image);
+        return service.createCustumer(CustomerPostDTO, image);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Customer editCustumerOwner(
             @PathVariable Integer id,
-            @RequestBody @Valid CustumerPutRequestDTO custumerDTO) {
+            @RequestBody @Valid CustomerPutRequestDTO custumerDTO) {
         return service.editCustumer(id, custumerDTO);
     }
 
