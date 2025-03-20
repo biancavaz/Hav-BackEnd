@@ -200,4 +200,9 @@ public class PropertyService {
         // Converte a entidade Realtor para o DTO
         return modelMapper.map(property, PropertyPutRequestDTO.class);
     }
+
+    public PropertyGetSpecificRequestDTO findPropertySpecificById(Integer id) {
+        Property property = repository.findById(id).get();
+        return modelMapper.map(property, PropertyGetSpecificRequestDTO.class);
+    }
 }

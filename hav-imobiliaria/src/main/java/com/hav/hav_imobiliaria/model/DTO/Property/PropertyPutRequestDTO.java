@@ -15,6 +15,7 @@ import java.util.List;
 
 @Data
 public class PropertyPutRequestDTO{
+        @NotBlank Integer id;
         @NotBlank String title;
         @NotBlank String propertyDescription;
         @NotBlank String propertyType;

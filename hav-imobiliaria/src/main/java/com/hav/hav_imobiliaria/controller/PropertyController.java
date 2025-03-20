@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetSpecificRequestDTO;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class PropertyController {
 
     @PostMapping("/filter")
     public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto,
-                                                         @RequestParam  Integer page) {
+                                                         @RequestParam Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
 
         return service.findAllByFilter(propertyDto, pageable);
@@ -72,12 +73,21 @@ public class PropertyController {
                                    @Valid PropertyPutRequestDTO propertyDTO) {
         return service.modifyProperty(id, propertyDTO);
     }
+
     @GetMapping
     @RequestMapping("{id}")
     public ResponseEntity<PropertyPutRequestDTO> getProperty(
-            @PathVariable Integer id){
+            @PathVariable Integer id) {
 
         PropertyPutRequestDTO propertyDto = service.findPropertyById(id);
         return ResponseEntity.ok(propertyDto);
+    }
+
+    @GetMapping
+    @RequestMapping("/propertyspecific/{id}")
+    public ResponseEntity<PropertyGetSpecificRequestDTO> getPropertySpecific(
+            @PathVariable Integer id){
+        PropertyGetSpecificRequestDTO propertyGetSpecificRequestDTO = service.findPropertySpecificById(id);
+        return ResponseEntity.ok(propertyGetSpecificRequestDTO);
     }
 }
