@@ -15,6 +15,7 @@ import java.util.List;
 
 @Data
 public class PropertyGetSpecificRequestDTO {
+    
     @NotBlank
     String propertyCode;
     @NotBlank
@@ -25,8 +26,6 @@ public class PropertyGetSpecificRequestDTO {
     String purpose;
     @NotNull
     List<RealtorGetResponseDTO> realtorList;
-    @NotBlank
-    String title;
     @NotBlank
     String propertyDescription;
     @Positive
@@ -45,6 +44,9 @@ public class PropertyGetSpecificRequestDTO {
     String floors;
     @NotNull
     TaxesPutRequestDTO taxes;
+    @NotNull
+    Boolean isFurnished;
+
 
     List<AdditionalsPutRequestDto> additionals;
 
