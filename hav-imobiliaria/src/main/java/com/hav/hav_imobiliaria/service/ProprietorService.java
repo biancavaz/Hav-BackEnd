@@ -128,7 +128,7 @@ public class ProprietorService {
 
     public ProprietorPutRequestDTO findProprietorById(Integer id) {
         Proprietor proprietor = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Realtor not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Proprietor not found"));
 
         // Converte a entidade Realtor para o DTO
         return modelMapper.map(proprietor, ProprietorPutRequestDTO.class);

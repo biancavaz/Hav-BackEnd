@@ -4,7 +4,9 @@ import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
+import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -70,9 +72,14 @@ public class CustumerService {
 //
 //
 
-    //    public Realtor searchCustumer(
-    //            @NotNull @Positive Integer id) {
-    //    }
+        public CustomerPutRequestDTO searchCustumer(
+                @NotNull @Positive Integer id) {
+            Customer customer = repository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+
+            // Converte a entidade Realtor para o DTO
+            return modelMapper.map(customer, CustomerPutRequestDTO.class);
+        }
 //
 //    public void removeCustumer(
 //            @NotNull @Positive Integer id) {

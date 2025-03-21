@@ -107,6 +107,9 @@ public class Property {
             joinColumns = @JoinColumn(name = "id_property"),
             inverseJoinColumns = @JoinColumn(name = "id_realtor")
     )
+
+
+
     private List<Realtor> realtors;
 
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -116,4 +119,7 @@ public class Property {
         this.archived = !this.archived;
     }
 
+    public PropertyFeature getPropertyFeatures() {
+        return propertyFeatures;
+    }
 }

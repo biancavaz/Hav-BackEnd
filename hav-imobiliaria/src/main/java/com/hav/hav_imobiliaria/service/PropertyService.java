@@ -29,6 +29,10 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 
@@ -109,6 +113,44 @@ public class PropertyService {
             @Valid PropertyFilterPostResponseDTO propertyDto,
             Pageable pageable) {
 
+
+        Integer bedRoom = null;
+        Integer bathRoom = null;
+        Integer garageSpace = null;
+        Integer suite = null;
+
+        if (propertyDto.getPropertyFeatures() != null &&
+                Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
+
+                bedRoom = propertyDto.getPropertyFeatures().getBedRoom();
+                propertyDto.getPropertyFeatures().setBedRoom(null);
+
+        }
+        if (propertyDto.getPropertyFeatures() != null &&
+                Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
+            bathRoom = propertyDto.getPropertyFeatures().getBathRoom();
+            propertyDto.getPropertyFeatures().setBathRoom(null);
+
+        }
+        if (propertyDto.getPropertyFeatures() != null &&
+                Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
+
+            System.out.println("adicionaro ao bedrrom");
+            System.out.println(propertyDto.getPropertyFeatures().getGarageSpace());
+
+            garageSpace = propertyDto.getPropertyFeatures().getGarageSpace();
+            propertyDto.getPropertyFeatures().setGarageSpace(null);
+
+        }
+        if (propertyDto.getPropertyFeatures() != null &&
+                Objects.equals(propertyDto.getPropertyFeatures().getSuite(), 5)) {
+            suite = propertyDto.getPropertyFeatures().getSuite();
+            propertyDto.getPropertyFeatures().setSuite(null);
+
+        }
+        System.out.println("apos tudo"+ propertyDto.getPropertyFeatures());
+
+
         Property property = modelMapper.map(propertyDto, Property.class);
 
         //criando o example matcher específico dos filtros do imóvel
@@ -116,7 +158,9 @@ public class PropertyService {
                 .withIgnoreCase()
                 .withIgnoreNullValues()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-
+        System.out.println("example");
+        System.out.println(matcher);
+        System.out.println(property.toString());
         //chamando o matcher
         Example<Property> example = Example.of(property, matcher);
 
@@ -126,8 +170,37 @@ public class PropertyService {
 
         List<Property> filteredAllProperties = allProperties.stream()
                 .filter(propertyPrice -> propertyPrice.getPrice() >= propertyDto.getMinPric()
-                        && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
+                                                && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
                 .collect(Collectors.toList());
+
+
+
+        propertyDto.getPropertyFeatures().setBedRoom(bedRoom);
+        propertyDto.getPropertyFeatures().setBathRoom(bathRoom);
+        propertyDto.getPropertyFeatures().setGarageSpace(garageSpace);
+        propertyDto.getPropertyFeatures().setSuite(suite);
+        System.out.println("final final"+propertyDto.getPropertyFeatures());
+        if (propertyDto.getPropertyFeatures() != null &&
+                Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBedRoom() >=5).collect(Collectors.toList());
+        }
+        if (propertyDto.getPropertyFeatures() != null &&
+                Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBathRoom() >=5).collect(Collectors.toList());
+        }
+        System.out.println(propertyDto.getPropertyFeatures().getGarageSpace());
+        if (propertyDto.getPropertyFeatures() != null &&
+                Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
+            System.out.println("entrou no garage");
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getGarageSpace() >=5).collect(Collectors.toList());
+        }
+        if (propertyDto.getPropertyFeatures() != null &&
+                Objects.equals(propertyDto.getPropertyFeatures().getSuite(), 5)) {
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getSuite() >=5).collect(Collectors.toList());
+        }
+
+
+
 
         //transforme o lista para page aqui
 
