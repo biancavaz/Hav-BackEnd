@@ -61,8 +61,8 @@ public class Property {
     @Column(nullable = false)
     private Boolean highlight;
 
-//    @Column(name = "property_category", nullable = false)
-//    private String propertyCategory;
+    @Column(name = "property_category", nullable = false)
+    private String propertyCategory;
 
     @CreationTimestamp
     @JsonIgnore
@@ -107,8 +107,6 @@ public class Property {
             joinColumns = @JoinColumn(name = "id_property"),
             inverseJoinColumns = @JoinColumn(name = "id_realtor")
     )
-
-
     private List<Realtor> realtors;
 
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
