@@ -64,9 +64,10 @@ public class ProprietorController {
 
     @GetMapping
     @RequestMapping("{id}")
-    public ResponseEntity<ProprietorPutRequestDTO> getRealtor(
+    public ResponseEntity<ProprietorPutRequestDTO> getProprietorById(
             @PathVariable Integer id) {
-
+        System.out.println("id");
+        System.out.println(id);
         ProprietorPutRequestDTO proprietorDTO = service.findProprietorById(id);
         return ResponseEntity.ok(proprietorDTO);
     }

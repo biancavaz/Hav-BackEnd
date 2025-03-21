@@ -86,13 +86,13 @@ public class CustomerController {
 //    ;
 //
 
-    //   @GetMapping("/{id}")
-    //   @ResponseStatus(HttpStatus.OK)
-    //   public CustumerOwnerGetRequestDTO searchRealtor(
-    //           @PathVariable Integer id){
-    //       Realtor realtor = service.searchCustumerOwner(id);
-    //       return realtor.convert();
-    //   }
+       @GetMapping("/{id}")
+       @ResponseStatus(HttpStatus.OK)
+       public CustomerPutRequestDTO searchRealtor(
+               @PathVariable Integer id){
+           CustomerPutRequestDTO customer = service.searchCustumer(id);
+           return customer;
+       }
 //
 //    @DeleteMapping("/{id}")
 //    @ResponseStatus(HttpStatus.NO_CONTENT)
