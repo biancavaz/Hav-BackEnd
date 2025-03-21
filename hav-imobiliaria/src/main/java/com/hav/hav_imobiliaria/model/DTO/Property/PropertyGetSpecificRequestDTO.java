@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.model.DTO.Property;
 
 import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsPutRequestDto;
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPutRequestDTO;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Data
 public class PropertyGetSpecificRequestDTO {
-    
+
     @NotBlank
     String propertyCode;
     @NotBlank
@@ -46,6 +47,8 @@ public class PropertyGetSpecificRequestDTO {
     TaxesPutRequestDTO taxes;
     @NotNull
     Boolean isFurnished;
+    @NotNull
+    AddressGetResponseDTO address;
 
 
     List<AdditionalsPutRequestDto> additionals;
