@@ -1,6 +1,5 @@
 package com.hav.hav_imobiliaria.controller;
 
-import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
@@ -19,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetSpecificResponseDTO;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class PropertyController {
 
     @PostMapping("/filter")
     public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto,
-                                                         @RequestParam  Integer page) {
+                                                         @RequestParam Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
 
         return service.findAllByFilter(propertyDto, pageable);
@@ -76,12 +76,21 @@ public class PropertyController {
                                    @Valid PropertyPutRequestDTO propertyDTO) {
         return service.modifyProperty(id, propertyDTO);
     }
+
     @GetMapping
     @RequestMapping("{id}")
     public ResponseEntity<PropertyPutRequestDTO> getProperty(
-            @PathVariable Integer id){
+            @PathVariable Integer id) {
 
         PropertyPutRequestDTO propertyDto = service.findPropertyById(id);
         return ResponseEntity.ok(propertyDto);
+    }
+
+    @GetMapping
+    @RequestMapping("/propertyspecific/{id}")
+    public ResponseEntity<PropertyGetSpecificResponseDTO> getPropertySpecific(
+            @PathVariable Integer id){
+        PropertyGetSpecificResponseDTO propertyGetSpecificRequestDTO = service.findPropertySpecificById(id);
+        return ResponseEntity.ok(propertyGetSpecificRequestDTO);
     }
 }

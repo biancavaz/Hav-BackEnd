@@ -13,6 +13,7 @@ public class RealtorGetResponseDTO {
     String celphone;
     String creci;
 
+
     public RealtorGetResponseDTO(String name, String email, String cpf, String celphone, String creci) {
     }
 }
