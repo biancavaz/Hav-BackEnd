@@ -6,8 +6,10 @@ import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.entity.Properties.ImageProperty;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
+import com.hav.hav_imobiliaria.repository.ImagePropertyRepository;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -36,13 +39,15 @@ public class PropertyService {
     private final ProprietorService proprietorService;
     private final ModelMapper modelMapper;
     private final ImageService imageService;
+    private final ImagePropertyRepository imagePropertyRepository;
+    private final S3Service s3Service;
 
     public Property create(@Valid PropertyPostRequestDTO propertyDTO, List<MultipartFile> images) {
 
         Property property = propertyDTO.convert();
-        if(property.getAdditionals() != null && property.getAdditionals().size() > 0) {
-            property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
 
+        if (property.getAdditionals() != null && !property.getAdditionals().isEmpty()) {
+            property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
         }
 
         property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
@@ -116,10 +121,9 @@ public class PropertyService {
         List<Property> allProperties = repository.findAll(example);
 
 
-
         List<Property> filteredAllProperties = allProperties.stream()
                 .filter(propertyPrice -> propertyPrice.getPrice() >= propertyDto.getMinPric()
-                                                && propertyPrice.getPrice() <= propertyDto.getMaxPric() ) // Compare prices
+                        && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
                 .collect(Collectors.toList());
 
         //transforme o lista para page aqui
@@ -144,21 +148,42 @@ public class PropertyService {
     }
 
 
-
     public void delete(@Positive @NotNull Integer id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
         }
     }
 
-    public Property modifyProperty(@Positive @NotNull Integer id, @Valid PropertyPutRequestDTO propertyDTO) {
-        if (repository.existsById(id)) {
-            //mapear o DTO para a entidade Property
-            Property property = modelMapper.map(propertyDTO, Property.class);
-            property.setId(id);  // Atribui o ID manualmente
-            return repository.save(property);
+    @Transactional
+    public Property updateProperty(
+            Integer propertyId,
+            PropertyPutRequestDTO propertyDTO,
+            List<Integer> deletedImageIds,
+            List<MultipartFile> newImages
+    ) {
+
+        // Buscar propriedade no banco
+        Property property = repository.findById(propertyId)
+                .orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
+
+        // Atualizar dados da propriedade
+        property.setTitle(propertyDTO.getTitle());
+        property.setPropertyDescription(propertyDTO.getPropertyDescription());
+        property.setPrice(propertyDTO.getPrice());
+
+        repository.save(property);
+
+        // Remover imagens antigas (se houver)
+        if (deletedImageIds != null && !deletedImageIds.isEmpty()) {
+            imageService.deletePropertyImages(deletedImageIds);
         }
-        throw new NoSuchElementException();
+
+        // Adicionar novas imagens (se houver)
+        if (newImages != null && !newImages.isEmpty()) {
+            imageService.uploadPropertyImages(propertyId, newImages);
+        }
+
+        return property;
     }
 
     @Transactional
