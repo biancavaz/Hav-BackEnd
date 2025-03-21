@@ -1,6 +1,5 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
@@ -8,11 +7,7 @@ import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
-import com.hav.hav_imobiliaria.model.entity.Users.Editor;
-import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
-import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -20,13 +15,11 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 
@@ -201,8 +194,8 @@ public class PropertyService {
         return modelMapper.map(property, PropertyPutRequestDTO.class);
     }
 
-    public PropertyGetSpecificRequestDTO findPropertySpecificById(Integer id) {
+    public PropertyGetSpecificResponseDTO findPropertySpecificById(Integer id) {
         Property property = repository.findById(id).get();
-        return modelMapper.map(property, PropertyGetSpecificRequestDTO.class);
+        return modelMapper.map(property, PropertyGetSpecificResponseDTO.class);
     }
 }

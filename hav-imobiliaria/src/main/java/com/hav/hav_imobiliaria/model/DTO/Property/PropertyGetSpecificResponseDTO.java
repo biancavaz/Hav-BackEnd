@@ -1,11 +1,11 @@
 package com.hav.hav_imobiliaria.model.DTO.Property;
 
+import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsPutRequestDto;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressGetResponseDTO;
-import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureGetResposeDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -15,7 +15,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class PropertyGetSpecificRequestDTO {
+public class PropertyGetSpecificResponseDTO {
 
     @NotBlank
     String propertyCode;
@@ -49,9 +49,10 @@ public class PropertyGetSpecificRequestDTO {
     Boolean isFurnished;
     @NotNull
     AddressGetResponseDTO address;
-
-
-    List<AdditionalsPutRequestDto> additionals;
+    @NotNull
+    PropertyFeatureGetResposeDTO propertyFeature; //nao esta funcionando
+    @NotNull
+    List<AdditionalsGetResponseDTO> additionals;
 
 
 }

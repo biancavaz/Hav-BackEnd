@@ -1,6 +1,5 @@
 package com.hav.hav_imobiliaria.controller;
 
-import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
@@ -17,7 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetSpecificRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetSpecificResponseDTO;
 
 import java.util.List;
 
@@ -85,9 +84,9 @@ public class PropertyController {
 
     @GetMapping
     @RequestMapping("/propertyspecific/{id}")
-    public ResponseEntity<PropertyGetSpecificRequestDTO> getPropertySpecific(
+    public ResponseEntity<PropertyGetSpecificResponseDTO> getPropertySpecific(
             @PathVariable Integer id){
-        PropertyGetSpecificRequestDTO propertyGetSpecificRequestDTO = service.findPropertySpecificById(id);
+        PropertyGetSpecificResponseDTO propertyGetSpecificRequestDTO = service.findPropertySpecificById(id);
         return ResponseEntity.ok(propertyGetSpecificRequestDTO);
     }
 }
