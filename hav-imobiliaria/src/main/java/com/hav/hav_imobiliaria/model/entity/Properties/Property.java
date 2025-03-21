@@ -61,8 +61,8 @@ public class Property {
     @Column(nullable = false)
     private Boolean highlight;
 
-//    @Column(name = "property_category", nullable = false)
-//    private String propertyCategory;
+    @Column(name = "property_category", nullable = false)
+    private String propertyCategory;
 
     @CreationTimestamp
     @JsonIgnore

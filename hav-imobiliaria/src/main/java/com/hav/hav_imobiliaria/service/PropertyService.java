@@ -1,14 +1,16 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
-import com.hav.hav_imobiliaria.model.entity.Properties.ImageProperty;
+import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
+import com.hav.hav_imobiliaria.model.entity.Properties.PropertyFeature;
+import com.hav.hav_imobiliaria.model.entity.Properties.Taxes;
+import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.ImagePropertyRepository;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,15 +19,17 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.util.BiConsumer;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 
@@ -161,30 +165,71 @@ public class PropertyService {
             List<Integer> deletedImageIds,
             List<MultipartFile> newImages
     ) {
-
-        // Buscar propriedade no banco
+        // Buscar propriedade
         Property property = repository.findById(propertyId)
-                .orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException("Propriedade não encontrada"));
 
-        // Atualizar dados da propriedade
+        // Atualizar campos diretamente
         property.setTitle(propertyDTO.getTitle());
         property.setPropertyDescription(propertyDTO.getPropertyDescription());
+        property.setPropertyType(propertyDTO.getPropertyType());
+        property.setPurpose(propertyDTO.getPurpose());
+        property.setPropertyStatus(propertyDTO.getPropertyStatus());
         property.setPrice(propertyDTO.getPrice());
+        property.setArea(propertyDTO.getArea());
+        property.setPromotionalPrice(propertyDTO.getPromotionalPrice());
+        property.setHighlight(propertyDTO.getHighlight());
+        property.setPropertyCategory(propertyDTO.getPropertyCategory());
+        property.setFloors(propertyDTO.getFloors());
 
+        // Atualizar objetos embutidos
+        modelMapper.map(propertyDTO.getPropertyFeatures(), property.getPropertyFeatures());
+        modelMapper.map(propertyDTO.getTaxes(), property.getTaxes());
+
+
+        // Atualizar relações
+        updateRealtors(property, propertyDTO.getRealtors());
+        updateProprietor(property, propertyDTO.getProprietor());
+        updateAdditionals(property, propertyDTO.getAdditionals());
+
+        // Salvar a propriedade antes de processar imagens
         repository.save(property);
 
-        // Remover imagens antigas (se houver)
-        if (deletedImageIds != null && !deletedImageIds.isEmpty()) {
-            imageService.deletePropertyImages(deletedImageIds);
-        }
-
-        // Adicionar novas imagens (se houver)
-        if (newImages != null && !newImages.isEmpty()) {
-            imageService.uploadPropertyImages(propertyId, newImages);
-        }
+        // Processar imagens separadamente
+        processImages(propertyId, deletedImageIds, newImages);
 
         return property;
     }
+
+    private void updateRealtors(Property property, List<Integer> realtorIds) {
+        if (realtorIds != null) {
+            List<Realtor> realtors = realtorService.findAllById(realtorIds);
+            property.setRealtors(new ArrayList<>(realtors));  // Converte para List
+        }
+    }
+
+    private void updateProprietor(Property property, Integer proprietorId) {
+        if (!property.getProprietor().getId().equals(proprietorId)) {
+            property.setProprietor(proprietorService.findById(proprietorId));
+        }
+    }
+
+    private void updateAdditionals(Property property, List<Integer> additionalIds) {
+        if (additionalIds != null) {
+            List<Additionals> additionals = additionalsService.findAllById(additionalIds);
+            property.setAdditionals(new ArrayList<>(additionals));  // Converte para List
+        }
+    }
+
+    private void processImages(Integer propertyId, List<Integer> deletedImageIds, List<MultipartFile> newImages) {
+        if (deletedImageIds != null && !deletedImageIds.isEmpty()) {
+            imageService.deletePropertyImages(deletedImageIds);
+        }
+        if (newImages != null && !newImages.isEmpty()) {
+            imageService.uploadPropertyImages(propertyId, newImages);
+        }
+    }
+
 
     @Transactional
     public void removeList(List<Integer> idList) {

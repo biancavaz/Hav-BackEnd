@@ -36,17 +36,14 @@ public class PropertyPutRequestDTO {
     @NotBlank
     String propertyCategory;
     @NotNull
-    String floors;
+    Integer floors;
     @NotNull
     TaxesPutRequestDTO taxes;
     @NotNull
     PropertyFeaturePutRequestDTO propertyFeatures;
-    @NotNull
-    AddressPutRequestDTO address;
     List<Integer> realtors;
     @NotNull
     Integer proprietor;
     @NotNull
     List<Integer> additionals;
-
 }
