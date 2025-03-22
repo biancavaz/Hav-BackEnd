@@ -13,6 +13,7 @@ import com.hav.hav_imobiliaria.model.entity.Properties.Taxes;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.ImagePropertyRepository;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -53,9 +54,8 @@ public class PropertyService {
 
         Property property = propertyDTO.convert();
 
-        if (property.getAdditionals() != null && !property.getAdditionals().isEmpty()) {
-            property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
-        }
+        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
+
 
         property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
 
@@ -122,8 +122,8 @@ public class PropertyService {
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
 
-                bedRoom = propertyDto.getPropertyFeatures().getBedRoom();
-                propertyDto.getPropertyFeatures().setBedRoom(null);
+            bedRoom = propertyDto.getPropertyFeatures().getBedRoom();
+            propertyDto.getPropertyFeatures().setBedRoom(null);
 
         }
         if (propertyDto.getPropertyFeatures() != null &&
@@ -148,7 +148,7 @@ public class PropertyService {
             propertyDto.getPropertyFeatures().setSuite(null);
 
         }
-        System.out.println("apos tudo"+ propertyDto.getPropertyFeatures());
+        System.out.println("apos tudo" + propertyDto.getPropertyFeatures());
 
 
         Property property = modelMapper.map(propertyDto, Property.class);
@@ -170,36 +170,33 @@ public class PropertyService {
 
         List<Property> filteredAllProperties = allProperties.stream()
                 .filter(propertyPrice -> propertyPrice.getPrice() >= propertyDto.getMinPric()
-                                                && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
+                        && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
                 .collect(Collectors.toList());
-
 
 
         propertyDto.getPropertyFeatures().setBedRoom(bedRoom);
         propertyDto.getPropertyFeatures().setBathRoom(bathRoom);
         propertyDto.getPropertyFeatures().setGarageSpace(garageSpace);
         propertyDto.getPropertyFeatures().setSuite(suite);
-        System.out.println("final final"+propertyDto.getPropertyFeatures());
+        System.out.println("final final" + propertyDto.getPropertyFeatures());
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
-            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBedRoom() >=5).collect(Collectors.toList());
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBedRoom() >= 5).collect(Collectors.toList());
         }
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
-            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBathRoom() >=5).collect(Collectors.toList());
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBathRoom() >= 5).collect(Collectors.toList());
         }
         System.out.println(propertyDto.getPropertyFeatures().getGarageSpace());
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
             System.out.println("entrou no garage");
-            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getGarageSpace() >=5).collect(Collectors.toList());
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getGarageSpace() >= 5).collect(Collectors.toList());
         }
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getSuite(), 5)) {
-            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getSuite() >=5).collect(Collectors.toList());
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getSuite() >= 5).collect(Collectors.toList());
         }
-
-
 
 
         //transforme o lista para page aqui
