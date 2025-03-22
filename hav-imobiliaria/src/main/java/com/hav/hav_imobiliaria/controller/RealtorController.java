@@ -31,13 +31,13 @@ public class RealtorController {
         return service.createRealtor(realtorPostDTO, image);
     }
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Realtor editRealtor(
-            @PathVariable Integer id,
-            @RequestBody @Valid RealtorPutRequestDTO realtorPutDTO) {
-        return service.editRealtor(id, realtorPutDTO);
-    }
+//    @PutMapping("/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Realtor editRealtor(
+//            @PathVariable Integer id,
+//            @RequestBody @Valid RealtorPutRequestDTO realtorPutDTO) {
+//        return service.updateRealtor(id, realtorPutDTO);
+//    }
 
 
     @PostMapping("/filter")

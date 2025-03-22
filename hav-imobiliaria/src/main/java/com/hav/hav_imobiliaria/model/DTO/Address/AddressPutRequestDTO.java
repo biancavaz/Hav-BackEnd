@@ -20,6 +20,5 @@ public class AddressPutRequestDTO {
     @NotNull
     @Positive
     Integer propertyNumber;
-    @NotBlank
     String complement;
 }

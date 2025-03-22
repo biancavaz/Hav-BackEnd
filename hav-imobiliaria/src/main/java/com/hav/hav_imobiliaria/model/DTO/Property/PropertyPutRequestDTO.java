@@ -1,6 +1,5 @@
 package com.hav.hav_imobiliaria.model.DTO.Property;
 
-import com.hav.hav_imobiliaria.model.DTO.Address.AddressPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPutRequestDTO;
 import jakarta.validation.constraints.NotBlank;

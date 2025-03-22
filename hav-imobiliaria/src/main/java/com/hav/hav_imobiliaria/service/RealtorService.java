@@ -1,10 +1,10 @@
 package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Realtor.*;
+import com.hav.hav_imobiliaria.model.entity.Address;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -41,9 +42,14 @@ public class RealtorService {
         return realtorDTO.convertToDTO(savedRealtor);
     }
 
-    public Realtor editRealtor(
+    // Lembrar de verificar se apenas o model mapper é capaz de fazer a conversão de AddressPutRequestDTO
+    // que é recebida na dto de put de realtor
+    @Transactional
+    public Realtor updateRealtor(
             @NotNull @Positive Integer id,
-            @Valid RealtorPutRequestDTO realtorPutDTO) {
+            @Valid RealtorPutRequestDTO realtorPutDTO,
+            Integer deletedImageId,
+            MultipartFile newImage) {
 
         Realtor existingRealtor = repository.findById(id).orElseThrow(() ->
                 new NoSuchElementException("Corretor com o ID " + id + " não encontrado."));
@@ -51,7 +57,33 @@ public class RealtorService {
         // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
         modelMapper.map(realtorPutDTO, existingRealtor);
 
+        updateAddress(existingRealtor, realtorPutDTO);
+
+        processorImages(existingRealtor.getId(), deletedImageId, newImage);
+
         return repository.save(existingRealtor);
+    }
+
+    private void processorImages(Integer userId, Integer deletedImageId, MultipartFile newImage) {
+        if (deletedImageId != null) {
+            imageService.deleteUserImage(deletedImageId);
+        }
+        if (newImage != null) {
+            imageService.uploadUserImage(userId, newImage);
+        }
+    }
+
+    private void updateAddress(Realtor realtor, RealtorPutRequestDTO realtorDTO) {
+        if (realtorDTO.getAddress() != null) {
+            Address address = realtor.getAddress();
+            address.setCep(realtorDTO.getAddress().getCep());
+            address.setPropertyNumber(realtorDTO.getAddress().getPropertyNumber());
+            address.setStreet(realtorDTO.getAddress().getStreet());
+            address.setNeighborhood(realtorDTO.getAddress().getNeighborhood());
+            address.setCity(realtorDTO.getAddress().getCity());
+            address.setState(realtorDTO.getAddress().getState());
+            address.setComplement(realtorDTO.getAddress().getComplement());
+        }
     }
 
     public Page<RealtorListGetResponseDTO> findAllByFilter(
