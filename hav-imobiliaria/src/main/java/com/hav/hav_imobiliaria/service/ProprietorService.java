@@ -61,7 +61,6 @@ public class ProprietorService {
     public Page<ProprietorListGetResponseDTO> findAllByFilter(Pageable pageable, ProprietorFilterPostResponseDTO proprietorDto) {
         Proprietor proprietor = modelMapper.map(proprietorDto, Proprietor.class);
 
-        System.out.println(proprietorDto);
 
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreCase()
@@ -69,10 +68,8 @@ public class ProprietorService {
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
         Example<Proprietor> example = Example.of(proprietor, matcher);
-        System.out.println(example.toString());
 
         Page<Proprietor> proprietorList = repository.findAll(example, pageable);
-        System.out.println("after repository");
 
         Page<ProprietorListGetResponseDTO> proprietorListGetResponseDtos = proprietorList.map(proprietorx ->
                 modelMapper.map(proprietorx, ProprietorListGetResponseDTO.class)

@@ -44,7 +44,6 @@ public class RealtorController {
     public Page<RealtorListGetResponseDTO> findByFilter(
             @RequestBody RealtorFilterPostResponseDTO realtorDTO,
             @RequestParam Integer page){
-        System.out.println(realtorDTO);
         Pageable pageable = PageRequest.of(page, 10);
         return service.findAllByFilter(realtorDTO, pageable);
     }
@@ -66,9 +65,7 @@ public class RealtorController {
     @RequestMapping("{id}")
     public RealtorPutRequestDTO getRealtor(
             @PathVariable Integer id){
-        System.out.println("----------");
         RealtorPutRequestDTO realtorDTO = service.findRealtorById(id);
-        System.out.println(realtorDTO);
         return realtorDTO;
     }
 }
