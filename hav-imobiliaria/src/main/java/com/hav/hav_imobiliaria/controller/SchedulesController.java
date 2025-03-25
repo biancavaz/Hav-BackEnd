@@ -1,0 +1,35 @@
+package com.hav.hav_imobiliaria.controller;
+
+import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleChangeCustomerDTO;
+import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
+import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
+import com.hav.hav_imobiliaria.service.SchedulesService;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@AllArgsConstructor
+@RequestMapping("/schedules")
+public class SchedulesController {
+
+    private SchedulesService service;
+
+    @GetMapping
+    @RequestMapping("{id}")
+    public List<Schedules> getSchedulesByRealtor(@PathVariable Integer id){
+        return service.findAllByRealtorId(id);
+    }
+
+    @PostMapping
+    public List<Schedules> createSchedules(@RequestBody List<SchedulesPostDTO> schedulesPostDto){
+
+        return service.createSchedules(schedulesPostDto);
+    }
+
+    @PostMapping("/presence")
+    public Schedules addCustomerToSchedule(@RequestBody ScheduleChangeCustomerDTO scheduleChangeCustomerDTO){
+        return service.addCustomerToSchedule(scheduleChangeCustomerDTO);
+    }
+}
