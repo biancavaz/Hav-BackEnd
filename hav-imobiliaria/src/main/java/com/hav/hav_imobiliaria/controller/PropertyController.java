@@ -35,6 +35,7 @@ public class PropertyController {
             @RequestPart("property") @Valid PropertyPostRequestDTO propertyDTO,
             @RequestPart(value = "images", required = false) List<MultipartFile> images
     ) {
+
         return service.create(propertyDTO, images);
     }
 
@@ -48,7 +49,6 @@ public class PropertyController {
     public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto,
                                                          @RequestParam  Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
-
         return service.findAllByFilter(propertyDto, pageable);
     }
 

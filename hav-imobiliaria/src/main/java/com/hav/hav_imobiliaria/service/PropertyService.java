@@ -42,6 +42,7 @@ public class PropertyService {
     public Property create(@Valid PropertyPostRequestDTO propertyDTO, List<MultipartFile> images) {
 
         Property property = propertyDTO.convert();
+
         if(property.getAdditionals() != null && property.getAdditionals().size() > 0) {
             property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
 
@@ -50,6 +51,8 @@ public class PropertyService {
         property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
 
         property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
+
+        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
 
         property.setPropertyCode(generateUniqueCode());
 
