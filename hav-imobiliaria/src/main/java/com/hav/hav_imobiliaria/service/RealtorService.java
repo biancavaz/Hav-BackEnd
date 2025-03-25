@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -42,48 +41,27 @@ public class RealtorService {
         return realtorDTO.convertToDTO(savedRealtor);
     }
 
-    // Lembrar de verificar se apenas o model mapper é capaz de fazer a conversão de AddressPutRequestDTO
-    // que é recebida na dto de put de realtor
     @Transactional
     public Realtor updateRealtor(
             @NotNull @Positive Integer id,
             @Valid RealtorPutRequestDTO realtorPutDTO,
-            Integer deletedImageId,
+            @Positive Integer deletedImageId,
             MultipartFile newImage) {
 
-        Realtor existingRealtor = repository.findById(id).orElseThrow(() ->
+        Realtor realtor = repository.findById(id).orElseThrow(() ->
                 new NoSuchElementException("Corretor com o ID " + id + " não encontrado."));
 
-        // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
-        modelMapper.map(realtorPutDTO, existingRealtor);
+        modelMapper.map(realtorPutDTO, realtor);
 
-        updateAddress(existingRealtor, realtorPutDTO);
-
-        processorImages(existingRealtor.getId(), deletedImageId, newImage);
-
-        return repository.save(existingRealtor);
-    }
-
-    private void processorImages(Integer userId, Integer deletedImageId, MultipartFile newImage) {
         if (deletedImageId != null) {
             imageService.deleteUserImage(deletedImageId);
         }
-        if (newImage != null) {
-            imageService.uploadUserImage(userId, newImage);
-        }
-    }
 
-    private void updateAddress(Realtor realtor, RealtorPutRequestDTO realtorDTO) {
-        if (realtorDTO.getAddress() != null) {
-            Address address = realtor.getAddress();
-            address.setCep(realtorDTO.getAddress().getCep());
-            address.setPropertyNumber(realtorDTO.getAddress().getPropertyNumber());
-            address.setStreet(realtorDTO.getAddress().getStreet());
-            address.setNeighborhood(realtorDTO.getAddress().getNeighborhood());
-            address.setCity(realtorDTO.getAddress().getCity());
-            address.setState(realtorDTO.getAddress().getState());
-            address.setComplement(realtorDTO.getAddress().getComplement());
+        if (newImage != null) {
+            imageService.uploadUserImage(id, newImage);
         }
+
+        return repository.save(realtor);
     }
 
     public Page<RealtorListGetResponseDTO> findAllByFilter(

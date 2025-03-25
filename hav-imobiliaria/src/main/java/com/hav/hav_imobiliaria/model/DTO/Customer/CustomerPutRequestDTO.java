@@ -1,16 +1,25 @@
 package com.hav.hav_imobiliaria.model.DTO.Customer;
 
-import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPutRequestDTO;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class CustomerPutRequestDTO{
-        String name;
-        String email;
-        String password;
-        String celphone;
-        String phoneNumber;
-        AddressPutRequestDTO address;
+public class CustomerPutRequestDTO {
+    @NotBlank
+    String name;
+    @NotBlank
+    String email;
+    @NotBlank
+    String password;
+    @NotBlank
+    String celphone;
+    @NotBlank
+    String phoneNumber;
+    @Valid
+    @NotNull
+    AddressPutRequestDTO address;
 
 }

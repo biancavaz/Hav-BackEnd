@@ -33,13 +33,13 @@ public class CustomerController {
         return service.createCustumer(CustomerPostDTO, image);
     }
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Customer editCustumerOwner(
-            @PathVariable Integer id,
-            @RequestBody @Valid CustomerPutRequestDTO custumerDTO) {
-        return service.editCustumer(id, custumerDTO);
-    }
+//    @PutMapping("/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Customer editCustumerOwner(
+//            @PathVariable Integer id,
+//            @RequestBody @Valid CustomerPutRequestDTO custumerDTO) {
+//        return service.editCustumer(id, custumerDTO);
+//    }
 
 //    @PatchMapping("/{id}")
 //    @GetMapping("/page")

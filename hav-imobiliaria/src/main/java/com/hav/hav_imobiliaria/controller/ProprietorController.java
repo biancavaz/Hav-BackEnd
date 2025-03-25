@@ -35,13 +35,13 @@ public class ProprietorController {
         return service.createProprietor(proprietorDTO, image);
     }
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Proprietor editProprietor(
-            @PathVariable Integer id,
-            @RequestBody @Valid ProprietorPutRequestDTO ProprietorPutDTO) {
-        return service.editProprietor(id, ProprietorPutDTO);
-    }
+//    @PutMapping("/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Proprietor updateProprietor(
+//            @PathVariable Integer id,
+//            @RequestBody @Valid ProprietorPutRequestDTO ProprietorPutDTO) {
+//        return service.updateProprietor(id, ProprietorPutDTO);
+//    }
 
     @PostMapping("/filter")
     public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto,

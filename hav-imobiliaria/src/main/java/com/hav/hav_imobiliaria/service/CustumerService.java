@@ -44,17 +44,26 @@ public class CustumerService {
         return custumerPostDTO.convertToDTO(savedCustomer);
     }
 
-    public Customer editCustumer(
+    public Customer updateCustumer(
             @NotNull @Positive Integer id,
-            @Valid CustomerPutRequestDTO custumerDTO) {
+            @Valid CustomerPutRequestDTO custumerDTO,
+            @Positive Integer deletedImageId,
+            MultipartFile newImage) {
 
-        Customer existingCustomer = repository.findById(id).orElseThrow(() ->
+        Customer customer = repository.findById(id).orElseThrow(() ->
                 new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
 
-        // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
-        modelMapper.map(custumerDTO, existingCustomer);
+        modelMapper.map(custumerDTO, customer);
 
-        return repository.save(existingCustomer);
+        if (deletedImageId != null) {
+            imageService.deleteUserImage(deletedImageId);
+        }
+
+        if (newImage != null) {
+            imageService.uploadUserImage(id, newImage);
+        }
+
+        return repository.save(customer);
     }
 
 //    public Customer alterCustomer(

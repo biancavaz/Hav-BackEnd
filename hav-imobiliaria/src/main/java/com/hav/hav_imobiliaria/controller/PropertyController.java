@@ -71,7 +71,7 @@ public class PropertyController {
 
     @PutMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Property modifyProperty(
+    public Property updateProperty(
             @Positive @NotNull @PathVariable Integer id,
             @Valid @RequestPart("propertyDTO") PropertyPutRequestDTO propertyDTO,
             @RequestParam(value = "deletedImageIds", required = false) List<Integer> deletedImageIds,

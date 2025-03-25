@@ -16,5 +16,7 @@ public class RealtorPutRequestDTO {
     String celphone;
     @NotBlank
     String phoneNumber;
+    @Valid
+    @NotNull
     AddressPutRequestDTO address;
 }
