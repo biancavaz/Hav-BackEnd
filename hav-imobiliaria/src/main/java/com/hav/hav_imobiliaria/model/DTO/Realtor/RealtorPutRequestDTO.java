@@ -2,21 +2,25 @@ package com.hav.hav_imobiliaria.model.DTO.Realtor;
 
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPutRequestDTO;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
 public class RealtorPutRequestDTO {
-    @NotBlank
+    @NotBlank(message = "Nome não pode estar em branco")
+    @Pattern(regexp = "^[A-Za-zÀ-ÿ]{2,}( [A-Za-zÀ-ÿ]{2,})+$", message = "Nome inválido")
     String name;
-    @NotBlank
+    @NotBlank(message = "E-mail não pode estar em branco")
+    @Email(message = "E-mail inválido")
     String email;
-    @NotBlank
+    @NotBlank(message = "Celular não pode estar em branco")
+    @Pattern(regexp = "\\d{11}$", message = "Celular inválido")
     String celphone;
-    @NotBlank
     String phoneNumber;
     @Valid
-    @NotNull
+    @NotNull(message = "Endereço inválido")
     AddressPutRequestDTO address;
 }

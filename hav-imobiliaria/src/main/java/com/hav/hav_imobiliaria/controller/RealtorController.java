@@ -4,6 +4,8 @@ import com.hav.hav_imobiliaria.model.DTO.Realtor.*;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.service.RealtorService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,19 +33,22 @@ public class RealtorController {
         return service.createRealtor(realtorPostDTO, image);
     }
 
-//    @PutMapping("/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Realtor editRealtor(
-//            @PathVariable Integer id,
-//            @RequestBody @Valid RealtorPutRequestDTO realtorPutDTO) {
-//        return service.updateRealtor(id, realtorPutDTO);
-//    }
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Realtor editRealtor(
+            @PathVariable @Positive @NotNull Integer id,
+            @RequestPart("realtor") @Valid RealtorPutRequestDTO realtorPutDTO,
+            @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
+            @RequestPart(value = "newImage", required = false) MultipartFile newImage
+    ) {
+        return service.updateRealtor(id, realtorPutDTO, deletedImageId, newImage);
+    }
 
 
     @PostMapping("/filter")
     public Page<RealtorListGetResponseDTO> findByFilter(
             @RequestBody RealtorFilterPostResponseDTO realtorDTO,
-            @RequestParam Integer page){
+            @RequestParam Integer page) {
         System.out.println(realtorDTO);
         Pageable pageable = PageRequest.of(page, 10);
         return service.findAllByFilter(realtorDTO, pageable);
@@ -51,13 +56,13 @@ public class RealtorController {
 
     @PatchMapping("/changeArchiveStatus")
     public void changeArchiveStatus(
-            @RequestBody List<Integer> realtorIds){
+            @RequestBody List<Integer> realtorIds) {
         service.changeArchiveStatus(realtorIds);
     }
 
     @DeleteMapping
     public void removeRealtorList(
-            @RequestBody List<Integer> idList){
+            @RequestBody List<Integer> idList) {
 
         service.removeList(idList);
     }
@@ -65,7 +70,7 @@ public class RealtorController {
     @GetMapping
     @RequestMapping("{id}")
     public RealtorPutRequestDTO getRealtor(
-            @PathVariable Integer id){
+            @PathVariable Integer id) {
         System.out.println("----------");
         RealtorPutRequestDTO realtorDTO = service.findRealtorById(id);
         System.out.println(realtorDTO);

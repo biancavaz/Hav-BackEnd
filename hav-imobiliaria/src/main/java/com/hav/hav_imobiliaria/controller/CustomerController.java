@@ -7,6 +7,7 @@ import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.service.CustumerService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,13 +34,16 @@ public class CustomerController {
         return service.createCustumer(CustomerPostDTO, image);
     }
 
-//    @PutMapping("/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Customer editCustumerOwner(
-//            @PathVariable Integer id,
-//            @RequestBody @Valid CustomerPutRequestDTO custumerDTO) {
-//        return service.editCustumer(id, custumerDTO);
-//    }
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Customer updateCustomer(
+            @PathVariable Integer id,
+            @RequestBody @Valid CustomerPutRequestDTO custumerDTO,
+            @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
+            @RequestPart(value = "newImage", required = false) MultipartFile newImage
+    ) {
+        return service.updateCustomer(id, custumerDTO, deletedImageId, newImage);
+    }
 
 //    @PatchMapping("/{id}")
 //    @GetMapping("/page")

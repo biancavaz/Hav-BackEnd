@@ -47,17 +47,26 @@ public class AdmService {
         return admPostDTO.convertToDTO(adm);
     }
 
-    public Adm editAdm(
+    public Adm updateAdm(
             @Positive @NotNull Integer id,
-            @Valid AdmPutRequestDTO admPutDTO) {
+            @Valid AdmPutRequestDTO admPutDTO,
+            @Positive Integer deletedImageId,
+            MultipartFile newImage) {
 
-        Adm existingAdm = repository.findById(id).orElseThrow(() ->
+        Adm adm = repository.findById(id).orElseThrow(() ->
                 new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
 
-        // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
-        modelMapper.map(admPutDTO, existingAdm);
+        modelMapper.map(admPutDTO, adm);
 
-        return repository.save(existingAdm);
+        if (deletedImageId != null) {
+            imageService.deleteUserImage(deletedImageId);
+        }
+
+        if (newImage != null) {
+            imageService.uploadUserImage(id, newImage);
+        }
+
+        return repository.save(adm);
     }
 
     public Page<AdmListGetResponseDTO> findAllByFilter(Pageable pageable, AdmFilterPostResponseDTO admDto) {

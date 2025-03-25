@@ -44,7 +44,7 @@ public class CustumerService {
         return custumerPostDTO.convertToDTO(savedCustomer);
     }
 
-    public Customer updateCustumer(
+    public Customer updateCustomer(
             @NotNull @Positive Integer id,
             @Valid CustomerPutRequestDTO custumerDTO,
             @Positive Integer deletedImageId,
