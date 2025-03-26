@@ -56,8 +56,8 @@ public class PropertyService {
 
         property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
 
-
-        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
+//
+//        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
 
         property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
 
@@ -248,7 +248,7 @@ public class PropertyService {
         property.setArea(propertyDTO.getArea());
         property.setPromotionalPrice(propertyDTO.getPromotionalPrice());
         property.setHighlight(propertyDTO.getHighlight());
-        property.setPropertyCategory(propertyDTO.getPropertyCategory());
+//        property.setPropertyCategory(propertyDTO.getPropertyCategory());
         property.setFloors(propertyDTO.getFloors());
 
         // Atualizar objetos embutidos
