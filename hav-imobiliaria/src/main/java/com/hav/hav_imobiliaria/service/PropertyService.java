@@ -8,8 +8,6 @@ import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
-import com.hav.hav_imobiliaria.model.entity.Properties.PropertyFeature;
-import com.hav.hav_imobiliaria.model.entity.Properties.Taxes;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.ImagePropertyRepository;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
@@ -19,14 +17,11 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
-import org.apache.logging.log4j.util.BiConsumer;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Consumer;
@@ -234,11 +229,9 @@ public class PropertyService {
             List<Integer> deletedImageIds,
             List<MultipartFile> newImages
     ) {
-        // Buscar propriedade
         Property property = repository.findById(propertyId)
                 .orElseThrow(() -> new EntityNotFoundException("Propriedade não encontrada"));
 
-        // Atualizar campos diretamente
         property.setTitle(propertyDTO.getTitle());
         property.setPropertyDescription(propertyDTO.getPropertyDescription());
         property.setPropertyType(propertyDTO.getPropertyType());
@@ -251,20 +244,15 @@ public class PropertyService {
 //        property.setPropertyCategory(propertyDTO.getPropertyCategory());
         property.setFloors(propertyDTO.getFloors());
 
-        // Atualizar objetos embutidos
         modelMapper.map(propertyDTO.getPropertyFeatures(), property.getPropertyFeatures());
         modelMapper.map(propertyDTO.getTaxes(), property.getTaxes());
 
-
-        // Atualizar relações
         updateRealtors(property, propertyDTO.getRealtors());
         updateProprietor(property, propertyDTO.getProprietor());
         updateAdditionals(property, propertyDTO.getAdditionals());
 
-        // Salvar a propriedade antes de processar imagens
         repository.save(property);
 
-        // Processar imagens separadamente
         processImages(propertyId, deletedImageIds, newImages);
 
         return property;
@@ -273,7 +261,7 @@ public class PropertyService {
     private void updateRealtors(Property property, List<Integer> realtorIds) {
         if (realtorIds != null) {
             List<Realtor> realtors = realtorService.findAllById(realtorIds);
-            property.setRealtors(new ArrayList<>(realtors));  // Converte para List
+            property.setRealtors(new ArrayList<>(realtors));
         }
     }
 
@@ -284,9 +272,9 @@ public class PropertyService {
     }
 
     private void updateAdditionals(Property property, List<Integer> additionalIds) {
-        if (additionalIds != null) {
+        if (additionalIds != null && !additionalIds.isEmpty()) {
             List<Additionals> additionals = additionalsService.findAllById(additionalIds);
-            property.setAdditionals(new ArrayList<>(additionals));  // Converte para List
+            property.setAdditionals(new ArrayList<>(additionals));
         }
     }
 

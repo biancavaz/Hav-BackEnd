@@ -7,6 +7,7 @@ import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.service.ProprietorService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,17 +36,20 @@ public class ProprietorController {
         return service.createProprietor(proprietorDTO, image);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Proprietor editProprietor(
+    public Proprietor updateProprietor(
             @PathVariable Integer id,
-            @RequestBody @Valid ProprietorPutRequestDTO ProprietorPutDTO) {
-        return service.editProprietor(id, ProprietorPutDTO);
+            @RequestBody @Valid ProprietorPutRequestDTO proprietorPutDTO,
+            @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
+            @RequestPart(value = "newImage", required = false) MultipartFile newImage
+    ) {
+        return service.updateProprietor(id, proprietorPutDTO, deletedImageId, newImage);
     }
 
     @PostMapping("/filter")
     public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto,
-                                                           @RequestParam Integer page){
+                                                           @RequestParam Integer page) {
         System.out.println(proprietorDto);
         Pageable pageable = PageRequest.of(page, 10);
         return service.findAllByFilter(pageable, proprietorDto);

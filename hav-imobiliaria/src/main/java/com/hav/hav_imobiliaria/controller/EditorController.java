@@ -8,6 +8,7 @@ import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.service.EditorService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +38,7 @@ public class EditorController {
 
     @PostMapping("/filter")
     public Page<EditorListGetResponseDTO> findByFilter(
-            @RequestBody EditorFilterPostResponseDTO editorDto, Pageable pageable){
+            @RequestBody EditorFilterPostResponseDTO editorDto, Pageable pageable) {
         return service.findAllByFilter(pageable, editorDto);
     }
 
@@ -46,12 +47,15 @@ public class EditorController {
         service.changeArchiveStatus(editorIds);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Editor editEditor(
+    public Editor updateEditor(
             @PathVariable Integer id,
-            @RequestBody @Valid EditorPutRequestDTO editorPutDTO) {
-        return service.editEditor(id, editorPutDTO);
+            @RequestBody @Valid EditorPutRequestDTO editorPutDTO,
+            @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
+            @RequestPart(value = "newImage", required = false) MultipartFile newImage
+    ) {
+        return service.updateEditor(id, editorPutDTO, deletedImageId, newImage);
     }
 
 //    @GetMapping
@@ -74,7 +78,7 @@ public class EditorController {
     @GetMapping
     @RequestMapping("{id}")
     public ResponseEntity<EditorPutRequestDTO> getEditor(
-            @PathVariable Integer id){
+            @PathVariable Integer id) {
 
         EditorPutRequestDTO editorDTO = service.findEditorById(id);
         return ResponseEntity.ok(editorDTO);

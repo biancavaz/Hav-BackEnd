@@ -43,15 +43,26 @@ public class EditorService {
         return editorPostDTO.convertToDTO(savededitor);
     }
 
-    public Editor editEditor(
-            @Positive @NotNull Integer id, @Valid EditorPutRequestDTO editorPutDTO) {
+    public Editor updateEditor(
+            @Positive @NotNull Integer id,
+            @Valid EditorPutRequestDTO editorPutDTO,
+            @Positive @NotNull Integer deletedImageId,
+            MultipartFile newImage) {
 
-        Editor existingEditor = repository.findById(id).orElseThrow(() ->
+        Editor editor = repository.findById(id).orElseThrow(() ->
                 new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
 
-        modelMapper.map(editorPutDTO, existingEditor);
+        modelMapper.map(editorPutDTO, editor);
 
-        return repository.save(existingEditor);
+        if (deletedImageId != null) {
+            imageService.deleteUserImage(deletedImageId);
+        }
+
+        if (newImage != null) {
+            imageService.uploadUserImage(id, newImage);
+        }
+
+        return repository.save(editor);
     }
 
     public Page<EditorListGetResponseDTO> findAllByFilter(Pageable pageable, EditorFilterPostResponseDTO editorDto) {
@@ -65,7 +76,6 @@ public class EditorService {
         Example<Editor> example = Example.of(editor, matcher);
 
         Page<Editor> editorList = repository.findAll(example, pageable);
-
 
 
         Page<EditorListGetResponseDTO> editorListGetResponseDtos = editorList.map(editorx ->
