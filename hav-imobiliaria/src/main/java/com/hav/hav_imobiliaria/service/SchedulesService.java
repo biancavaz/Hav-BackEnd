@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleChangeCustomerDTO;
+import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
@@ -11,8 +12,10 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -22,8 +25,9 @@ public class SchedulesService {
     private final ModelMapper modelMapper;
     private final RealtorRepository realtorRepository;
     private final CustumerRepository custumerRepository;
-    public List<Schedules> findAllByRealtorId(Integer id) {
-        return repository.findByRealtorId(id);
+
+    public List<ScheduleGetDTO> findAllByRealtorIdAndFuture(Integer id) {
+        return repository.findByRealtorIdAndDayAfter(id, LocalDate.now()).stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
     }
 
     public List<Schedules> createSchedules(List<SchedulesPostDTO> schedulesPostDto){

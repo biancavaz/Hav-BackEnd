@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.controller;
 
 import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleChangeCustomerDTO;
+import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.service.SchedulesService;
@@ -18,8 +19,8 @@ public class SchedulesController {
 
     @GetMapping
     @RequestMapping("{id}")
-    public List<Schedules> getSchedulesByRealtor(@PathVariable Integer id){
-        return service.findAllByRealtorId(id);
+    public List<ScheduleGetDTO> getSchedulesByRealtor(@PathVariable Integer id){
+        return service.findAllByRealtorIdAndFuture(id);
     }
 
     @PostMapping

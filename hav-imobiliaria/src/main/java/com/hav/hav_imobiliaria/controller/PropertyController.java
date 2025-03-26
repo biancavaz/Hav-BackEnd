@@ -81,6 +81,7 @@ public class PropertyController {
             @PathVariable Integer id){
 
         PropertyPutRequestDTO propertyDto = service.findPropertyById(id);
+        System.out.println(propertyDto.toString());
         return ResponseEntity.ok(propertyDto);
     }
 }
