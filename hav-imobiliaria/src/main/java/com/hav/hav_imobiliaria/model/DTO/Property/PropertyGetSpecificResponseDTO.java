@@ -42,8 +42,8 @@ public class PropertyGetSpecificResponseDTO {
     Double promotionalPrice;
     @NotNull
     Boolean highlight;
-    @NotNull
-    String propertyCategory;
+//    @NotNull
+//    String propertyCategory;
     @NotNull
     Integer floors;
     @NotNull
