@@ -10,5 +10,5 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<Schedules, Integer> {
     List<Schedules> findByRealtorId(Integer id);
 
-    List<Schedules> findByRealtorIdAndDayAfter(Integer realtorId, LocalDate today);
+    List<Schedules> findByRealtorIdAndDayGreaterThanEqual(Integer realtorId, LocalDate today);
 }

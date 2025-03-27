@@ -27,7 +27,7 @@ public class SchedulesService {
     private final CustumerRepository custumerRepository;
 
     public List<ScheduleGetDTO> findAllByRealtorIdAndFuture(Integer id) {
-        return repository.findByRealtorIdAndDayAfter(id, LocalDate.now()).stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
+        return repository.findByRealtorIdAndDayGreaterThanEqual(id, LocalDate.now()).stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
     }
 
     public List<Schedules> createSchedules(List<SchedulesPostDTO> schedulesPostDto){

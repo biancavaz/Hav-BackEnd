@@ -8,6 +8,8 @@ import java.time.LocalTime;
 
 @Data
 public class ScheduleGetDTO {
+
+    private Integer id;
     private LocalDate day;
     private LocalTime start_hour;
     private CustomerScheduleGetDTO customer;

@@ -25,7 +25,7 @@ public class Schedules {
     private Integer id;
 
     @Column
-    @Future
+    @FutureInclusive
     private LocalDate day;
 
     @Column
