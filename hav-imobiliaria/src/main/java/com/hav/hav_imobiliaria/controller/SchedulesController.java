@@ -25,8 +25,12 @@ public class SchedulesController {
 
     @PostMapping
     public List<Schedules> createSchedules(@RequestBody List<SchedulesPostDTO> schedulesPostDto){
-
         return service.createSchedules(schedulesPostDto);
+    }
+    @DeleteMapping
+    public String deleteSchedules(@RequestBody List<Integer> idList){
+        service.deleteSchedules(idList);
+        return "deletado";
     }
 
     @PostMapping("/presence")

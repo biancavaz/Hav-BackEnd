@@ -10,7 +10,6 @@ import java.time.LocalTime;
 public class ScheduleGetDTO {
     private LocalDate day;
     private LocalTime start_hour;
-    private LocalTime end_hour;
     private CustomerScheduleGetDTO customer;
 
 }

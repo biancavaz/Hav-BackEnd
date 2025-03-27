@@ -63,4 +63,8 @@ public class SchedulesService {
         return repository.save(schedule);
 
     }
+
+    public void deleteSchedules(List<Integer> idList) {
+        repository.deleteAllById(idList);
+    }
 }

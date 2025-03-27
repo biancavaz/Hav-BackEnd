@@ -15,8 +15,6 @@ public class SchedulesPostDTO {
 
     private LocalTime start_hour;
 
-    private LocalTime end_hour;
-
     private Integer realtor_id;
 
     @Override
@@ -24,7 +22,6 @@ public class SchedulesPostDTO {
         return "SchedulesPostDTO{" +
                 "day=" + day +
                 ", start_hour=" + start_hour +
-                ", end_hour=" + end_hour +
                 ", realtor_id=" + realtor_id +
                 '}';
     }

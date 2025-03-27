@@ -31,8 +31,7 @@ public class Schedules {
     @Column
     private LocalTime start_hour;
 
-    @Column
-    private LocalTime end_hour;
+
 
     @ManyToOne()
     @JoinColumn(referencedColumnName = "id", nullable = false)
@@ -44,32 +43,24 @@ public class Schedules {
     private Customer customer;
 
 
-    Schedules(LocalDate day, LocalTime start_hour, LocalTime end_hour) {
-        if (start_hour.isAfter(LocalTime.of(8, 0))) {
+    Schedules(LocalDate day, LocalTime start_hour) {
+        if (start_hour.isBefore(LocalTime.of(8, 0))) {
             System.err.println("abaixo da hora mínima");
             return;
-
         }
-        if (end_hour.isBefore(LocalTime.of(20, 0))) {
-            System.err.println("acima da hora mínima");
-            return;
-
-        }
-        if (start_hour.isAfter(end_hour) || start_hour == end_hour) {
-            System.err.println("horarios mal formatados");
-            return;
-
-        }
-        Duration duration = Duration.between(start_hour, end_hour);
-        if (!duration.equals(Duration.ofHours(1))) {
-            System.err.println("cada agendamento deve ser de uma hora");
+        if (start_hour.getMinute() != 0 && start_hour.getMinute() != 30) {
+            System.err.println("hora deve terminar em 00 ou 30 minutos");
             return;
         }
+        if (start_hour.isAfter(LocalTime.of(19, 30))) {
+            System.err.println("abaixo da hora mínima");
+            return;
+        }
+
+
 
         this.day = day;
         this.start_hour = start_hour;
-        this.end_hour = end_hour;
-
 
     }
 
@@ -79,7 +70,6 @@ public class Schedules {
                 "id=" + id +
                 ", day=" + day +
                 ", start_hour=" + start_hour +
-                ", end_hour=" + end_hour +
                 ", realtor=" + realtor +
                 ", customer=" + customer +
                 '}';
