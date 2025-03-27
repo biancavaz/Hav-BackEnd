@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class PropertyScheduleGetDTO {
+    Integer id;
     String propertyCode;
     String purpose;
     AddressGetScheduleDTO address;
