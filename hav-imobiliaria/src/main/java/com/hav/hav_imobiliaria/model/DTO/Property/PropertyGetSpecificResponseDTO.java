@@ -6,16 +6,19 @@ import com.hav.hav_imobiliaria.model.DTO.Address.AddressGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureGetResposeDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureSpecifiGetRespondeDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPropertySpecificGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPutRequestDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 @Data
 public class PropertyGetSpecificResponseDTO {
 
@@ -27,8 +30,6 @@ public class PropertyGetSpecificResponseDTO {
     String propertyStatus;
     @NotBlank
     String purpose;
-    @NotNull
-    List<RealtorGetResponseDTO> realtorList;
     @NotBlank
     String propertyDescription;
     @Positive
@@ -41,19 +42,18 @@ public class PropertyGetSpecificResponseDTO {
     Double promotionalPrice;
     @NotNull
     Boolean highlight;
-    @NotBlank
+    @NotNull
     String propertyCategory;
     @NotNull
-    String floors;
+    Integer floors;
     @NotNull
     TaxesPutRequestDTO taxes;
-    @NotNull
-    Boolean isFurnished;
     @NotNull
     AddressGetResponseDTO address;
     @NotNull
     PropertyFeatureSpecifiGetRespondeDTO propertyFeature; //nao esta funcionando
     @NotNull
-    AdditionalsGetResponseDTO additional;
+    List<AdditionalsGetResponseDTO> additionals;
 
+    List<RealtorPropertySpecificGetResponseDTO> realtorPropertySpecific;
 }

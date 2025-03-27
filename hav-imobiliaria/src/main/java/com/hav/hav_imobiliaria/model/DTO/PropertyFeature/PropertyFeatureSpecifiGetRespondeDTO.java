@@ -10,5 +10,6 @@ public class PropertyFeatureSpecifiGetRespondeDTO {
     Integer garageSpace;
     Integer livingRoom;
     Double areaProperty;
+    Boolean isFurnished;
 
 }

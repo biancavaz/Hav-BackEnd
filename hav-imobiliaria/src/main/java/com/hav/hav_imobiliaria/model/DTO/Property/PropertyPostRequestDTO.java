@@ -37,8 +37,8 @@ public record PropertyPostRequestDTO(
         Double promotionalPrice,
         @NotNull(message = "Destaque inválido")
         Boolean highlight,
-//        @NotBlank(message = "Categoria não pode estar em branco")
-//        String propertyCategory,
+        @NotBlank(message = "Categoria não pode estar em branco")
+        String propertyCategory,
         @Valid
         @NotNull(message = "Endereço inválido")
         AddressPostRequestDTO address,
@@ -51,8 +51,8 @@ public record PropertyPostRequestDTO(
 
 
         List<Integer> additionals,
-//        @NotNull(message = "Ids corretores inválidos")
-//        List<Integer> realtors,
+        @NotNull(message = "Ids corretores inválidos")
+        List<Integer> realtors,
         @Positive(message = "Id deve ser positivo")
         @NotNull(message = "Proprietário inválido")
         Integer proprietor
@@ -62,7 +62,7 @@ public record PropertyPostRequestDTO(
                 propertyDescription(propertyDescription).
                 propertyType(propertyType).propertyStatus(propertyStatus).area(area).price(price).
                 promotionalPrice(promotionalPrice).purpose(purpose).highlight(highlight).
-//                propertyCategory(propertyCategory).
+                propertyCategory(propertyCategory).
                 floors(floors).
                 address(address.convert()).taxes(taxes.convert()).
                 propertyFeatures(propertyFeatures.convert())

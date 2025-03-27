@@ -1,13 +1,19 @@
 package com.hav.hav_imobiliaria.service;
 
+import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureSpecifiGetRespondeDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPropertySpecificGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
+import com.hav.hav_imobiliaria.model.entity.Properties.Taxes;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.ImagePropertyRepository;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
@@ -51,8 +57,8 @@ public class PropertyService {
 
         property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
 
-//
-//        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
+
+        property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
 
         property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
 
@@ -102,6 +108,39 @@ public class PropertyService {
 
         // Retorna uma nova Page contendo os DTOs
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
+    }
+
+    public PropertyGetSpecificResponseDTO findPropertySpecificById(Integer id) {
+        Property property = repository.findById(id).get();
+        PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(
+                property.getPropertyCode(),
+                property.getPropertyType(),
+                property.getPropertyStatus(),
+                property.getPurpose(),
+                property.getPropertyDescription(),
+                property.getArea(),
+                property.getPrice(),
+                property.getPromotionalPrice(),
+                property.getHighlight(),
+                property.getPropertyCategory(),
+                property.getFloors(),
+                modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class),
+                modelMapper.map(property.getAddress(), AddressGetResponseDTO.class),
+                modelMapper.map(property.getPropertyFeatures(), PropertyFeatureSpecifiGetRespondeDTO.class),
+                property.getAdditionals().stream()
+                        .map(additionals -> new AdditionalsGetResponseDTO(
+                                additionals.getName()
+                        )).toList(),
+                property.getRealtors().stream()
+                        .map(realtor -> new RealtorPropertySpecificGetResponseDTO(
+                                realtor.getName(),
+                                realtor.getEmail(),
+                                realtor.getCreci(),
+                                realtor.getPhoneNumber()
+                        ))
+                        .toList()
+        );
+        return dtos;
     }
 
     public Page<PropertyListGetResponseDTO> findAllByFilter(
@@ -307,8 +346,5 @@ public class PropertyService {
         return modelMapper.map(property, PropertyPutRequestDTO.class);
     }
 
-    public PropertyGetSpecificResponseDTO findPropertySpecificById(Integer id) {
-        Property property = repository.findById(id).get();
-        return modelMapper.map(property, PropertyGetSpecificResponseDTO.class);
-    }
+
 }
