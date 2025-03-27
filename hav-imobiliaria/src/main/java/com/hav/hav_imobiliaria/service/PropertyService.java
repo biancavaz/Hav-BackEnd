@@ -162,11 +162,13 @@ public class PropertyService {
                 .collect(Collectors.toList());
 
 
+        if(propertyDto.getPropertyFeatures() !=null){
+            propertyDto.getPropertyFeatures().setBedRoom(bedRoom);
+            propertyDto.getPropertyFeatures().setBathRoom(bathRoom);
+            propertyDto.getPropertyFeatures().setGarageSpace(garageSpace);
+            propertyDto.getPropertyFeatures().setSuite(suite);
+        }
 
-        propertyDto.getPropertyFeatures().setBedRoom(bedRoom);
-        propertyDto.getPropertyFeatures().setBathRoom(bathRoom);
-        propertyDto.getPropertyFeatures().setGarageSpace(garageSpace);
-        propertyDto.getPropertyFeatures().setSuite(suite);
 
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {

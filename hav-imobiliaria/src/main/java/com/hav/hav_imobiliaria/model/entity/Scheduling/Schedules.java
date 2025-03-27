@@ -4,6 +4,7 @@ package com.hav.hav_imobiliaria.model.entity.Scheduling;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import jakarta.persistence.*;
@@ -36,6 +37,11 @@ public class Schedules {
     @ManyToOne()
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Realtor realtor;
+
+    @JsonManagedReference
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(referencedColumnName = "id")
+    private Property property;
 
     @JsonManagedReference
     @ManyToOne(cascade = CascadeType.ALL)

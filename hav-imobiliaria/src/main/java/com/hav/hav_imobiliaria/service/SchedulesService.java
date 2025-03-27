@@ -6,6 +6,7 @@ import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
+import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
 import com.hav.hav_imobiliaria.repository.ScheduleRepository;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class SchedulesService {
     private final ModelMapper modelMapper;
     private final RealtorRepository realtorRepository;
     private final CustumerRepository custumerRepository;
+    private final PropertyRepository propertyRepository;
 
     public List<ScheduleGetDTO> findAllByRealtorIdAndFuture(Integer id) {
         return repository.findByRealtorIdAndDayGreaterThanEqual(id, LocalDate.now()).stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
@@ -57,6 +59,11 @@ public class SchedulesService {
         Schedules schedule = repository.findById(scheduleChangeCustomerDTO.getSchedule_id()).get();
         if(schedule.getCustomer() ==null){
             schedule.setCustomer(custumerRepository.findById(scheduleChangeCustomerDTO.getCustomer_id()).get());
+        }else{
+            System.err.println("erro não tratado de customer ja no schedule");
+        }
+        if(schedule.getProperty() ==null){
+            schedule.setProperty(propertyRepository.findById(scheduleChangeCustomerDTO.getProperty_id()).get());
         }else{
             System.err.println("erro não tratado de customer ja no schedule");
         }
