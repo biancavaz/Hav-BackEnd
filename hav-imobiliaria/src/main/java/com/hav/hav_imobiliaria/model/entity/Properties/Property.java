@@ -97,7 +97,6 @@ public class Property {
     @JsonManagedReference
     @ManyToOne()
     @JoinColumn(name = "id_proprietor")
-
     private Proprietor proprietor;
 
     @JsonManagedReference
@@ -107,9 +106,6 @@ public class Property {
             joinColumns = @JoinColumn(name = "id_property"),
             inverseJoinColumns = @JoinColumn(name = "id_realtor")
     )
-
-
-
     private List<Realtor> realtors;
 
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
