@@ -1,4 +1,4 @@
-package config;
+package com.hav.hav_imobiliaria.security.configSecurity;
 
 public class JwtConstant {
 
