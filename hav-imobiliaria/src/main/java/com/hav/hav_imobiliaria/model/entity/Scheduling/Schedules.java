@@ -39,12 +39,12 @@ public class Schedules {
     private Realtor realtor;
 
     @JsonManagedReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(referencedColumnName = "id")
     private Property property;
 
     @JsonManagedReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(referencedColumnName = "id")
     private Customer customer;
 
