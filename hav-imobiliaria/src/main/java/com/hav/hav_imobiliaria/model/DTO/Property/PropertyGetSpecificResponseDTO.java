@@ -42,8 +42,8 @@ public class PropertyGetSpecificResponseDTO {
     Double promotionalPrice;
     @NotNull
     Boolean highlight;
-    @NotNull
-    String propertyCategory;
+//    @NotNull
+//    String propertyCategory;
     @NotNull
     Integer floors;
     @NotNull
@@ -54,6 +54,7 @@ public class PropertyGetSpecificResponseDTO {
     PropertyFeatureSpecifiGetRespondeDTO propertyFeature; //nao esta funcionando
     @NotNull
     List<AdditionalsGetResponseDTO> additionals;
+
 
     List<RealtorPropertySpecificGetResponseDTO> realtorPropertySpecific;
 }

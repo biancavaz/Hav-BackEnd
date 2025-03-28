@@ -57,7 +57,6 @@ public class PropertyService {
 
         property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
 
-
         property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
 
         property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
@@ -122,7 +121,7 @@ public class PropertyService {
                 property.getPrice(),
                 property.getPromotionalPrice(),
                 property.getHighlight(),
-                property.getPropertyCategory(),
+//                property.getPropertyCategory(),
                 property.getFloors(),
                 modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class),
                 modelMapper.map(property.getAddress(), AddressGetResponseDTO.class),
