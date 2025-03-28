@@ -121,7 +121,6 @@ public class PropertyService {
                 property.getPrice(),
                 property.getPromotionalPrice(),
                 property.getHighlight(),
-//                property.getPropertyCategory(),
                 property.getFloors(),
                 modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class),
                 modelMapper.map(property.getAddress(), AddressGetResponseDTO.class),
@@ -345,5 +344,37 @@ public class PropertyService {
         return modelMapper.map(property, PropertyPutRequestDTO.class);
     }
 
+
+    public Page <PropertyGetSpecificResponseDTO> findPropertyCard(Pageable pageable) {
+        Page<Property> property = repository.findAll(pageable);
+        List<PropertyGetSpecificResponseDTO> dtos = property.getContent().stream()
+                .map(properties -> new PropertyGetSpecificResponseDTO(
+                property.getPropertyType(),
+                property.getPropertyStatus(),
+                property.getPurpose(),
+                property.getPropertyDescription(),
+                property.getArea(),
+                property.getPrice(),
+                property.getPromotionalPrice(),
+                property.getHighlight(),
+                property.getFloors(),
+                modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class),
+                modelMapper.map(property.getAddress(), AddressGetResponseDTO.class),
+                modelMapper.map(property.getPropertyFeatures(), PropertyFeatureSpecifiGetRespondeDTO.class),
+                property.getAdditionals().stream()
+                        .map(additionals -> new AdditionalsGetResponseDTO(
+                                additionals.getName()
+                        )).toList(),
+                property.getRealtors().stream()
+                        .map(realtor -> new RealtorPropertySpecificGetResponseDTO(
+                                realtor.getName(),
+                                realtor.getEmail(),
+                                realtor.getCreci(),
+                                realtor.getPhoneNumber()
+                        ))
+
+        )).toList();
+        return (Page<PropertyGetSpecificResponseDTO>) dtos;
+    }
 
 }

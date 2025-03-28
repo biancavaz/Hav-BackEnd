@@ -97,4 +97,10 @@ public class PropertyController {
         PropertyGetSpecificResponseDTO propertyGetSpecificRequestDTO = service.findPropertySpecificById(id);
         return ResponseEntity.ok(propertyGetSpecificRequestDTO);
     }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Page<PropertyGetSpecificResponseDTO> getPropertyList(Page pagable){
+        return service.findPropertyCard(pagable);
+    }
 }
