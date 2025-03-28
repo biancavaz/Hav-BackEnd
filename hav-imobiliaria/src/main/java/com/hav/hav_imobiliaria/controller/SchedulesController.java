@@ -6,9 +6,11 @@ import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.service.SchedulesService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -16,11 +18,16 @@ import java.util.List;
 public class SchedulesController {
 
     private SchedulesService service;
-
+    private ModelMapper modelMapper;
     @GetMapping
     @RequestMapping("{id}")
     public List<ScheduleGetDTO> getSchedulesByRealtor(@PathVariable Integer id){
-        return service.findAllByRealtorIdAndFuture(id);
+        return service.findAllByRealtorIdAndFuture(id).stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
+    }
+    @GetMapping
+    @RequestMapping("/free/{id}")
+    public List<ScheduleGetDTO> getSchedulesByRealtorFree(@PathVariable Integer id){
+        return service.findAllByRealtorIdAndFutureFree(id).stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
     }
 
     @PostMapping

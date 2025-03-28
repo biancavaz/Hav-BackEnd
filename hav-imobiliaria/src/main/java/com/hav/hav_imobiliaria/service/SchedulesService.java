@@ -3,6 +3,7 @@ package com.hav.hav_imobiliaria.service;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleChangeCustomerDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
+import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
@@ -14,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,8 +30,14 @@ public class SchedulesService {
     private final CustumerRepository custumerRepository;
     private final PropertyRepository propertyRepository;
 
-    public List<ScheduleGetDTO> findAllByRealtorIdAndFuture(Integer id) {
-        return repository.findByRealtorIdAndDayGreaterThanEqual(id, LocalDate.now()).stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
+    public List<Schedules> findAllByRealtorIdAndFuture(Integer id) {
+        return repository.findByRealtorIdAndDayGreaterThanEqual(id, LocalDate.now());
+    }
+    public List<Schedules> findAllByRealtorIdAndFutureFree(Integer id) {
+
+        List<Schedules> schedules = repository.findByRealtorIdAndDayGreaterThanEqual(id, LocalDate.now());
+        List<Schedules> schedulesFree = schedules.stream().filter(sch -> sch.getCustomer() == null && sch.getProperty() == null).toList();
+        return schedulesFree;
     }
 
     public List<Schedules> createSchedules(List<SchedulesPostDTO> schedulesPostDto){
@@ -74,4 +82,6 @@ public class SchedulesService {
     public void deleteSchedules(List<Integer> idList) {
         repository.deleteAllById(idList);
     }
+
+
 }

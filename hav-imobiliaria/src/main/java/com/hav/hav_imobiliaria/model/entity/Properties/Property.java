@@ -126,4 +126,8 @@ public class Property {
     public PropertyFeature getPropertyFeatures() {
         return propertyFeatures;
     }
+
+    public List<Realtor> getRealtors() {
+        return realtors;
+    }
 }

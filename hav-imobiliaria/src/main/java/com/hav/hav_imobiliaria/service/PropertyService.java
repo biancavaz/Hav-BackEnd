@@ -14,6 +14,7 @@ import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
 import com.hav.hav_imobiliaria.model.entity.Properties.Taxes;
+import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.ImagePropertyRepository;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
@@ -50,8 +51,9 @@ public class PropertyService {
     private final ImageService imageService;
     private final ImagePropertyRepository imagePropertyRepository;
     private final S3Service s3Service;
+    private final SchedulesService schedulesService;
 
-    public Property create(@Valid PropertyPostRequestDTO propertyDTO, List<MultipartFile> images) {
+    public PropertyListGetResponseDTO create(@Valid PropertyPostRequestDTO propertyDTO, List<MultipartFile> images) {
 
         Property property = propertyDTO.convert();
 
@@ -69,7 +71,7 @@ public class PropertyService {
             imageService.uploadPropertyImages(savedProperty.getId(), images);
         }
 
-        return savedProperty;
+        return modelMapper.map(savedProperty, PropertyListGetResponseDTO.class);
     }
 
     private String generateUniqueCode() {
@@ -346,4 +348,23 @@ public class PropertyService {
     }
 
 
+    public List<RealtorGetResponseDTO> findRealtorsByPropertyId(Integer id) {
+        Property property = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
+
+
+
+        List<Realtor> realtors = property.getRealtors();
+
+        return realtors.stream()
+                .filter(realtor -> {
+                    List<Schedules> schedules = schedulesService.findAllByRealtorIdAndFuture(realtor.getId());
+                    // Verifica se há ao menos um horário livre (sem propriedade e cliente)
+                    return schedules.stream().anyMatch(schedule ->
+                            schedule.getProperty() == null && schedule.getCustomer() == null
+                    );
+                })
+                .map(realtor -> modelMapper.map(realtor, RealtorGetResponseDTO.class))
+                .collect(Collectors.toList());
+    }
 }
