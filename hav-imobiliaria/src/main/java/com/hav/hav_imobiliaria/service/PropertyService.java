@@ -55,16 +55,11 @@ public class PropertyService {
 
         Property property = propertyDTO.convert();
 
-        if(property.getAdditionals() != null && property.getAdditionals().size() > 0) {
-            property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
-
         property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
 
         property.setRealtors(realtorService.findAllById(propertyDTO.realtors()));
 
         property.setProprietor(proprietorService.findById(propertyDTO.proprietor()));
-
-        property.setAdditionals(additionalsService.findAllById(propertyDTO.additionals()));
 
         property.setPropertyCode(generateUniqueCode());
 
@@ -173,6 +168,8 @@ public class PropertyService {
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
 
+            System.out.println("adicionaro ao bedrrom");
+            System.out.println(propertyDto.getPropertyFeatures().getGarageSpace());
 
             garageSpace = propertyDto.getPropertyFeatures().getGarageSpace();
             propertyDto.getPropertyFeatures().setGarageSpace(null);
@@ -184,6 +181,7 @@ public class PropertyService {
             propertyDto.getPropertyFeatures().setSuite(null);
 
         }
+        System.out.println("apos tudo" + propertyDto.getPropertyFeatures());
 
 
         Property property = modelMapper.map(propertyDto, Property.class);
@@ -193,6 +191,9 @@ public class PropertyService {
                 .withIgnoreCase()
                 .withIgnoreNullValues()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        System.out.println("example");
+        System.out.println(matcher);
+        System.out.println(property.toString());
         //chamando o matcher
         Example<Property> example = Example.of(property, matcher);
 
@@ -206,14 +207,11 @@ public class PropertyService {
                 .collect(Collectors.toList());
 
 
-        if(propertyDto.getPropertyFeatures() !=null){
-            propertyDto.getPropertyFeatures().setBedRoom(bedRoom);
-            propertyDto.getPropertyFeatures().setBathRoom(bathRoom);
-            propertyDto.getPropertyFeatures().setGarageSpace(garageSpace);
-            propertyDto.getPropertyFeatures().setSuite(suite);
-        }
-
-
+        propertyDto.getPropertyFeatures().setBedRoom(bedRoom);
+        propertyDto.getPropertyFeatures().setBathRoom(bathRoom);
+        propertyDto.getPropertyFeatures().setGarageSpace(garageSpace);
+        propertyDto.getPropertyFeatures().setSuite(suite);
+        System.out.println("final final" + propertyDto.getPropertyFeatures());
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
             filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBedRoom() >= 5).collect(Collectors.toList());
@@ -222,9 +220,11 @@ public class PropertyService {
                 Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
             filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBathRoom() >= 5).collect(Collectors.toList());
         }
+        System.out.println(propertyDto.getPropertyFeatures().getGarageSpace());
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
-            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getGarageSpace() >=5).collect(Collectors.toList());
+            System.out.println("entrou no garage");
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getGarageSpace() >= 5).collect(Collectors.toList());
         }
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getSuite(), 5)) {
@@ -237,6 +237,8 @@ public class PropertyService {
         int start = pageable.getPageNumber() * pageable.getPageSize(); // Calculando o índice de início
         int end = Math.min(start + pageable.getPageSize(), filteredAllProperties.size());
 
+        System.out.println(start);
+        System.out.println(end);
 
         List<Property> pageProperty = filteredAllProperties.subList(start, end);
 
