@@ -1,10 +1,10 @@
 package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Realtor.*;
+import com.hav.hav_imobiliaria.model.entity.Address;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -41,17 +41,27 @@ public class RealtorService {
         return realtorDTO.convertToDTO(savedRealtor);
     }
 
-    public Realtor editRealtor(
+    @Transactional
+    public Realtor updateRealtor(
             @NotNull @Positive Integer id,
-            @Valid RealtorPutRequestDTO realtorPutDTO) {
+            @Valid RealtorPutRequestDTO realtorPutDTO,
+            @Positive Integer deletedImageId,
+            MultipartFile newImage) {
 
-        Realtor existingRealtor = repository.findById(id).orElseThrow(() ->
+        Realtor realtor = repository.findById(id).orElseThrow(() ->
                 new NoSuchElementException("Corretor com o ID " + id + " não encontrado."));
 
-        // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
-        modelMapper.map(realtorPutDTO, existingRealtor);
+        modelMapper.map(realtorPutDTO, realtor);
 
-        return repository.save(existingRealtor);
+        if (deletedImageId != null) {
+            imageService.deleteUserImage(deletedImageId);
+        }
+
+        if (newImage != null) {
+            imageService.uploadUserImage(id, newImage);
+        }
+
+        return repository.save(realtor);
     }
 
     public Page<RealtorListGetResponseDTO> findAllByFilter(

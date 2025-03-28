@@ -43,7 +43,25 @@ public class ImageService {
         imageUserRepository.save(userImage);
     }
 
-//    public List<ImageProperty> getImagesByProperty(Integer propertyId) {
-//        return imageRepository.findByProperty_Id(propertyId);
-//    }
+    public void deletePropertyImages(List<Integer> imageIds) {
+        List<ImageProperty> images = imagePropertyRepository.findAllById(imageIds);
+
+        if (images.isEmpty()) {
+            throw new RuntimeException("Nenhuma imagem encontrada para os IDs fornecidos.");
+        }
+
+        for (ImageProperty image : images) {
+            s3Service.deleteFile(image.getS3Key());
+        }
+
+        imagePropertyRepository.deleteAll(images);
+    }
+
+    public void deleteUserImage(Integer imageId) {
+        ImageUser image = imageUserRepository.findById(imageId)
+                .orElseThrow(() -> new RuntimeException("Imagem de usuário não encontrada."));
+
+        s3Service.deleteFile(image.getS3Key());
+        imageUserRepository.delete(image);
+    }
 }

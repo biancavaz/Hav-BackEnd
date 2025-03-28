@@ -4,10 +4,10 @@ import com.hav.hav_imobiliaria.model.DTO.Adm.AdmFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.service.AdmService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,12 +35,15 @@ public class AdmController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Adm editAdm(
             @PathVariable Integer id,
-            @RequestBody @Valid AdmPutRequestDTO admPutDTO) {
-        return service.editAdm(id, admPutDTO);
+            @RequestBody @Valid AdmPutRequestDTO admPutDTO,
+            @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
+            @RequestPart(value = "newImage", required = false) MultipartFile newImage
+    ) {
+        return service.updateAdm(id, admPutDTO, deletedImageId, newImage);
     }
 
     @PostMapping("/filter")
@@ -53,8 +56,6 @@ public class AdmController {
         service.changeArchiveStatus(admIds);
     }
 
-//
-//
 //    @GetMapping
 //    public Page<Adm> searchAdm(
 //            @PageableDefault(
@@ -65,17 +66,16 @@ public class AdmController {
 //            ) Pageable pageable){
 //        return service.searchAdm(pageable);
 //    };
-//
-//
-//    //    @GetMapping
-////    @RequestMapping("/{id}")
-////    public RealtorGetResponseDTO searchRealtor(
-//    ////            @PathVariable Integer id){
-//    ////        Realtor realtor = service.searchRealtor(id);
 
-    /// /        return realtor.convert();
-    /// /    }
-//
+//    @GetMapping
+//   @RequestMapping("/{id}")
+//   public RealtorGetResponseDTO searchRealtor(
+//            @PathVariable Integer id){
+//        Realtor realtor = service.searchRealtor(id);
+
+    //      return realtor.convert();
+    //  }
+
 //    @DeleteMapping
 //    @RequestMapping("/{id}")
 //    public void removeAdm(@PathVariable Integer id){
@@ -90,7 +90,7 @@ public class AdmController {
     @GetMapping
     @RequestMapping("{id}")
     public AdmPutRequestDTO getAdm(
-            @PathVariable Integer id){
+            @PathVariable Integer id) {
         AdmPutRequestDTO admDTO = service.findAdmById(id);
         return admDTO;
     }

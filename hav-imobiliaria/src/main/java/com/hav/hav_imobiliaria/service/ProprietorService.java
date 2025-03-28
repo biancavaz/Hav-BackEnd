@@ -30,8 +30,9 @@ public class ProprietorService {
     private final ModelMapper modelMapper;
     private final ImageService imageService;
 
-    public ProprietorPostDTO createProprietor(@Valid ProprietorPostDTO proprietorDTO,
-                                              MultipartFile image) {
+    public ProprietorPostDTO createProprietor(
+            @Valid ProprietorPostDTO proprietorDTO,
+            MultipartFile image) {
 
         Proprietor proprietor = modelMapper.map(proprietorDTO, Proprietor.class);
 
@@ -44,19 +45,27 @@ public class ProprietorService {
         return proprietorDTO.convertToDTO(savedproprietor);
     }
 
-    public Proprietor editProprietor(
+    public Proprietor updateProprietor(
             @Positive @NotNull Integer id,
-            @Valid ProprietorPutRequestDTO proprietorPutDTO) {
+            @Valid ProprietorPutRequestDTO proprietorPutDTO,
+            @Positive Integer deletedImageId,
+            MultipartFile newImage) {
 
-        Proprietor existingProprietor = repository.findById(id).orElseThrow(() ->
+        Proprietor proprietor = repository.findById(id).orElseThrow(() ->
                 new NoSuchElementException("Proprietario com o ID " + id + " não encontrado."));
 
-        // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
-        modelMapper.map(proprietorPutDTO, existingProprietor);
+        modelMapper.map(proprietorPutDTO, proprietor);
 
-        return repository.save(existingProprietor);
+        if (deletedImageId != null) {
+            imageService.deleteUserImage(deletedImageId);
+        }
+
+        if (newImage != null) {
+            imageService.uploadUserImage(id, newImage);
+        }
+
+        return repository.save(proprietor);
     }
-
 
     public Page<ProprietorListGetResponseDTO> findAllByFilter(Pageable pageable, ProprietorFilterPostResponseDTO proprietorDto) {
         Proprietor proprietor = modelMapper.map(proprietorDto, Proprietor.class);
@@ -77,15 +86,12 @@ public class ProprietorService {
         );
 
 
+        for (int i = 0; i < proprietorList.getContent().size(); i++) {
 
 
-
-        for(int i=0; i<proprietorList.getContent().size(); i++ ){
-
-
-            if(proprietorList.getContent().get(i).getCpf()==null) {
+            if (proprietorList.getContent().get(i).getCpf() == null) {
                 proprietorListGetResponseDtos.getContent().get(i).setDocument(proprietorList.getContent().get(i).getCnpj());
-            }else{
+            } else {
                 proprietorListGetResponseDtos.getContent().get(i).setDocument(proprietorList.getContent().get(i).getCpf());
             }
 
@@ -97,7 +103,7 @@ public class ProprietorService {
                             .get(i).getPurpose());
         }
 
-        if(proprietorDto.getNumberOfProperty() != null) {
+        if (proprietorDto.getNumberOfProperty() != null) {
             List<ProprietorListGetResponseDTO> filteredPage = proprietorListGetResponseDtos
                     .map(proprietorx -> modelMapper.map(proprietorx, ProprietorListGetResponseDTO.class))
                     .filter(dto -> dto.getNumberOfProperty() == proprietorDto.getNumberOfProperty())  // Filter where numberOfProperties == 4

@@ -6,12 +6,19 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
-public class AddressPutRequestDTO{
-        String cep;
-        String street;
-        String neighborhood;
-        String city;
-        String state;
-        Integer propertyNumber;
-        String complement;
+public class AddressPutRequestDTO {
+    @NotBlank
+    String cep;
+    @NotBlank
+    String street;
+    @NotBlank
+    String neighborhood;
+    @NotBlank
+    String city;
+    @NotBlank
+    String state;
+    @NotNull
+    @Positive
+    Integer propertyNumber;
+    String complement;
 }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -98,7 +100,6 @@ public class Property {
     @JsonManagedReference
     @ManyToOne()
     @JoinColumn(name = "id_proprietor")
-
     private Proprietor proprietor;
 
     @JsonManagedReference
@@ -108,15 +109,12 @@ public class Property {
             joinColumns = @JoinColumn(name = "id_property"),
             inverseJoinColumns = @JoinColumn(name = "id_realtor")
     )
-
-
-
     private List<Realtor> realtors;
 
-    @JsonBackReference
-    @Column
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Schedules> schedules;
+    @ManyToMany(mappedBy = "properties")
+    @JsonIgnore
+    private List<User> users;
+
 
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImageProperty> imageProperties;

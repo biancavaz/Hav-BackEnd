@@ -4,6 +4,8 @@ import com.hav.hav_imobiliaria.model.DTO.Realtor.*;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.service.RealtorService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,12 +33,15 @@ public class RealtorController {
         return service.createRealtor(realtorPostDTO, image);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Realtor editRealtor(
-            @PathVariable Integer id,
-            @RequestBody @Valid RealtorPutRequestDTO realtorPutDTO) {
-        return service.editRealtor(id, realtorPutDTO);
+            @PathVariable @Positive @NotNull Integer id,
+            @RequestPart("realtor") @Valid RealtorPutRequestDTO realtorPutDTO,
+            @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
+            @RequestPart(value = "newImage", required = false) MultipartFile newImage
+    ) {
+        return service.updateRealtor(id, realtorPutDTO, deletedImageId, newImage);
     }
 
 
@@ -50,13 +55,13 @@ public class RealtorController {
 
     @PatchMapping("/changeArchiveStatus")
     public void changeArchiveStatus(
-            @RequestBody List<Integer> realtorIds){
+            @RequestBody List<Integer> realtorIds) {
         service.changeArchiveStatus(realtorIds);
     }
 
     @DeleteMapping
     public void removeRealtorList(
-            @RequestBody List<Integer> idList){
+            @RequestBody List<Integer> idList) {
 
         service.removeList(idList);
     }
