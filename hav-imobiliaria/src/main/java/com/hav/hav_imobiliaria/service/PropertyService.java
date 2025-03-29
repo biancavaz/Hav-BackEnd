@@ -208,12 +208,13 @@ public class PropertyService {
                         && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
                 .collect(Collectors.toList());
 
+        if(propertyDto.getPropertyFeatures()!=null){
+            propertyDto.getPropertyFeatures().setBedRoom(bedRoom);
+            propertyDto.getPropertyFeatures().setBathRoom(bathRoom);
+            propertyDto.getPropertyFeatures().setGarageSpace(garageSpace);
+            propertyDto.getPropertyFeatures().setSuite(suite);
+        }
 
-        propertyDto.getPropertyFeatures().setBedRoom(bedRoom);
-        propertyDto.getPropertyFeatures().setBathRoom(bathRoom);
-        propertyDto.getPropertyFeatures().setGarageSpace(garageSpace);
-        propertyDto.getPropertyFeatures().setSuite(suite);
-        System.out.println("final final" + propertyDto.getPropertyFeatures());
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
             filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBedRoom() >= 5).collect(Collectors.toList());
@@ -222,7 +223,6 @@ public class PropertyService {
                 Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
             filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBathRoom() >= 5).collect(Collectors.toList());
         }
-        System.out.println(propertyDto.getPropertyFeatures().getGarageSpace());
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
             System.out.println("entrou no garage");
