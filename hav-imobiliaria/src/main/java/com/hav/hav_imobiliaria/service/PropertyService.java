@@ -8,6 +8,7 @@ import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureSpecifiGetRespondeDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPropertySpecificGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
@@ -348,11 +349,9 @@ public class PropertyService {
     }
 
 
-    public List<RealtorGetResponseDTO> findRealtorsByPropertyId(Integer id) {
+    public List<RealtorGetResponseDTOwithId> findRealtorsByPropertyId(Integer id) {
         Property property = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
-
-
 
         List<Realtor> realtors = property.getRealtors();
 
@@ -364,7 +363,7 @@ public class PropertyService {
                             schedule.getProperty() == null && schedule.getCustomer() == null
                     );
                 })
-                .map(realtor -> modelMapper.map(realtor, RealtorGetResponseDTO.class))
+                .map(realtor -> modelMapper.map(realtor, RealtorGetResponseDTOwithId.class))
                 .collect(Collectors.toList());
     }
 }

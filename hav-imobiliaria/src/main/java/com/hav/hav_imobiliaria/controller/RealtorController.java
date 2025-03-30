@@ -1,6 +1,8 @@
 package com.hav.hav_imobiliaria.controller;
 
 import com.hav.hav_imobiliaria.model.DTO.Realtor.*;
+import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleChangeCustomerDTO;
+import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.service.RealtorService;
 import jakarta.validation.Valid;
@@ -73,4 +75,6 @@ public class RealtorController {
         RealtorPutRequestDTO realtorDTO = service.findRealtorById(id);
         return realtorDTO;
     }
+
+
 }

@@ -80,4 +80,12 @@ public class Schedules {
                 ", customer=" + customer +
                 '}';
     }
+
+    public LocalDate getDay() {
+        return this.day;
+    }
+
+    public LocalTime getStart_hour() {
+        return start_hour;
+    }
 }

@@ -1,14 +1,18 @@
 package com.hav.hav_imobiliaria.controller;
 
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleChangeCustomerDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
+import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.service.SchedulesService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +33,18 @@ public class SchedulesController {
     public List<ScheduleGetDTO> getSchedulesByRealtorFree(@PathVariable Integer id){
         return service.findAllByRealtorIdAndFutureFree(id).stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
     }
+    @GetMapping("/hourAndDay/{day}/{start_hour}/{propertyId}")
+    public List<RealtorGetResponseDTOwithId> findRealtorsForHourAndDay(
+            @PathVariable LocalDate day,
+            @PathVariable LocalTime start_hour,
+            @PathVariable Integer propertyId) {
+        return service.findRealtorsForHourAndDay(day, start_hour, propertyId);
+    }
+    @GetMapping
+    @RequestMapping("/free/property/{id}")
+    public List<ScheduleGetDTO> getSchedulesByPropertyRealtorsFree(@PathVariable Integer id){
+        return service.findAllByPropertyIdAndFutureFree(id).stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
+    }
 
     @PostMapping
     public List<Schedules> createSchedules(@RequestBody List<SchedulesPostDTO> schedulesPostDto){
@@ -40,8 +56,10 @@ public class SchedulesController {
         return "deletado";
     }
 
-    @PostMapping("/presence")
-    public Schedules addCustomerToSchedule(@RequestBody ScheduleChangeCustomerDTO scheduleChangeCustomerDTO){
+    @PutMapping("/presence")
+    public List<ScheduleGetDTO> addCustomerToSchedule(@RequestBody ScheduleChangeCustomerDTO scheduleChangeCustomerDTO){
         return service.addCustomerToSchedule(scheduleChangeCustomerDTO);
     }
+
+
 }

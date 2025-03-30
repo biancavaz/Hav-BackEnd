@@ -4,6 +4,7 @@ import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
 import com.hav.hav_imobiliaria.service.PropertyService;
@@ -102,7 +103,7 @@ public class PropertyController {
     //returns all the realtors of a property
     @GetMapping
     @RequestMapping("/realtorProperty/{id}")
-    public List<RealtorGetResponseDTO> getRealtorsOfProperty(@PathVariable Integer id) {
+    public List<RealtorGetResponseDTOwithId> getRealtorsOfProperty(@PathVariable Integer id) {
         return service.findRealtorsByPropertyId(id);
     }
 }
