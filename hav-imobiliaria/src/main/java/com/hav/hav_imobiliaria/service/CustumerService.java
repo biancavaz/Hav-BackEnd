@@ -4,9 +4,9 @@ import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
-import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -28,37 +29,71 @@ public class CustumerService {
 
     private final CustumerRepository repository;
     private final ModelMapper modelMapper;
+    private final ImageService imageService;
 
-
-    //CERTO
     public CustomerPostRequestDTO createCustumer(
-            @Valid CustomerPostRequestDTO custumerPostDTO) {
-        System.out.println("Recebido no DTO: " + custumerPostDTO);
-
+            @Valid CustomerPostRequestDTO custumerPostDTO,
+            MultipartFile image) {
 
         Customer customer = modelMapper.map(custumerPostDTO, Customer.class);
-        System.out.println(customer);
+
         Customer savedCustomer = repository.save(customer);
 
-        System.out.println("Convertido para entidade: " + savedCustomer);
+        if (image != null) {
+            imageService.uploadUserImage(savedCustomer.getId(), image);
+        }
 
         return custumerPostDTO.convertToDTO(savedCustomer);
     }
 
-    //certo
-    public Customer editCustumer(
+    public Customer updateCustomer(
             @NotNull @Positive Integer id,
-            @Valid CustomerPutRequestDTO custumerDTO) {
+            @Valid CustomerPutRequestDTO custumerDTO,
+            @Positive Integer deletedImageId,
+            MultipartFile newImage) {
 
-       Customer existingCustomer = repository.findById(id).orElseThrow(() ->
-        new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
+        Customer customer = repository.findById(id).orElseThrow(() ->
+                new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
 
-        // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
-       modelMapper.map(custumerDTO, existingCustomer);
+        modelMapper.map(custumerDTO, customer);
 
-       return repository.save(existingCustomer);
+        if (deletedImageId != null) {
+            imageService.deleteUserImage(deletedImageId);
+        }
+
+        if (newImage != null) {
+            imageService.uploadUserImage(id, newImage);
+        }
+
+        return repository.save(customer);
     }
 
+//    public Customer alterCustomer(
+//            @NotNull @Positive Integer id,
+//            @NotNull @Positive Integer idCustumer) {
+//        return null; //n sei como fazer
+//    }
+//
+//    public Page<Customer> searchCustumers(
+//            Pageable pageable) {
+//        return repository.findAll(pageable);
+//    }
+//
+//
+
+        public CustomerPutRequestDTO searchCustumer(
+                @NotNull @Positive Integer id) {
+            Customer customer = repository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+
+            // Converte a entidade Realtor para o DTO
+            return modelMapper.map(customer, CustomerPutRequestDTO.class);
+        }
+//
+//    public void removeCustumer(
+//            @NotNull @Positive Integer id) {
+//        repository.deleteById(id);
+//    }
 
     public void removeCustumer(
             @NotNull @Positive Integer id) {
@@ -78,19 +113,15 @@ public class CustumerService {
 
         Page<Customer> customerList = repository.findAll(example, pageable);
 
-
-
         Page<CustomerListGetResponseDTO> costumerListGetResponseDtos = customerList.map(customerx ->
                 modelMapper.map(customerx, CustomerListGetResponseDTO.class)
         );
-
         return costumerListGetResponseDtos;
     }
 
     @Transactional
     public void removeList(List<Integer> idList) {
         repository.deleteByIdIn(idList);
-
     }
 
     public void changeArchiveStatus(List<Integer> customerIds) {

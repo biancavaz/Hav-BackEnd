@@ -1,9 +1,10 @@
 package com.hav.hav_imobiliaria.model.entity.Users;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hav.hav_imobiliaria.model.entity.Address;
+import com.hav.hav_imobiliaria.model.entity.Properties.ImageProperty;
+import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -49,6 +51,18 @@ public class User {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_address", nullable = false)
     private Address address;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ImageUser imageUser;
+
+    @ManyToMany
+    @JoinTable(
+            name = "favorites",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "property_id")
+    )
+    @JsonIgnore
+    private List<Property> properties;
 
     public @NotNull boolean getArchived() {
         return this.archived;

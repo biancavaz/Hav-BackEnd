@@ -62,7 +62,7 @@ public record PropertyPostRequestDTO(
                 propertyDescription(propertyDescription).
                 propertyType(propertyType).propertyStatus(propertyStatus).area(area).price(price).
                 promotionalPrice(promotionalPrice).purpose(purpose).highlight(highlight).
-//                propertyCategory(propertyCategory)
+//                propertyCategory(propertyCategory).
                 floors(floors).
                 address(address.convert()).taxes(taxes.convert()).
                 propertyFeatures(propertyFeatures.convert())

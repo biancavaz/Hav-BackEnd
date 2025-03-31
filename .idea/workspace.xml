@@ -4,42 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5975ec1d-4eb5-4e53-b884-0e58b9fd9a95" name="Changes" comment="">
+    <list default="true" id="f4eee1d5-5736-4b72-823d-a4db6c924c17" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Customer/CustumerPostRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Customer/CustumerPostRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/AWSConfig/AwsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/AWSConfig/AwsConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Record" />
-        <option value="Class" />
-        <option value="Interface" />
-      </list>
-    </option>
+  <component name="ExportToHTMLSettings">
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../Hav-BackEnd\exportToHTML" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
-  </component>
   <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 7
+  &quot;associatedIndex&quot;: 4
 }</component>
-  <component name="ProjectId" id="2tYK3hXPYs8cq6pIZOpcrjq7JyU" />
+  <component name="ProjectId" id="2udMEaPnyAX306Jip0jldGnKkaG" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -53,19 +36,14 @@
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;Spring Boot.HavImobiliariaApplication.executor&quot;: &quot;Run&quot;,
     &quot;git-widget-placeholder&quot;: &quot;Back-End-Rafael&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/rafael_h_rosa/Documents/GitHub/Hav-BackEnd&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/rafael_h_rosa/Documents/GitHub/cardapio&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -82,31 +60,25 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.25659.59" />
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.25659.59" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="5975ec1d-4eb5-4e53-b884-0e58b9fd9a95" name="Changes" comment="" />
-      <created>1740523371245</created>
+      <changelist id="f4eee1d5-5736-4b72-823d-a4db6c924c17" name="Changes" comment="" />
+      <created>1742573887575</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1740523371245</updated>
-      <workItem from="1740523373141" duration="12000" />
-      <workItem from="1740660786870" duration="6473000" />
-      <workItem from="1740750500744" duration="5226000" />
-      <workItem from="1741278671523" duration="7526000" />
-      <workItem from="1741714249745" duration="15690000" />
-      <workItem from="1741817790492" duration="1055000" />
-      <workItem from="1741819014272" duration="1649000" />
-      <workItem from="1741821587899" duration="742000" />
-      <workItem from="1741872815576" duration="3216000" />
-      <workItem from="1741970330840" duration="10123000" />
-      <workItem from="1742228310511" duration="1622000" />
-      <workItem from="1742235264707" duration="4139000" />
+      <updated>1742573887575</updated>
+      <workItem from="1742573889300" duration="12324000" />
+      <workItem from="1742599101066" duration="5602000" />
+      <workItem from="1742836521808" duration="4665000" />
+      <workItem from="1742858595102" duration="1321000" />
+      <workItem from="1742920317819" duration="3178000" />
+      <workItem from="1743092106597" duration="4208000" />
     </task>
     <servers />
   </component>

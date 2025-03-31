@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.service;
 
+import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsGetRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
 import com.hav.hav_imobiliaria.repository.AdditionalsRepository;
@@ -26,5 +27,11 @@ public class AdditionalsService {
 
     public List<Additionals> findAllById(List<Integer> additionalsIds) {
         return repository.findAllById(additionalsIds);
+    }
+
+
+    public List<AdditionalsGetRequestDTO> findAllAdditionals() {
+
+        return repository.findAll().stream().map(addtional -> modelMapper.map(addtional, AdditionalsGetRequestDTO.class)).toList();
     }
 }
