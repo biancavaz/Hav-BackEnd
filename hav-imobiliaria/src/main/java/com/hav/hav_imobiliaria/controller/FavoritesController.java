@@ -18,5 +18,5 @@ public class FavoritesController {
     public void favoritar(@PathVariable Integer idUser, @PathVariable Integer idProperty) {
         favoritesService.favoritar(idProperty, idUser);
     }
-
+    
 }

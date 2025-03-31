@@ -349,7 +349,6 @@ public class PropertyService {
         return modelMapper.map(property, PropertyPutRequestDTO.class);
     }
 
-
     public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
         Page<Property> properties = repository.findAll(pageable);
         List<PropertyCardGetResponseDTO> dtos = properties.getContent().stream()

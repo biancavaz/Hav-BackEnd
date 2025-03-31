@@ -95,19 +95,21 @@ public class PropertyController {
     @GetMapping
     @RequestMapping("/propertyspecific/{id}")
     public ResponseEntity<PropertyGetSpecificResponseDTO> getPropertySpecific(
-            @PathVariable Integer id){
+            @PathVariable Integer id) {
         PropertyGetSpecificResponseDTO propertyGetSpecificRequestDTO = service.findPropertySpecificById(id);
         return ResponseEntity.ok(propertyGetSpecificRequestDTO);
     }
 
-    @GetMapping
+    @GetMapping("/card")
     @ResponseStatus(HttpStatus.OK)
-    public Page<PropertyGetSpecificResponseDTO> getPropertyList(Pageable pageable){
+    public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
         return service.findPropertyCard(pageable);
-    //returns all the realtors of a property
-    @GetMapping
-    @RequestMapping("/realtorProperty/{id}")
-    public List<RealtorGetResponseDTOwithId> getRealtorsOfProperty(@PathVariable Integer id) {
-        return service.findRealtorsByPropertyId(id);
     }
+    //returns all the realtors of a property
+//    @GetMapping
+//    @RequestMapping("/realtorProperty/{id}")
+//    public List<RealtorGetResponseDTOwithId> getRealtorsOfProperty(@PathVariable Integer id) {
+//        return service.findRealtorsByPropertyId(id);
+//    }
+
 }
