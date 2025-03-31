@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.repository;
 
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
+import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

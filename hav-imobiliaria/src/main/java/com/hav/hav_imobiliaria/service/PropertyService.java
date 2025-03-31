@@ -10,12 +10,14 @@ import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureCardGetR
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureSpecifiGetRespondeDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPropertySpecificGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
 import com.hav.hav_imobiliaria.model.entity.Properties.Taxes;
+import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.ImagePropertyRepository;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
@@ -52,8 +54,9 @@ public class PropertyService {
     private final ImageService imageService;
     private final ImagePropertyRepository imagePropertyRepository;
     private final S3Service s3Service;
+    private final SchedulesService schedulesService;
 
-    public Property create(@Valid PropertyPostRequestDTO propertyDTO, List<MultipartFile> images) {
+    public PropertyListGetResponseDTO create(@Valid PropertyPostRequestDTO propertyDTO, List<MultipartFile> images) {
 
         Property property = propertyDTO.convert();
 
@@ -71,7 +74,7 @@ public class PropertyService {
             imageService.uploadPropertyImages(savedProperty.getId(), images);
         }
 
-        return savedProperty;
+        return modelMapper.map(savedProperty, PropertyListGetResponseDTO.class);
     }
 
     private String generateUniqueCode() {
@@ -207,12 +210,13 @@ public class PropertyService {
                         && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
                 .collect(Collectors.toList());
 
+        if(propertyDto.getPropertyFeatures()!=null){
+            propertyDto.getPropertyFeatures().setBedRoom(bedRoom);
+            propertyDto.getPropertyFeatures().setBathRoom(bathRoom);
+            propertyDto.getPropertyFeatures().setGarageSpace(garageSpace);
+            propertyDto.getPropertyFeatures().setSuite(suite);
+        }
 
-        propertyDto.getPropertyFeatures().setBedRoom(bedRoom);
-        propertyDto.getPropertyFeatures().setBathRoom(bathRoom);
-        propertyDto.getPropertyFeatures().setGarageSpace(garageSpace);
-        propertyDto.getPropertyFeatures().setSuite(suite);
-        System.out.println("final final" + propertyDto.getPropertyFeatures());
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
             filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBedRoom() >= 5).collect(Collectors.toList());
@@ -221,7 +225,6 @@ public class PropertyService {
                 Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
             filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBathRoom() >= 5).collect(Collectors.toList());
         }
-        System.out.println(propertyDto.getPropertyFeatures().getGarageSpace());
         if (propertyDto.getPropertyFeatures() != null &&
                 Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
             System.out.println("entrou no garage");
@@ -361,4 +364,21 @@ public class PropertyService {
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
     }
 
+    public List<RealtorGetResponseDTOwithId> findRealtorsByPropertyId(Integer id) {
+        Property property = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
+
+        List<Realtor> realtors = property.getRealtors();
+
+        return realtors.stream()
+                .filter(realtor -> {
+                    List<Schedules> schedules = schedulesService.findAllByRealtorIdAndFuture(realtor.getId());
+                    // Verifica se há ao menos um horário livre (sem propriedade e cliente)
+                    return schedules.stream().anyMatch(schedule ->
+                            schedule.getProperty() == null && schedule.getCustomer() == null
+                    );
+                })
+                .map(realtor -> modelMapper.map(realtor, RealtorGetResponseDTOwithId.class))
+                .collect(Collectors.toList());
+    }
 }

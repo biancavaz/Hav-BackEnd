@@ -92,7 +92,6 @@ public class AdmController {
     public AdmPutRequestDTO getAdm(
             @PathVariable Integer id) {
         AdmPutRequestDTO admDTO = service.findAdmById(id);
-        System.out.println(admDTO);
         return admDTO;
     }
 }

@@ -3,6 +3,8 @@ package com.hav.hav_imobiliaria.controller;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
 import com.hav.hav_imobiliaria.service.PropertyService;
@@ -31,10 +33,11 @@ public class PropertyController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Property create(
+    public PropertyListGetResponseDTO create(
             @RequestPart("property") @Valid PropertyPostRequestDTO propertyDTO,
             @RequestPart(value = "images", required = false) List<MultipartFile> images
     ) {
+
         return service.create(propertyDTO, images);
     }
 
@@ -48,7 +51,6 @@ public class PropertyController {
     public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto,
                                                          @RequestParam Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
-
         return service.findAllByFilter(propertyDto, pageable);
     }
 
@@ -66,7 +68,6 @@ public class PropertyController {
     @DeleteMapping
     @RequestMapping
     public void removePropertyList(@RequestBody List<Integer> idList) {
-        System.out.println(idList);
         service.removeList(idList);
     }
 
@@ -87,6 +88,7 @@ public class PropertyController {
             @PathVariable Integer id) {
 
         PropertyPutRequestDTO propertyDto = service.findPropertyById(id);
+        System.out.println(propertyDto.toString());
         return ResponseEntity.ok(propertyDto);
     }
 
@@ -102,5 +104,10 @@ public class PropertyController {
     @ResponseStatus(HttpStatus.OK)
     public Page<PropertyGetSpecificResponseDTO> getPropertyList(Pageable pageable){
         return service.findPropertyCard(pageable);
+    //returns all the realtors of a property
+    @GetMapping
+    @RequestMapping("/realtorProperty/{id}")
+    public List<RealtorGetResponseDTOwithId> getRealtorsOfProperty(@PathVariable Integer id) {
+        return service.findRealtorsByPropertyId(id);
     }
 }

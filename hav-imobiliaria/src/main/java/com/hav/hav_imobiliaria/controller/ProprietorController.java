@@ -49,8 +49,7 @@ public class ProprietorController {
 
     @PostMapping("/filter")
     public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto,
-                                                           @RequestParam Integer page) {
-        System.out.println(proprietorDto);
+                                                           @RequestParam Integer page){
         Pageable pageable = PageRequest.of(page, 10);
         return service.findAllByFilter(pageable, proprietorDto);
     }
@@ -70,8 +69,6 @@ public class ProprietorController {
     @RequestMapping("{id}")
     public ResponseEntity<ProprietorPutRequestDTO> getProprietorById(
             @PathVariable Integer id) {
-        System.out.println("id");
-        System.out.println(id);
         ProprietorPutRequestDTO proprietorDTO = service.findProprietorById(id);
         return ResponseEntity.ok(proprietorDTO);
     }
