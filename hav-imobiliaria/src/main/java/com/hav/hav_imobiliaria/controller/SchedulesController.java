@@ -7,6 +7,7 @@ import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.service.SchedulesService;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -74,10 +75,16 @@ public class SchedulesController {
 
     @GetMapping("/history/customer/{id}")
     public Page<ScheduleGetDTO> getCustomerSchedulesHistory(@PathVariable Integer id,
-                                                            @RequestParam(defaultValue = "0") int page) {
-
+                                                            @RequestParam(defaultValue = "0") int page,
+                                                            @Nullable @RequestParam LocalDate latestDate,
+                                                            @Nullable @RequestParam String status) {
+        
         Pageable pageable = PageRequest.of(page, 10);
-        return service.findCustomerScheduleHistory(id, pageable);
+        return service.findCustomerScheduleHistory(id,latestDate, status, pageable);
+    }
+    @PatchMapping("/changeStatus/{id}/{status}")
+    public void changeStatus(@PathVariable Integer id, @PathVariable String status){
+        service.alterStatus(id, status);
     }
 
 }

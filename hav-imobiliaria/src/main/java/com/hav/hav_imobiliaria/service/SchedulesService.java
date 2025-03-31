@@ -102,6 +102,7 @@ public class SchedulesService {
     public List<ScheduleGetDTO> addCustomerToSchedule(ScheduleChangeCustomerDTO scheduleChangeCustomerDTO) {
         List<Schedules> schedules = repository.findAllById(scheduleChangeCustomerDTO.getSchedule_id());
         for(int i=0; i<schedules.size(); i++){
+            schedules.get(i).setStatus(scheduleChangeCustomerDTO.getStatus());
             if(schedules.get(i).getCustomer() ==null){
                 schedules.get(i).setCustomer(custumerRepository.findById(scheduleChangeCustomerDTO.getCustomer_id()).get());
             }else{
@@ -113,6 +114,7 @@ public class SchedulesService {
                 System.err.println("erro não tratado de customer ja no schedule");
             }
         }
+
         List<Schedules> savedSchedules = repository.saveAll(schedules);
 
         return modelMapper.map(savedSchedules, new TypeToken<List<ScheduleGetDTO>>() {}.getType());
@@ -166,9 +168,16 @@ public class SchedulesService {
                 id, LocalDate.now(), pageable);
         return schedules.map(schedule -> modelMapper.map(schedule, ScheduleGetDTO.class));
     }
-    public Page<ScheduleGetDTO> findCustomerScheduleHistory(Integer id,  Pageable pageable) {
-        Page<Schedules> schedules = repository.findByCustomerIdAndDayLessThanAndCustomerIsNotNullAndPropertyIsNotNull(
-                id, LocalDate.now(), pageable);
+    public Page<ScheduleGetDTO> findCustomerScheduleHistory(Integer id, LocalDate latestDate, String status, Pageable pageable) {
+        Page<Schedules> schedules = repository.findByCustomerIdAndDayLessThanAndCustomerIsNotNullAndPropertyIsNotNullAndStatusEquals(
+                id, LocalDate.now(), latestDate, status, pageable);
+
         return schedules.map(schedule -> modelMapper.map(schedule, ScheduleGetDTO.class));
+    }
+
+    public void alterStatus(Integer id, String status) {
+        Schedules schedules = repository.findById(id).get();
+        schedules.setStatus(status);
+        repository.save(schedules);
     }
 }
