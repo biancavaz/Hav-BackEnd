@@ -1,10 +1,12 @@
 package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressCardGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureCardGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureSpecifiGetRespondeDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
@@ -345,36 +347,18 @@ public class PropertyService {
     }
 
 
-    public Page <PropertyGetSpecificResponseDTO> findPropertyCard(Pageable pageable) {
-        Page<Property> property = repository.findAll(pageable);
-        List<PropertyGetSpecificResponseDTO> dtos = property.getContent().stream()
-                .map(properties -> new PropertyGetSpecificResponseDTO(
-                property.getPropertyType(),
-                property.getPropertyStatus(),
-                property.getPurpose(),
-                property.getPropertyDescription(),
-                property.getArea(),
-                property.getPrice(),
-                property.getPromotionalPrice(),
-                property.getHighlight(),
-                property.getFloors(),
-                modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class),
-                modelMapper.map(property.getAddress(), AddressGetResponseDTO.class),
-                modelMapper.map(property.getPropertyFeatures(), PropertyFeatureSpecifiGetRespondeDTO.class),
-                property.getAdditionals().stream()
-                        .map(additionals -> new AdditionalsGetResponseDTO(
-                                additionals.getName()
-                        )).toList(),
-                property.getRealtors().stream()
-                        .map(realtor -> new RealtorPropertySpecificGetResponseDTO(
-                                realtor.getName(),
-                                realtor.getEmail(),
-                                realtor.getCreci(),
-                                realtor.getPhoneNumber()
-                        ))
+    public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
+        Page<Property> properties = repository.findAll(pageable);
+        List<PropertyCardGetResponseDTO> dtos = properties.getContent().stream()
+                .map(property -> new PropertyCardGetResponseDTO(
+                        modelMapper.map(property.getPropertyFeatures(), PropertyFeatureCardGetResponseDTO.class),
+                        modelMapper.map(property.getAddress(), AddressCardGetResponseDTO.class),
+                        property.getPrice(),
+                        property.getPurpose(),
+                        property.getPropertyStatus()
 
-        )).toList();
-        return (Page<PropertyGetSpecificResponseDTO>) dtos;
+                )).toList();
+        return new PageImpl<>(dtos, pageable, properties.getTotalElements());
     }
 
 }

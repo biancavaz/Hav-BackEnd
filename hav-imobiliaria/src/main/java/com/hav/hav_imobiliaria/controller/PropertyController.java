@@ -100,7 +100,7 @@ public class PropertyController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<PropertyGetSpecificResponseDTO> getPropertyList(Page pagable){
-        return service.findPropertyCard(pagable);
+    public Page<PropertyGetSpecificResponseDTO> getPropertyList(Pageable pageable){
+        return service.findPropertyCard(pageable);
     }
 }
