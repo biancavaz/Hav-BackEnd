@@ -9,6 +9,9 @@ import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.service.SchedulesService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -60,6 +63,21 @@ public class SchedulesController {
     public List<ScheduleGetDTO> addCustomerToSchedule(@RequestBody ScheduleChangeCustomerDTO scheduleChangeCustomerDTO){
         return service.addCustomerToSchedule(scheduleChangeCustomerDTO);
     }
+    @GetMapping("/history/realtor/{id}")
+    public Page<ScheduleGetDTO> getRealtorSchedulesHistory(
+            @PathVariable Integer id,
+            @RequestParam(defaultValue = "0") int page) {
 
+        Pageable pageable = PageRequest.of(page, 10);
+        return service.findRealtorScheduleHistory(id, pageable);
+    }
+
+    @GetMapping("/history/customer/{id}")
+    public Page<ScheduleGetDTO> getCustomerSchedulesHistory(@PathVariable Integer id,
+                                                            @RequestParam(defaultValue = "0") int page) {
+
+        Pageable pageable = PageRequest.of(page, 10);
+        return service.findCustomerScheduleHistory(id, pageable);
+    }
 
 }
