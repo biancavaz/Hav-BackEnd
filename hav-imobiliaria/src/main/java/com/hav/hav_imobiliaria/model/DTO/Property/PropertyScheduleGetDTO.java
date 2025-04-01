@@ -11,6 +11,7 @@ public class PropertyScheduleGetDTO {
     Integer id;
     String propertyCode;
     String purpose;
+    String propertyType;
     AddressGetScheduleDTO address;
 
 }

@@ -7,8 +7,12 @@ import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.service.SchedulesService;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -60,6 +64,27 @@ public class SchedulesController {
     public List<ScheduleGetDTO> addCustomerToSchedule(@RequestBody ScheduleChangeCustomerDTO scheduleChangeCustomerDTO){
         return service.addCustomerToSchedule(scheduleChangeCustomerDTO);
     }
+    @GetMapping("/history/realtor/{id}")
+    public Page<ScheduleGetDTO> getRealtorSchedulesHistory(
+            @PathVariable Integer id,
+            @RequestParam(defaultValue = "0") int page) {
 
+        Pageable pageable = PageRequest.of(page, 10);
+        return service.findRealtorScheduleHistory(id, pageable);
+    }
+
+    @GetMapping("/history/customer/{id}")
+    public Page<ScheduleGetDTO> getCustomerSchedulesHistory(@PathVariable Integer id,
+                                                            @RequestParam(defaultValue = "0") int page,
+                                                            @Nullable @RequestParam LocalDate latestDate,
+                                                            @Nullable @RequestParam String status) {
+        
+        Pageable pageable = PageRequest.of(page, 10);
+        return service.findCustomerScheduleHistory(id,latestDate, status, pageable);
+    }
+    @PatchMapping("/changeStatus/{id}/{status}")
+    public void changeStatus(@PathVariable Integer id, @PathVariable String status){
+        service.alterStatus(id, status);
+    }
 
 }
