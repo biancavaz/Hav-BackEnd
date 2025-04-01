@@ -56,7 +56,7 @@ public class PropertyController {
     @PostMapping("/filter/card")
     public Page<PropertyCardGetResponseDTO> findByFilterCard(@RequestBody PropertyFilterPostResponseDTO propertyDto,
                                                          @RequestParam Integer page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 12);
         return service.findAllByFilterCard(propertyDto, pageable);
     }
 

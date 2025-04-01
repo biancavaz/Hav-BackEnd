@@ -354,8 +354,7 @@ public class PropertyService {
 
     public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
         Page<Property> properties = repository.findAll(pageable);
-        List<PropertyCardGetResponseDTO> dtos = properties.getContent().stream().map(property -> new PropertyCardGetResponseDTO(modelMapper.map(property.getPropertyFeatures(), PropertyFeatureCardGetResponseDTO.class), modelMapper.map(property.getAddress(), AddressCardGetResponseDTO.class), property.getPrice(), property.getPurpose(), property.getPropertyStatus()
-
+        List<PropertyCardGetResponseDTO> dtos = properties.getContent().stream().map(property -> new PropertyCardGetResponseDTO(modelMapper.map(property.getPropertyFeatures(), PropertyFeatureCardGetResponseDTO.class), modelMapper.map(property.getAddress(), AddressCardGetResponseDTO.class), property.getPrice(), property.getPurpose(), property.getPropertyStatus(), property.getPromotionalPrice()
         )).toList();
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
     }

@@ -23,4 +23,7 @@ public class PropertyCardGetResponseDTO {
     @NotNull
     String propertyStatus;
 
+    Double promotionalPrice;
+
+
 }
