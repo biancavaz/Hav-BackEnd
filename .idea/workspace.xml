@@ -5,10 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4eee1d5-5736-4b72-823d-a4db6c924c17" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/ResponseSecurity/ApiResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/controllerSecurity/AuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/controllerSecurity/UserSecurityController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/exceptionsSecurity/AuthResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/exceptionsSecurity/ChatException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/modelSecurity/Chat.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/modelSecurity/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/repositorySecurity/ChatRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/requestSecurity/LoginRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/serviceSecurity/ChatService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/serviceSecurity/CustomUserDetailsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/config/AppConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/config/JwtConstant.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/config/JwtTokenValidator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/AWSConfig/AwsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/AWSConfig/AwsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/configSecurity/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/configSecurity/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/configSecurity/JwtConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/configSecurity/JwtConstant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/configSecurity/TokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/configSecurity/TokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/modelSecurity/UserSecurity.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/modelSecurity/UserSecurity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/serviceSecurity/UserSecurityServiceImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/serviceSecurity/UserSecurityServiceImplementation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +43,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -95,7 +113,8 @@
       <workItem from="1742858595102" duration="1321000" />
       <workItem from="1742920317819" duration="3178000" />
       <workItem from="1743092106597" duration="4208000" />
-      <workItem from="1743195184535" duration="1342000" />
+      <workItem from="1743195184535" duration="1355000" />
+      <workItem from="1743439416156" duration="13504000" />
     </task>
     <servers />
   </component>

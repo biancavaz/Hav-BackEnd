@@ -2,21 +2,29 @@ package com.hav.hav_imobiliaria.security.modelSecurity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CurrentTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserSecurity {
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String full_name;
-    private String email;
-    private String profile_picture;
-    private String password;
+    private String content;
+
+    @CurrentTimestamp
+    private LocalDateTime createdAt;
+
+    @ManyToOne
+    private UserSecurity user;
+
+    @ManyToOne
+    private Chat chat;
+
 }

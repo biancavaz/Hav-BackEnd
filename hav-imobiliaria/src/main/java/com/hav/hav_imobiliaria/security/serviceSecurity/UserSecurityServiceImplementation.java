@@ -7,7 +7,6 @@ import com.hav.hav_imobiliaria.security.repositorySecurity.UserRepositorySecurit
 import com.hav.hav_imobiliaria.security.requestSecurity.UpdateUserSecurityRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,7 +64,6 @@ public class UserSecurityServiceImplementation implements UserSecurityService {
 
     @Override
     public List<UserSecurity> searchUserSecurity(String name) {
-        List<UserSecurity> userSecurities = userRepositorySecurity.searchUserSecurities(name);
-        return List.of();
+        return userRepositorySecurity.searchUserSecurities(name);
     }
 }
