@@ -87,28 +87,7 @@ public class PropertyService {
         Page<Property> properties = repository.findAll(pageable);
 
         // Mapeia os objetos Property para PropertyGetResponseDTO manualmente
-        List<PropertyGetResponseDTO> dtos = properties.getContent().stream()
-                .map(property -> new PropertyGetResponseDTO(
-                        property.getPropertyCode(),
-                        property.getPropertyType(),
-                        property.getPropertyStatus(),
-                        property.getPurpose(),
-                        property.getRealtors().stream()
-                                .map(realtor -> new RealtorGetResponseDTO(
-                                        realtor.getName(),
-                                        realtor.getEmail(),
-                                        realtor.getCpf(),
-                                        realtor.getCelphone(),
-                                        realtor.getCreci()
-                                ))
-                                .toList(),
-                        new ProprietorGetResponseDTO(
-                                property.getProprietor().getName(),
-                                property.getProprietor().getEmail(),
-                                property.getProprietor().getCpf()
-                        )
-                ))
-                .toList();
+        List<PropertyGetResponseDTO> dtos = properties.getContent().stream().map(property -> new PropertyGetResponseDTO(property.getPropertyCode(), property.getPropertyType(), property.getPropertyStatus(), property.getPurpose(), property.getRealtors().stream().map(realtor -> new RealtorGetResponseDTO(realtor.getName(), realtor.getEmail(), realtor.getCpf(), realtor.getCelphone(), realtor.getCreci())).toList(), new ProprietorGetResponseDTO(property.getProprietor().getName(), property.getProprietor().getEmail(), property.getProprietor().getCpf()))).toList();
 
         // Retorna uma nova Page contendo os DTOs
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
@@ -116,39 +95,11 @@ public class PropertyService {
 
     public PropertyGetSpecificResponseDTO findPropertySpecificById(Integer id) {
         Property property = repository.findById(id).get();
-        PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(
-                property.getPropertyCode(),
-                property.getPropertyType(),
-                property.getPropertyStatus(),
-                property.getPurpose(),
-                property.getPropertyDescription(),
-                property.getArea(),
-                property.getPrice(),
-                property.getPromotionalPrice(),
-                property.getHighlight(),
-                property.getFloors(),
-                modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class),
-                modelMapper.map(property.getAddress(), AddressGetResponseDTO.class),
-                modelMapper.map(property.getPropertyFeatures(), PropertyFeatureSpecifiGetRespondeDTO.class),
-                property.getAdditionals().stream()
-                        .map(additionals -> new AdditionalsGetResponseDTO(
-                                additionals.getName()
-                        )).toList(),
-                property.getRealtors().stream()
-                        .map(realtor -> new RealtorPropertySpecificGetResponseDTO(
-                                realtor.getName(),
-                                realtor.getEmail(),
-                                realtor.getCreci(),
-                                realtor.getPhoneNumber()
-                        ))
-                        .toList()
-        );
+        PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(property.getPropertyCode(), property.getPropertyType(), property.getPropertyStatus(), property.getPurpose(), property.getPropertyDescription(), property.getArea(), property.getPrice(), property.getPromotionalPrice(), property.getHighlight(), property.getFloors(), modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class), modelMapper.map(property.getAddress(), AddressGetResponseDTO.class), modelMapper.map(property.getPropertyFeatures(), PropertyFeatureSpecifiGetRespondeDTO.class), property.getAdditionals().stream().map(additionals -> new AdditionalsGetResponseDTO(additionals.getName())).toList(), property.getRealtors().stream().map(realtor -> new RealtorPropertySpecificGetResponseDTO(realtor.getName(), realtor.getEmail(), realtor.getCreci(), realtor.getPhoneNumber())).toList());
         return dtos;
     }
 
-    public Page<PropertyListGetResponseDTO> findAllByFilter(
-            @Valid PropertyFilterPostResponseDTO propertyDto,
-            Pageable pageable) {
+    public Page<PropertyCardGetResponseDTO> findAllByFilterCard(PropertyFilterPostResponseDTO propertyDto, Pageable pageable) {
 
 
         Integer bedRoom = null;
@@ -156,48 +107,35 @@ public class PropertyService {
         Integer garageSpace = null;
         Integer suite = null;
 
-        if (propertyDto.getPropertyFeatures() != null &&
-                Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
 
             bedRoom = propertyDto.getPropertyFeatures().getBedRoom();
             propertyDto.getPropertyFeatures().setBedRoom(null);
 
         }
-        if (propertyDto.getPropertyFeatures() != null &&
-                Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
             bathRoom = propertyDto.getPropertyFeatures().getBathRoom();
             propertyDto.getPropertyFeatures().setBathRoom(null);
 
         }
-        if (propertyDto.getPropertyFeatures() != null &&
-                Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
 
-            System.out.println("adicionaro ao bedrrom");
-            System.out.println(propertyDto.getPropertyFeatures().getGarageSpace());
 
             garageSpace = propertyDto.getPropertyFeatures().getGarageSpace();
             propertyDto.getPropertyFeatures().setGarageSpace(null);
 
         }
-        if (propertyDto.getPropertyFeatures() != null &&
-                Objects.equals(propertyDto.getPropertyFeatures().getSuite(), 5)) {
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getSuite(), 5)) {
             suite = propertyDto.getPropertyFeatures().getSuite();
             propertyDto.getPropertyFeatures().setSuite(null);
 
         }
-        System.out.println("apos tudo" + propertyDto.getPropertyFeatures());
 
 
         Property property = modelMapper.map(propertyDto, Property.class);
 
         //criando o example matcher específico dos filtros do imóvel
-        ExampleMatcher matcher = ExampleMatcher.matching()
-                .withIgnoreCase()
-                .withIgnoreNullValues()
-                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-        System.out.println("example");
-        System.out.println(matcher);
-        System.out.println(property.toString());
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withIgnoreNullValues().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
         //chamando o matcher
         Example<Property> example = Example.of(property, matcher);
 
@@ -205,33 +143,26 @@ public class PropertyService {
         List<Property> allProperties = repository.findAll(example);
 
 
-        List<Property> filteredAllProperties = allProperties.stream()
-                .filter(propertyPrice -> propertyPrice.getPrice() >= propertyDto.getMinPric()
-                        && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
+        List<Property> filteredAllProperties = allProperties.stream().filter(propertyPrice -> propertyPrice.getPrice() >= propertyDto.getMinPric() && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
                 .collect(Collectors.toList());
 
-        if(propertyDto.getPropertyFeatures()!=null){
+        if (propertyDto.getPropertyFeatures() != null) {
             propertyDto.getPropertyFeatures().setBedRoom(bedRoom);
             propertyDto.getPropertyFeatures().setBathRoom(bathRoom);
             propertyDto.getPropertyFeatures().setGarageSpace(garageSpace);
             propertyDto.getPropertyFeatures().setSuite(suite);
         }
 
-        if (propertyDto.getPropertyFeatures() != null &&
-                Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
             filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBedRoom() >= 5).collect(Collectors.toList());
         }
-        if (propertyDto.getPropertyFeatures() != null &&
-                Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
             filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBathRoom() >= 5).collect(Collectors.toList());
         }
-        if (propertyDto.getPropertyFeatures() != null &&
-                Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
-            System.out.println("entrou no garage");
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
             filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getGarageSpace() >= 5).collect(Collectors.toList());
         }
-        if (propertyDto.getPropertyFeatures() != null &&
-                Objects.equals(propertyDto.getPropertyFeatures().getSuite(), 5)) {
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getSuite(), 5)) {
             filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getSuite() >= 5).collect(Collectors.toList());
         }
 
@@ -241,8 +172,6 @@ public class PropertyService {
         int start = pageable.getPageNumber() * pageable.getPageSize(); // Calculando o índice de início
         int end = Math.min(start + pageable.getPageSize(), filteredAllProperties.size());
 
-        System.out.println(start);
-        System.out.println(end);
 
         List<Property> pageProperty = filteredAllProperties.subList(start, end);
 
@@ -250,13 +179,94 @@ public class PropertyService {
         Page<Property> propertyFinal = new PageImpl<>(pageProperty, pageable, filteredAllProperties.size());
 
         //tranformando o page propery pro page da dto
-        Page<PropertyListGetResponseDTO> propertyListGetResponseDtos = propertyFinal.map(propertyx ->
-                modelMapper.map(propertyx, PropertyListGetResponseDTO.class)
-        );
+        Page<PropertyCardGetResponseDTO> PropertyCardGetResponseDTO = propertyFinal.map(propertyx -> modelMapper.map(propertyx, PropertyCardGetResponseDTO.class));
 
-        return propertyListGetResponseDtos;
+        return PropertyCardGetResponseDTO;
     }
 
+    public Page<PropertyListGetResponseDTO> findAllByFilter(PropertyFilterPostResponseDTO propertyDto, Pageable pageable) {
+
+        Integer bedRoom = null;
+        Integer bathRoom = null;
+        Integer garageSpace = null;
+        Integer suite = null;
+
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
+
+            bedRoom = propertyDto.getPropertyFeatures().getBedRoom();
+            propertyDto.getPropertyFeatures().setBedRoom(null);
+
+        }
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
+            bathRoom = propertyDto.getPropertyFeatures().getBathRoom();
+            propertyDto.getPropertyFeatures().setBathRoom(null);
+
+        }
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
+
+
+            garageSpace = propertyDto.getPropertyFeatures().getGarageSpace();
+            propertyDto.getPropertyFeatures().setGarageSpace(null);
+
+        }
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getSuite(), 5)) {
+            suite = propertyDto.getPropertyFeatures().getSuite();
+            propertyDto.getPropertyFeatures().setSuite(null);
+
+        }
+
+
+        Property property = modelMapper.map(propertyDto, Property.class);
+
+        //criando o example matcher específico dos filtros do imóvel
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withIgnoreNullValues().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        //chamando o matcher
+        Example<Property> example = Example.of(property, matcher);
+
+
+        List<Property> allProperties = repository.findAll(example);
+
+
+        List<Property> filteredAllProperties = allProperties.stream().filter(propertyPrice -> propertyPrice.getPrice() >= propertyDto.getMinPric() && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
+                .collect(Collectors.toList());
+
+        if (propertyDto.getPropertyFeatures() != null) {
+            propertyDto.getPropertyFeatures().setBedRoom(bedRoom);
+            propertyDto.getPropertyFeatures().setBathRoom(bathRoom);
+            propertyDto.getPropertyFeatures().setGarageSpace(garageSpace);
+            propertyDto.getPropertyFeatures().setSuite(suite);
+        }
+
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBedRoom() >= 5).collect(Collectors.toList());
+        }
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getBathRoom() >= 5).collect(Collectors.toList());
+        }
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getGarageSpace() >= 5).collect(Collectors.toList());
+        }
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getSuite(), 5)) {
+            filteredAllProperties = filteredAllProperties.stream().filter(propertyRoom -> propertyRoom.getPropertyFeatures().getSuite() >= 5).collect(Collectors.toList());
+        }
+
+
+        //transforme o lista para page aqui
+
+        int start = pageable.getPageNumber() * pageable.getPageSize(); // Calculando o índice de início
+        int end = Math.min(start + pageable.getPageSize(), filteredAllProperties.size());
+
+
+        List<Property> pageProperty = filteredAllProperties.subList(start, end);
+
+        // Criando um novo Page a partir da lista filtrada
+        Page<Property> propertyFinal = new PageImpl<>(pageProperty, pageable, filteredAllProperties.size());
+
+        //tranformando o page propery pro page da dto
+        Page<PropertyListGetResponseDTO> propertyListGetResponseDTOS = propertyFinal.map(propertyx -> modelMapper.map(propertyx, PropertyListGetResponseDTO.class));
+
+        return propertyListGetResponseDTOS;
+    }
 
     public void delete(@Positive @NotNull Integer id) {
         if (repository.existsById(id)) {
@@ -265,14 +275,8 @@ public class PropertyService {
     }
 
     @Transactional
-    public Property updateProperty(
-            Integer propertyId,
-            PropertyPutRequestDTO propertyDTO,
-            List<Integer> deletedImageIds,
-            List<MultipartFile> newImages
-    ) {
-        Property property = repository.findById(propertyId)
-                .orElseThrow(() -> new EntityNotFoundException("Propriedade não encontrada"));
+    public Property updateProperty(Integer propertyId, PropertyPutRequestDTO propertyDTO, List<Integer> deletedImageIds, List<MultipartFile> newImages) {
+        Property property = repository.findById(propertyId).orElseThrow(() -> new EntityNotFoundException("Propriedade não encontrada"));
 
         property.setTitle(propertyDTO.getTitle());
         property.setPropertyDescription(propertyDTO.getPropertyDescription());
@@ -329,7 +333,6 @@ public class PropertyService {
         }
     }
 
-
     @Transactional
     public void removeList(List<Integer> idList) {
         repository.deleteByIdIn(idList);
@@ -351,33 +354,23 @@ public class PropertyService {
 
     public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
         Page<Property> properties = repository.findAll(pageable);
-        List<PropertyCardGetResponseDTO> dtos = properties.getContent().stream()
-                .map(property -> new PropertyCardGetResponseDTO(
-                        modelMapper.map(property.getPropertyFeatures(), PropertyFeatureCardGetResponseDTO.class),
-                        modelMapper.map(property.getAddress(), AddressCardGetResponseDTO.class),
-                        property.getPrice(),
-                        property.getPurpose(),
-                        property.getPropertyStatus()
+        List<PropertyCardGetResponseDTO> dtos = properties.getContent().stream().map(property -> new PropertyCardGetResponseDTO(modelMapper.map(property.getPropertyFeatures(), PropertyFeatureCardGetResponseDTO.class), modelMapper.map(property.getAddress(), AddressCardGetResponseDTO.class), property.getPrice(), property.getPurpose(), property.getPropertyStatus()
 
-                )).toList();
+        )).toList();
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
     }
 
     public List<RealtorGetResponseDTOwithId> findRealtorsByPropertyId(Integer id) {
-        Property property = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
+        Property property = repository.findById(id).orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
 
         List<Realtor> realtors = property.getRealtors();
 
-        return realtors.stream()
-                .filter(realtor -> {
-                    List<Schedules> schedules = schedulesService.findAllByRealtorIdAndFuture(realtor.getId());
-                    // Verifica se há ao menos um horário livre (sem propriedade e cliente)
-                    return schedules.stream().anyMatch(schedule ->
-                            schedule.getProperty() == null && schedule.getCustomer() == null
-                    );
-                })
-                .map(realtor -> modelMapper.map(realtor, RealtorGetResponseDTOwithId.class))
-                .collect(Collectors.toList());
+        return realtors.stream().filter(realtor -> {
+            List<Schedules> schedules = schedulesService.findAllByRealtorIdAndFuture(realtor.getId());
+            // Verifica se há ao menos um horário livre (sem propriedade e cliente)
+            return schedules.stream().anyMatch(schedule -> schedule.getProperty() == null && schedule.getCustomer() == null);
+        }).map(realtor -> modelMapper.map(realtor, RealtorGetResponseDTOwithId.class)).collect(Collectors.toList());
     }
+
+
 }
