@@ -22,6 +22,8 @@ public class PropertyCardGetResponseDTO {
     String purpose;
     @NotNull
     String propertyStatus;
+    Integer id;
+
     Double promotionalPrice;
     Integer id;
 
