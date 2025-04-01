@@ -111,10 +111,10 @@ public class PropertyController {
         return service.findPropertyCard(pageable);
     }
     //returns all the realtors of a property
-//    @GetMapping
-//    @RequestMapping("/realtorProperty/{id}")
-//    public List<RealtorGetResponseDTOwithId> getRealtorsOfProperty(@PathVariable Integer id) {
-//        return service.findRealtorsByPropertyId(id);
-//    }
+    @GetMapping
+    @RequestMapping("/realtorProperty/{id}")
+    public List<RealtorGetResponseDTOwithId> getRealtorsOfProperty(@PathVariable Integer id) {
+        return service.findRealtorsByPropertyId(id);
+    }
 
 }
