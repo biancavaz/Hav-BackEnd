@@ -18,6 +18,7 @@ public class SchedulesPostDTO {
     private Integer realtor_id;
 
 
+
     @Override
     public String toString() {
         return "SchedulesPostDTO{" +
