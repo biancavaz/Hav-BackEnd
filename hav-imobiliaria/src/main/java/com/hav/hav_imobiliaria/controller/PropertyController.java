@@ -105,6 +105,8 @@ public class PropertyController {
     public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
         return service.findPropertyCard(pageable);
     }
+
+
     //returns all the realtors of a property
 //    @GetMapping
 //    @RequestMapping("/realtorProperty/{id}")

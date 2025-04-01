@@ -21,5 +21,6 @@ public class PropertyCardGetResponseDTO {
     String purpose;
     @NotNull
     String propertyStatus;
-
+    @NotNull
+    Integer id;
 }

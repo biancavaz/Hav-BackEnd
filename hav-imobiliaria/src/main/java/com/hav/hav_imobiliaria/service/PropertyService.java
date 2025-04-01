@@ -357,7 +357,8 @@ public class PropertyService {
                         modelMapper.map(property.getAddress(), AddressCardGetResponseDTO.class),
                         property.getPrice(),
                         property.getPurpose(),
-                        property.getPropertyStatus()
+                        property.getPropertyStatus(),
+                        property.getId()
 
                 )).toList();
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
