@@ -18,6 +18,7 @@ public class ScheduleGetDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     @Pattern(regexp = "^([01]\\d|2[0-3]):[0-5]\\d$", message = "Time must be in HH:mm format")
     private LocalTime start_hour;
+    private String status;
     private CustomerScheduleGetDTO customer;
     private PropertyScheduleGetDTO property;
     private RealtorScheduleGetDTO realtor;

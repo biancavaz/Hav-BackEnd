@@ -2,6 +2,7 @@ package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleChangeCustomerDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
@@ -15,6 +16,8 @@ import com.hav.hav_imobiliaria.repository.ScheduleRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -99,6 +102,7 @@ public class SchedulesService {
     public List<ScheduleGetDTO> addCustomerToSchedule(ScheduleChangeCustomerDTO scheduleChangeCustomerDTO) {
         List<Schedules> schedules = repository.findAllById(scheduleChangeCustomerDTO.getSchedule_id());
         for(int i=0; i<schedules.size(); i++){
+            schedules.get(i).setStatus(scheduleChangeCustomerDTO.getStatus());
             if(schedules.get(i).getCustomer() ==null){
                 schedules.get(i).setCustomer(custumerRepository.findById(scheduleChangeCustomerDTO.getCustomer_id()).get());
             }else{
@@ -110,6 +114,7 @@ public class SchedulesService {
                 System.err.println("erro não tratado de customer ja no schedule");
             }
         }
+
         List<Schedules> savedSchedules = repository.saveAll(schedules);
 
         return modelMapper.map(savedSchedules, new TypeToken<List<ScheduleGetDTO>>() {}.getType());
@@ -122,19 +127,23 @@ public class SchedulesService {
 
     public List<Schedules> sortSchedulesDayAndHour(List<Schedules> list){
         List<Schedules> muttableList = new ArrayList<>(list); // Make it mutable
-        muttableList.sort(Comparator.comparing(Schedules::getDay));
-        for(int i=0; i<muttableList.size(); i++){
-            for(int y=0; y<muttableList.size(); y++){
-                if(muttableList.get(i).getDay().equals(muttableList.get(y).getDay())){
-                    if(muttableList.get(i).getStart_hour().isAfter(muttableList.get(y).getStart_hour()) && y>i){
-                        Schedules momentSchedule = muttableList.get(i);
-                        muttableList.set(i, muttableList.get(y));
-                        muttableList.set(y, momentSchedule);
-                    }
-                }
+        if(list.size()>0){
 
+            muttableList.sort(Comparator.comparing(Schedules::getDay));
+            for(int i=0; i<muttableList.size(); i++){
+                for(int y=0; y<muttableList.size(); y++){
+                    if(muttableList.get(i).getDay().equals(muttableList.get(y).getDay())){
+                        if(muttableList.get(i).getStart_hour().isAfter(muttableList.get(y).getStart_hour()) && y>i){
+                            Schedules momentSchedule = muttableList.get(i);
+                            muttableList.set(i, muttableList.get(y));
+                            muttableList.set(y, momentSchedule);
+                        }
+                    }
+
+                }
             }
         }
+
         return muttableList;
     }
 
@@ -152,5 +161,23 @@ public class SchedulesService {
         return realtors.stream()
                 .map(realtor -> modelMapper.map(realtor, RealtorGetResponseDTOwithId.class))
                 .collect(Collectors.toList());
+    }
+
+    public Page<ScheduleGetDTO> findRealtorScheduleHistory(Integer id, Pageable pageable) {
+        Page<Schedules> schedules = repository.findByRealtorIdAndDayLessThanAndCustomerIsNotNullAndPropertyIsNotNull(
+                id, LocalDate.now(), pageable);
+        return schedules.map(schedule -> modelMapper.map(schedule, ScheduleGetDTO.class));
+    }
+    public Page<ScheduleGetDTO> findCustomerScheduleHistory(Integer id, LocalDate latestDate, String status, Pageable pageable) {
+        Page<Schedules> schedules = repository.findByCustomerIdAndDayLessThanAndCustomerIsNotNullAndPropertyIsNotNullAndStatusEquals(
+                id, LocalDate.now(), latestDate, status, pageable);
+
+        return schedules.map(schedule -> modelMapper.map(schedule, ScheduleGetDTO.class));
+    }
+
+    public void alterStatus(Integer id, String status) {
+        Schedules schedules = repository.findById(id).get();
+        schedules.setStatus(status);
+        repository.save(schedules);
     }
 }

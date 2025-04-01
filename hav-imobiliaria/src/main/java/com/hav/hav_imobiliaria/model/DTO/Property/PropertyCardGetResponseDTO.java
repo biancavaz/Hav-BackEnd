@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class PropertyCardGetResponseDTO {
 
     @NotNull
@@ -23,4 +24,8 @@ public class PropertyCardGetResponseDTO {
     String propertyStatus;
     @NotNull
     Integer id;
+
+    Double promotionalPrice;
+
+
 }

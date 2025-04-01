@@ -32,6 +32,9 @@ public class Schedules {
     @Column
     private LocalTime start_hour;
 
+    @Column
+    private String status;
+
 
 
     @ManyToOne()
