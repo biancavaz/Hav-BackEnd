@@ -16,7 +16,6 @@ public class PropertyCardGetResponseDTO {
     PropertyFeatureCardGetResponseDTO propertyFeatures;
     @NotNull
     AddressCardGetResponseDTO address;
-    Integer id;
 
     @NotNull
     Double price;
