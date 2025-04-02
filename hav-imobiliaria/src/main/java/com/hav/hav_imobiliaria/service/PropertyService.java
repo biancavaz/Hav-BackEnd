@@ -354,7 +354,14 @@ public class PropertyService {
 
     public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
         Page<Property> properties = repository.findAll(pageable);
-        List<PropertyCardGetResponseDTO> dtos = properties.getContent().stream().map(property -> new PropertyCardGetResponseDTO(modelMapper.map(property.getPropertyFeatures(), PropertyFeatureCardGetResponseDTO.class), modelMapper.map(property.getAddress(), AddressCardGetResponseDTO.class), property.getPrice(), property.getPurpose(), property.getPropertyStatus(), property.getPromotionalPrice()
+        List<PropertyCardGetResponseDTO> dtos =
+                properties.getContent().stream().map(
+                        property ->
+                                new PropertyCardGetResponseDTO(
+                                        modelMapper.map(property.getPropertyFeatures(), PropertyFeatureCardGetResponseDTO.class),
+                                        modelMapper.map(property.getAddress(), AddressCardGetResponseDTO.class),
+                                        property.getPrice(), property.getPurpose(), property.getPropertyStatus(),
+                                        property.getPromotionalPrice(), property.getId()
         )).toList();
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
     }
@@ -372,4 +379,8 @@ public class PropertyService {
     }
 
 
+    public List<PropertyCardGetResponseDTO> findRandomHighlights() {
+        return repository.findRandomHighlighted5().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+    }
 }
+

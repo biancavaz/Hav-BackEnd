@@ -16,14 +16,16 @@ public class PropertyCardGetResponseDTO {
     PropertyFeatureCardGetResponseDTO propertyFeatures;
     @NotNull
     AddressCardGetResponseDTO address;
+    Integer id;
+
     @NotNull
     Double price;
     @NotNull
     String purpose;
     @NotNull
     String propertyStatus;
-
     Double promotionalPrice;
+    Integer id;
 
 
 }
