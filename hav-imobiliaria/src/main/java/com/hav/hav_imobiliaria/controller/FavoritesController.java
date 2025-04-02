@@ -13,10 +13,16 @@ public class FavoritesController {
 
     private final FavoritesService favoritesService;
 
-    @PostMapping("/{idUser}/{idProperty}")
+    @PostMapping("/favoritar/{idUser}/{idProperty}")
     @ResponseStatus(HttpStatus.CREATED)
     public void favoritar(@PathVariable Integer idUser, @PathVariable Integer idProperty) {
         favoritesService.favoritar(idProperty, idUser);
+    }
+
+    @DeleteMapping("/desfavoritar/{idUser}/{idProperty}")
+    @ResponseStatus(HttpStatus.OK)
+    public void desfavoritar(@PathVariable Integer idUser, @PathVariable Integer idProperty) {
+        favoritesService.desfavoritar(idProperty, idUser);
     }
     
 }
