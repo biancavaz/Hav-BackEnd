@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.entity.Users;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hav.hav_imobiliaria.model.entity.Address;
@@ -54,6 +55,12 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ImageUser imageUser;
+
+    @OneToOne(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
+    private UsersDetails userDetails;
+
+
+
 
     @ManyToMany
     @JoinTable(

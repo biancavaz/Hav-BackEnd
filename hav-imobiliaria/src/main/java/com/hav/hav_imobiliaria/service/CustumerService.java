@@ -8,6 +8,7 @@ import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
+import com.hav.hav_imobiliaria.model.entity.Users.UsersDetails;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -36,7 +37,7 @@ public class CustumerService {
             MultipartFile image) {
 
         Customer customer = modelMapper.map(custumerPostDTO, Customer.class);
-
+        customer.setUserDetails(new UsersDetails(custumerPostDTO.getEmail(), ))
         Customer savedCustomer = repository.save(customer);
 
         if (image != null) {
