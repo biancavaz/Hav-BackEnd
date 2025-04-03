@@ -65,7 +65,7 @@ public record PropertyPostRequestDTO(
 //                propertyCategory(propertyCategory).
                 floors(floors).
                 address(address.convert()).taxes(taxes.convert()).
-                propertyFeatures(propertyFeatures.convert())
+            propertyFeatures(propertyFeatures.convert())
                 .build();
     }
 }

@@ -1,4 +1,4 @@
-package com.hav.hav_imobiliaria.AWSConfig;
+package com.hav.hav_imobiliaria.Configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

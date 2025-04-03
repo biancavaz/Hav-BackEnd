@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hav.hav_imobiliaria.model.entity.Address;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +16,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -108,6 +111,11 @@ public class Property {
     )
     private List<Realtor> realtors;
 
+    @ManyToMany(mappedBy = "properties")
+    @JsonIgnore
+    private List<User> users;
+
+
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImageProperty> imageProperties;
 
@@ -117,5 +125,9 @@ public class Property {
 
     public PropertyFeature getPropertyFeatures() {
         return propertyFeatures;
+    }
+
+    public List<Realtor> getRealtors() {
+        return realtors;
     }
 }

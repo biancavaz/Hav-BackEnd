@@ -55,5 +55,6 @@ public class PropertyGetSpecificResponseDTO {
     @NotNull
     List<AdditionalsGetResponseDTO> additionals;
 
+
     List<RealtorPropertySpecificGetResponseDTO> realtorPropertySpecific;
 }

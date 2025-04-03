@@ -3,6 +3,8 @@ package com.hav.hav_imobiliaria.controller;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
 import com.hav.hav_imobiliaria.service.PropertyService;
@@ -29,14 +31,22 @@ public class PropertyController {
 
     private final PropertyService service;
 
+
+    @GetMapping("/randomHighlights")
+    public List<PropertyCardGetResponseDTO> getRandomHighlights(){
+        return service.findRandomHighlights();
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Property create(
+    public PropertyListGetResponseDTO create(
             @RequestPart("property") @Valid PropertyPostRequestDTO propertyDTO,
             @RequestPart(value = "images", required = false) List<MultipartFile> images
     ) {
+
         return service.create(propertyDTO, images);
     }
+
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -48,8 +58,13 @@ public class PropertyController {
     public Page<PropertyListGetResponseDTO> findByFilter(@RequestBody PropertyFilterPostResponseDTO propertyDto,
                                                          @RequestParam Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
-
         return service.findAllByFilter(propertyDto, pageable);
+    }
+    @PostMapping("/filter/card")
+    public Page<PropertyCardGetResponseDTO> findByFilterCard(@RequestBody PropertyFilterPostResponseDTO propertyDto,
+                                                         @RequestParam Integer page) {
+        Pageable pageable = PageRequest.of(page, 12);
+        return service.findAllByFilterCard(propertyDto, pageable);
     }
 
     @PatchMapping("/changeArchiveStatus")
@@ -66,7 +81,6 @@ public class PropertyController {
     @DeleteMapping
     @RequestMapping
     public void removePropertyList(@RequestBody List<Integer> idList) {
-        System.out.println(idList);
         service.removeList(idList);
     }
 
@@ -85,16 +99,31 @@ public class PropertyController {
     @RequestMapping("{id}")
     public ResponseEntity<PropertyPutRequestDTO> getProperty(
             @PathVariable Integer id) {
-
         PropertyPutRequestDTO propertyDto = service.findPropertyById(id);
+        System.out.println(propertyDto.toString());
         return ResponseEntity.ok(propertyDto);
     }
 
     @GetMapping
     @RequestMapping("/propertyspecific/{id}")
     public ResponseEntity<PropertyGetSpecificResponseDTO> getPropertySpecific(
-            @PathVariable Integer id){
+            @PathVariable Integer id) {
         PropertyGetSpecificResponseDTO propertyGetSpecificRequestDTO = service.findPropertySpecificById(id);
         return ResponseEntity.ok(propertyGetSpecificRequestDTO);
     }
+
+    @GetMapping("/card")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
+        return service.findPropertyCard(pageable);
+    }
+
+
+    //returns all the realtors of a property
+    @GetMapping
+    @RequestMapping("/realtorProperty/{id}")
+    public List<RealtorGetResponseDTOwithId> getRealtorsOfProperty(@PathVariable Integer id) {
+        return service.findRealtorsByPropertyId(id);
+    }
+
 }

@@ -68,7 +68,6 @@ public class RealtorService {
             @Valid RealtorFilterPostResponseDTO realtorDTO,
             Pageable pageable) {
 
-        System.out.printf(realtorDTO.toString());
         Realtor realtor = modelMapper.map(realtorDTO, Realtor.class);
 
         // Criar o exemplo de filtro usando o RealtorMatcher

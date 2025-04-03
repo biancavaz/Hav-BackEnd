@@ -1,6 +1,8 @@
 package com.hav.hav_imobiliaria.controller;
 
 import com.hav.hav_imobiliaria.model.DTO.Realtor.*;
+import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleChangeCustomerDTO;
+import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.service.RealtorService;
 import jakarta.validation.Valid;
@@ -48,8 +50,7 @@ public class RealtorController {
     @PostMapping("/filter")
     public Page<RealtorListGetResponseDTO> findByFilter(
             @RequestBody RealtorFilterPostResponseDTO realtorDTO,
-            @RequestParam Integer page) {
-        System.out.println(realtorDTO);
+            @RequestParam Integer page){
         Pageable pageable = PageRequest.of(page, 10);
         return service.findAllByFilter(realtorDTO, pageable);
     }
@@ -70,10 +71,10 @@ public class RealtorController {
     @GetMapping
     @RequestMapping("{id}")
     public RealtorPutRequestDTO getRealtor(
-            @PathVariable Integer id) {
-        System.out.println("----------");
+            @PathVariable Integer id){
         RealtorPutRequestDTO realtorDTO = service.findRealtorById(id);
-        System.out.println(realtorDTO);
         return realtorDTO;
     }
+
+
 }
