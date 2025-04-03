@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.controller;
 
+import com.hav.hav_imobiliaria.model.DTO.Email.EmailComplainDTO;
 import com.hav.hav_imobiliaria.service.EmailSenderService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -21,16 +22,16 @@ public class EmailController {
     EmailSenderService emailSenderService;
 
     @PostMapping()
-    public String sendContactUsEmail(@RequestBody String email){
+    public String sendContactUsEmail(@RequestBody EmailComplainDTO email){
         System.out.println(email);
-        send(email,  "email formal", "algo assunto");
-        return "sent";
+        send(email.getId(), email.getSubject(), email.getBody());
+        return "email sent";
     };
 
     @Async
-    protected void send(String to, String email, String subject) {
+    protected void send(Integer id, String subject, String body) {
         try {
-            emailSenderService.sendEmail(to, subject, email);
+            emailSenderService.sendEmail(id, subject, body);
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException("failed to send email");
