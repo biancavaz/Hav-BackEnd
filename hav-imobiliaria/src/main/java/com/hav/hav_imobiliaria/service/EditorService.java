@@ -27,6 +27,7 @@ public class EditorService {
     private final EditorRepository repository;
     private final ModelMapper modelMapper;
     private final ImageService imageService;
+    private final PasswordGeneratorService passwordGeneratorService;
 
     public EditorPostRequestDTO createEditor(
             @Valid EditorPostRequestDTO editorPostDTO,
@@ -34,13 +35,24 @@ public class EditorService {
 
         Editor editor = modelMapper.map(editorPostDTO, Editor.class);
 
-        Editor savededitor = repository.save(editor);
+        //setando o userDetails na mão pq ja esta pronta esta api e teria
+        // que mudar todas as dtos e front end para adicionar o user_details
+        UsersDetails userDetails = new UsersDetails(
+                editorPostDTO.email(),
+                passwordGeneratorService.generateSecurePassword(),
+                true, true, true, true
+        );
+
+        userDetails.setUser(editor);
+        editor.setUserDetails(userDetails);
+
+        Editor savedEditor = repository.save(editor);
 
         if (image != null) {
-            imageService.uploadUserImage(savededitor.getId(), image);
+            imageService.uploadUserImage(savedEditor.getId(), image);
         }
 
-        return editorPostDTO.convertToDTO(savededitor);
+        return editorPostDTO.convertToDTO(savedEditor);
     }
 
     public Editor updateEditor(

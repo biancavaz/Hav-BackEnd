@@ -38,11 +38,18 @@ public class CustumerService {
             MultipartFile image) {
 
         Customer customer = modelMapper.map(custumerPostDTO, Customer.class);
-        customer.setUserDetails(new UsersDetails(
+
+        //setando o userDetails na mão pq ja esta pronta esta api e teria
+        // que mudar todas as dtos e front end para adicionar o user_details
+        UsersDetails userDetails = new UsersDetails(
                 custumerPostDTO.email(),
                 passwordGeneratorService.generateSecurePassword(),
                 true, true, true, true
-        ));
+        );
+
+        userDetails.setUser(customer);
+        customer.setUserDetails(userDetails);
+
         Customer savedCustomer = repository.save(customer);
 
         if (image != null) {

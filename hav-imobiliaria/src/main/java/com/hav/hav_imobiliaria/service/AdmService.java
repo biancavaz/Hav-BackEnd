@@ -5,7 +5,9 @@ import com.hav.hav_imobiliaria.model.DTO.Adm.AdmListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Adm;
+import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
+import com.hav.hav_imobiliaria.model.entity.Users.UsersDetails;
 import com.hav.hav_imobiliaria.repository.AdmRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -31,6 +33,7 @@ public class AdmService {
     private final AdmRepository repository;
     private final ModelMapper modelMapper;
     private final ImageService imageService;
+    private final PasswordGeneratorService passwordGeneratorService;
 
     public AdmPostRequestDTO createAdm(
             @Valid AdmPostRequestDTO admPostDTO,
@@ -38,10 +41,21 @@ public class AdmService {
 
         Adm adm = modelMapper.map(admPostDTO, Adm.class);
 
-        Adm savedadm = repository.save(adm);
+        //setando o userDetails na mão pq ja esta pronta esta api e teria
+        // que mudar todas as dtos e front end para adicionar o user_details
+        UsersDetails userDetails = new UsersDetails(
+                admPostDTO.email(),
+                passwordGeneratorService.generateSecurePassword(),
+                true, true, true, true
+        );
+
+        userDetails.setUser(adm);
+        adm.setUserDetails(userDetails);
+
+        Adm savedAdm = repository.save(adm);
 
         if (image != null) {
-            imageService.uploadUserImage(savedadm.getId(), image);
+            imageService.uploadUserImage(savedAdm.getId(), image);
         }
 
         return admPostDTO.convertToDTO(adm);

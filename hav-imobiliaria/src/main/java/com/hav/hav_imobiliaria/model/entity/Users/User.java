@@ -56,7 +56,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ImageUser imageUser;
 
-    @OneToOne(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private UsersDetails userDetails;
 
 
