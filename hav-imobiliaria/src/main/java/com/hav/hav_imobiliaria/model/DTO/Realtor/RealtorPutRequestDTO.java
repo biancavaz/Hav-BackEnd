@@ -23,4 +23,5 @@ public class RealtorPutRequestDTO {
     @Valid
     @NotNull(message = "Endereço inválido")
     AddressPutRequestDTO address;
+    String creci;
 }
