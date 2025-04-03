@@ -26,7 +26,12 @@ public class PropertyCardGetResponseDTO {
 
     Double promotionalPrice;
 
+
+
     Integer id;
+    String propertyType;
+    Double area;
+
 
 
 }
