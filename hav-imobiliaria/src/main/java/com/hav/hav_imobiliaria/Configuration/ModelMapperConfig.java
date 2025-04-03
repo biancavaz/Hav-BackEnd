@@ -1,4 +1,4 @@
-package com.hav.hav_imobiliaria.mapper;
+package com.hav.hav_imobiliaria.Configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
