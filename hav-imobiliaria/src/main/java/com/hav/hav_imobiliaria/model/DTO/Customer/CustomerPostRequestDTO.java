@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 
+
 @ValidCustomer
 public record CustomerPostRequestDTO(
         @NotBlank(message = "Nome não pode estar em branco")
@@ -32,6 +33,7 @@ public record CustomerPostRequestDTO(
         AddressPostRequestDTO address
 
 ) {
+
     public CustomerPostRequestDTO convertToDTO(Customer customer) {
         return new CustomerPostRequestDTO(
                 customer.getName(),

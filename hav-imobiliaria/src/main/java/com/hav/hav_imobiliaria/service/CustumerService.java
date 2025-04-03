@@ -31,13 +31,18 @@ public class CustumerService {
     private final CustumerRepository repository;
     private final ModelMapper modelMapper;
     private final ImageService imageService;
+    private final PasswordGeneratorService passwordGeneratorService;
 
     public CustomerPostRequestDTO createCustumer(
             @Valid CustomerPostRequestDTO custumerPostDTO,
             MultipartFile image) {
 
         Customer customer = modelMapper.map(custumerPostDTO, Customer.class);
-        customer.setUserDetails(new UsersDetails(custumerPostDTO.getEmail(), ))
+        customer.setUserDetails(new UsersDetails(
+                custumerPostDTO.email(),
+                passwordGeneratorService.generateSecurePassword(),
+                true, true, true, true
+        ));
         Customer savedCustomer = repository.save(customer);
 
         if (image != null) {
