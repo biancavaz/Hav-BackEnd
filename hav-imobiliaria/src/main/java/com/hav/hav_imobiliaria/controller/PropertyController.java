@@ -31,6 +31,12 @@ public class PropertyController {
 
     private final PropertyService service;
 
+
+    @GetMapping("/randomHighlights")
+    public List<PropertyCardGetResponseDTO> getRandomHighlights(){
+        return service.findRandomHighlights();
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public PropertyListGetResponseDTO create(
@@ -40,6 +46,7 @@ public class PropertyController {
 
         return service.create(propertyDTO, images);
     }
+
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -110,6 +117,8 @@ public class PropertyController {
     public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
         return service.findPropertyCard(pageable);
     }
+
+
     //returns all the realtors of a property
     @GetMapping
     @RequestMapping("/realtorProperty/{id}")
