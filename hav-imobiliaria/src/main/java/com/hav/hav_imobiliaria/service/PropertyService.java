@@ -380,9 +380,12 @@ public class PropertyService {
         }).map(realtor -> modelMapper.map(realtor, RealtorGetResponseDTOwithId.class)).collect(Collectors.toList());
     }
 
-
     public List<PropertyCardGetResponseDTO> findRandomHighlights() {
         return repository.findRandomHighlighted5().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+    }
+
+    public Long getAllRegistredNumber(){
+        return repository.count();
     }
 }
 

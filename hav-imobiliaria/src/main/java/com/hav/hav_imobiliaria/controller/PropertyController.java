@@ -126,4 +126,10 @@ public class PropertyController {
         return service.findRealtorsByPropertyId(id);
     }
 
+    @GetMapping("/getAll")
+    @ResponseStatus(HttpStatus.OK)
+    public Long getAllRegistredNumber(){
+        return service.getAllRegistredNumber();
+    }
+
 }
