@@ -17,14 +17,32 @@ public class EmailSenderService {
     private CustumerRepository custumerRepository;
 
     public void sendEmailContactUs(Integer id,  String subject, String body ) {
+        //isso aqui talvez troque para o context holder do security
         Customer customer = custumerRepository.findById(id).get();
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo("hav.suporte@gmail.com");
         message.setSubject(subject);
         message.setText("Enviado por "+customer.getEmail()+"\n\n"+body);
-        System.out.println(message);
         mailSender.send(message);
     }
+
+    public void sendPasswordNewAccount(String email,  String password) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Conta criada");
+        message.setText("Sua conta foi criada\nLogin: "+email+"\nSenha: "+password);
+        mailSender.send(message);
+    }
+    public void sendPasswordNewAccount(String email,  String password, String type) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Conta criada");
+        message.setText("Sua conta de "+type+" foi criada\nLogin: "+email+"\nSenha: "+password);
+        mailSender.send(message);
+    }
+
 
 }

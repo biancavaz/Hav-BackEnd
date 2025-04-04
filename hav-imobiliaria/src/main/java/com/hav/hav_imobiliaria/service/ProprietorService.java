@@ -33,7 +33,6 @@ public class ProprietorService {
     private final ModelMapper modelMapper;
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
-    private final PasswordEncoder passwordEncoder;
 
     public ProprietorPostDTO createProprietor(
             @Valid ProprietorPostDTO proprietorDTO,
@@ -41,18 +40,7 @@ public class ProprietorService {
 
         Proprietor proprietor = modelMapper.map(proprietorDTO, Proprietor.class);
 
-        String password = passwordGeneratorService.generateSecurePassword();
 
-        //setando o userDetails na mão pq ja esta pronta esta api e teria
-        // que mudar todas as dtos e front end para adicionar o user_details
-        UsersDetails userDetails = new UsersDetails(
-                proprietorDTO.email(),
-                passwordEncoder.encode(password),
-                true, true, true, true
-        );
-
-        userDetails.setUser(proprietor);
-        proprietor.setUserDetails(userDetails);
 
         Proprietor savedProprietor = repository.save(proprietor);
 

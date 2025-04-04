@@ -56,8 +56,6 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ImageUser imageUser;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private UsersDetails userDetails;
 
 
 
@@ -74,7 +72,6 @@ public class User {
     public @NotNull boolean getArchived() {
         return this.archived;
     }
-
     public void changeArchiveStatus(){
         this.archived = !this.archived;
     }

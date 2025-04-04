@@ -34,6 +34,7 @@ public class CustumerService {
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
     private final PasswordEncoder passwordEncoder;
+    private final EmailSenderService emailSenderService;
 
     public CustomerPostRequestDTO createCustumer(
             @Valid CustomerPostRequestDTO custumerPostDTO,
@@ -59,7 +60,7 @@ public class CustumerService {
         if (image != null) {
             imageService.uploadUserImage(savedCustomer.getId(), image);
         }
-
+        emailSenderService.sendPasswordNewAccount(customer.getUserDetails().getUsername(), password);
         return custumerPostDTO.convertToDTO(savedCustomer);
     }
 

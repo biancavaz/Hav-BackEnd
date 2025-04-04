@@ -9,6 +9,7 @@ import com.hav.hav_imobiliaria.repository.EditorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class EditorService {
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
     private final PasswordEncoder passwordEncoder;
+    private final EmailSenderService emailSenderService;
 
     public EditorPostRequestDTO createEditor(
             @Valid EditorPostRequestDTO editorPostDTO,
@@ -55,7 +57,9 @@ public class EditorService {
         if (image != null) {
             imageService.uploadUserImage(savedEditor.getId(), image);
         }
-
+        System.out.println("prestes a enviar");
+        System.out.println(savedEditor.getUserDetails().getUsername());
+        emailSenderService.sendPasswordNewAccount(savedEditor.getUserDetails().getUsername(), password, "EDITOR");
         return editorPostDTO.convertToDTO(savedEditor);
     }
 

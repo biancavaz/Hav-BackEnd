@@ -36,6 +36,7 @@ public class AdmService {
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
     private final PasswordEncoder passwordEncoder;
+    private final EmailSenderService emailSenderService;
 
     public AdmPostRequestDTO createAdm(
             @Valid AdmPostRequestDTO admPostDTO,
@@ -61,7 +62,7 @@ public class AdmService {
         if (image != null) {
             imageService.uploadUserImage(savedAdm.getId(), image);
         }
-
+        emailSenderService.sendPasswordNewAccount(adm.getUserDetails().getUsername(), password, "ADMINISTRADOR");
         return admPostDTO.convertToDTO(adm);
     }
 

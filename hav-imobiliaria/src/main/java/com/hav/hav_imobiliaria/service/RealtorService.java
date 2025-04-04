@@ -31,6 +31,7 @@ public class RealtorService {
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
     private final PasswordEncoder passwordEncoder;
+    private final EmailSenderService emailSenderService;
 
     public RealtorPostRequestDTO createRealtor(
             @Valid RealtorPostRequestDTO realtorDTO,
@@ -55,7 +56,7 @@ public class RealtorService {
         if (image != null) {
             imageService.uploadUserImage(savedRealtor.getId(), image);
         }
-
+        emailSenderService.sendPasswordNewAccount(realtor.getUserDetails().getUsername(), password,"CORRETOR");
         return realtorDTO.convertToDTO(savedRealtor);
     }
 
