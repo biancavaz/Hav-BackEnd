@@ -20,6 +20,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +35,7 @@ public class AdmService {
     private final ModelMapper modelMapper;
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
+    private final PasswordEncoder passwordEncoder;
 
     public AdmPostRequestDTO createAdm(
             @Valid AdmPostRequestDTO admPostDTO,
@@ -41,11 +43,13 @@ public class AdmService {
 
         Adm adm = modelMapper.map(admPostDTO, Adm.class);
 
+        String password = passwordGeneratorService.generateSecurePassword();
+
         //setando o userDetails na mão pq ja esta pronta esta api e teria
         // que mudar todas as dtos e front end para adicionar o user_details
         UsersDetails userDetails = new UsersDetails(
                 admPostDTO.email(),
-                passwordGeneratorService.generateSecurePassword(),
+                passwordEncoder.encode(password),
                 true, true, true, true
         );
 

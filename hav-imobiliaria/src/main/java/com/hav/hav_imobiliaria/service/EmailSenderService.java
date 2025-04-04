@@ -15,7 +15,8 @@ public class EmailSenderService {
     @Autowired
     private JavaMailSender mailSender;
     private CustumerRepository custumerRepository;
-    public void sendEmail(Integer id,  String subject, String body ) {
+
+    public void sendEmailContactUs(Integer id,  String subject, String body ) {
         Customer customer = custumerRepository.findById(id).get();
 
         SimpleMailMessage message = new SimpleMailMessage();
@@ -25,4 +26,5 @@ public class EmailSenderService {
         System.out.println(message);
         mailSender.send(message);
     }
+
 }

@@ -18,6 +18,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +33,7 @@ public class CustumerService {
     private final ModelMapper modelMapper;
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
+    private final PasswordEncoder passwordEncoder;
 
     public CustomerPostRequestDTO createCustumer(
             @Valid CustomerPostRequestDTO custumerPostDTO,
@@ -39,11 +41,13 @@ public class CustumerService {
 
         Customer customer = modelMapper.map(custumerPostDTO, Customer.class);
 
+        String password = passwordGeneratorService.generateSecurePassword();
+
         //setando o userDetails na mão pq ja esta pronta esta api e teria
         // que mudar todas as dtos e front end para adicionar o user_details
         UsersDetails userDetails = new UsersDetails(
                 custumerPostDTO.email(),
-                passwordGeneratorService.generateSecurePassword(),
+                passwordEncoder.encode(password),
                 true, true, true, true
         );
 

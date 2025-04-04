@@ -4,8 +4,10 @@ import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorFilterPostResponse
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPostDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
+import com.hav.hav_imobiliaria.model.entity.Users.UsersDetails;
 import com.hav.hav_imobiliaria.repository.ProprietorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -15,6 +17,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +32,8 @@ public class ProprietorService {
     private final ProprietorRepository repository;
     private final ModelMapper modelMapper;
     private final ImageService imageService;
+    private final PasswordGeneratorService passwordGeneratorService;
+    private final PasswordEncoder passwordEncoder;
 
     public ProprietorPostDTO createProprietor(
             @Valid ProprietorPostDTO proprietorDTO,
@@ -36,13 +41,26 @@ public class ProprietorService {
 
         Proprietor proprietor = modelMapper.map(proprietorDTO, Proprietor.class);
 
-        Proprietor savedproprietor = repository.save(proprietor);
+        String password = passwordGeneratorService.generateSecurePassword();
+
+        //setando o userDetails na mão pq ja esta pronta esta api e teria
+        // que mudar todas as dtos e front end para adicionar o user_details
+        UsersDetails userDetails = new UsersDetails(
+                proprietorDTO.email(),
+                passwordEncoder.encode(password),
+                true, true, true, true
+        );
+
+        userDetails.setUser(proprietor);
+        proprietor.setUserDetails(userDetails);
+
+        Proprietor savedProprietor = repository.save(proprietor);
 
         if (image != null) {
-            imageService.uploadUserImage(savedproprietor.getId(), image);
+            imageService.uploadUserImage(savedProprietor.getId(), image);
         }
 
-        return proprietorDTO.convertToDTO(savedproprietor);
+        return proprietorDTO.convertToDTO(savedProprietor);
     }
 
     public Proprietor updateProprietor(
