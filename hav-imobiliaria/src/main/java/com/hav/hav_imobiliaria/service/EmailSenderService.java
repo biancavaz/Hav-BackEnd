@@ -32,7 +32,8 @@ public class EmailSenderService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("Conta criada");
-        message.setText("Sua conta foi criada\nLogin: "+email+"\nSenha: "+password);
+        message.setText("Sua conta foi criada\nLogin: "+email+"\nSenha: "+password+
+                "\n\nÉ RECOMENDADO MUDAR ESTA SENHA NO PRIMEIRO ACESSO.");
         mailSender.send(message);
     }
     public void sendPasswordNewAccount(String email,  String password, String type) {
@@ -40,7 +41,8 @@ public class EmailSenderService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("Conta criada");
-        message.setText("Sua conta de "+type+" foi criada\nLogin: "+email+"\nSenha: "+password);
+        message.setText("Sua conta de "+type+" foi criada\nLogin: "+email+"\nSenha: "+password+
+                "\n\nÉ RECOMENDADO MUDAR ESTA SENHA NO PRIMEIRO ACESSO.");
         mailSender.send(message);
     }
 
