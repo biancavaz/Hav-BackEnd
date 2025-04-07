@@ -71,7 +71,10 @@ public class FavoritesService {
                 property.getPurpose(),
                 property.getPropertyStatus(),
                 property.getPromotionalPrice(),
-                property.getId()
+                property.getId(),
+                property.getPropertyType(),
+                property.getArea()
+
 
         )).toList();
         return new PageImpl<>(dtos, pageable, idUser);
