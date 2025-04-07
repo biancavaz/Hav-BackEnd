@@ -132,4 +132,20 @@ public class PropertyController {
         return service.getAllRegistredNumber();
     }
 
+    @GetMapping("/getPercetageRental")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfRentalProperties(){
+        return service.getPercentageOfRentalProperties();
+    }
+    @GetMapping("/getPercentageForSale")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfForSaleProperties(){
+        return service.getPercentageOfForSaleProperties();
+    }
+
+    @GetMapping("/getPercentageOfArchiveStatus")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfArchiveStatus(){
+        return service.getPercentageOfArchiveStatus();
+    }
 }

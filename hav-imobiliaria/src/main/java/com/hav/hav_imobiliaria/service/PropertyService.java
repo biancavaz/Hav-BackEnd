@@ -387,5 +387,43 @@ public class PropertyService {
     public Long getAllRegistredNumber(){
         return repository.count();
     }
+
+    public double getPercentageOfRentalProperties(){
+        List<Property> allProperties = repository.findAll();
+        if (allProperties.isEmpty()) {
+            return 0.0;
+        }
+
+        long rentalCount = allProperties.stream()
+                .filter(property -> "Locacao".equals(property.getPurpose()))
+                .count();
+        return (rentalCount * 100.0) / allProperties.size();
+    }
+
+    public double getPercentageOfForSaleProperties(){
+        List<Property> allProperties = repository.findAll();
+        if (allProperties.isEmpty()) {
+            return 0.0;
+        }
+
+        long forSaleCount = allProperties
+                .stream()
+                .filter(property -> "Venda".equals(property.getPurpose()))
+                .count();
+        return (forSaleCount * 100.0) / allProperties.size();
+    }
+
+    public double getPercentageOfArchiveStatus(){
+        List<Property> allProperties = repository.findAll();
+        if (allProperties.isEmpty()) {
+            return 0.0;
+        }
+
+        long archiveStatus = allProperties
+                .stream()
+                .filter(Property:: isArchived )
+                .count();
+        return (archiveStatus * 100.0) / allProperties.size();
+    }
 }
 
