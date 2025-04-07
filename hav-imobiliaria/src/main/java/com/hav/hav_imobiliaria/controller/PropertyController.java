@@ -148,4 +148,21 @@ public class PropertyController {
     public double getPercentageOfArchiveStatus(){
         return service.getPercentageOfArchiveStatus();
     }
+
+    @GetMapping("/getQuantityOfRentalProperties")
+    @ResponseStatus(HttpStatus.OK)
+    public long getQuantityOfRentalProperties(){
+        return service.getQuantityOfRentalProperties();
+    }
+
+    @GetMapping("/getQuantityOfForSaleProperties")
+    @ResponseStatus(HttpStatus.OK)
+    public long getQuantityOfForSaleProperties(){
+        return service.getQuantityOfForSaleProperties();
+    }
+    @GetMapping("/getQuantityOfArchivedProperties")
+    @ResponseStatus(HttpStatus.OK)
+    public long getQuantityOfArchivedProperties(){
+        return service.getQuantityOfArchivedProperties();
+    }
 }

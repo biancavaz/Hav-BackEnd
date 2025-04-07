@@ -425,5 +425,26 @@ public class PropertyService {
                 .count();
         return (archiveStatus * 100.0) / allProperties.size();
     }
+
+    public long getQuantityOfRentalProperties(){
+        return repository.findAll()
+                .stream()
+                .filter(property -> "Locacao".equals(property.getPurpose()))
+                .count();
+    }
+
+    public long getQuantityOfForSaleProperties(){
+        return repository.findAll()
+                .stream()
+                .filter(property -> "Venda".equals(property.getPurpose()))
+                .count();
+    }
+
+    public long getQuantityOfArchivedProperties(){
+        return repository.findAll()
+                .stream()
+                .filter(Property:: isArchived)
+                .count();
+    }
 }
 
