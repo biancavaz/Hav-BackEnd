@@ -43,7 +43,7 @@ public class CustumerService {
         Customer customer = modelMapper.map(custumerPostDTO, Customer.class);
 
         String password = passwordGeneratorService.generateSecurePassword();
-
+        System.out.println(password);
         //setando o userDetails na mão pq ja esta pronta esta api e teria
         // que mudar todas as dtos e front end para adicionar o user_details
         UsersDetails userDetails = new UsersDetails(

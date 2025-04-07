@@ -33,7 +33,8 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(auth ->{
-            auth.anyRequest().permitAll();
+            auth.requestMatchers("/auth/login", "/auth/register").permitAll();
+            auth.anyRequest().authenticated();
         });
 
 
