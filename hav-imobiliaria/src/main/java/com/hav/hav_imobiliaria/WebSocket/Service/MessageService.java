@@ -1,6 +1,6 @@
 package com.hav.hav_imobiliaria.WebSocket.Service;
 
-import com.hav.hav_imobiliaria.WebSocket.Message.MessageDTO;
+import com.hav.hav_imobiliaria.WebSocket.Notification.NotificationDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class MessageService {
     @Autowired
     private UserRepository userRepository;
 
-    public void enviarMensagemWebSocket(MessageDTO mensagem) {
+    public void enviarMensagemWebSocket(NotificationDTO mensagem) {
         User sender = userRepository.findById(mensagem.getSender()).orElseThrow(() ->
                 new RuntimeException("Erro ao enviar mensagem"));
         User recipient = userRepository.findById(mensagem.getRecipient()).orElseThrow(() ->

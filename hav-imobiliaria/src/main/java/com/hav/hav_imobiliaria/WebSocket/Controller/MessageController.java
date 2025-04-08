@@ -1,6 +1,6 @@
 package com.hav.hav_imobiliaria.WebSocket.Controller;
 
-import com.hav.hav_imobiliaria.WebSocket.Message.MessageDTO;
+import com.hav.hav_imobiliaria.WebSocket.Notification.NotificationDTO;
 import com.hav.hav_imobiliaria.WebSocket.Service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +14,7 @@ public class MessageController {
     private MessageService mensagemService;
 
     @PostMapping
-    public void enviarMensagem(@RequestBody MessageDTO mensagem) {
+    public void enviarMensagem(@RequestBody NotificationDTO mensagem) {
         mensagemService.enviarMensagemWebSocket(mensagem);
         System.out.println(mensagem.getContent());
     }

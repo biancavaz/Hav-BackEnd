@@ -1,8 +1,8 @@
-package com.hav.hav_imobiliaria.WebSocket.Message;
+package com.hav.hav_imobiliaria.WebSocket.Notification;
 import lombok.Data;
 
 @Data
-public class MessageDTO {
+public class NotificationDTO {
 
     private Integer recipient;
     private Integer sender;
