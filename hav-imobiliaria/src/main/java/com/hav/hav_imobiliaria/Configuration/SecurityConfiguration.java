@@ -18,7 +18,7 @@ public class SecurityConfiguration {
 
     @Bean
     public AuthenticationManager authenticationManager(
-            UserDetailsService uds){
+            UserDetailsService uds) {
 
         DaoAuthenticationProvider ap = new DaoAuthenticationProvider();
         ap.setUserDetailsService(uds);
@@ -27,21 +27,32 @@ public class SecurityConfiguration {
     }
 
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+    /// /        http.securityContext(config ->config.securityContextRepository(securityContextRepository()));
+//        http.csrf(AbstractHttpConfigurer::disable);
+//        http.formLogin(AbstractHttpConfigurer::disable);
+//        http.authorizeHttpRequests(auth ->{
+//            auth.requestMatchers("/auth/login", "/auth/register").permitAll();
+//            auth.anyRequest().authenticated();
+//        });
+//
+//
+//        return http.build();
+//    }
+
+    //SEM PERMISSÃO ->
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.securityContext(config ->config.securityContextRepository(securityContextRepository()));
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
-        http.authorizeHttpRequests(auth ->{
-            auth.requestMatchers("/auth/login", "/auth/register").permitAll();
-            auth.anyRequest().authenticated();
-        });
-
-
+        http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
         return http.build();
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
 
         return new BCryptPasswordEncoder();
     }
