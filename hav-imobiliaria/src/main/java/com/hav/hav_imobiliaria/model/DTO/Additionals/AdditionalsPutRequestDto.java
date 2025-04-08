@@ -8,6 +8,8 @@ import lombok.Data;
 
 @Data
 public class AdditionalsPutRequestDto {
+
     private Integer id;
     private String name;
+
 }

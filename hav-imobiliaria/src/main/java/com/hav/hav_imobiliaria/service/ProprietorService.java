@@ -1,16 +1,10 @@
 package com.hav.hav_imobiliaria.service;
 
-import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPostDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
-import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
-import com.hav.hav_imobiliaria.model.entity.Address;
-import com.hav.hav_imobiliaria.model.entity.Properties.Property;
-import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
-import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.ProprietorRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -33,42 +28,48 @@ public class ProprietorService {
 
     private final ProprietorRepository repository;
     private final ModelMapper modelMapper;
+    private final ImageService imageService;
 
-    public ProprietorPostDTO createProprietor(@Valid ProprietorPostDTO proprietorDTO) {
-        System.out.println("Recebido no DTO: " + proprietorDTO);
+    public ProprietorPostDTO createProprietor(
+            @Valid ProprietorPostDTO proprietorDTO,
+            MultipartFile image) {
 
-        // Mapeamento do DTO para entidade usando o ModelMapper
         Proprietor proprietor = modelMapper.map(proprietorDTO, Proprietor.class);
 
-        // Salvar a entidade e retornar a resposta
         Proprietor savedproprietor = repository.save(proprietor);
 
-        //testando só
-        System.out.println("Convertido para entidade: "
-                + savedproprietor);
+        if (image != null) {
+            imageService.uploadUserImage(savedproprietor.getId(), image);
+        }
 
         return proprietorDTO.convertToDTO(savedproprietor);
     }
 
-    //certo
-    public Proprietor editProprietor(
+    public Proprietor updateProprietor(
             @Positive @NotNull Integer id,
-            @Valid ProprietorPutRequestDTO proprietorPutDTO) {
+            @Valid ProprietorPutRequestDTO proprietorPutDTO,
+            @Positive Integer deletedImageId,
+            MultipartFile newImage) {
 
-        Proprietor existingProprietor = repository.findById(id).orElseThrow(() ->
+        Proprietor proprietor = repository.findById(id).orElseThrow(() ->
                 new NoSuchElementException("Proprietario com o ID " + id + " não encontrado."));
 
-        // Atualiza apenas os campos que vieram no DTO (mantendo os valores existentes)
-        modelMapper.map(proprietorPutDTO, existingProprietor);
+        modelMapper.map(proprietorPutDTO, proprietor);
 
-        return repository.save(existingProprietor);
+        if (deletedImageId != null) {
+            imageService.deleteUserImage(deletedImageId);
+        }
+
+        if (newImage != null) {
+            imageService.uploadUserImage(id, newImage);
+        }
+
+        return repository.save(proprietor);
     }
-
 
     public Page<ProprietorListGetResponseDTO> findAllByFilter(Pageable pageable, ProprietorFilterPostResponseDTO proprietorDto) {
         Proprietor proprietor = modelMapper.map(proprietorDto, Proprietor.class);
 
-        System.out.println(proprietorDto);
 
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreCase()
@@ -76,10 +77,8 @@ public class ProprietorService {
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
         Example<Proprietor> example = Example.of(proprietor, matcher);
-        System.out.println(example.toString());
 
         Page<Proprietor> proprietorList = repository.findAll(example, pageable);
-        System.out.println("after repository");
 
         Page<ProprietorListGetResponseDTO> proprietorListGetResponseDtos = proprietorList.map(proprietorx ->
                 modelMapper.map(proprietorx, ProprietorListGetResponseDTO.class)
@@ -87,15 +86,12 @@ public class ProprietorService {
         );
 
 
+        for (int i = 0; i < proprietorList.getContent().size(); i++) {
 
 
-
-        for(int i=0; i<proprietorList.getContent().size(); i++ ){
-
-
-            if(proprietorList.getContent().get(i).getCpf()==null) {
+            if (proprietorList.getContent().get(i).getCpf() == null) {
                 proprietorListGetResponseDtos.getContent().get(i).setDocument(proprietorList.getContent().get(i).getCnpj());
-            }else{
+            } else {
                 proprietorListGetResponseDtos.getContent().get(i).setDocument(proprietorList.getContent().get(i).getCpf());
             }
 
@@ -107,7 +103,7 @@ public class ProprietorService {
                             .get(i).getPurpose());
         }
 
-        if(proprietorDto.getNumberOfProperty() != null) {
+        if (proprietorDto.getNumberOfProperty() != null) {
             List<ProprietorListGetResponseDTO> filteredPage = proprietorListGetResponseDtos
                     .map(proprietorx -> modelMapper.map(proprietorx, ProprietorListGetResponseDTO.class))
                     .filter(dto -> dto.getNumberOfProperty() == proprietorDto.getNumberOfProperty())  // Filter where numberOfProperties == 4
@@ -135,7 +131,7 @@ public class ProprietorService {
 
     public ProprietorPutRequestDTO findProprietorById(Integer id) {
         Proprietor proprietor = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Realtor not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Proprietor not found"));
 
         // Converte a entidade Realtor para o DTO
         return modelMapper.map(proprietor, ProprietorPutRequestDTO.class);

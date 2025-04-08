@@ -30,6 +30,12 @@
         <java.version>21</java.version>
     </properties>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.1.1</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -87,6 +93,12 @@
             <artifactId>modelmapper</artifactId>
             <version>3.1.0</version> <!-- Verifique a versão mais recente -->
         </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>2.20.148</version> <!-- Use a versão mais recente -->
+        </dependency>
+
     </dependencies>
 
     <build>

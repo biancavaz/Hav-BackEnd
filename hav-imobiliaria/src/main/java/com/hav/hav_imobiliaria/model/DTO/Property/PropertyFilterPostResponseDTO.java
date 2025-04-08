@@ -1,5 +1,8 @@
 package com.hav.hav_imobiliaria.model.DTO.Property;
 
+import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureFilterPostResponseDto;
+import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePostRequestDTO;
+import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePutRequestDTO;
 import lombok.Data;
 
 @Data
@@ -11,7 +14,12 @@ public class PropertyFilterPostResponseDTO {
     String propertyCategory;
     String propertyStatus;
     boolean archived;
+    PropertyFeatureFilterPostResponseDto propertyFeatures;
 
+
+    public PropertyFeatureFilterPostResponseDto getPropertyFeatures() {
+        return propertyFeatures;
+    }
 
     public Double getMaxPric() {
         if(this.maxPric==null){

@@ -6,5 +6,4 @@ import lombok.Data;
 public class ProprietorPropertyPutRequestDTO {
     String cpf;
     String name;
-
 }

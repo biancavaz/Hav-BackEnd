@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hav.hav_imobiliaria.model.entity.Address;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.hav.hav_imobiliaria.model.entity.Address;
-import com.hav.hav_imobiliaria.model.entity.S3File;
-import com.hav.hav_imobiliaria.model.entity.Users.Customer;
+import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +16,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -84,9 +84,6 @@ public class Property {
     @JoinColumn(name = "id_taxes", nullable = false)
     private Taxes taxes;
 
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<S3File> s3Files;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_property_feature", nullable = false)
     private PropertyFeature propertyFeatures;
@@ -103,7 +100,6 @@ public class Property {
     @JsonManagedReference
     @ManyToOne()
     @JoinColumn(name = "id_proprietor")
-
     private Proprietor proprietor;
 
     @JsonManagedReference
@@ -113,12 +109,25 @@ public class Property {
             joinColumns = @JoinColumn(name = "id_property"),
             inverseJoinColumns = @JoinColumn(name = "id_realtor")
     )
-
-
     private List<Realtor> realtors;
 
-    public void changeArchiveStatus(){
+    @ManyToMany(mappedBy = "properties")
+    @JsonIgnore
+    private List<User> users;
+
+
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ImageProperty> imageProperties;
+
+    public void changeArchiveStatus() {
         this.archived = !this.archived;
     }
 
+    public PropertyFeature getPropertyFeatures() {
+        return propertyFeatures;
+    }
+
+    public List<Realtor> getRealtors() {
+        return realtors;
+    }
 }

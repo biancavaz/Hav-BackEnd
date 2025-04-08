@@ -2,6 +2,7 @@ package com.hav.hav_imobiliaria.model.entity.Users;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import jakarta.persistence.*;
@@ -28,6 +29,7 @@ public class Proprietor extends User {
 
     @JsonBackReference
 
+    @JsonIgnore
     @OneToMany(mappedBy = "proprietor")
     private List<Property> properties;
 

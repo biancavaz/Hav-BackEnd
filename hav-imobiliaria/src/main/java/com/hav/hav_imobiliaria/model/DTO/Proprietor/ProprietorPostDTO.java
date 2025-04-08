@@ -22,7 +22,7 @@ public record ProprietorPostDTO(
         @NotBlank(message = "Celular não pode estar em branco")
         @Pattern(regexp = "\\d{11}$", message = "Celular inválido")
         String celphone,
-//        @CPF(message = "CPF inválido")
+        @CPF(message = "CPF inválido")
         String cpf,
         @CNPJ(message = "CNPJ inválido")
         String cnpj,
