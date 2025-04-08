@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 @SuperBuilder
 @Table(name = "editor")
 public class Editor extends User {

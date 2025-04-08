@@ -4,6 +4,7 @@ import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorFilterPostResponse
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPostDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.ProprietorRepository;
@@ -29,20 +30,23 @@ public class ProprietorService {
     private final ProprietorRepository repository;
     private final ModelMapper modelMapper;
     private final ImageService imageService;
+    private final PasswordGeneratorService passwordGeneratorService;
 
     public ProprietorPostDTO createProprietor(
             @Valid ProprietorPostDTO proprietorDTO,
             MultipartFile image) {
 
         Proprietor proprietor = modelMapper.map(proprietorDTO, Proprietor.class);
+        System.out.println(proprietor.getCnpj());
 
-        Proprietor savedproprietor = repository.save(proprietor);
+
+        Proprietor savedProprietor = repository.save(proprietor);
 
         if (image != null) {
-            imageService.uploadUserImage(savedproprietor.getId(), image);
+            imageService.uploadUserImage(savedProprietor.getId(), image);
         }
 
-        return proprietorDTO.convertToDTO(savedproprietor);
+        return proprietorDTO.convertToDTO(savedProprietor);
     }
 
     public Proprietor updateProprietor(
@@ -79,6 +83,11 @@ public class ProprietorService {
         Example<Proprietor> example = Example.of(proprietor, matcher);
 
         Page<Proprietor> proprietorList = repository.findAll(example, pageable);
+
+        modelMapper.typeMap(Proprietor.class, ProprietorListGetResponseDTO.class).addMappings(mapper -> {
+            mapper.skip(ProprietorListGetResponseDTO::setPurpose);
+            mapper.skip(ProprietorListGetResponseDTO::setNumberOfProperty);
+        });
 
         Page<ProprietorListGetResponseDTO> proprietorListGetResponseDtos = proprietorList.map(proprietorx ->
                 modelMapper.map(proprietorx, ProprietorListGetResponseDTO.class)

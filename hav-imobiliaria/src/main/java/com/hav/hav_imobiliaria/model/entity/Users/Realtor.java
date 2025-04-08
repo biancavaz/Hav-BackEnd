@@ -18,6 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Realtor extends User {
 
+
+
     @Column(nullable = false, unique = true)
     private String creci;
 

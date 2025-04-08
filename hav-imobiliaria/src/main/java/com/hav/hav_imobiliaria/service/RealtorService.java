@@ -1,7 +1,9 @@
 package com.hav.hav_imobiliaria.service;
 
+import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.*;
 import com.hav.hav_imobiliaria.model.entity.Address;
+import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
@@ -25,6 +27,8 @@ public class RealtorService {
     private final RealtorRepository repository;
     private final ModelMapper modelMapper;
     private final ImageService imageService;
+    private final PasswordGeneratorService passwordGeneratorService;
+    private final EmailSenderService emailSenderService;
 
     public RealtorPostRequestDTO createRealtor(
             @Valid RealtorPostRequestDTO realtorDTO,
@@ -32,12 +36,16 @@ public class RealtorService {
 
         Realtor realtor = modelMapper.map(realtorDTO, Realtor.class);
 
+        String password = passwordGeneratorService.generateSecurePassword();
+        //setando o userDetails na mão pq ja esta pronta esta api e teria
+        // que mudar todas as dtos e front end para adicionar o user_details
+
+
         Realtor savedRealtor = repository.save(realtor);
 
         if (image != null) {
             imageService.uploadUserImage(savedRealtor.getId(), image);
         }
-
         return realtorDTO.convertToDTO(savedRealtor);
     }
 

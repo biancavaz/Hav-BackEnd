@@ -9,6 +9,7 @@ import com.hav.hav_imobiliaria.repository.EditorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,8 @@ public class EditorService {
     private final EditorRepository repository;
     private final ModelMapper modelMapper;
     private final ImageService imageService;
+    private final PasswordGeneratorService passwordGeneratorService;
+    private final EmailSenderService emailSenderService;
 
     public EditorPostRequestDTO createEditor(
             @Valid EditorPostRequestDTO editorPostDTO,
@@ -34,13 +37,20 @@ public class EditorService {
 
         Editor editor = modelMapper.map(editorPostDTO, Editor.class);
 
-        Editor savededitor = repository.save(editor);
+        String password = passwordGeneratorService.generateSecurePassword();
+
+        //setando o userDetails na mão pq ja esta pronta esta api e teria
+        // que mudar todas as dtos e front end para adicionar o user_details
+
+
+
+        Editor savedEditor = repository.save(editor);
 
         if (image != null) {
-            imageService.uploadUserImage(savededitor.getId(), image);
+            imageService.uploadUserImage(savedEditor.getId(), image);
         }
-
-        return editorPostDTO.convertToDTO(savededitor);
+        System.out.println("prestes a enviar");
+        return editorPostDTO.convertToDTO(savedEditor);
     }
 
     public Editor updateEditor(

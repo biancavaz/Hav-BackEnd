@@ -25,6 +25,8 @@ public class CustomerController {
 
     private CustumerService service;
 
+
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerPostRequestDTO createCustomer(
@@ -38,7 +40,7 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.OK)
     public Customer updateCustomer(
             @PathVariable Integer id,
-            @RequestBody @Valid CustomerPutRequestDTO custumerDTO,
+            @RequestPart("customer") @Valid CustomerPutRequestDTO custumerDTO,
             @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
             @RequestPart(value = "newImage", required = false) MultipartFile newImage
     ) {

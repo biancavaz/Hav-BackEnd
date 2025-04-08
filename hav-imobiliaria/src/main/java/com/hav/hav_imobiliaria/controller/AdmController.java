@@ -39,10 +39,11 @@ public class AdmController {
     @ResponseStatus(HttpStatus.OK)
     public Adm editAdm(
             @PathVariable Integer id,
-            @RequestBody @Valid AdmPutRequestDTO admPutDTO,
+            @RequestPart("adm") @Valid AdmPutRequestDTO admPutDTO,
             @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
             @RequestPart(value = "newImage", required = false) MultipartFile newImage
     ) {
+        System.out.println(admPutDTO);
         return service.updateAdm(id, admPutDTO, deletedImageId, newImage);
     }
 
