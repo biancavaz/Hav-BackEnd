@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Pattern;
 
 public record AdditionalsPostRequestDTO(
         @NotBlank(message = "Nome não pode estar em branco")
-        @Pattern(regexp = "\\d{4}", message = "Nome deve conter no mínimo 4 caracteres")
         String name
 ) {
 
