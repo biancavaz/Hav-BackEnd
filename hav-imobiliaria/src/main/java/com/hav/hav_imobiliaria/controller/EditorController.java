@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.controller;
 
 
+import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPostRequestDTO;
@@ -51,7 +52,7 @@ public class EditorController {
     @ResponseStatus(HttpStatus.OK)
     public Editor updateEditor(
             @PathVariable Integer id,
-            @RequestBody @Valid EditorPutRequestDTO editorPutDTO,
+            @RequestPart("editor") @Valid EditorPutRequestDTO editorPutDTO,
             @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
             @RequestPart(value = "newImage", required = false) MultipartFile newImage
     ) {

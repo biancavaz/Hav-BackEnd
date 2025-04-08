@@ -65,7 +65,7 @@ public class AdmService {
                 new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
 
         modelMapper.map(admPutDTO, adm);
-
+        System.out.println(adm.toString());
         if (deletedImageId != null) {
             imageService.deleteUserImage(deletedImageId);
         }
@@ -112,7 +112,9 @@ public class AdmService {
 
     public AdmPutRequestDTO findAdmById(Integer id) {
         Adm adm = repository.findById(id).get();
+        AdmPutRequestDTO admPutRequestDTO = modelMapper.map(adm, AdmPutRequestDTO.class);
+
         // Converte a entidade adm para o DTO
-        return modelMapper.map(adm, AdmPutRequestDTO.class);
+        return admPutRequestDTO;
     }
 }
