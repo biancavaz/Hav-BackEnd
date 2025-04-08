@@ -6,7 +6,6 @@ import com.hav.hav_imobiliaria.model.entity.Address;
 import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
-import com.hav.hav_imobiliaria.model.entity.Users.UsersDetails;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -15,7 +14,6 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +28,6 @@ public class RealtorService {
     private final ModelMapper modelMapper;
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
-    private final PasswordEncoder passwordEncoder;
     private final EmailSenderService emailSenderService;
 
     public RealtorPostRequestDTO createRealtor(
@@ -42,21 +39,13 @@ public class RealtorService {
         String password = passwordGeneratorService.generateSecurePassword();
         //setando o userDetails na mão pq ja esta pronta esta api e teria
         // que mudar todas as dtos e front end para adicionar o user_details
-        UsersDetails userDetails = new UsersDetails(
-                realtorDTO.email(),
-                passwordEncoder.encode(password),
-                true, true, true, true
-        );
 
-        userDetails.setUser(realtor);
-        realtor.setUserDetails(userDetails);
 
         Realtor savedRealtor = repository.save(realtor);
 
         if (image != null) {
             imageService.uploadUserImage(savedRealtor.getId(), image);
         }
-        emailSenderService.sendPasswordNewAccount(realtor.getUserDetails().getUsername(), password,"CORRETOR");
         return realtorDTO.convertToDTO(savedRealtor);
     }
 

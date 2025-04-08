@@ -17,9 +17,6 @@ import java.util.List;
 @SuperBuilder
 public class Customer extends User {
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private UsersDetails userDetails;
-
     @JsonBackReference
     @Column
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)

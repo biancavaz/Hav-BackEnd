@@ -15,7 +15,6 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +29,6 @@ public class EditorService {
     private final ModelMapper modelMapper;
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
-    private final PasswordEncoder passwordEncoder;
     private final EmailSenderService emailSenderService;
 
     public EditorPostRequestDTO createEditor(
@@ -43,14 +41,8 @@ public class EditorService {
 
         //setando o userDetails na mão pq ja esta pronta esta api e teria
         // que mudar todas as dtos e front end para adicionar o user_details
-        UsersDetails userDetails = new UsersDetails(
-                editorPostDTO.email(),
-                passwordEncoder.encode(password),
-                true, true, true, true
-        );
 
-        userDetails.setUser(editor);
-        editor.setUserDetails(userDetails);
+
 
         Editor savedEditor = repository.save(editor);
 
@@ -58,8 +50,6 @@ public class EditorService {
             imageService.uploadUserImage(savedEditor.getId(), image);
         }
         System.out.println("prestes a enviar");
-        System.out.println(savedEditor.getUserDetails().getUsername());
-        emailSenderService.sendPasswordNewAccount(savedEditor.getUserDetails().getUsername(), password, "EDITOR");
         return editorPostDTO.convertToDTO(savedEditor);
     }
 

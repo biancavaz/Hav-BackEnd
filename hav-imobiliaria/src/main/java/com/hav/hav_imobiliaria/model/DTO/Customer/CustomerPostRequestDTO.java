@@ -3,7 +3,6 @@ package com.hav.hav_imobiliaria.model.DTO.Customer;
 import com.hav.hav_imobiliaria.Exceptions.CustomerExceptions.ValidCustomer;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
-import com.hav.hav_imobiliaria.model.entity.Users.UsersDetails;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

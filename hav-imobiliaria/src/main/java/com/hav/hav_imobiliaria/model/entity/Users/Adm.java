@@ -11,14 +11,10 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
 @Table(name = "adm")
 public class Adm extends User {
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private UsersDetails userDetails;
 
 
 }
