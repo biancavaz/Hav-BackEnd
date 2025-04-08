@@ -8,7 +8,6 @@ import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
-import com.hav.hav_imobiliaria.model.entity.Users.UsersDetails;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -18,7 +17,6 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +31,6 @@ public class CustumerService {
     private final ModelMapper modelMapper;
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
-    private final PasswordEncoder passwordEncoder;
     private final EmailSenderService emailSenderService;
 
     public CustomerPostRequestDTO createCustumer(
@@ -44,23 +41,14 @@ public class CustumerService {
 
         String password = passwordGeneratorService.generateSecurePassword();
         System.out.println(password);
-        //setando o userDetails na mão pq ja esta pronta esta api e teria
-        // que mudar todas as dtos e front end para adicionar o user_details
-        UsersDetails userDetails = new UsersDetails(
-                custumerPostDTO.email(),
-                passwordEncoder.encode(password),
-                true, true, true, true
-        );
 
-        userDetails.setUser(customer);
-        customer.setUserDetails(userDetails);
 
         Customer savedCustomer = repository.save(customer);
 
         if (image != null) {
             imageService.uploadUserImage(savedCustomer.getId(), image);
         }
-        emailSenderService.sendPasswordNewAccount(customer.getUserDetails().getUsername(), password);
+
         return custumerPostDTO.convertToDTO(savedCustomer);
     }
 

@@ -7,7 +7,7 @@ import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
-import com.hav.hav_imobiliaria.model.entity.Users.UsersDetails;
+//import com.hav.hav_imobiliaria.model.entity.Users.UsersDetails;
 import com.hav.hav_imobiliaria.repository.AdmRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -20,7 +20,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +35,6 @@ public class AdmService {
     private final ModelMapper modelMapper;
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
-    private final PasswordEncoder passwordEncoder;
     private final EmailSenderService emailSenderService;
 
     public AdmPostRequestDTO createAdm(
@@ -46,23 +45,13 @@ public class AdmService {
 
         String password = passwordGeneratorService.generateSecurePassword();
 
-        //setando o userDetails na mão pq ja esta pronta esta api e teria
-        // que mudar todas as dtos e front end para adicionar o user_details
-        UsersDetails userDetails = new UsersDetails(
-                admPostDTO.email(),
-                passwordEncoder.encode(password),
-                true, true, true, true
-        );
 
-        userDetails.setUser(adm);
-        adm.setUserDetails(userDetails);
 
         Adm savedAdm = repository.save(adm);
 
         if (image != null) {
             imageService.uploadUserImage(savedAdm.getId(), image);
         }
-        emailSenderService.sendPasswordNewAccount(adm.getUserDetails().getUsername(), password, "ADMINISTRADOR");
         return admPostDTO.convertToDTO(adm);
     }
 

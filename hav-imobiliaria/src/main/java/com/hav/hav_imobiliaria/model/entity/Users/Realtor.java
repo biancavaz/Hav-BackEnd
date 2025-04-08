@@ -18,8 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Realtor extends User {
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private UsersDetails userDetails;
+
 
     @Column(nullable = false, unique = true)
     private String creci;
