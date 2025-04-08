@@ -36,7 +36,11 @@ public class Proprietor extends User {
 
 
     public Integer numberOfProperty() {
-        return properties.size();
+        if(properties!=null){
+            return properties.size();
+
+        }else
+            return 0;
     }
 
     public String getPurpose() {
@@ -44,13 +48,16 @@ public class Proprietor extends User {
         boolean temLocacao = false;
 
         // Percorrendo todos os imóveis para verificar os propósitos
-        for (Property property : properties) {
-            if (property.getPurpose().equalsIgnoreCase("venda")) {
-                temVenda = true;
-            } else if (property.getPurpose().equalsIgnoreCase("locacao")) {
-                temLocacao = true;
+        if(properties!=null){
+            for (Property property : properties) {
+                if (property.getPurpose().equalsIgnoreCase("venda")) {
+                    temVenda = true;
+                } else if (property.getPurpose().equalsIgnoreCase("locacao")) {
+                    temLocacao = true;
+                }
             }
         }
+
 
         // Definindo o propósito com base nos imóveis encontrados
         if (temVenda && temLocacao) {

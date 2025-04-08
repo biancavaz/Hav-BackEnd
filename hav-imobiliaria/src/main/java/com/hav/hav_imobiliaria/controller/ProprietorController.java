@@ -40,7 +40,7 @@ public class ProprietorController {
     @ResponseStatus(HttpStatus.OK)
     public Proprietor updateProprietor(
             @PathVariable Integer id,
-            @RequestBody @Valid ProprietorPutRequestDTO proprietorPutDTO,
+            @RequestPart(value="proprietor") ProprietorPutRequestDTO proprietorPutDTO,
             @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
             @RequestPart(value = "newImage", required = false) MultipartFile newImage
     ) {

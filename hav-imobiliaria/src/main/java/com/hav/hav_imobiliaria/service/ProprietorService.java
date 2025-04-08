@@ -37,7 +37,7 @@ public class ProprietorService {
             MultipartFile image) {
 
         Proprietor proprietor = modelMapper.map(proprietorDTO, Proprietor.class);
-
+        System.out.println(proprietor.getCnpj());
 
 
         Proprietor savedProprietor = repository.save(proprietor);
@@ -83,6 +83,11 @@ public class ProprietorService {
         Example<Proprietor> example = Example.of(proprietor, matcher);
 
         Page<Proprietor> proprietorList = repository.findAll(example, pageable);
+
+        modelMapper.typeMap(Proprietor.class, ProprietorListGetResponseDTO.class).addMappings(mapper -> {
+            mapper.skip(ProprietorListGetResponseDTO::setPurpose);
+            mapper.skip(ProprietorListGetResponseDTO::setNumberOfProperty);
+        });
 
         Page<ProprietorListGetResponseDTO> proprietorListGetResponseDtos = proprietorList.map(proprietorx ->
                 modelMapper.map(proprietorx, ProprietorListGetResponseDTO.class)
