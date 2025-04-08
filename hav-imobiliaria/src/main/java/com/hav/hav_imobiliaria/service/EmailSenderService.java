@@ -8,21 +8,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 @Service
 @AllArgsConstructor
 public class EmailSenderService {
+
     @Autowired
     private JavaMailSender mailSender;
-    private CustumerRepository custumerRepository;
-    public void sendEmail(Integer id,  String subject, String body ) {
-        Customer customer = custumerRepository.findById(id).get();
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("hav.suporte@gmail.com");
-        message.setSubject(subject);
-        message.setText("Enviado por "+customer.getEmail()+"\n\n"+body);
-        System.out.println(message);
-        mailSender.send(message);
+    private CustumerRepository custumerRepository;
+
+    public void sendEmail(Integer id, String subject, String body) {
+        Customer customer = custumerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente com ID " + id + " não encontrado."));
+
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+
+            // true = multipart (permite anexos, HTML etc.)
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo("hav.suporte@gmail.com");
+            helper.setSubject(subject);
+
+            String content = "<p><strong>Email enviado por:</strong> " + customer.getEmail() + "</p>"
+                    + "<p>" + body + "</p>";
+
+            helper.setText(content, true); // true = interpretar como HTML
+
+            mailSender.send(message);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            // Aqui você pode lançar uma exceção personalizada ou logar melhor o erro
+        }
     }
 }
