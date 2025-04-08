@@ -380,9 +380,71 @@ public class PropertyService {
         }).map(realtor -> modelMapper.map(realtor, RealtorGetResponseDTOwithId.class)).collect(Collectors.toList());
     }
 
-
     public List<PropertyCardGetResponseDTO> findRandomHighlights() {
         return repository.findRandomHighlighted5().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+    }
+
+    public Long getAllRegistredNumber(){
+        return repository.count();
+    }
+
+    public double getPercentageOfRentalProperties(){
+        List<Property> allProperties = repository.findAll();
+        if (allProperties.isEmpty()) {
+            return 0.0;
+        }
+
+        long rentalCount = allProperties.stream()
+                .filter(property -> "Locacao".equals(property.getPurpose()))
+                .count();
+        return (rentalCount * 100.0) / allProperties.size();
+    }
+
+    public double getPercentageOfForSaleProperties(){
+        List<Property> allProperties = repository.findAll();
+        if (allProperties.isEmpty()) {
+            return 0.0;
+        }
+
+        long forSaleCount = allProperties
+                .stream()
+                .filter(property -> "Venda".equals(property.getPurpose()))
+                .count();
+        return (forSaleCount * 100.0) / allProperties.size();
+    }
+
+    public double getPercentageOfArchiveStatus(){
+        List<Property> allProperties = repository.findAll();
+        if (allProperties.isEmpty()) {
+            return 0.0;
+        }
+
+        long archiveStatus = allProperties
+                .stream()
+                .filter(Property:: isArchived )
+                .count();
+        return (archiveStatus * 100.0) / allProperties.size();
+    }
+
+    public long getQuantityOfRentalProperties(){
+        return repository.findAll()
+                .stream()
+                .filter(property -> "Locacao".equals(property.getPurpose()))
+                .count();
+    }
+
+    public long getQuantityOfForSaleProperties(){
+        return repository.findAll()
+                .stream()
+                .filter(property -> "Venda".equals(property.getPurpose()))
+                .count();
+    }
+
+    public long getQuantityOfArchivedProperties(){
+        return repository.findAll()
+                .stream()
+                .filter(Property:: isArchived)
+                .count();
     }
 }
 

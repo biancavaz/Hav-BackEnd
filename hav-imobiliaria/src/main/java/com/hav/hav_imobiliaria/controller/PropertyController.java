@@ -126,4 +126,43 @@ public class PropertyController {
         return service.findRealtorsByPropertyId(id);
     }
 
+    @GetMapping("/getAll")
+    @ResponseStatus(HttpStatus.OK)
+    public Long getAllRegistredNumber(){
+        return service.getAllRegistredNumber();
+    }
+
+    @GetMapping("/getPercentageRental")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfRentalProperties(){
+        return service.getPercentageOfRentalProperties();
+    }
+    @GetMapping("/getPercentageForSale")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfForSaleProperties(){
+        return service.getPercentageOfForSaleProperties();
+    }
+
+    @GetMapping("/getPercentageOfArchiveStatus")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfArchiveStatus(){
+        return service.getPercentageOfArchiveStatus();
+    }
+
+    @GetMapping("/getQuantityOfRentalProperties")
+    @ResponseStatus(HttpStatus.OK)
+    public long getQuantityOfRentalProperties(){
+        return service.getQuantityOfRentalProperties();
+    }
+
+    @GetMapping("/getQuantityOfForSaleProperties")
+    @ResponseStatus(HttpStatus.OK)
+    public long getQuantityOfForSaleProperties(){
+        return service.getQuantityOfForSaleProperties();
+    }
+    @GetMapping("/getQuantityOfArchivedProperties")
+    @ResponseStatus(HttpStatus.OK)
+    public long getQuantityOfArchivedProperties(){
+        return service.getQuantityOfArchivedProperties();
+    }
 }
