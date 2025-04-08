@@ -10,7 +10,9 @@ import lombok.Data;
 public class PropertyScheduleGetDTO {
     Integer id;
     String propertyCode;
+    String price;
     String purpose;
+    String propertyType;
     AddressGetScheduleDTO address;
 
 }

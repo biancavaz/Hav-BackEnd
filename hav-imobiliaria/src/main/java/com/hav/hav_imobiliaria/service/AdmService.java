@@ -5,7 +5,9 @@ import com.hav.hav_imobiliaria.model.DTO.Adm.AdmListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Adm;
+import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
+//import com.hav.hav_imobiliaria.model.entity.Users.UsersDetails;
 import com.hav.hav_imobiliaria.repository.AdmRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +34,8 @@ public class AdmService {
     private final AdmRepository repository;
     private final ModelMapper modelMapper;
     private final ImageService imageService;
+    private final PasswordGeneratorService passwordGeneratorService;
+    private final EmailSenderService emailSenderService;
 
     public AdmPostRequestDTO createAdm(
             @Valid AdmPostRequestDTO admPostDTO,
@@ -38,12 +43,15 @@ public class AdmService {
 
         Adm adm = modelMapper.map(admPostDTO, Adm.class);
 
-        Adm savedadm = repository.save(adm);
+        String password = passwordGeneratorService.generateSecurePassword();
+
+
+
+        Adm savedAdm = repository.save(adm);
 
         if (image != null) {
-            imageService.uploadUserImage(savedadm.getId(), image);
+            imageService.uploadUserImage(savedAdm.getId(), image);
         }
-
         return admPostDTO.convertToDTO(adm);
     }
 

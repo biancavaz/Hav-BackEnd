@@ -27,8 +27,8 @@ public class Proprietor extends User {
     @Column(unique = true)
     private String cnpj;
 
-    @JsonBackReference
 
+    @JsonBackReference
     @JsonIgnore
     @OneToMany(mappedBy = "proprietor")
     private List<Property> properties;

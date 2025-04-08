@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 
+
 @ValidCustomer
 public record CustomerPostRequestDTO(
         @NotBlank(message = "Nome não pode estar em branco")
@@ -18,6 +19,7 @@ public record CustomerPostRequestDTO(
         @Email(message = "E-mail inválido")
         @NotBlank(message = "E-mail não pode estar em branco")
         String email,
+
         @Pattern(regexp = "\\d{11}$", message = "Celular inválido")
         String celphone,
 //        @CPF(message = "CPF inválido")
@@ -26,8 +28,11 @@ public record CustomerPostRequestDTO(
         @Pattern(regexp = "\\d{10}$", message = "Telefone inválido")
         String phoneNumber,
         Boolean archived,
-        @Valid @NotNull(message = "Endereço inválido") AddressPostRequestDTO address
+        @Valid @NotNull(message = "Endereço inválido")
+        AddressPostRequestDTO address
+
 ) {
+
     public CustomerPostRequestDTO convertToDTO(Customer customer) {
         return new CustomerPostRequestDTO(
                 customer.getName(),

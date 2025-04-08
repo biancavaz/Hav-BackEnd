@@ -4,6 +4,7 @@ import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorFilterPostResponse
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPostDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPutRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Proprietor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.ProprietorRepository;
@@ -29,6 +30,7 @@ public class ProprietorService {
     private final ProprietorRepository repository;
     private final ModelMapper modelMapper;
     private final ImageService imageService;
+    private final PasswordGeneratorService passwordGeneratorService;
 
     public ProprietorPostDTO createProprietor(
             @Valid ProprietorPostDTO proprietorDTO,
@@ -36,13 +38,15 @@ public class ProprietorService {
 
         Proprietor proprietor = modelMapper.map(proprietorDTO, Proprietor.class);
 
-        Proprietor savedproprietor = repository.save(proprietor);
+
+
+        Proprietor savedProprietor = repository.save(proprietor);
 
         if (image != null) {
-            imageService.uploadUserImage(savedproprietor.getId(), image);
+            imageService.uploadUserImage(savedProprietor.getId(), image);
         }
 
-        return proprietorDTO.convertToDTO(savedproprietor);
+        return proprietorDTO.convertToDTO(savedProprietor);
     }
 
     public Proprietor updateProprietor(

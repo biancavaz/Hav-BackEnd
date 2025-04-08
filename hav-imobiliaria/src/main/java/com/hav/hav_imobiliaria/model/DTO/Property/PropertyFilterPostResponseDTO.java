@@ -11,7 +11,7 @@ public class PropertyFilterPostResponseDTO {
     Double minPric;
     Double maxPric;
     String propertyType;
-    String propertyCategory;
+    String purpose;
     String propertyStatus;
     boolean archived;
     PropertyFeatureFilterPostResponseDto propertyFeatures;

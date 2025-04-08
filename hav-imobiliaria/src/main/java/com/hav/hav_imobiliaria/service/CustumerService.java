@@ -30,12 +30,18 @@ public class CustumerService {
     private final CustumerRepository repository;
     private final ModelMapper modelMapper;
     private final ImageService imageService;
+    private final PasswordGeneratorService passwordGeneratorService;
+    private final EmailSenderService emailSenderService;
 
     public CustomerPostRequestDTO createCustumer(
             @Valid CustomerPostRequestDTO custumerPostDTO,
             MultipartFile image) {
 
         Customer customer = modelMapper.map(custumerPostDTO, Customer.class);
+
+        String password = passwordGeneratorService.generateSecurePassword();
+        System.out.println(password);
+
 
         Customer savedCustomer = repository.save(customer);
 

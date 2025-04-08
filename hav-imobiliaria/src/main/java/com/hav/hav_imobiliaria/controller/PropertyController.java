@@ -31,6 +31,12 @@ public class PropertyController {
 
     private final PropertyService service;
 
+
+    @GetMapping("/randomHighlights")
+    public List<PropertyCardGetResponseDTO> getRandomHighlights(){
+        return service.findRandomHighlights();
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public PropertyListGetResponseDTO create(
@@ -40,6 +46,7 @@ public class PropertyController {
 
         return service.create(propertyDTO, images);
     }
+
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -52,6 +59,12 @@ public class PropertyController {
                                                          @RequestParam Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
         return service.findAllByFilter(propertyDto, pageable);
+    }
+    @PostMapping("/filter/card")
+    public Page<PropertyCardGetResponseDTO> findByFilterCard(@RequestBody PropertyFilterPostResponseDTO propertyDto,
+                                                         @RequestParam Integer page) {
+        Pageable pageable = PageRequest.of(page, 12);
+        return service.findAllByFilterCard(propertyDto, pageable);
     }
 
     @PatchMapping("/changeArchiveStatus")
@@ -86,7 +99,6 @@ public class PropertyController {
     @RequestMapping("{id}")
     public ResponseEntity<PropertyPutRequestDTO> getProperty(
             @PathVariable Integer id) {
-
         PropertyPutRequestDTO propertyDto = service.findPropertyById(id);
         System.out.println(propertyDto.toString());
         return ResponseEntity.ok(propertyDto);
@@ -95,15 +107,62 @@ public class PropertyController {
     @GetMapping
     @RequestMapping("/propertyspecific/{id}")
     public ResponseEntity<PropertyGetSpecificResponseDTO> getPropertySpecific(
-            @PathVariable Integer id){
+            @PathVariable Integer id) {
         PropertyGetSpecificResponseDTO propertyGetSpecificRequestDTO = service.findPropertySpecificById(id);
         return ResponseEntity.ok(propertyGetSpecificRequestDTO);
     }
+
+    @GetMapping("/card")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
+        return service.findPropertyCard(pageable);
+    }
+
 
     //returns all the realtors of a property
     @GetMapping
     @RequestMapping("/realtorProperty/{id}")
     public List<RealtorGetResponseDTOwithId> getRealtorsOfProperty(@PathVariable Integer id) {
         return service.findRealtorsByPropertyId(id);
+    }
+
+    @GetMapping("/getAll")
+    @ResponseStatus(HttpStatus.OK)
+    public Long getAllRegistredNumber(){
+        return service.getAllRegistredNumber();
+    }
+
+    @GetMapping("/getPercentageRental")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfRentalProperties(){
+        return service.getPercentageOfRentalProperties();
+    }
+    @GetMapping("/getPercentageForSale")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfForSaleProperties(){
+        return service.getPercentageOfForSaleProperties();
+    }
+
+    @GetMapping("/getPercentageOfArchiveStatus")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfArchiveStatus(){
+        return service.getPercentageOfArchiveStatus();
+    }
+
+    @GetMapping("/getQuantityOfRentalProperties")
+    @ResponseStatus(HttpStatus.OK)
+    public long getQuantityOfRentalProperties(){
+        return service.getQuantityOfRentalProperties();
+    }
+
+    @GetMapping("/getQuantityOfForSaleProperties")
+    @ResponseStatus(HttpStatus.OK)
+    public long getQuantityOfForSaleProperties(){
+        return service.getQuantityOfForSaleProperties();
+    }
+    @GetMapping("/getQuantityOfArchivedProperties")
+    @ResponseStatus(HttpStatus.OK)
+    public long getQuantityOfArchivedProperties(){
+        return service.getQuantityOfArchivedProperties();
     }
 }
