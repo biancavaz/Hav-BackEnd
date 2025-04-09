@@ -96,7 +96,7 @@ public class PropertyController {
     }
 
     @GetMapping
-    @RequestMapping("{id}")
+    @RequestMapping("/{id}")
     public ResponseEntity<PropertyPutRequestDTO> getProperty(
             @PathVariable Integer id) {
         PropertyPutRequestDTO propertyDto = service.findPropertyById(id);

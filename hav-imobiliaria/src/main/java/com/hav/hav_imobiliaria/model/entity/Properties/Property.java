@@ -128,6 +128,10 @@ public class Property {
     }
 
     public List<Realtor> getRealtors() {
-        return realtors;
+        if(realtors!=null){
+            System.out.println(realtors);
+            return realtors;
+        }
+        return new ArrayList<>();
     }
 }
