@@ -1,7 +1,9 @@
 package com.hav.hav_imobiliaria.model.DTO.Property;
 
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPutRequestDTO;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -45,9 +47,10 @@ public class PropertyPutRequestDTO {
     List<Integer> realtors;
     List<RealtorsPropertyDataExtra> realtorsExtraData;
     @NotNull
+    AddressPostRequestDTO address;
+    @NotNull
     Integer proprietor;
     ProprietorPropertyDataExtra proprietorExtraData;
-
     @NotNull
     List<Integer> additionals;
 }

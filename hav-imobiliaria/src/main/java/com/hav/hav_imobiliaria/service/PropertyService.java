@@ -3,10 +3,12 @@ package com.hav.hav_imobiliaria.service;
 import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressCardGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureCardGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureSpecifiGetRespondeDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
@@ -375,8 +377,28 @@ public class PropertyService {
                 .promotionalPrice(property.getPromotionalPrice())
                 .highlight(property.getHighlight())
                 .floors(property.getFloors())
-                .taxes( /* converter Taxes -> TaxesPutRequestDTO */ null)
-                .propertyFeatures( /* converter PropertyFeature -> PropertyFeaturePutRequestDTO */ null)
+                .propertyFeatures(new PropertyFeaturePutRequestDTO() {{
+                    setAllowsPet(property.getPropertyFeatures().getAllowsPet());
+                    setBedRoom(property.getPropertyFeatures().getBedRoom());
+                    setLivingRoom(property.getPropertyFeatures().getLivingRoom());
+                    setSuite(property.getPropertyFeatures().getSuite());
+                    setBathRoom(property.getPropertyFeatures().getBathRoom());
+                    setGarageSpace(property.getPropertyFeatures().getGarageSpace());
+                    setFurnished(property.getPropertyFeatures().getIsFurnished());
+                }})
+                .taxes(new TaxesPutRequestDTO() {{
+                    setCondominiumFee(property.getTaxes().getCondominiumFee());
+                    setIptu(property.getTaxes().getIptu());
+                }})
+                .address(new AddressPostRequestDTO(
+                        property.getAddress().getCep(),
+                        property.getAddress().getStreet(),
+                        property.getAddress().getNeighborhood(),
+                        property.getAddress().getCity(),
+                        property.getAddress().getState(),
+                        property.getAddress().getPropertyNumber(),
+                        property.getAddress().getComplement()
+                ))
                 .proprietor(property.getProprietor() != null ? property.getProprietor().getId() : null)
                 .realtors(property.getRealtors() != null
                         ? property.getRealtors().stream().map(Realtor::getId).toList()

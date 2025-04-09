@@ -21,7 +21,7 @@ public class EmailSenderService {
 
     private CustumerRepository custumerRepository;
 
-    public void sendEmail(Integer id, String subject, String body) {
+    public void sendEmailContactUs(Integer id, String subject, String body) {
         Customer customer = custumerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente com ID " + id + " não encontrado."));
 

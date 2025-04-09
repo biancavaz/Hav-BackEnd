@@ -15,4 +15,6 @@ public class PropertyFeaturePutRequestDTO {
     Integer garageSpace;
     @JsonProperty("isFurnished") // Garante que o nome não seja alterado
     boolean isFurnished;
+
+
 }
