@@ -6,11 +6,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@Builder
 public class PropertyPutRequestDTO {
     @NotBlank
     String title;
@@ -41,8 +43,11 @@ public class PropertyPutRequestDTO {
     @NotNull
     PropertyFeaturePutRequestDTO propertyFeatures;
     List<Integer> realtors;
+    List<RealtorsPropertyDataExtra> realtorsExtraData;
     @NotNull
     Integer proprietor;
+    ProprietorPropertyDataExtra proprietorExtraData;
+
     @NotNull
     List<Integer> additionals;
 }

@@ -74,6 +74,7 @@ public class PropertyService {
             imageService.uploadPropertyImages(savedProperty.getId(), images);
         }
 
+
         return modelMapper.map(savedProperty, PropertyListGetResponseDTO.class);
     }
 
@@ -346,10 +347,49 @@ public class PropertyService {
     }
 
     public PropertyPutRequestDTO findPropertyById(Integer id) {
+        System.out.println(id);
         Property property = repository.findById(id).get();
 
-        // Converte a entidade Realtor para o DTO
-        return modelMapper.map(property, PropertyPutRequestDTO.class);
+        ProprietorPropertyDataExtra proprietorExtra = null;
+        if (property.getProprietor() != null) {
+            proprietorExtra = new ProprietorPropertyDataExtra(
+                    property.getProprietor().getName(),
+                    property.getProprietor().getCpf()
+            );
+        }
+
+        List<RealtorsPropertyDataExtra> realtorExtras = property.getRealtors() != null
+                ? property.getRealtors().stream()
+                .map(r -> new RealtorsPropertyDataExtra(r.getName(), r.getCpf()))
+                .toList()
+                : List.of();
+
+        return PropertyPutRequestDTO.builder()
+                .title(property.getTitle())
+                .propertyDescription(property.getPropertyDescription())
+                .propertyType(property.getPropertyType())
+                .purpose(property.getPurpose())
+                .propertyStatus(property.getPropertyStatus())
+                .area(property.getArea())
+                .price(property.getPrice())
+                .promotionalPrice(property.getPromotionalPrice())
+                .highlight(property.getHighlight())
+                .floors(property.getFloors())
+                .taxes( /* converter Taxes -> TaxesPutRequestDTO */ null)
+                .propertyFeatures( /* converter PropertyFeature -> PropertyFeaturePutRequestDTO */ null)
+                .proprietor(property.getProprietor() != null ? property.getProprietor().getId() : null)
+                .realtors(property.getRealtors() != null
+                        ? property.getRealtors().stream().map(Realtor::getId).toList()
+                        : List.of())
+                .additionals(property.getAdditionals() != null
+                        ? property.getAdditionals().stream().map(Additionals::getId).toList()
+                        : List.of())
+                .proprietorExtraData(proprietorExtra)
+                .proprietorExtraData(proprietorExtra)
+                .realtorsExtraData(realtorExtras)
+
+                .build();
+
     }
 
     public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
