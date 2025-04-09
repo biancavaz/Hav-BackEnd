@@ -7,7 +7,11 @@
     <list default="true" id="f4eee1d5-5736-4b72-823d-a4db6c924c17" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/AWSConfig/AwsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/AWSConfig/AwsConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/controllerSecurity/MessageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/controllerSecurity/MessageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/controllerSecurity/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/controllerSecurity/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/controllerSecurity/UserSecurityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/controllerSecurity/UserSecurityController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/exceptionsSecurity/AuthResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/exceptionsSecurity/AuthResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/repositorySecurity/ChatRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/repositorySecurity/ChatRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/repositorySecurity/UserRepositorySecurity.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/repositorySecurity/UserRepositorySecurity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +56,7 @@
     &quot;Spring Boot.HavImobiliariaApplication.executor&quot;: &quot;Run&quot;,
     &quot;git-widget-placeholder&quot;: &quot;branch-chatHav&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/rafael_h_rosa/Downloads/examplekafka&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/rafael_h_rosa/Documents/bookapi&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
@@ -104,6 +108,10 @@
       <workItem from="1743523915913" duration="15857000" />
       <workItem from="1743547896326" duration="6107000" />
       <workItem from="1743611870256" duration="8807000" />
+      <workItem from="1743696821681" duration="1923000" />
+      <workItem from="1743784944353" duration="2054000" />
+      <workItem from="1744042437543" duration="4331000" />
+      <workItem from="1744131523623" duration="16276000" />
     </task>
     <servers />
   </component>

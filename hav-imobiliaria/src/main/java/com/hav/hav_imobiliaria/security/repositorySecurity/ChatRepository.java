@@ -20,5 +20,5 @@ public interface ChatRepository extends JpaRepository<Chat, Integer> {
             ":reqUser member of c.users")
     public Chat findSingleChatByUsersId(
             @Param("user") UserSecurity userSecurity,
-            @Param("request") UserSecurity reqUser) throws ChatException;
+            @Param("reqUser") UserSecurity reqUser) throws ChatException;
 }

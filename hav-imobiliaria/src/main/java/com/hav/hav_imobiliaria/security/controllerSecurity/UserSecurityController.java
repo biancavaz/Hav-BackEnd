@@ -27,9 +27,9 @@ public class UserSecurityController {
         return userSecurityService.findUserProfile(token);
     }
 
-    @GetMapping("/{query}")
+    @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserSecurity> searchUserSecurityHandler(@PathVariable("query") String query)
+    public List<UserSecurity> searchUserSecurityHandler(@RequestParam("query") String query)
             throws UserException {
         return userSecurityService.searchUserSecurity(query);
     }

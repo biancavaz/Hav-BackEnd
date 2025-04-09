@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,9 +78,14 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = tokenProvider.generateToken(authentication);
+
+        // Pegando o UserDetails (User logado)
+        UserSecurity user = userRepositorySecurity.findUserSecurityByEmail(username);
+
         AuthResponse authResponse = new AuthResponse();
         authResponse.setStatus(true);
         authResponse.setJwt(token);
+        authResponse.setUser(user);
 
         return authResponse;
     }
