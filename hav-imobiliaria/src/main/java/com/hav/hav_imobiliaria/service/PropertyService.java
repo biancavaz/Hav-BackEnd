@@ -300,7 +300,9 @@ public class PropertyService {
         updateProprietor(property, propertyDTO.getProprietor());
         updateAdditionals(property, propertyDTO.getAdditionals());
 
+        
         repository.save(property);
+
 
         processImages(propertyId, deletedImageIds, newImages);
 

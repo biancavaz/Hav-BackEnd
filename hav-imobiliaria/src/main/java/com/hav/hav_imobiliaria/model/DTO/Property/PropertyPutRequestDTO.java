@@ -36,7 +36,6 @@ public class PropertyPutRequestDTO {
     Double promotionalPrice;
     @NotNull
     Boolean highlight;
-    @NotBlank
     String propertyCategory;
     @NotNull
     Integer floors;

@@ -88,7 +88,7 @@ public class PropertyController {
     @ResponseStatus(HttpStatus.OK)
     public Property updateProperty(
             @PathVariable @Positive @NotNull Integer id,
-            @RequestPart("propertyDTO") @Valid PropertyPutRequestDTO propertyDTO,
+            @RequestPart("property") @Valid PropertyPutRequestDTO propertyDTO,
             @RequestParam(value = "deletedImageIds", required = false) List<Integer> deletedImageIds,
             @RequestPart(value = "newImages", required = false) List<MultipartFile> newImages
     ) {
