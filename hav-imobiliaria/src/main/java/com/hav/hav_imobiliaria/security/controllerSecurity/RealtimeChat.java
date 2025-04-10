@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
 @AllArgsConstructor
 public class RealtimeChat {
 
@@ -26,3 +25,17 @@ public class RealtimeChat {
         return message;
     }
 }
+//@RestController
+//@AllArgsConstructor
+//public class RealtimeChat {
+//
+//    private final SimpMessagingTemplate messagingTemplate;
+//
+//    @MessageMapping("/message")
+//    public void receiveMessage(@Payload Message message) {
+//        messagingTemplate.convertAndSend(
+//                "/group/" + message.getChat().getId().toString(),
+//                message
+//        );
+//    }
+//}
