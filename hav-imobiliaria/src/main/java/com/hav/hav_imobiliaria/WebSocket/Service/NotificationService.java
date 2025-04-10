@@ -49,9 +49,11 @@ public class NotificationService {
         dto.setContent(notification.getContent());
         dto.setRead(notification.getRead());
         dto.setDataEnvio(notification.getDataEnvio());
+
         for (Integer id : notification.getIds()) {
-            System.out.println("Enviando para /topic/notifications/" + id);
-            simpMessagingTemplate.convertAndSend("topic/notifications" + id, dto);
+            String destino = "/topic/api/"+ id;
+            System.out.println("Enviando para:" + destino);
+            simpMessagingTemplate.convertAndSend(destino, dto);
         }
     }
 
