@@ -39,6 +39,8 @@ public class NotificationService {
             user.getNotifications().add(not);
             userRepository.save(user);
         }
+        not.setRecipient(recipients);
+        enviarNotificacao(notificationdto);
     }
 
     public void enviarNotificacao(NotificationDTO notification) {
