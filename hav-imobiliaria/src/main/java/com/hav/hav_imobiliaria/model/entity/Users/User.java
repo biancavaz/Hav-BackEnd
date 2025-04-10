@@ -1,10 +1,9 @@
 package com.hav.hav_imobiliaria.model.entity.Users;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hav.hav_imobiliaria.WebSocket.Notification.Model.Notification;
 import com.hav.hav_imobiliaria.model.entity.Address;
-import com.hav.hav_imobiliaria.model.entity.Properties.ImageProperty;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -68,6 +67,15 @@ public class User {
     )
     @JsonIgnore
     private List<Property> properties;
+
+    @ManyToMany
+    @JsonManagedReference
+    @JoinTable(
+            name = "user_notifications",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "notification_id")
+    )
+    private List<Notification> notifications = new ArrayList<>();
 
     public @NotNull boolean getArchived() {
         return this.archived;

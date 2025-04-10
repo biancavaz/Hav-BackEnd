@@ -19,7 +19,7 @@ services:
       - "9090:9090"
     depends_on:
       - mysql_service
-    networks:
+    networks:a
       - gabriel_network
 
 networks:
