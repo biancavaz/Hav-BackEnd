@@ -2,6 +2,7 @@ package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressCardGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyCardGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Property.PropertyMapGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureCardGetResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -58,6 +60,23 @@ public class FavoritesService {
             userRepository.save(user);
             propertyRepository.save(property);
         }
+    }
+
+
+    public List<PropertyMapGetResponseDTO> findAllByFilterMapFavorite(Integer id){
+
+        User user = userRepository.findById(id).get();
+
+        List<Property> allProperties = user.getProperties();
+
+
+        List<PropertyMapGetResponseDTO> responseList = allProperties.stream()
+                .map(propertyx -> modelMapper.map(propertyx, PropertyMapGetResponseDTO.class))
+                .collect(Collectors.toList());
+        return responseList;
+
+
+
     }
 
     public Page<PropertyCardGetResponseDTO> returnFavorites(Pageable pageable, Integer idUser) {

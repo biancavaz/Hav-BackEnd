@@ -66,10 +66,12 @@ public class PropertyController {
         Pageable pageable = PageRequest.of(page, 12);
         return service.findAllByFilterCard(propertyDto, pageable);
     }
-    @PostMapping("/filter/map")
-    public List<PropertyMapGetResponseDTO> findByFilterMap(@RequestBody PropertyFilterPostResponseDTO propertyDto) {
-        return service.findAllByFilterMap(propertyDto);
+    @GetMapping("/filter/map")
+    public List<PropertyMapGetResponseDTO> findByFilterMap() {
+        return service.findAllByFilterMap();
     }
+
+
 
     @PatchMapping("/changeArchiveStatus")
     public void changeArchiveStatus(@RequestBody List<Integer> propertyIds) {
@@ -96,6 +98,7 @@ public class PropertyController {
             @RequestParam(value = "deletedImageIds", required = false) List<Integer> deletedImageIds,
             @RequestPart(value = "newImages", required = false) List<MultipartFile> newImages
     ) {
+        System.out.println(propertyDTO.getAddress());
         return service.updateProperty(id, propertyDTO, deletedImageIds, newImages);
     }
 

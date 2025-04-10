@@ -69,6 +69,15 @@ public class User {
     @JsonIgnore
     private List<Property> properties;
 
+    public List<Property> getProperties() {
+        if(properties != null){
+            return properties;
+        }
+        else{
+            return new ArrayList<>();
+        }
+    }
+
     public @NotNull boolean getArchived() {
         return this.archived;
     }

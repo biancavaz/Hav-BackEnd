@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PropertyMapGetResponseDTO {
 
+    Integer id;
     @NotNull
     AddressMapGetResponseDTO address;
     @NotNull

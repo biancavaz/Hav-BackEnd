@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressMapGetResponseDTO {
+    Integer propertyNumber;
+    String state;
+
+    String street;
     String neighborhood;
     String city;
 }
