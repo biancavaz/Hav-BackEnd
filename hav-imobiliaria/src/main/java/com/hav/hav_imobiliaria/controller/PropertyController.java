@@ -66,6 +66,10 @@ public class PropertyController {
         Pageable pageable = PageRequest.of(page, 12);
         return service.findAllByFilterCard(propertyDto, pageable);
     }
+    @PostMapping("/filter/map")
+    public List<PropertyMapGetResponseDTO> findByFilterMap(@RequestBody PropertyFilterPostResponseDTO propertyDto) {
+        return service.findAllByFilterMap(propertyDto);
+    }
 
     @PatchMapping("/changeArchiveStatus")
     public void changeArchiveStatus(@RequestBody List<Integer> propertyIds) {

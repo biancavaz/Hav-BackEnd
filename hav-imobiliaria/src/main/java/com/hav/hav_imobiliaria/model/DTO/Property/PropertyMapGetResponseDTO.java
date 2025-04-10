@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.model.DTO.Property;
 
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressCardGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressMapGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureCardGetResponseDTO;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,27 +11,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PropertyCardGetResponseDTO {
+public class PropertyMapGetResponseDTO {
 
     @NotNull
-    PropertyFeatureCardGetResponseDTO propertyFeatures;
-    @NotNull
-    AddressCardGetResponseDTO address;
+    AddressMapGetResponseDTO address;
     @NotNull
     Double price;
     @NotNull
     String purpose;
     @NotNull
     String propertyStatus;
-
-    Double promotionalPrice;
-
-
-
-    Integer id;
-    String propertyType;
-    Double area;
-
-
-
 }

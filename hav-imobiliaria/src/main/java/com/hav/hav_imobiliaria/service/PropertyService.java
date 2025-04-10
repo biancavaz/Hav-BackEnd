@@ -101,6 +101,53 @@ public class PropertyService {
         PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(property.getPropertyCode(), property.getPropertyType(), property.getPropertyStatus(), property.getPurpose(), property.getPropertyDescription(), property.getArea(), property.getPrice(), property.getPromotionalPrice(), property.getHighlight(), property.getFloors(), modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class), modelMapper.map(property.getAddress(), AddressGetResponseDTO.class), modelMapper.map(property.getPropertyFeatures(), PropertyFeatureSpecifiGetRespondeDTO.class), property.getAdditionals().stream().map(additionals -> new AdditionalsGetResponseDTO(additionals.getName())).toList(), property.getRealtors().stream().map(realtor -> new RealtorPropertySpecificGetResponseDTO(realtor.getName(), realtor.getEmail(), realtor.getCreci(), realtor.getPhoneNumber())).toList());
         return dtos;
     }
+    public List<PropertyMapGetResponseDTO> findAllByFilterMap(PropertyFilterPostResponseDTO propertyDto){
+        Integer bedRoom = null;
+        Integer bathRoom = null;
+        Integer garageSpace = null;
+        Integer suite = null;
+
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getBedRoom(), 5)) {
+
+            bedRoom = propertyDto.getPropertyFeatures().getBedRoom();
+            propertyDto.getPropertyFeatures().setBedRoom(null);
+
+        }
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getBathRoom(), 5)) {
+            bathRoom = propertyDto.getPropertyFeatures().getBathRoom();
+            propertyDto.getPropertyFeatures().setBathRoom(null);
+
+        }
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getGarageSpace(), 5)) {
+
+
+            garageSpace = propertyDto.getPropertyFeatures().getGarageSpace();
+            propertyDto.getPropertyFeatures().setGarageSpace(null);
+
+        }
+        if (propertyDto.getPropertyFeatures() != null && Objects.equals(propertyDto.getPropertyFeatures().getSuite(), 5)) {
+            suite = propertyDto.getPropertyFeatures().getSuite();
+            propertyDto.getPropertyFeatures().setSuite(null);
+
+        }
+
+
+        Property property = modelMapper.map(propertyDto, Property.class);
+
+        //criando o example matcher específico dos filtros do imóvel
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withIgnoreNullValues().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        //chamando o matcher
+        Example<Property> example = Example.of(property, matcher);
+
+        List<Property> allProperties = repository.findAll(example);
+
+        List<PropertyMapGetResponseDTO> responseList = allProperties.stream()
+                .map(propertyx -> modelMapper.map(propertyx, PropertyMapGetResponseDTO.class))
+                .collect(Collectors.toList());
+
+        return responseList;
+
+    }
 
     public Page<PropertyCardGetResponseDTO> findAllByFilterCard(PropertyFilterPostResponseDTO propertyDto, Pageable pageable) {
 
