@@ -10,6 +10,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/AWSConfig/AwsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/AWSConfig/AwsConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Realtor/RealtorPutRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/model/DTO/Realtor/RealtorPutRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/configSecurity/WebSocketConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/controllerSecurity/RealtimeChat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +26,14 @@
         <option value="Record" />
         <option value="Class" />
         <option value="Interface" />
+      </list>
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -38,6 +50,10 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
   </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 7
@@ -80,9 +96,10 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;Spring Boot.HavImobiliariaApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Back-End-Rafael&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;branch-chatHav&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/eduardo_vizoni-prado/Documents/Github/Hav-BackEnd&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/rafael_h_rosa/Documents/bookapi&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
@@ -90,6 +107,14 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.hav.hav_imobiliaria.security.requestSecurity" />
+      <recent name="com.hav.hav_imobiliaria.security.exceptionsSecurity" />
+      <recent name="com.hav.hav_imobiliaria.security.exceptions" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="HavImobiliariaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
@@ -138,6 +163,17 @@
       <workItem from="1743092106597" duration="4208000" />
       <workItem from="1743631138171" duration="9753000" />
       <workItem from="1743699466680" duration="5121000" />
+      <workItem from="1743195184535" duration="1355000" />
+      <workItem from="1743439416156" duration="13724000" />
+      <workItem from="1743523915913" duration="15857000" />
+      <workItem from="1743547896326" duration="6107000" />
+      <workItem from="1743611870256" duration="8807000" />
+      <workItem from="1743696821681" duration="1923000" />
+      <workItem from="1743784944353" duration="2054000" />
+      <workItem from="1744042437543" duration="4331000" />
+      <workItem from="1744131523623" duration="16276000" />
+      <workItem from="1744201160284" duration="700000" />
+      <workItem from="1744201941948" duration="6132000" />
     </task>
     <servers />
   </component>
