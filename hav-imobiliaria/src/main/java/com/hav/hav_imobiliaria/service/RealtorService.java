@@ -168,4 +168,24 @@ public class RealtorService {
         return modelMapper.map(realtor, RealtorPutRequestDTO.class);
     }
 
+    public Long getAllRegistredNumber() {
+        return repository.count();
+    }
+
+    public double getPercentageOfArchivedRealtors() {
+        List<Realtor> allRealtors = repository.findAll();
+
+        double archivedNumber = allRealtors
+                .stream()
+                .filter(Realtor::getArchived)
+                .count();
+        return (archivedNumber * 100.0) / allRealtors.size();
+    }
+
+    public Long getQuantityOfArchivedRealtors() {
+        return repository.findAll()
+                .stream()
+                .filter(Realtor::getArchived)
+                .count();
+    }
 }
