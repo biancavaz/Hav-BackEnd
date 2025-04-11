@@ -39,7 +39,7 @@ public class User {
     @Column(unique = true)
     private String cpf;
 
-    @Column(nullable = false)
+    @Column()
     private String celphone;
 
     @Column(name = "phone_number")
@@ -50,7 +50,7 @@ public class User {
 
     @JsonManagedReference
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_address", nullable = false)
+    @JoinColumn(name = "id_address")
     private Address address;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

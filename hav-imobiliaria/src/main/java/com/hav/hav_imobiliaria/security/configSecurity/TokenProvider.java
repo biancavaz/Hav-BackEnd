@@ -5,10 +5,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Service
 public class TokenProvider {
@@ -20,6 +22,9 @@ public class TokenProvider {
         return Jwts.builder().setIssuer("Code With Me")
                 .setIssuedAt(new Date()).setExpiration(new Date(new Date().getTime() + 86400000))
                 .claim("email", authentication.getName())
+                .claim("role", authentication.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.joining(",")))
                 .signWith(key)
                 .compact();
     }

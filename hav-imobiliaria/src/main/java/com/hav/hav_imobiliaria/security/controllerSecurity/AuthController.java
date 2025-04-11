@@ -1,14 +1,19 @@
 package com.hav.hav_imobiliaria.security.controllerSecurity;
 
+import com.hav.hav_imobiliaria.model.entity.Users.Customer;
+import com.hav.hav_imobiliaria.repository.CustumerRepository;
 import com.hav.hav_imobiliaria.security.configSecurity.TokenProvider;
 import com.hav.hav_imobiliaria.security.exceptionsSecurity.AuthResponse;
 import com.hav.hav_imobiliaria.security.exceptionsSecurity.UserException;
+import com.hav.hav_imobiliaria.security.modelSecurity.Role;
 import com.hav.hav_imobiliaria.security.modelSecurity.UserSecurity;
 import com.hav.hav_imobiliaria.security.repositorySecurity.UserRepositorySecurity;
 import com.hav.hav_imobiliaria.security.requestSecurity.LoginRequest;
 import com.hav.hav_imobiliaria.security.serviceSecurity.CustomUserDetailsService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,31 +33,37 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final CustomUserDetailsService customUserDetailsService;
+    private final CustumerRepository customerReporitory;
+    private final ModelMapper modelMapper;
 
-    @PostMapping("/singup")
+    @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     public AuthResponse createUserHandler(@Valid @RequestBody UserSecurity userSec) throws UserException {
 
         String email = userSec.getEmail();
         String password = userSec.getPassword();
-        String full_name = userSec.getFull_name();
+        String full_name = userSec.getName();
+
 
         UserSecurity isEmailExist = userRepositorySecurity.findUserSecurityByEmail(email);
         if (isEmailExist != null) {
             System.out.println("-------- exist" + isEmailExist.getEmail());
-            throw new UserException("Email is Already Exist with Another Account");
+            throw new UserException("Email already exist with another account");
         }
 
         UserSecurity newUserSec = new UserSecurity();
 
         newUserSec.setEmail(email);
         newUserSec.setPassword(passwordEncoder.encode(password));
-        newUserSec.setFull_name(full_name);
+        newUserSec.setName(full_name);
+        newUserSec.setRole(Role.valueOf("CUSTOMER"));
+
 
         userRepositorySecurity.save(newUserSec);
 
-        System.out.println("------- saved" + userRepositorySecurity.save(newUserSec));
-
+        Customer customer = modelMapper.map(userSec, Customer.class);
+        customer.setUserSecurity(newUserSec);
+        customerReporitory.save(customer);
         Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
