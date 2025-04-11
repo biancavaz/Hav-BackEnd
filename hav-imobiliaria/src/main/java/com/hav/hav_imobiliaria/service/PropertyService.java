@@ -3,10 +3,12 @@ package com.hav.hav_imobiliaria.service;
 import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressCardGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureCardGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureSpecifiGetRespondeDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
@@ -74,6 +76,7 @@ public class PropertyService {
             imageService.uploadPropertyImages(savedProperty.getId(), images);
         }
 
+
         return modelMapper.map(savedProperty, PropertyListGetResponseDTO.class);
     }
 
@@ -98,6 +101,20 @@ public class PropertyService {
         PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(property.getPropertyCode(), property.getPropertyType(), property.getPropertyStatus(), property.getPurpose(), property.getPropertyDescription(), property.getArea(), property.getPrice(), property.getPromotionalPrice(), property.getHighlight(), property.getFloors(), modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class), modelMapper.map(property.getAddress(), AddressGetResponseDTO.class), modelMapper.map(property.getPropertyFeatures(), PropertyFeatureSpecifiGetRespondeDTO.class), property.getAdditionals().stream().map(additionals -> new AdditionalsGetResponseDTO(additionals.getName())).toList(), property.getRealtors().stream().map(realtor -> new RealtorPropertySpecificGetResponseDTO(realtor.getName(), realtor.getEmail(), realtor.getCreci(), realtor.getPhoneNumber())).toList());
         return dtos;
     }
+
+    public List<PropertyMapGetResponseDTO> findAllByFilterMap(){
+
+
+        List<Property> allProperties = repository.findAll();
+
+        List<PropertyMapGetResponseDTO> responseList = allProperties.stream()
+                .map(propertyx -> modelMapper.map(propertyx, PropertyMapGetResponseDTO.class))
+                .collect(Collectors.toList());
+
+        return responseList;
+
+    }
+
 
     public Page<PropertyCardGetResponseDTO> findAllByFilterCard(PropertyFilterPostResponseDTO propertyDto, Pageable pageable) {
 
@@ -292,12 +309,15 @@ public class PropertyService {
 
         modelMapper.map(propertyDTO.getPropertyFeatures(), property.getPropertyFeatures());
         modelMapper.map(propertyDTO.getTaxes(), property.getTaxes());
+        modelMapper.map(propertyDTO.getAddress(), property.getAddress());
 
         updateRealtors(property, propertyDTO.getRealtors());
         updateProprietor(property, propertyDTO.getProprietor());
         updateAdditionals(property, propertyDTO.getAdditionals());
 
+        
         repository.save(property);
+
 
         processImages(propertyId, deletedImageIds, newImages);
 
@@ -346,10 +366,69 @@ public class PropertyService {
     }
 
     public PropertyPutRequestDTO findPropertyById(Integer id) {
+        System.out.println(id);
         Property property = repository.findById(id).get();
 
-        // Converte a entidade Realtor para o DTO
-        return modelMapper.map(property, PropertyPutRequestDTO.class);
+        ProprietorPropertyDataExtra proprietorExtra = null;
+        if (property.getProprietor() != null) {
+            proprietorExtra = new ProprietorPropertyDataExtra(
+                    property.getProprietor().getName(),
+                    property.getProprietor().getCpf()
+            );
+        }
+
+        List<RealtorsPropertyDataExtra> realtorExtras = property.getRealtors() != null
+                ? property.getRealtors().stream()
+                .map(r -> new RealtorsPropertyDataExtra(r.getName(), r.getCpf()))
+                .toList()
+                : List.of();
+
+        return PropertyPutRequestDTO.builder()
+                .title(property.getTitle())
+                .propertyDescription(property.getPropertyDescription())
+                .propertyType(property.getPropertyType())
+                .purpose(property.getPurpose())
+                .propertyStatus(property.getPropertyStatus())
+                .area(property.getArea())
+                .price(property.getPrice())
+                .promotionalPrice(property.getPromotionalPrice())
+                .highlight(property.getHighlight())
+                .floors(property.getFloors())
+                .propertyFeatures(new PropertyFeaturePutRequestDTO() {{
+                    setAllowsPet(property.getPropertyFeatures().getAllowsPet());
+                    setBedRoom(property.getPropertyFeatures().getBedRoom());
+                    setLivingRoom(property.getPropertyFeatures().getLivingRoom());
+                    setSuite(property.getPropertyFeatures().getSuite());
+                    setBathRoom(property.getPropertyFeatures().getBathRoom());
+                    setGarageSpace(property.getPropertyFeatures().getGarageSpace());
+                    setFurnished(property.getPropertyFeatures().getIsFurnished());
+                }})
+                .taxes(new TaxesPutRequestDTO() {{
+                    setCondominiumFee(property.getTaxes().getCondominiumFee());
+                    setIptu(property.getTaxes().getIptu());
+                }})
+                .address(new AddressPostRequestDTO(
+                        property.getAddress().getCep(),
+                        property.getAddress().getStreet(),
+                        property.getAddress().getNeighborhood(),
+                        property.getAddress().getCity(),
+                        property.getAddress().getState(),
+                        property.getAddress().getPropertyNumber(),
+                        property.getAddress().getComplement()
+                ))
+                .proprietor(property.getProprietor() != null ? property.getProprietor().getId() : null)
+                .realtors(property.getRealtors() != null
+                        ? property.getRealtors().stream().map(Realtor::getId).toList()
+                        : List.of())
+                .additionals(property.getAdditionals() != null
+                        ? property.getAdditionals().stream().map(Additionals::getId).toList()
+                        : List.of())
+                .proprietorExtraData(proprietorExtra)
+                .proprietorExtraData(proprietorExtra)
+                .realtorsExtraData(realtorExtras)
+
+                .build();
+
     }
 
     public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
@@ -380,9 +459,71 @@ public class PropertyService {
         }).map(realtor -> modelMapper.map(realtor, RealtorGetResponseDTOwithId.class)).collect(Collectors.toList());
     }
 
-
     public List<PropertyCardGetResponseDTO> findRandomHighlights() {
         return repository.findRandomHighlighted5().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+    }
+
+    public Long getAllRegistredNumber(){
+        return repository.count();
+    }
+
+    public double getPercentageOfRentalProperties(){
+        List<Property> allProperties = repository.findAll();
+        if (allProperties.isEmpty()) {
+            return 0.0;
+        }
+
+        long rentalCount = allProperties.stream()
+                .filter(property -> "Locacao".equals(property.getPurpose()))
+                .count();
+        return (rentalCount * 100.0) / allProperties.size();
+    }
+
+    public double getPercentageOfForSaleProperties(){
+        List<Property> allProperties = repository.findAll();
+        if (allProperties.isEmpty()) {
+            return 0.0;
+        }
+
+        long forSaleCount = allProperties
+                .stream()
+                .filter(property -> "Venda".equals(property.getPurpose()))
+                .count();
+        return (forSaleCount * 100.0) / allProperties.size();
+    }
+
+    public double getPercentageOfArchiveStatus(){
+        List<Property> allProperties = repository.findAll();
+        if (allProperties.isEmpty()) {
+            return 0.0;
+        }
+
+        long archiveStatus = allProperties
+                .stream()
+                .filter(Property:: isArchived )
+                .count();
+        return (archiveStatus * 100.0) / allProperties.size();
+    }
+
+    public long getQuantityOfRentalProperties(){
+        return repository.findAll()
+                .stream()
+                .filter(property -> "Locacao".equals(property.getPurpose()))
+                .count();
+    }
+
+    public long getQuantityOfForSaleProperties(){
+        return repository.findAll()
+                .stream()
+                .filter(property -> "Venda".equals(property.getPurpose()))
+                .count();
+    }
+
+    public long getQuantityOfArchivedProperties(){
+        return repository.findAll()
+                .stream()
+                .filter(Property:: isArchived)
+                .count();
     }
 }
 

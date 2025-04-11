@@ -31,7 +31,7 @@ public class EmailController {
     @Async
     protected void send(Integer id, String subject, String body) {
         try {
-            emailSenderService.sendEmail(id, subject, body);
+            emailSenderService.sendEmailContactUs(id, subject, body);
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException("failed to send email");

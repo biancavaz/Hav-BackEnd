@@ -66,6 +66,12 @@ public class PropertyController {
         Pageable pageable = PageRequest.of(page, 12);
         return service.findAllByFilterCard(propertyDto, pageable);
     }
+    @GetMapping("/filter/map")
+    public List<PropertyMapGetResponseDTO> findByFilterMap() {
+        return service.findAllByFilterMap();
+    }
+
+
 
     @PatchMapping("/changeArchiveStatus")
     public void changeArchiveStatus(@RequestBody List<Integer> propertyIds) {
@@ -88,15 +94,16 @@ public class PropertyController {
     @ResponseStatus(HttpStatus.OK)
     public Property updateProperty(
             @PathVariable @Positive @NotNull Integer id,
-            @RequestPart("propertyDTO") @Valid PropertyPutRequestDTO propertyDTO,
+            @RequestPart("property") @Valid PropertyPutRequestDTO propertyDTO,
             @RequestParam(value = "deletedImageIds", required = false) List<Integer> deletedImageIds,
             @RequestPart(value = "newImages", required = false) List<MultipartFile> newImages
     ) {
+        System.out.println(propertyDTO.getAddress());
         return service.updateProperty(id, propertyDTO, deletedImageIds, newImages);
     }
 
     @GetMapping
-    @RequestMapping("{id}")
+    @RequestMapping("/{id}")
     public ResponseEntity<PropertyPutRequestDTO> getProperty(
             @PathVariable Integer id) {
         PropertyPutRequestDTO propertyDto = service.findPropertyById(id);
@@ -126,4 +133,43 @@ public class PropertyController {
         return service.findRealtorsByPropertyId(id);
     }
 
+    @GetMapping("/getAll")
+    @ResponseStatus(HttpStatus.OK)
+    public Long getAllRegistredNumber(){
+        return service.getAllRegistredNumber();
+    }
+
+    @GetMapping("/getPercentageRental")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfRentalProperties(){
+        return service.getPercentageOfRentalProperties();
+    }
+    @GetMapping("/getPercentageForSale")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfForSaleProperties(){
+        return service.getPercentageOfForSaleProperties();
+    }
+
+    @GetMapping("/getPercentageOfArchiveStatus")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfArchiveStatus(){
+        return service.getPercentageOfArchiveStatus();
+    }
+
+    @GetMapping("/getQuantityOfRentalProperties")
+    @ResponseStatus(HttpStatus.OK)
+    public long getQuantityOfRentalProperties(){
+        return service.getQuantityOfRentalProperties();
+    }
+
+    @GetMapping("/getQuantityOfForSaleProperties")
+    @ResponseStatus(HttpStatus.OK)
+    public long getQuantityOfForSaleProperties(){
+        return service.getQuantityOfForSaleProperties();
+    }
+    @GetMapping("/getQuantityOfArchivedProperties")
+    @ResponseStatus(HttpStatus.OK)
+    public long getQuantityOfArchivedProperties(){
+        return service.getQuantityOfArchivedProperties();
+    }
 }

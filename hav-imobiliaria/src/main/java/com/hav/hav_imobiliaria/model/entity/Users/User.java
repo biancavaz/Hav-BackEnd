@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.entity.Users;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hav.hav_imobiliaria.model.entity.Address;
@@ -55,6 +56,10 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ImageUser imageUser;
 
+
+
+
+
     @ManyToMany
     @JoinTable(
             name = "favorites",
@@ -64,10 +69,18 @@ public class User {
     @JsonIgnore
     private List<Property> properties;
 
+    public List<Property> getProperties() {
+        if(properties != null){
+            return properties;
+        }
+        else{
+            return new ArrayList<>();
+        }
+    }
+
     public @NotNull boolean getArchived() {
         return this.archived;
     }
-
     public void changeArchiveStatus(){
         this.archived = !this.archived;
     }

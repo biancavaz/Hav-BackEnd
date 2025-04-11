@@ -8,21 +8,64 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 @Service
 @AllArgsConstructor
 public class EmailSenderService {
+
     @Autowired
     private JavaMailSender mailSender;
+
     private CustumerRepository custumerRepository;
-    public void sendEmail(Integer id,  String subject, String body ) {
-        Customer customer = custumerRepository.findById(id).get();
+
+    public void sendEmailContactUs(Integer id, String subject, String body) {
+        Customer customer = custumerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente com ID " + id + " não encontrado."));
+
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+
+            // true = multipart (permite anexos, HTML etc.)
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo("hav.suporte@gmail.com");
+            helper.setSubject(subject);
+
+            String content = "<p><strong>Email enviado por:</strong> " + customer.getEmail() + "</p>"
+                    + "<p>" + body + "</p>";
+
+            helper.setText(content, true); // true = interpretar como HTML
+
+            mailSender.send(message);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            // Aqui você pode lançar uma exceção personalizada ou logar melhor o erro
+        }
+    }
+
+    public void sendPasswordNewAccount(String email,  String password) {
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("hav.suporte@gmail.com");
-        message.setSubject(subject);
-        message.setText("Enviado por "+customer.getEmail()+"\n\n"+body);
-        System.out.println(message);
+        message.setTo(email);
+        message.setSubject("Conta criada");
+        message.setText("Sua conta foi criada\nLogin: "+email+"\nSenha: "+password+
+                "\n\nÉ RECOMENDADO MUDAR ESTA SENHA NO PRIMEIRO ACESSO.");
         mailSender.send(message);
     }
+    public void sendPasswordNewAccount(String email,  String password, String type) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Conta criada");
+        message.setText("Sua conta de "+type+" foi criada\nLogin: "+email+"\nSenha: "+password+
+                "\n\nÉ RECOMENDADO MUDAR ESTA SENHA NO PRIMEIRO ACESSO.");
+        mailSender.send(message);
+    }
+
+
 }

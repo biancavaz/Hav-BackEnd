@@ -1,5 +1,7 @@
 package com.hav.hav_imobiliaria.model.entity.Users;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Realtor extends User {
+
+
 
     @Column(nullable = false, unique = true)
     private String creci;

@@ -10,6 +10,7 @@ import lombok.Data;
 
 @Data
 public class AdmPutRequestDTO {
+    String cpf;
     @NotBlank(message = "Nome não pode estar em branco")
     @Pattern(regexp = "^[A-Za-zÀ-ÿ]{2,}( [A-Za-zÀ-ÿ]{2,})+$", message = "Nome inválido")
     String name;
