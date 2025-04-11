@@ -19,7 +19,7 @@ public class TokenProvider {
 
     public String generateToken(Authentication authentication) {
 
-        return Jwts.builder().setIssuer("Code With Me")
+        return Jwts.builder().setIssuer("HAV")
                 .setIssuedAt(new Date()).setExpiration(new Date(new Date().getTime() + 86400000))
                 .claim("email", authentication.getName())
                 .claim("role", authentication.getAuthorities().stream()

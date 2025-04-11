@@ -18,11 +18,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -57,14 +60,16 @@ public class AuthController {
         newUserSec.setPassword(passwordEncoder.encode(password));
         newUserSec.setName(full_name);
         newUserSec.setRole(Role.valueOf("CUSTOMER"));
-
+        System.out.println(newUserSec);
 
         userRepositorySecurity.save(newUserSec);
 
         Customer customer = modelMapper.map(userSec, Customer.class);
         customer.setUserSecurity(newUserSec);
         customerReporitory.save(customer);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, List.of(new SimpleGrantedAuthority("CUSTOMER")));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = tokenProvider.generateToken(authentication);
