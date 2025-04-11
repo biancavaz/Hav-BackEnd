@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,6 +31,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
+
+
 public class AuthController {
 
     private final UserRepositorySecurity userRepositorySecurity;
@@ -59,7 +62,7 @@ public class AuthController {
         newUserSec.setEmail(email);
         newUserSec.setPassword(passwordEncoder.encode(password));
         newUserSec.setName(full_name);
-        newUserSec.setRole(Role.valueOf("CUSTOMER"));
+        newUserSec.setRole(Role.valueOf("REALTOR"));
         System.out.println(newUserSec);
 
         userRepositorySecurity.save(newUserSec);
@@ -68,7 +71,7 @@ public class AuthController {
         customer.setUserSecurity(newUserSec);
         customerReporitory.save(customer);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, List.of(new SimpleGrantedAuthority("CUSTOMER")));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, List.of(new SimpleGrantedAuthority("REALTOR")));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
