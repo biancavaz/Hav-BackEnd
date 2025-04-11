@@ -20,4 +20,18 @@ public class UserController {
     public Long getAllRegistredNumber(){
         return userService.getAllRegistredNumber();
     }
+    @GetMapping("/getPercentageProprietors")
+    public Long getPercentageProprietors() {
+        return userService.getPercentageProprietors();
+    }
+
+    @GetMapping("/getQuantityCustomer")
+    public Long getQuantityCustomer() {
+        return userService.getQuantityClients();
+    }
+
+    @GetMapping("/getPercentageClients")
+    public Long getPercentageClients() {
+        return userService.getPercentageClients();
+    }
 }
