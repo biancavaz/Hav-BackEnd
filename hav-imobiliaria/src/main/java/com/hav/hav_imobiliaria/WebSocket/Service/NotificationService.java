@@ -32,7 +32,9 @@ public class NotificationService {
         not.setContent(notificationdto.getContent());
         not.setRead(false);
         not.setDataEnvio(LocalDateTime.now());
+
         notificationRepository.save(not);
+        System.out.println("ID gerado: " + not.getId());
 
         List<User> recipients = userRepository.findAllById(notificationdto.getIds());
         for (User user : recipients) {
@@ -40,22 +42,27 @@ public class NotificationService {
             userRepository.save(user);
         }
         not.setRecipient(recipients);
-        enviarNotificacao(notificationdto);
+
+        // Convertendo a notificação salva para DTO
+        NotificationGetResponseDTO dto = new NotificationGetResponseDTO(
+                not.getId(),
+                not.getTitle(),
+                not.getContent(),
+                not.getRead(),
+                not.getDataEnvio()
+        );
+
+        enviarNotificacao(dto, notificationdto.getIds());
     }
 
-    public void enviarNotificacao(NotificationDTO notification) {
-        NotificationGetResponseDTO dto = new NotificationGetResponseDTO();
-        dto.setTitle(notification.getTitle());
-        dto.setContent(notification.getContent());
-        dto.setRead(notification.getRead());
-        dto.setDataEnvio(notification.getDataEnvio());
-
-        for (Integer id : notification.getIds()) {
-            String destino = "/topic/api/"+ id;
-            System.out.println("Enviando para:" + destino);
+    public void enviarNotificacao(NotificationGetResponseDTO dto, List<Integer> ids) {
+        for (Integer id : ids) {
+            String destino = "/topic/api/" + id;
+            System.out.println("Enviando para: " + destino + " | ID da notificação: " + dto.getId());
             simpMessagingTemplate.convertAndSend(destino, dto);
         }
     }
+
 
     public void deletarNotificacao(Integer id) {
         Notification not = notificationRepository.findById(Long.valueOf(id)).orElseThrow(() ->
@@ -72,6 +79,7 @@ public class NotificationService {
         List<Notification> notifications = notificationRepository.findByRecipientIdOrderByDataEnvioDesc(userId);
         return notifications.stream().map(n ->
                         new NotificationGetResponseDTO(
+                                n.getId(),
                                 n.getTitle(),
                                 n.getContent(),
                                 n.getRead(),
@@ -79,8 +87,8 @@ public class NotificationService {
                 .collect(Collectors.toList());
     }
 
-    public void marcarComoLida(Long notificationId) {
-        Notification notification = notificationRepository.findById(notificationId).orElseThrow(() ->
+    public void marcarComoLida(Integer notificationId) {
+        Notification notification = notificationRepository.findById(notificationId.longValue()).orElseThrow(() ->
                 new RuntimeException("Notificação não encontrada"));
         notification.setRead(true);
         notificationRepository.save(notification);

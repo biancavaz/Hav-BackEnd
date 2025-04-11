@@ -21,7 +21,6 @@ public class NotificationController {
     @PostMapping("/send-notification")
     public ResponseEntity<Void> enviarMensagem(@RequestBody NotificationDTO notification) {
         notificationService.salvarNotificacao(notification);
-        notificationService.enviarNotificacao(notification);
         return ResponseEntity.ok().build();
     }
 
@@ -33,6 +32,12 @@ public class NotificationController {
     @GetMapping("/getNotifications/{id}")
     public List<NotificationGetResponseDTO> getNotifications(@PathVariable Integer id) {
         return notificationService.notifications(id);
+    }
+
+    @PutMapping("/readNotification/{id}")
+    public ResponseEntity<Void> marcarComoLida(@PathVariable("id") Integer id) {
+        notificationService.marcarComoLida(id);
+        return ResponseEntity.ok().build();
     }
 
 

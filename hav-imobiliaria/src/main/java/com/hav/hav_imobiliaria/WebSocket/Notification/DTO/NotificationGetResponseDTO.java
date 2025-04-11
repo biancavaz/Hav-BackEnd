@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class NotificationGetResponseDTO {
 
+
+    private Integer id;
     private String title;
     private String content;
     private Boolean read;
