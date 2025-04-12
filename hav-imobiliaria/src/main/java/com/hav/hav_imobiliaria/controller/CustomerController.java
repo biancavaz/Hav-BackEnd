@@ -9,6 +9,7 @@ import com.hav.hav_imobiliaria.service.CustumerService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,10 +22,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/customer")
 @AllArgsConstructor
+@Slf4j
 public class CustomerController {
 
     private CustumerService service;
-
 
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -44,6 +45,10 @@ public class CustomerController {
             @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
             @RequestPart(value = "newImage", required = false) MultipartFile newImage
     ) {
+        log.info("DTO recebido: {}", custumerDTO);
+        log.info("deletedImageId: {}", deletedImageId);
+        log.info("newImage: {}", newImage != null ? newImage.getOriginalFilename() : "sem imagem nova");
+
         return service.updateCustomer(id, custumerDTO, deletedImageId, newImage);
     }
 
@@ -92,13 +97,13 @@ public class CustomerController {
 //    ;
 //
 
-       @GetMapping("/{id}")
-       @ResponseStatus(HttpStatus.OK)
-       public CustomerPutRequestDTO searchRealtor(
-               @PathVariable Integer id){
-           CustomerPutRequestDTO customer = service.searchCustumer(id);
-           return customer;
-       }
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomerPutRequestDTO searchRealtor(
+            @PathVariable Integer id) {
+        CustomerPutRequestDTO customer = service.searchCustumer(id);
+        return customer;
+    }
 //
 //    @DeleteMapping("/{id}")
 //    @ResponseStatus(HttpStatus.NO_CONTENT)

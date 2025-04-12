@@ -12,18 +12,18 @@ import lombok.Data;
 public class CustomerPutRequestDTO {
     String cpf;
 
-    @NotBlank(message = "Nome não pode estar em branco")
-    @Pattern(regexp = "^[A-Za-zÀ-ÿ]{2,}( [A-Za-zÀ-ÿ]{2,})+$", message = "Nome inválido")
+//    @NotBlank(message = "Nome não pode estar em branco")
+//    @Pattern(regexp = "^[A-Za-zÀ-ÿ]{2,}( [A-Za-zÀ-ÿ]{2,})+$", message = "Nome inválido")
     String name;
-    @NotBlank(message = "E-mail não pode estar em branco")
-    @Email(message = "E-mail inválido")
+//    @NotBlank(message = "E-mail não pode estar em branco")
+//    @Email(message = "E-mail inválido")
     String email;
-    @NotBlank(message = "Celular não pode estar em branco")
-    @Pattern(regexp = "\\d{11}$", message = "Celular inválido")
+//    @NotBlank(message = "Celular não pode estar em branco")
+//    @Pattern(regexp = "\\d{11}$", message = "Celular inválido")
     String celphone;
     String phoneNumber;
-    @Valid
-    @NotNull(message = "Endereço inválido")
+//    @Valid
+//    @NotNull(message = "Endereço inválido")
     AddressPutRequestDTO address;
-
+    Integer imageId;
 }

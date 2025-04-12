@@ -64,4 +64,18 @@ public class ImageService {
         s3Service.deleteFile(image.getS3Key());
         imageUserRepository.delete(image);
     }
+
+    public byte[] getPropertyImage(Integer imageId) {
+        ImageProperty image = imagePropertyRepository.findById(imageId)
+                .orElseThrow(() -> new RuntimeException("Imagem não encontrada."));
+
+        return s3Service.downloadFile(image.getS3Key());
+    }
+
+    public byte[] getUserImage(Integer imageId) {
+        ImageUser image = imageUserRepository.findById(imageId)
+                .orElseThrow(() -> new RuntimeException("Imagem não encontrada."));
+
+        return s3Service.downloadFile(image.getS3Key());
+    }
 }

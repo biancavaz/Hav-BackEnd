@@ -87,14 +87,19 @@ public class CustumerService {
 //
 //
 
-        public CustomerPutRequestDTO searchCustumer(
-                @NotNull @Positive Integer id) {
-            Customer customer = repository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+    public CustomerPutRequestDTO searchCustumer(
+            @NotNull @Positive Integer id) {
+        Customer customer = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
 
-            // Converte a entidade Realtor para o DTO
-            return modelMapper.map(customer, CustomerPutRequestDTO.class);
+        CustomerPutRequestDTO customerDTO = modelMapper.map(customer, CustomerPutRequestDTO.class);
+
+        if (customer.getImageUser() != null) {
+            customerDTO.setImageId(customer.getImageUser().getId());
         }
+        // Converte a entidade Realtor para o DTO
+        return customerDTO;
+    }
 //
 //    public void removeCustumer(
 //            @NotNull @Positive Integer id) {
