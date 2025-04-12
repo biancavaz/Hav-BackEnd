@@ -35,9 +35,9 @@ public class AppConfig {
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
         hierarchy.setHierarchy("""
-        ROLE_ADMIN > ROLE_EDITOR
-        ROLE_EDITOR > ROLE_REALTOR
-        ROLE_REALTOR > ROLE_CUSTOMER
+        ADMIN > EDITOR
+        EDITOR > REALTOR
+        REALTOR > CUSTOMER
     """);
         return hierarchy;
     }
