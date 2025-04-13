@@ -37,7 +37,7 @@ public record ProprietorPostDTO(
         return new ProprietorPostDTO(
                 proprietor.getName(),
                 proprietor.getEmail(),
-                proprietor.getCelphone(),
+                proprietor.getCellphone(),
                 proprietor.getCpf(),
                 proprietor.getCnpj(),
                 proprietor.getPhoneNumber(),

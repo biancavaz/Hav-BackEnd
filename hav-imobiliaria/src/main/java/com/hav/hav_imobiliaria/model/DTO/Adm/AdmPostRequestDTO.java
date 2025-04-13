@@ -37,7 +37,7 @@ public record AdmPostRequestDTO(
                 adm.getName(),
                 adm.getEmail(),
                 adm.getCpf(),
-                adm.getCelphone(),
+                adm.getCellphone(),
                 adm.getPhoneNumber(),
                 adm.getArchived(),
                 address);

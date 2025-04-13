@@ -21,7 +21,7 @@ public record CustomerPostRequestDTO(
         String email,
 
         @Pattern(regexp = "\\d{11}$", message = "Celular inválido")
-        String celphone,
+        String cellphone,
 //        @CPF(message = "CPF inválido")
         @NotBlank(message = "CPF não pode estar em branco")
         String cpf,
@@ -37,7 +37,7 @@ public record CustomerPostRequestDTO(
         return new CustomerPostRequestDTO(
                 customer.getName(),
                 customer.getEmail(),
-                customer.getCelphone(),
+                customer.getCellphone(),
                 customer.getCpf(),
                 customer.getPhoneNumber(),
                 customer.getArchived(),

@@ -37,7 +37,7 @@ public record RealtorPostRequestDTO(
                 realtor.getName(),
                 realtor.getEmail(),
                 realtor.getCpf(),
-                realtor.getCelphone(),
+                realtor.getCellphone(),
                 realtor.getCreci(),
                 realtor.getPhoneNumber(),
                 realtor.getArchived(),

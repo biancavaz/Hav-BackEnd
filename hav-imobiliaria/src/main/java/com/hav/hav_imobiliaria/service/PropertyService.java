@@ -90,7 +90,7 @@ public class PropertyService {
         Page<Property> properties = repository.findAll(pageable);
 
         // Mapeia os objetos Property para PropertyGetResponseDTO manualmente
-        List<PropertyGetResponseDTO> dtos = properties.getContent().stream().map(property -> new PropertyGetResponseDTO(property.getPropertyCode(), property.getPropertyType(), property.getPropertyStatus(), property.getPurpose(), property.getRealtors().stream().map(realtor -> new RealtorGetResponseDTO(realtor.getName(), realtor.getEmail(), realtor.getCpf(), realtor.getCelphone(), realtor.getCreci())).toList(), new ProprietorGetResponseDTO(property.getProprietor().getName(), property.getProprietor().getEmail(), property.getProprietor().getCpf()))).toList();
+        List<PropertyGetResponseDTO> dtos = properties.getContent().stream().map(property -> new PropertyGetResponseDTO(property.getPropertyCode(), property.getPropertyType(), property.getPropertyStatus(), property.getPurpose(), property.getRealtors().stream().map(realtor -> new RealtorGetResponseDTO(realtor.getName(), realtor.getEmail(), realtor.getCpf(), realtor.getCellphone(), realtor.getCreci())).toList(), new ProprietorGetResponseDTO(property.getProprietor().getName(), property.getProprietor().getEmail(), property.getProprietor().getCpf()))).toList();
 
         // Retorna uma nova Page contendo os DTOs
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());

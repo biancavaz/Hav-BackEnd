@@ -37,7 +37,7 @@ public record EditorPostRequestDTO(
                 editor.getName(),
                 editor.getEmail(),
                 editor.getCpf(),
-                editor.getCelphone(),
+                editor.getCellphone(),
                 editor.getPhoneNumber(),
                 editor.getArchived(),
                 address);

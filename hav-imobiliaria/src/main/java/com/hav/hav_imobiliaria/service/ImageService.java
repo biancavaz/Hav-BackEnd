@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,9 +39,21 @@ public class ImageService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        ImageUser userImage = new ImageUser(s3Service.uploadFile(image), user);
+        // Verifica se o usuário já possui uma imagem
+        Optional<ImageUser> existingImageOpt = imageUserRepository.findByUser_Id(userId);
 
-        imageUserRepository.save(userImage);
+        String s3Key = s3Service.uploadFile(image);
+
+        if (existingImageOpt.isPresent()) {
+            // Atualiza a imagem existente
+            ImageUser existingImage = existingImageOpt.get();
+            existingImage.setS3Key(s3Key);
+            imageUserRepository.save(existingImage);
+        } else {
+            // Cria uma nova imagem
+            ImageUser newImage = new ImageUser(s3Key, user);
+            imageUserRepository.save(newImage);
+        }
     }
 
     public void deletePropertyImages(List<Integer> imageIds) {

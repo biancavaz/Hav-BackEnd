@@ -42,11 +42,11 @@ public class CustomerController {
     public Customer updateCustomer(
             @PathVariable Integer id,
             @RequestPart("customer") @Valid CustomerPutRequestDTO custumerDTO,
-            @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
+            @RequestPart(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
             @RequestPart(value = "newImage", required = false) MultipartFile newImage
     ) {
         log.info("DTO recebido: {}", custumerDTO);
-        log.info("deletedImageId: {}", deletedImageId);
+        log.info("imageId: {}", deletedImageId);
         log.info("newImage: {}", newImage != null ? newImage.getOriginalFilename() : "sem imagem nova");
 
         return service.updateCustomer(id, custumerDTO, deletedImageId, newImage);

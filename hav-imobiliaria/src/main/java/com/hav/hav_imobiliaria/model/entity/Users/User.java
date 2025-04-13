@@ -40,7 +40,7 @@ public class User {
     private String cpf;
 
     @Column(nullable = false)
-    private String celphone;
+    private String cellphone;
 
     @Column(name = "phone_number")
     private String phoneNumber;
