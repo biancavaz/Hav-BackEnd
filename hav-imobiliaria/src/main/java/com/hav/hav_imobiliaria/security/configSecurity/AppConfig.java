@@ -56,6 +56,13 @@ public class AppConfig {
                 )
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/auth/**").permitAll()
+                        /* CUSTOMER CONTROLLER */
+                        .requestMatchers("/customer/**").hasRole("CUSTOMER")
+                        /* REALTOR CONTROLLER */
+                        .requestMatchers("/customer/**").hasRole("CUSTOMER")
+                        /* EDITOR CONTROLLER */
+                        .requestMatchers("/customer/**").hasRole("CUSTOMER")
+                        /* ADMIN CONTROLLER */
                         .requestMatchers("/customer/**").hasRole("CUSTOMER")
                         .anyRequest().authenticated()
                 )
