@@ -118,7 +118,7 @@ public class AuthController {
             }
 
             // Caso a autenticação seja bem-sucedida
-            authentication = new UsernamePasswordAuthenticationToken(username, password, List.of(new SimpleGrantedAuthority("CUSTOMER")));
+            authentication = new UsernamePasswordAuthenticationToken(username, password, List.of(new SimpleGrantedAuthority(user.getRole())));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // Gerando o token JWT
