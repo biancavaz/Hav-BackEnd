@@ -5,10 +5,14 @@ import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerListGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Customer.CustomerPutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
+import com.hav.hav_imobiliaria.model.entity.Users.Adm;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
+import com.hav.hav_imobiliaria.security.modelSecurity.Role;
+import com.hav.hav_imobiliaria.security.modelSecurity.UserSecurity;
+import com.hav.hav_imobiliaria.security.repositorySecurity.UserRepositorySecurity;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -17,6 +21,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +37,8 @@ public class CustumerService {
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
     private final EmailSenderService emailSenderService;
+    private final UserRepositorySecurity userRepositorySecurity;
+    private final PasswordEncoder passwordEncoder;
 
     public CustomerPostRequestDTO createCustumer(
             @Valid CustomerPostRequestDTO custumerPostDTO,
@@ -43,7 +50,23 @@ public class CustumerService {
         System.out.println(password);
 
 
+
+        UserSecurity newUserSec = new UserSecurity();
+
+        newUserSec.setEmail(customer.getEmail());
+        newUserSec.setPassword(passwordEncoder.encode(password));
+        newUserSec.setName(customer.getName());
+        newUserSec.setRole(Role.valueOf("CUSTOMER"));
+
+        userRepositorySecurity.save(newUserSec);
+
+        customer.setUserSecurity(newUserSec);
+
         Customer savedCustomer = repository.save(customer);
+
+        emailSenderService.sendPasswordNewAccount(customer.getEmail(), password);
+
+
 
         if (image != null) {
             imageService.uploadUserImage(savedCustomer.getId(), image);
