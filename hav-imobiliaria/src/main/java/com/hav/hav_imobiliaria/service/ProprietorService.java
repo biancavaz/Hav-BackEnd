@@ -142,8 +142,14 @@ public class ProprietorService {
         Proprietor proprietor = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Proprietor not found"));
 
+        ProprietorPutRequestDTO proprietorDTO = modelMapper.map(proprietor, ProprietorPutRequestDTO.class);
+
+        if (proprietor.getImageUser() != null) {
+            proprietorDTO.setImageId(proprietor.getImageUser().getId());
+        }
+
         // Converte a entidade Realtor para o DTO
-        return modelMapper.map(proprietor, ProprietorPutRequestDTO.class);
+        return proprietorDTO;
     }
 
     // Metodo para salvar ou atualizar o Proprietário

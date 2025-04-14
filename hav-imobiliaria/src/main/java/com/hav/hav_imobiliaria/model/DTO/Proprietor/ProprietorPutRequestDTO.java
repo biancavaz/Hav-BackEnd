@@ -18,10 +18,10 @@ public class ProprietorPutRequestDTO {
     String email;
     @NotBlank(message = "Celular não pode estar em branco")
     @Pattern(regexp = "\\d{11}$", message = "Celular inválido")
-    String celphone;
+    String cellphone;
     String phoneNumber;
     @Valid
     @NotNull(message = "Endereço inválido")
     AddressPutRequestDTO address;
-
+    Integer imageId;
 }

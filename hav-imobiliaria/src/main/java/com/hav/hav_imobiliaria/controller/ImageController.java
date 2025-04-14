@@ -26,7 +26,7 @@ public class ImageController {
                 .body(imageData);
     }
 
-    @GetMapping("/customer/image/{imageId}")
+    @GetMapping("/user/{imageId}")
     public ResponseEntity<byte[]> getCustomerImage(@PathVariable Integer imageId) {
         byte[] imageData = imageService.getUserImage(imageId);
 
