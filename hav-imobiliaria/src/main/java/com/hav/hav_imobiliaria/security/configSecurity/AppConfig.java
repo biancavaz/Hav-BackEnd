@@ -67,10 +67,10 @@ public class AppConfig {
                         .requestMatchers("/adm/**").hasRole("EDITOR")
                         /* EMAIL CONTROLLER */
                         .requestMatchers("/contactus").authenticated()
+                        /* CUSTOMER CONTROLLER */
+                        .requestMatchers("/customer/**").hasRole("EDITOR")
                         /* EDITOR CONTROLLER */
-                        .requestMatchers("/customer/**").hasRole("CUSTOMER")
-                        /* ADMIN CONTROLLER */
-                        .requestMatchers("/customer/**").hasRole("CUSTOMER")
+                        .requestMatchers("/editor/**").hasRole("EDITOR")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtTokenValidator(), UsernamePasswordAuthenticationFilter.class)
