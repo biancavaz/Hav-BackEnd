@@ -71,7 +71,9 @@ public class AppConfig {
                         .requestMatchers("/customer/**").hasRole("EDITOR")
                         /* EDITOR CONTROLLER */
                         .requestMatchers("/editor/**").hasRole("EDITOR")
-                        .anyRequest().authenticated()
+                        /* EDITOR CONTROLLER */
+                        .requestMatchers("/favorites/**").authenticated()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtTokenValidator(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(AbstractHttpConfigurer::disable)
