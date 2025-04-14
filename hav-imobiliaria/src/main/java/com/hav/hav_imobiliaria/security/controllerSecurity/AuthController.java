@@ -85,7 +85,7 @@ public class AuthController {
         return authResponse;
     }
 
-    @PostMapping("/singin")
+    @PostMapping("/signin")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AuthResponse> createUserHandler(@RequestBody LoginRequest req) {
         String username = req.getEmail();

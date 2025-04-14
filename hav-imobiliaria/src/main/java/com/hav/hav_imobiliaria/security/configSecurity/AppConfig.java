@@ -3,6 +3,7 @@ package com.hav.hav_imobiliaria.security.configSecurity;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +28,8 @@ import javax.crypto.SecretKey;
 import java.util.Collections;
 import java.util.List;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -35,9 +38,9 @@ public class AppConfig {
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
         hierarchy.setHierarchy("""
-        ADMIN > EDITOR
-        EDITOR > REALTOR
-        REALTOR > CUSTOMER
+        ROLE_ADMIN > ROLE_EDITOR
+        ROLE_EDITOR > ROLE_REALTOR
+        ROLE_REALTOR > ROLE_CUSTOMER
     """);
         return hierarchy;
     }
@@ -56,10 +59,14 @@ public class AppConfig {
                 )
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/auth/**").permitAll()
-                        /* CUSTOMER CONTROLLER */
-                        .requestMatchers("/customer/**").hasRole("CUSTOMER")
-                        /* REALTOR CONTROLLER */
-                        .requestMatchers("/customer/**").hasRole("CUSTOMER")
+                        /* ADDITIONALS CONTROLLER */
+                        .requestMatchers(HttpMethod.POST, "/additionals").hasRole("EDITOR")
+                        .requestMatchers(HttpMethod.GET, "/additionals").permitAll()
+
+                        /* ADMIN CONTROLLER */
+                        .requestMatchers("/adm/**").hasRole("EDITOR")
+                        /* EMAIL CONTROLLER */
+                        .requestMatchers("/contactus").authenticated()
                         /* EDITOR CONTROLLER */
                         .requestMatchers("/customer/**").hasRole("CUSTOMER")
                         /* ADMIN CONTROLLER */
@@ -68,6 +75,7 @@ public class AppConfig {
                 )
                 .addFilterBefore(new JwtTokenValidator(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(AbstractHttpConfigurer::disable)
+
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();

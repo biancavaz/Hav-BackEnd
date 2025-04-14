@@ -37,15 +37,13 @@ public class JwtTokenValidator extends OncePerRequestFilter {
                 String username = String.valueOf(claims.get("email"));
                 String role = String.valueOf(claims.get("role"));
                 System.out.println(role);
-                String authorities = "ROLE_" + role;
 
                 List<GrantedAuthority> auths =
-                        AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
+                        AuthorityUtils.commaSeparatedStringToAuthorityList(role);
 
                 Authentication authentication =
                         new UsernamePasswordAuthenticationToken(username, null, auths);
-                System.out.println(authorities);
-                System.out.println(authentication);
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 System.out.println("Auth no contexto: " + SecurityContextHolder.getContext().getAuthentication());
 
