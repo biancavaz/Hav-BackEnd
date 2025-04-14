@@ -41,15 +41,15 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.OK)
     public Customer updateCustomer(
             @PathVariable Integer id,
-            @RequestPart("customer") @Valid CustomerPutRequestDTO custumerDTO,
+            @RequestPart("customer") @Valid CustomerPutRequestDTO custumer,
             @RequestPart(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
             @RequestPart(value = "newImage", required = false) MultipartFile newImage
     ) {
-        log.info("DTO recebido: {}", custumerDTO);
+        log.info("DTO recebido: {}", custumer);
         log.info("imageId: {}", deletedImageId);
         log.info("newImage: {}", newImage != null ? newImage.getOriginalFilename() : "sem imagem nova");
 
-        return service.updateCustomer(id, custumerDTO, deletedImageId, newImage);
+        return service.updateCustomer(id, custumer, deletedImageId, newImage);
     }
 
 //    @PatchMapping("/{id}")

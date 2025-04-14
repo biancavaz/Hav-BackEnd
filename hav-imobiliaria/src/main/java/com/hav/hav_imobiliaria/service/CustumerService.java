@@ -56,14 +56,14 @@ public class CustumerService {
 
     public Customer updateCustomer(
             @NotNull @Positive Integer id,
-            @Valid CustomerPutRequestDTO custumerDTO,
+            @Valid CustomerPutRequestDTO custumer,
             @Positive Integer deletedImageId,
             MultipartFile newImage) {
 
         Customer customer = repository.findById(id).orElseThrow(() ->
                 new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
 
-        modelMapper.map(custumerDTO, customer);
+        modelMapper.map(custumer, customer);
 
         if (deletedImageId != null) {
             imageService.deleteUserImage(deletedImageId);

@@ -21,5 +21,4 @@ public class CustomerPutRequestDTO {
 //    @NotNull(message = "Endereço inválido")
     AddressPutRequestDTO address;
     Integer imageId;
-    Integer deletedImageId;
 }
