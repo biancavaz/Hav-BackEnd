@@ -7,6 +7,7 @@ import com.hav.hav_imobiliaria.WebSocket.Repository.NotificationRepository;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class NotificationService {
                 not.getRead(),
                 not.getDataEnvio()
         );
-
+        notificationPreferredPropertyType(dto, notificationdto.getIds());
         enviarNotificacao(dto, notificationdto.getIds());
     }
 
@@ -93,4 +94,38 @@ public class NotificationService {
         notification.setRead(true);
         notificationRepository.save(notification);
     }
+
+    public void notificationPreferredPropertyType(NotificationGetResponseDTO dto, List<Integer> ids){
+        for (Integer id : ids) {
+            String destino = "/topic/api/" + id;
+            System.out.println("Enviando para: " + destino + " | ID da notificação: " + dto.getId());
+            simpMessagingTemplate.convertAndSend(destino, dto);
+        }
+    }
+
+    public void salvarNotificacaoDePreferencia(User user, NotificationGetResponseDTO not) {
+        Notification notification = new Notification();
+        notification.setTitle(not.getTitle());
+        notification.setContent(not.getContent());
+        notification.setRead(false);
+        notification.setDataEnvio(LocalDateTime.now());
+
+        notificationRepository.save(notification);
+
+        user.getNotifications().add(notification);
+        userRepository.save(user);
+
+        notification.setRecipient(List.of(user));
+
+        NotificationGetResponseDTO dto = new NotificationGetResponseDTO(
+                notification.getId(),
+                notification.getTitle(),
+                notification.getContent(),
+                notification.getRead(),
+                notification.getDataEnvio()
+        );
+
+        enviarNotificacao(dto, List.of(user.getId()));
+    }
+
 }
