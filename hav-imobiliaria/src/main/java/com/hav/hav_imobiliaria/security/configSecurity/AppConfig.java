@@ -65,14 +65,47 @@ public class AppConfig {
 
                         /* ADMIN CONTROLLER */
                         .requestMatchers("/adm/**").hasRole("EDITOR")
+                        /* ADDRESS CONTROLLER */
+                        .requestMatchers("/address/**").hasRole("EDITOR")
                         /* EMAIL CONTROLLER */
                         .requestMatchers("/contactus").authenticated()
                         /* CUSTOMER CONTROLLER */
                         .requestMatchers("/customer/**").hasRole("EDITOR")
                         /* EDITOR CONTROLLER */
                         .requestMatchers("/editor/**").hasRole("EDITOR")
-                        /* EDITOR CONTROLLER */
+                        /* FAVORITES CONTROLLER */
                         .requestMatchers("/favorites/**").authenticated()
+                        /* PROPERTY CONTROLLER */
+                        .requestMatchers("/property/randomHighlights").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/property").hasRole("EDITOR")
+                        .requestMatchers(HttpMethod.GET, "/property").hasRole("EDITOR")
+                        .requestMatchers("/property/filter",
+                                "/property/filter/card",
+                                "/property/filter/map").authenticated()
+                        .requestMatchers("/property/changeArchiveStatus").hasRole("EDITOR")
+                        .requestMatchers("/property/changeArchiveStatus").hasRole("EDITOR")
+                        .requestMatchers(HttpMethod.DELETE, "/property/**").hasRole("EDITOR")
+                        .requestMatchers("/property/getAll",
+                                "/property/getPercentageForSale",
+                                "/property/getPercentageOfArchiveStatus",
+                                "/property/getQuantityOfRentalProperties",
+                                "/property/getQuantityOfForSaleProperties",
+                                "/property/getQuantityOfArchivedProperties").hasRole("ADMIN")
+                        /* PROPRIETOR CONTROLLER */
+                        .requestMatchers("/proprietor/**").hasRole("EDITOR")
+                        /* REALTOR CONTROLLER */
+                        .requestMatchers("/realtor/**").hasRole("EDITOR")
+                        /* SCHEDULES CONTROLLER */
+                        .requestMatchers(HttpMethod.GET, "/schedules/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/schedules/**").hasRole("REALTOR")
+                        .requestMatchers(HttpMethod.PUT, "/schedules/**").hasRole("REALTOR")
+                        .requestMatchers(HttpMethod.DELETE, "/schedules/**").hasRole("REALTOR")
+                        .requestMatchers(HttpMethod.PATCH, "/schedules/**").hasRole("REALTOR")
+                        .requestMatchers("/schedules/history/customer/**").hasRole("CUSTOMER")
+                        .requestMatchers("/schedules/history/realtor/**").hasRole("REALTOR")
+                        .anyRequest().permitAll()
+                        /* TAXES CONTROLLER */
+                        .requestMatchers(HttpMethod.GET, "/taxes/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtTokenValidator(), UsernamePasswordAuthenticationFilter.class)
