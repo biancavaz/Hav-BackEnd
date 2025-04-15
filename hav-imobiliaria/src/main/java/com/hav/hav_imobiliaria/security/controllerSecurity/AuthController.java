@@ -47,42 +47,45 @@ public class AuthController {
     @ResponseStatus(HttpStatus.CREATED)
     public AuthResponse createUserHandler(@Valid @RequestBody UserSecurity userSec) throws UserException {
 
-        String email = userSec.getEmail();
-        String password = userSec.getPassword();
-        String full_name = userSec.getName();
+            String email = userSec.getEmail();
+            String password = userSec.getPassword();
+            String full_name = userSec.getName();
 
 
-        UserSecurity isEmailExist = userRepositorySecurity.findUserSecurityByEmail(email);
-        if (isEmailExist != null) {
-            System.out.println("-------- exist" + isEmailExist.getEmail());
-            throw new UserException("Email already exist with another account");
-        }
+            UserSecurity isEmailExist = userRepositorySecurity.findUserSecurityByEmail(email);
 
-        UserSecurity newUserSec = new UserSecurity();
+            if (isEmailExist != null) {
+                AuthResponse errorResponse = new AuthResponse();
+                errorResponse.setStatus(false);
+                errorResponse.setMessage("Email já existente.");
+                return errorResponse;
+            }
 
-        newUserSec.setEmail(email);
-        newUserSec.setPassword(passwordEncoder.encode(password));
-        newUserSec.setName(full_name);
-        newUserSec.setRole(Role.valueOf("CUSTOMER"));
-        System.out.println(newUserSec);
+            UserSecurity newUserSec = new UserSecurity();
 
-        userRepositorySecurity.save(newUserSec);
+            newUserSec.setEmail(email);
+            newUserSec.setPassword(passwordEncoder.encode(password));
+            newUserSec.setName(full_name);
+            newUserSec.setRole(Role.valueOf("CUSTOMER"));
+            System.out.println(newUserSec);
 
-        Customer customer = modelMapper.map(userSec, Customer.class);
-        customer.setUserSecurity(newUserSec);
-        customerReporitory.save(customer);
+            userRepositorySecurity.save(newUserSec);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, List.of(new SimpleGrantedAuthority("CUSTOMER")));
+            Customer customer = modelMapper.map(userSec, Customer.class);
+            customer.setUserSecurity(newUserSec);
+            customerReporitory.save(customer);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, List.of(new SimpleGrantedAuthority("CUSTOMER")));
 
-        String token = tokenProvider.generateToken(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        AuthResponse authResponse = new AuthResponse();
-        authResponse.setStatus(true);
-        authResponse.setJwt(token);
+            String token = tokenProvider.generateToken(authentication);
 
-        return authResponse;
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setStatus(true);
+            authResponse.setJwt(token);
+            return authResponse;
+
     }
 
     @PostMapping("/signin")

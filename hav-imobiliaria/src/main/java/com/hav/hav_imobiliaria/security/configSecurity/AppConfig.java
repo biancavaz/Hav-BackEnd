@@ -103,7 +103,6 @@ public class AppConfig {
                         .requestMatchers(HttpMethod.PATCH, "/schedules/**").hasRole("REALTOR")
                         .requestMatchers("/schedules/history/customer/**").hasRole("CUSTOMER")
                         .requestMatchers("/schedules/history/realtor/**").hasRole("REALTOR")
-                        .anyRequest().permitAll()
                         /* TAXES CONTROLLER */
                         .requestMatchers(HttpMethod.GET, "/taxes/**").authenticated()
                         .anyRequest().permitAll()
