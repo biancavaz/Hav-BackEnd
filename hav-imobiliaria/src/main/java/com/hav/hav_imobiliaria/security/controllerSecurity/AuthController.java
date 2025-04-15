@@ -15,18 +15,25 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
+
+
 public class AuthController {
 
     private final UserRepositorySecurity userRepositorySecurity;
@@ -40,65 +47,101 @@ public class AuthController {
     @ResponseStatus(HttpStatus.CREATED)
     public AuthResponse createUserHandler(@Valid @RequestBody UserSecurity userSec) throws UserException {
 
-        String email = userSec.getEmail();
-        String password = userSec.getPassword();
-        String full_name = userSec.getName();
+            String email = userSec.getEmail();
+            String password = userSec.getPassword();
+            String full_name = userSec.getName();
 
 
-        UserSecurity isEmailExist = userRepositorySecurity.findUserSecurityByEmail(email);
-        if (isEmailExist != null) {
-            System.out.println("-------- exist" + isEmailExist.getEmail());
-            throw new UserException("Email already exist with another account");
-        }
+            UserSecurity isEmailExist = userRepositorySecurity.findUserSecurityByEmail(email);
 
-        UserSecurity newUserSec = new UserSecurity();
+            if (isEmailExist != null) {
+                AuthResponse errorResponse = new AuthResponse();
+                errorResponse.setStatus(false);
+                errorResponse.setMessage("Email já existente.");
+                return errorResponse;
+            }
 
-        newUserSec.setEmail(email);
-        newUserSec.setPassword(passwordEncoder.encode(password));
-        newUserSec.setName(full_name);
-        newUserSec.setRole(Role.valueOf("CUSTOMER"));
+            UserSecurity newUserSec = new UserSecurity();
 
+            newUserSec.setEmail(email);
+            newUserSec.setPassword(passwordEncoder.encode(password));
+            newUserSec.setName(full_name);
+            newUserSec.setRole(Role.valueOf("CUSTOMER"));
+            System.out.println(newUserSec);
 
-        userRepositorySecurity.save(newUserSec);
+            userRepositorySecurity.save(newUserSec);
 
-        Customer customer = modelMapper.map(userSec, Customer.class);
-        customer.setUserSecurity(newUserSec);
-        customerReporitory.save(customer);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            Customer customer = modelMapper.map(userSec, Customer.class);
+            customer.setUserSecurity(newUserSec);
+            customerReporitory.save(customer);
 
-        String token = tokenProvider.generateToken(authentication);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, List.of(new SimpleGrantedAuthority("CUSTOMER")));
 
-        AuthResponse authResponse = new AuthResponse();
-        authResponse.setStatus(true);
-        authResponse.setJwt(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return authResponse;
+            String token = tokenProvider.generateToken(authentication);
+
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setStatus(true);
+            authResponse.setJwt(token);
+            return authResponse;
+
     }
 
-    @PostMapping("/singin")
+    @PostMapping("/signin")
     @ResponseStatus(HttpStatus.OK)
-    public AuthResponse createUserHandler(@RequestBody LoginRequest req) {
-
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody LoginRequest req) {
         String username = req.getEmail();
         String password = req.getPassword();
 
         System.out.println(username + " ------ " + password);
 
-        Authentication authentication = (Authentication) authenticate(username, password);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String token = tokenProvider.generateToken(authentication);
-
-        // Pegando o UserDetails (User logado)
+        // Verificando se o usuário existe
         UserSecurity user = userRepositorySecurity.findUserSecurityByEmail(username);
+        if (user == null) {
+            // Retorna um erro 404 (Not Found) se a conta não existe
+            AuthResponse errorResponse = new AuthResponse();
+            errorResponse.setStatus(false);
+            errorResponse.setMessage("Conta não encontrada. Verifique seu e-mail.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
 
-        AuthResponse authResponse = new AuthResponse();
-        authResponse.setStatus(true);
-        authResponse.setJwt(token);
-        authResponse.setUser(user);
+        // Autenticando o usuário
+        try {
+            Authentication authentication = authenticate(username, password);
 
-        return authResponse;
+
+            System.out.println(authentication);
+            // Se a autenticação falhar, retorna um erro 401 (Unauthorized)
+            if (authentication == null || !authentication.isAuthenticated()) {
+                AuthResponse errorResponse = new AuthResponse();
+                errorResponse.setStatus(false);
+                errorResponse.setMessage("Credenciais inválidas. Verifique sua senha.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+            }
+
+            // Caso a autenticação seja bem-sucedida
+            authentication = new UsernamePasswordAuthenticationToken(username, password, List.of(new SimpleGrantedAuthority(user.getRole().getAuthority())));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // Gerando o token JWT
+            String token = tokenProvider.generateToken(authentication);
+
+            // Criando a resposta de autenticação
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setStatus(true);
+            authResponse.setJwt(token);
+            authResponse.setUser(user);
+
+            return ResponseEntity.ok(authResponse);
+
+        } catch (BadCredentialsException ex) {
+            // Captura a exceção específica de credenciais inválidas
+            AuthResponse errorResponse = new AuthResponse();
+            errorResponse.setStatus(false);
+            errorResponse.setMessage("Credenciais inválidas. Verifique sua senha.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
     }
 
     private Authentication authenticate(String username, String password) {

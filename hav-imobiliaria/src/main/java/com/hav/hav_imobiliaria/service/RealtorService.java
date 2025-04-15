@@ -4,9 +4,13 @@ import com.hav.hav_imobiliaria.model.DTO.Adm.AdmPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.*;
 import com.hav.hav_imobiliaria.model.entity.Address;
 import com.hav.hav_imobiliaria.model.entity.Users.Adm;
+import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
+import com.hav.hav_imobiliaria.security.modelSecurity.Role;
+import com.hav.hav_imobiliaria.security.modelSecurity.UserSecurity;
+import com.hav.hav_imobiliaria.security.repositorySecurity.UserRepositorySecurity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +18,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +34,8 @@ public class RealtorService {
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
     private final EmailSenderService emailSenderService;
+    private final UserRepositorySecurity userRepositorySecurity;
+    private final PasswordEncoder passwordEncoder;
 
     public RealtorPostRequestDTO createRealtor(
             @Valid RealtorPostRequestDTO realtorDTO,
@@ -41,7 +48,20 @@ public class RealtorService {
         // que mudar todas as dtos e front end para adicionar o user_details
 
 
+        UserSecurity newUserSec = new UserSecurity();
+
+        newUserSec.setEmail(realtor.getEmail());
+        newUserSec.setPassword(passwordEncoder.encode(password));
+        newUserSec.setName(realtor.getName());
+        newUserSec.setRole(Role.valueOf("REALTOR"));
+
+        userRepositorySecurity.save(newUserSec);
+
+        realtor.setUserSecurity(newUserSec);
+
         Realtor savedRealtor = repository.save(realtor);
+
+        emailSenderService.sendPasswordNewAccount(realtor.getEmail(), password, "Corretor");
 
         if (image != null) {
             imageService.uploadUserImage(savedRealtor.getId(), image);

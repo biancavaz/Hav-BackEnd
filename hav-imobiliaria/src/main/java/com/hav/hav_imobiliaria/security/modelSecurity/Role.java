@@ -5,5 +5,9 @@ public enum Role {
     ADMIN,
     REALTOR,
     EDITOR,
-    CUSTOMER
+    CUSTOMER;
+
+    public String getAuthority() {
+        return "ROLE_" + this.name();
+    }
 }
