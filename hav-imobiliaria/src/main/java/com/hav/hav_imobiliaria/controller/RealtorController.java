@@ -76,5 +76,24 @@ public class RealtorController {
         return realtorDTO;
     }
 
+    @GetMapping("/getAll")
+    @ResponseStatus(HttpStatus.OK)
+    public Long getAllRegistredNumber(){
+        return service.getAllRegistredNumber();
+    }
+
+    @GetMapping("/getPercentageArchived")
+    @ResponseStatus(HttpStatus.OK)
+    public double getPercentageOfArchivedRealtors(){
+        return service.getPercentageOfArchivedRealtors();
+    }
+
+    @GetMapping("/getQuantityOfArchived")
+    @ResponseStatus(HttpStatus.OK)
+    public Long getQuantityOfArchivedRealtors(){
+        return service.getQuantityOfArchivedRealtors();
+    }
+
+
 
 }
