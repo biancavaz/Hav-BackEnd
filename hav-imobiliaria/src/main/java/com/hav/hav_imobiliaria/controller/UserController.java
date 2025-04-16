@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.controller;
 
 import com.hav.hav_imobiliaria.model.DTO.Users.UserConfigurationDto;
+import com.hav.hav_imobiliaria.model.DTO.Users.UserConfigurationDtoEdit;
 import com.hav.hav_imobiliaria.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,5 +37,11 @@ public class UserController {
     @GetMapping("/configuration")
     public UserConfigurationDto getUser(@CookieValue("token") String token){
         return userService.findUserByJwt(token);
+    }
+    @PutMapping("/configuration")
+    public void editUser(@CookieValue("token") String token, @RequestBody UserConfigurationDtoEdit userConfigurationDtoEdit){
+        System.out.println(userConfigurationDtoEdit);
+        System.out.println("------------------  ");
+        userService.editUserByJwt(token, userConfigurationDtoEdit);
     }
 }

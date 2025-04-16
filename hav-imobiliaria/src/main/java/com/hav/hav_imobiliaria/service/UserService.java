@@ -3,6 +3,8 @@ import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationDTO;
 import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationGetResponseDTO;
 import com.hav.hav_imobiliaria.WebSocket.Service.NotificationService;
 import com.hav.hav_imobiliaria.model.DTO.Users.UserConfigurationDto;
+import com.hav.hav_imobiliaria.model.DTO.Users.UserConfigurationDtoEdit;
+import com.hav.hav_imobiliaria.model.entity.Address;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.*;
@@ -26,29 +28,37 @@ public class UserService {
     private final TokenProvider tokenProvider;
     private final ModelMapper modelMapper;
 
-    public UserConfigurationDto findUserByJwt(String authorizationHeader) {
-        String email = tokenProvider.getEmailFromToken(authorizationHeader);
+    public UserConfigurationDto findUserByJwt(String cookie) {
+        String email = tokenProvider.getEmailFromToken(cookie);
         User user = userRepository.findByEmail(email).get();
         
-        //ignore user type
-        Object userType = user.getClass().getSimpleName();
+        //make the model mapper ignore the user type
+        
 
         UserConfigurationDto userConfigurationDto = modelMapper.map(user, UserConfigurationDto.class);
         
-        if(userType.equals("proprietor")){
-            userConfigurationDto.setUserType("proprietor");
-        }else if(userType.equals("realtor")){
-            userConfigurationDto.setUserType("realtor");
-        }else if(userType.equals("adm")){
-            userConfigurationDto.setUserType("adm");
-        }else if(userType.equals("editor")){
-            userConfigurationDto.setUserType("editor");
-        }
+        
         try{
             userConfigurationDto.setS3key(user.getImageUser().getS3Key());
         }catch (NullPointerException e){
         }
         return userConfigurationDto;
+    }
+
+
+    public void editUserByJwt(String cookie, UserConfigurationDtoEdit userConfigurationDtoEdit) {
+        String email = tokenProvider.getEmailFromToken(cookie);
+        User user = userRepository.findByEmail(email).get();
+        
+        user.setAddress(modelMapper.map(userConfigurationDtoEdit.getAddress(), Address.class));        
+        user.setName(userConfigurationDtoEdit.getName());
+        user.setEmail(userConfigurationDtoEdit.getEmail());
+        user.setCelphone(userConfigurationDtoEdit.getCelphone());
+        user.setPhoneNumber(userConfigurationDtoEdit.getPhoneNumber());
+
+        userRepository.save(user);
+        
+        
     }
 
     public Long getAllRegistredNumber() {

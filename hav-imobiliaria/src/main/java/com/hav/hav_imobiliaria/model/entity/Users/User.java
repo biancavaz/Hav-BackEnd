@@ -87,13 +87,5 @@ public class User {
     public void changeArchiveStatus(){
         this.archived = !this.archived;
     }
-    public Object getUserType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUserType'");
-    }
-    public void setUserType(Object object) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setUserType'");
-    }
 
 }
