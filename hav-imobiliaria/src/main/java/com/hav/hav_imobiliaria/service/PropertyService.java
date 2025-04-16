@@ -111,7 +111,7 @@ public class PropertyService {
         return dtos;
     }
 
-    public List<PropertyMapGetResponseDTO> findAllByFilterMap(){
+    public List<PropertyMapGetResponseDTO> findAllByFilterMap() {
 
 
         List<Property> allProperties = repository.findAll();
@@ -324,7 +324,7 @@ public class PropertyService {
         updateProprietor(property, propertyDTO.getProprietor());
         updateAdditionals(property, propertyDTO.getAdditionals());
 
-        
+
         repository.save(property);
 
 
@@ -452,7 +452,7 @@ public class PropertyService {
                 property.getPropertyType(),
                 property.getArea()
 
-                )).toList();
+        )).toList();
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
     }
 
@@ -472,11 +472,11 @@ public class PropertyService {
         return repository.findRandomHighlighted5().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
     }
 
-    public Long getAllRegistredNumber(){
+    public Long getAllRegistredNumber() {
         return repository.count();
     }
 
-    public double getPercentageOfRentalProperties(){
+    public double getPercentageOfRentalProperties() {
         List<Property> allProperties = repository.findAll();
         if (allProperties.isEmpty()) {
             return 0.0;
@@ -488,7 +488,7 @@ public class PropertyService {
         return (rentalCount * 100.0) / allProperties.size();
     }
 
-    public double getPercentageOfForSaleProperties(){
+    public double getPercentageOfForSaleProperties() {
         List<Property> allProperties = repository.findAll();
         if (allProperties.isEmpty()) {
             return 0.0;
@@ -501,7 +501,7 @@ public class PropertyService {
         return (forSaleCount * 100.0) / allProperties.size();
     }
 
-    public double getPercentageOfArchiveStatus(){
+    public double getPercentageOfArchiveStatus() {
         List<Property> allProperties = repository.findAll();
         if (allProperties.isEmpty()) {
             return 0.0;
@@ -509,35 +509,47 @@ public class PropertyService {
 
         long archiveStatus = allProperties
                 .stream()
-                .filter(Property:: isArchived )
+                .filter(Property::isArchived)
                 .count();
         return (archiveStatus * 100.0) / allProperties.size();
     }
 
-    public long getQuantityOfRentalProperties(){
+    public long getQuantityOfRentalProperties() {
         return repository.findAll()
                 .stream()
                 .filter(property -> "Locacao".equals(property.getPurpose()))
                 .count();
     }
 
-    public long getQuantityOfForSaleProperties(){
+    public long getQuantityOfForSaleProperties() {
         return repository.findAll()
                 .stream()
                 .filter(property -> "Venda".equals(property.getPurpose()))
                 .count();
     }
 
-    public long getQuantityOfArchivedProperties(){
+    public long getQuantityOfArchivedProperties() {
         return repository.findAll()
                 .stream()
-                .filter(Property:: isArchived)
+                .filter(Property::isArchived)
                 .count();
     }
 
-    public List<PropertyCardGetResponseDTO> similarProperties(){
+    public List<PropertyCardGetResponseDTO> similarProperties() {
+        PageRequest pageRequest = PageRequest.of(0, 3); // 3 prop
+        List<Property> properties = repository.findByPriceRange(100000.0, 150000.0, pageRequest);
 
+        return properties.stream().map(p -> new PropertyCardGetResponseDTO(
+                p.getPropertyFeatures(),
+                p.getAddress(),
+                p.getPrice(),
+                p.getPurpose(),
+                p.getPropertyStatus(),
+                p.getPromotionalPrice(),
+                p.getId(),
+                p.getPropertyType(),
+                p.getArea()
+        )).collect(Collectors.toList());
     }
-
 }
 
