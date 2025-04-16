@@ -535,5 +535,9 @@ public class PropertyService {
                 .count();
     }
 
+    public List<PropertyCardGetResponseDTO> similarProperties(){
+
+    }
+
 }
 

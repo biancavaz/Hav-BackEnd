@@ -127,5 +127,4 @@ public class NotificationService {
 
         enviarNotificacao(dto, List.of(user.getId()));
     }
-
 }
