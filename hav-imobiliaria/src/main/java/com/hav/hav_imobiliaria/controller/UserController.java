@@ -34,4 +34,10 @@ public class UserController {
     public Long getPercentageClients() {
         return userService.getPercentageClients();
     }
+
+    private final UserService userService;
+    @GetMapping("/configuration")
+    public UserConfigurationDto getUser(@RequestHeader("Authorization") String authorizationHeader){
+        return userService.findUserByJwt(authorizationHeader);
+    }
 }

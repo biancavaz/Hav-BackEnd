@@ -1,5 +1,4 @@
 package com.hav.hav_imobiliaria.service;
-
 import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationDTO;
 import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationGetResponseDTO;
 import com.hav.hav_imobiliaria.WebSocket.Service.NotificationService;
@@ -8,7 +7,6 @@ import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +20,21 @@ public class UserService {
     private final AdmRepository admRepository;
     private final EditorRepository editorRepository;
     private final NotificationService notificationService;
+    private final TokenProvider tokenProvider;
+    private final ModelMapper modelMapper;
+
+    public UserConfigurationDto findUserByJwt(String authorizationHeader) {
+        String email = tokenProvider.getEmailFromToken(authorizationHeader);
+        User user = userRepository.findByEmail(email).get();
+
+        UserConfigurationDto userConfigurationDto = modelMapper.map(user, UserConfigurationDto.class);
+
+        try{
+            userConfigurationDto.setS3key(user.getImageUser().getS3Key());
+        }catch (NullPointerException e){
+        }
+        return userConfigurationDto;
+    }
 
     public Long getAllRegistredNumber() {
         return userRepository.count();
