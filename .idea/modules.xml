@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Hav-BackEnd.iml" filepath="$PROJECT_DIR$/.idea/Hav-BackEnd.iml" />
-      <module fileurl="file://$PROJECT_DIR$/hav-imobiliaria/hav-imobiliaria.iml" filepath="$PROJECT_DIR$/hav-imobiliaria/hav-imobiliaria.iml" />
     </modules>
   </component>
 </project>
