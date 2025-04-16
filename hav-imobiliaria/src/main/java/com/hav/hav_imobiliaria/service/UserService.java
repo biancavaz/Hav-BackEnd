@@ -29,9 +29,21 @@ public class UserService {
     public UserConfigurationDto findUserByJwt(String authorizationHeader) {
         String email = tokenProvider.getEmailFromToken(authorizationHeader);
         User user = userRepository.findByEmail(email).get();
+        
+        //ignore user type
+        Object userType = user.getClass().getSimpleName();
 
         UserConfigurationDto userConfigurationDto = modelMapper.map(user, UserConfigurationDto.class);
-
+        
+        if(userType.equals("proprietor")){
+            userConfigurationDto.setUserType("proprietor");
+        }else if(userType.equals("realtor")){
+            userConfigurationDto.setUserType("realtor");
+        }else if(userType.equals("adm")){
+            userConfigurationDto.setUserType("adm");
+        }else if(userType.equals("editor")){
+            userConfigurationDto.setUserType("editor");
+        }
         try{
             userConfigurationDto.setS3key(user.getImageUser().getS3Key());
         }catch (NullPointerException e){
