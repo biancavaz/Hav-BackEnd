@@ -21,9 +21,9 @@ public record RealtorPostRequestDTO(
 //        @CPF(message = "CPF inválido")
         @NotBlank(message = "CPF não pode estar em branco")
         String cpf,
-        @NotNull(message = "Celular inválido")
-        @Pattern(regexp = "\\d{11}$", message = "Celular inválido")
-        String celphone,
+        @NotNull(message = "Celular inválido1")
+        @Pattern(regexp = "\\d{11}$", message = "Celular inválido2")
+        String cellphone,
         @NotBlank(message = "CRECI não pode estar em branco")
         String creci,
         @Pattern(regexp = "\\d{10}$",

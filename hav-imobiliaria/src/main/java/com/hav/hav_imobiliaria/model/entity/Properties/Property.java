@@ -115,16 +115,11 @@ public class Property {
     @JsonIgnore
     private List<User> users;
 
-
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImageProperty> imageProperties;
 
     public void changeArchiveStatus() {
         this.archived = !this.archived;
-    }
-
-    public PropertyFeature getPropertyFeatures() {
-        return propertyFeatures;
     }
 
     public List<Realtor> getRealtors() {

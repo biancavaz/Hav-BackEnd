@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.service;
 
+import com.hav.hav_imobiliaria.model.DTO.Image.ImageResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.ImageProperty;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Users.ImageUser;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -78,12 +80,25 @@ public class ImageService {
         imageUserRepository.delete(image);
     }
 
-    public byte[] getPropertyImage(Integer imageId) {
-        ImageProperty image = imagePropertyRepository.findById(imageId)
-                .orElseThrow(() -> new RuntimeException("Imagem não encontrada."));
-
-        return s3Service.downloadFile(image.getS3Key());
+    //    public List<byte[]> getPropertyImages(List<Integer> imageIds) {
+//        return imageIds.stream()
+//                .map(id -> imagePropertyRepository.findById(id)
+//                        .orElseThrow(() -> new RuntimeException("Imagem com ID " + id + " não encontrada.")))
+//                .map(image -> s3Service.downloadFile(image.getS3Key()))
+//                .collect(Collectors.toList());
+//    }
+    public List<ImageResponseDTO> getPropertyImages(List<Integer> imageIds) {
+        return imageIds.stream()
+                .map(id -> imagePropertyRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Imagem com ID " + id + " não encontrada.")))
+                .map(image -> {
+                    byte[] fileData = s3Service.downloadFile(image.getS3Key());
+                    String base64 = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(fileData);
+                    return new ImageResponseDTO(image.getId(), base64);
+                })
+                .collect(Collectors.toList());
     }
+
 
     public byte[] getUserImage(Integer imageId) {
         ImageUser image = imageUserRepository.findById(imageId)

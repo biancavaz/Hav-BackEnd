@@ -60,11 +60,8 @@ public class ProprietorService {
 
         modelMapper.map(proprietorPutDTO, proprietor);
 
-        if (deletedImageId != null) {
+        if (deletedImageId != null && newImage != null) {
             imageService.deleteUserImage(deletedImageId);
-        }
-
-        if (newImage != null) {
             imageService.uploadUserImage(id, newImage);
         }
 
@@ -148,7 +145,6 @@ public class ProprietorService {
             proprietorDTO.setImageId(proprietor.getImageUser().getId());
         }
 
-        // Converte a entidade Realtor para o DTO
         return proprietorDTO;
     }
 

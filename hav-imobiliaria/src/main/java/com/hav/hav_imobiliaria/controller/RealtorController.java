@@ -40,17 +40,16 @@ public class RealtorController {
     public Realtor editRealtor(
             @PathVariable @Positive @NotNull Integer id,
             @RequestPart("realtor") @Valid RealtorPutRequestDTO realtorPutDTO,
-            @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
+            @RequestPart(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
             @RequestPart(value = "newImage", required = false) MultipartFile newImage
     ) {
         return service.updateRealtor(id, realtorPutDTO, deletedImageId, newImage);
     }
 
-
     @PostMapping("/filter")
     public Page<RealtorListGetResponseDTO> findByFilter(
             @RequestBody RealtorFilterPostResponseDTO realtorDTO,
-            @RequestParam Integer page){
+            @RequestParam Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
         return service.findAllByFilter(realtorDTO, pageable);
     }
@@ -71,9 +70,8 @@ public class RealtorController {
     @GetMapping
     @RequestMapping("{id}")
     public RealtorPutRequestDTO getRealtor(
-            @PathVariable Integer id){
-        RealtorPutRequestDTO realtorDTO = service.findRealtorById(id);
-        return realtorDTO;
+            @PathVariable Integer id) {
+        return service.findRealtorById(id);
     }
 
 

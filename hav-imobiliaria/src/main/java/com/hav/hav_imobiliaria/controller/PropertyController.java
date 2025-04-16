@@ -95,7 +95,7 @@ public class PropertyController {
     public Property updateProperty(
             @PathVariable @Positive @NotNull Integer id,
             @RequestPart("property") @Valid PropertyPutRequestDTO propertyDTO,
-            @RequestParam(value = "deletedImageIds", required = false) List<Integer> deletedImageIds,
+            @RequestPart(value = "deletedImageIds", required = false) List<Integer> deletedImageIds,
             @RequestPart(value = "newImages", required = false) List<MultipartFile> newImages
     ) {
         System.out.println(propertyDTO.getAddress());
@@ -104,11 +104,10 @@ public class PropertyController {
 
     @GetMapping
     @RequestMapping("/{id}")
-    public ResponseEntity<PropertyPutRequestDTO> getProperty(
+    @ResponseStatus(HttpStatus.OK)
+    public PropertyPutRequestDTO getProperty(
             @PathVariable Integer id) {
-        PropertyPutRequestDTO propertyDto = service.findPropertyById(id);
-        System.out.println(propertyDto.toString());
-        return ResponseEntity.ok(propertyDto);
+        return service.findPropertyById(id);
     }
 
     @GetMapping
@@ -144,6 +143,7 @@ public class PropertyController {
     public double getPercentageOfRentalProperties(){
         return service.getPercentageOfRentalProperties();
     }
+
     @GetMapping("/getPercentageForSale")
     @ResponseStatus(HttpStatus.OK)
     public double getPercentageOfForSaleProperties(){
@@ -167,6 +167,7 @@ public class PropertyController {
     public long getQuantityOfForSaleProperties(){
         return service.getQuantityOfForSaleProperties();
     }
+
     @GetMapping("/getQuantityOfArchivedProperties")
     @ResponseStatus(HttpStatus.OK)
     public long getQuantityOfArchivedProperties(){

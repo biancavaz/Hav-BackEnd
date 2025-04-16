@@ -65,11 +65,8 @@ public class CustumerService {
 
         modelMapper.map(custumer, customer);
 
-        if (deletedImageId != null) {
+        if (deletedImageId != null && newImage != null) {
             imageService.deleteUserImage(deletedImageId);
-        }
-
-        if (newImage != null) {
             imageService.uploadUserImage(id, newImage);
         }
 
@@ -99,7 +96,7 @@ public class CustumerService {
         if (customer.getImageUser() != null) {
             customerDTO.setImageId(customer.getImageUser().getId());
         }
-        // Converte a entidade Realtor para o DTO
+
         return customerDTO;
     }
 //

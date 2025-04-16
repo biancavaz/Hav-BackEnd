@@ -53,7 +53,7 @@ public class EditorController {
     public Editor updateEditor(
             @PathVariable Integer id,
             @RequestPart("editor") @Valid EditorPutRequestDTO editorPutDTO,
-            @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
+            @RequestPart(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
             @RequestPart(value = "newImage", required = false) MultipartFile newImage
     ) {
         return service.updateEditor(id, editorPutDTO, deletedImageId, newImage);
@@ -78,10 +78,10 @@ public class EditorController {
 
     @GetMapping
     @RequestMapping("{id}")
-    public ResponseEntity<EditorPutRequestDTO> getEditor(
+    @ResponseStatus(HttpStatus.OK)
+    public EditorPutRequestDTO getEditor(
             @PathVariable Integer id) {
 
-        EditorPutRequestDTO editorDTO = service.findEditorById(id);
-        return ResponseEntity.ok(editorDTO);
+        return service.findEditorById(id);
     }
 }

@@ -46,7 +46,6 @@ public class AdmService {
         String password = passwordGeneratorService.generateSecurePassword();
 
 
-
         Adm savedAdm = repository.save(adm);
 
         if (image != null) {
@@ -65,12 +64,9 @@ public class AdmService {
                 new NoSuchElementException("Editor com o ID " + id + " não encontrado."));
 
         modelMapper.map(admPutDTO, adm);
-        System.out.println(adm.toString());
-        if (deletedImageId != null) {
-            imageService.deleteUserImage(deletedImageId);
-        }
 
-        if (newImage != null) {
+        if (deletedImageId != null && newImage != null) {
+            imageService.deleteUserImage(deletedImageId);
             imageService.uploadUserImage(id, newImage);
         }
 
@@ -111,10 +107,15 @@ public class AdmService {
     }
 
     public AdmPutRequestDTO findAdmById(Integer id) {
-        Adm adm = repository.findById(id).get();
+        Adm adm = repository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Adm not found"));
+
         AdmPutRequestDTO admPutRequestDTO = modelMapper.map(adm, AdmPutRequestDTO.class);
 
-        // Converte a entidade adm para o DTO
+        if (adm.getImageUser() != null) {
+            admPutRequestDTO.setImageId(adm.getImageUser().getId());
+        }
+
         return admPutRequestDTO;
     }
 }

@@ -40,7 +40,7 @@ public class ProprietorController {
     @ResponseStatus(HttpStatus.OK)
     public Proprietor updateProprietor(
             @PathVariable Integer id,
-            @RequestPart(value="proprietor") ProprietorPutRequestDTO proprietorPutDTO,
+            @RequestPart(value = "proprietor") ProprietorPutRequestDTO proprietorPutDTO,
             @RequestPart(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
             @RequestPart(value = "newImage", required = false) MultipartFile newImage
     ) {
@@ -49,7 +49,7 @@ public class ProprietorController {
 
     @PostMapping("/filter")
     public Page<ProprietorListGetResponseDTO> findByFilter(@RequestBody ProprietorFilterPostResponseDTO proprietorDto,
-                                                           @RequestParam Integer page){
+                                                           @RequestParam Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
         return service.findAllByFilter(pageable, proprietorDto);
     }
@@ -67,10 +67,10 @@ public class ProprietorController {
 
     @GetMapping
     @RequestMapping("{id}")
-    public ResponseEntity<ProprietorPutRequestDTO> getProprietorById(
+    @ResponseStatus(HttpStatus.OK)
+    public ProprietorPutRequestDTO getProprietorById(
             @PathVariable Integer id) {
-        ProprietorPutRequestDTO proprietorDTO = service.findProprietorById(id);
-        return ResponseEntity.ok(proprietorDTO);
+        return service.findProprietorById(id);
     }
 
 }

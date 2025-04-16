@@ -1,14 +1,14 @@
 package com.hav.hav_imobiliaria.controller;
 
+import com.hav.hav_imobiliaria.model.DTO.Image.ImageResponseDTO;
 import com.hav.hav_imobiliaria.service.ImageService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/images")
@@ -17,14 +17,21 @@ public class ImageController {
 
     private final ImageService imageService;
 
-    @GetMapping("/property/{imageId}")
-    public ResponseEntity<byte[]> getPropertyImage(@PathVariable Integer imageId) {
-        byte[] imageData = imageService.getPropertyImage(imageId);
+//    @GetMapping("/property/{imageId}")
+//    public ResponseEntity<byte[]> getPropertyImage(@PathVariable Integer imageId) {
+//        byte[] imageData = imageService.getPropertyImage(imageId);
+//
+//        return ResponseEntity.ok()
+//                .contentType(MediaType.IMAGE_JPEG) // ou IMAGE_PNG dependendo do seu arquivo
+//                .body(imageData);
+//    }
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG) // ou IMAGE_PNG dependendo do seu arquivo
-                .body(imageData);
+    @PostMapping("/property/images")
+    public ResponseEntity<List<ImageResponseDTO>> getPropertyImages(@RequestBody List<Integer> imageIds) {
+        List<ImageResponseDTO> images = imageService.getPropertyImages(imageIds);
+        return ResponseEntity.ok(images);
     }
+
 
     @GetMapping("/user/{imageId}")
     public ResponseEntity<byte[]> getCustomerImage(@PathVariable Integer imageId) {

@@ -40,7 +40,7 @@ public class AdmController {
     public Adm editAdm(
             @PathVariable Integer id,
             @RequestPart("adm") @Valid AdmPutRequestDTO admPutDTO,
-            @RequestParam(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
+            @RequestPart(value = "deletedImageId", required = false) @Positive Integer deletedImageId,
             @RequestPart(value = "newImage", required = false) MultipartFile newImage
     ) {
         System.out.println(admPutDTO);
@@ -77,7 +77,7 @@ public class AdmController {
     //      return realtor.convert();
     //  }
 
-//    @DeleteMapping
+    //    @DeleteMapping
 //    @RequestMapping("/{id}")
 //    public void removeAdm(@PathVariable Integer id){
 //        service.remove(id);
@@ -90,9 +90,9 @@ public class AdmController {
 
     @GetMapping
     @RequestMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public AdmPutRequestDTO getAdm(
             @PathVariable Integer id) {
-        AdmPutRequestDTO admDTO = service.findAdmById(id);
-        return admDTO;
+        return service.findAdmById(id);
     }
 }
