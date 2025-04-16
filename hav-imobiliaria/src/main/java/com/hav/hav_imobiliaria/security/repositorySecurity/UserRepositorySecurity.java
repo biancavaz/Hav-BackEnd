@@ -15,6 +15,6 @@ public interface UserRepositorySecurity extends JpaRepository<UserSecurity, Inte
 
     UserSecurity findUserSecurityByEmail(String email) throws UsernameNotFoundException;
 
-    @Query("SELECT u FROM UserSecurity u WHERE u.full_name like %:name% or u.email like %:name%")
+    @Query("SELECT u FROM UserSecurity u WHERE u.name like %:name% or u.email like %:name%")
     List<UserSecurity> searchUserSecurities(@Param("name") String name);
 }

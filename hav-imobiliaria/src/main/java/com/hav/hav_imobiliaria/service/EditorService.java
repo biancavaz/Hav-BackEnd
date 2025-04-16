@@ -6,6 +6,9 @@ import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Editor.EditorPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.*;
 import com.hav.hav_imobiliaria.repository.EditorRepository;
+import com.hav.hav_imobiliaria.security.modelSecurity.Role;
+import com.hav.hav_imobiliaria.security.modelSecurity.UserSecurity;
+import com.hav.hav_imobiliaria.security.repositorySecurity.UserRepositorySecurity;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -15,6 +18,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +34,8 @@ public class EditorService {
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
     private final EmailSenderService emailSenderService;
+    private final UserRepositorySecurity userRepositorySecurity;
+    private final PasswordEncoder passwordEncoder;
 
     public EditorPostRequestDTO createEditor(
             @Valid EditorPostRequestDTO editorPostDTO,
@@ -44,7 +50,22 @@ public class EditorService {
 
 
 
+
+
+        UserSecurity newUserSec = new UserSecurity();
+
+        newUserSec.setEmail(editor.getEmail());
+        newUserSec.setPassword(passwordEncoder.encode(password));
+        newUserSec.setName(editor.getName());
+        newUserSec.setRole(Role.valueOf("EDITOR"));
+
+        userRepositorySecurity.save(newUserSec);
+
+        editor.setUserSecurity(newUserSec);
+
         Editor savedEditor = repository.save(editor);
+
+        emailSenderService.sendPasswordNewAccount(editor.getEmail(), password, "Editor");
 
         if (image != null) {
             imageService.uploadUserImage(savedEditor.getId(), image);

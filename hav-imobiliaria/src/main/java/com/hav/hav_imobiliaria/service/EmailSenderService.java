@@ -21,10 +21,7 @@ public class EmailSenderService {
 
     private CustumerRepository custumerRepository;
 
-    public void sendEmailContactUs(Integer id, String subject, String body) {
-        Customer customer = custumerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente com ID " + id + " não encontrado."));
-
+    public void sendEmailContactUs(String email, String subject, String body) {
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -35,7 +32,7 @@ public class EmailSenderService {
             helper.setTo("hav.suporte@gmail.com");
             helper.setSubject(subject);
 
-            String content = "<p><strong>Email enviado por:</strong> " + customer.getEmail() + "</p>"
+            String content = "<p><strong>Email enviado por:</strong> " + email + "</p>"
                     + "<p>" + body + "</p>";
 
             helper.setText(content, true); // true = interpretar como HTML
