@@ -182,4 +182,9 @@ public class PropertyController {
     public List<PropertyCardGetResponseDTO> findMostRecentProperties(){
         return service.findMostRecentProperties();
     }
+
+    @GetMapping("/getHighlightedHome")
+    public List<PropertyCardGetResponseDTO> findRandomHighlighted9(){
+        return service.findRandomHighlighted9();
+    }
 }

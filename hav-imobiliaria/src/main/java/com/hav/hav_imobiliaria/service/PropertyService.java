@@ -568,5 +568,9 @@ public class PropertyService {
                 p.getArea()
         )).collect(Collectors.toList());
     }
+
+    public List<PropertyCardGetResponseDTO> findRandomHighlighted9() {
+        return repository.findRandomHighlighted9().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+    }
 }
 
