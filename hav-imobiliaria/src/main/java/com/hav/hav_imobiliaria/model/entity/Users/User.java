@@ -38,7 +38,7 @@ public class User {
     @Column(unique = true)
     private String cpf;
 
-    @Column(nullable = false)
+    @Column()
     private String cellphone;
 
     @Column(name = "phone_number")
