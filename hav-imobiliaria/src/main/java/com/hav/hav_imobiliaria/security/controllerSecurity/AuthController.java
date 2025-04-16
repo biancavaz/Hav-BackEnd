@@ -47,7 +47,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public AuthResponse createUserHandler(@Valid @RequestBody UserSecurity userSec, HttpServletResponse response) throws UserException {
+    public ResponseEntity<AuthResponse> createUserHandler(@Valid @RequestBody UserSecurity userSec, HttpServletResponse response) throws UserException {
 
             String email = userSec.getEmail();
             String password = userSec.getPassword();
@@ -60,7 +60,7 @@ public class AuthController {
                 AuthResponse errorResponse = new AuthResponse();
                 errorResponse.setStatus(false);
                 errorResponse.setMessage("Email já existente.");
-                return errorResponse;
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
             }
 
             UserSecurity newUserSec = new UserSecurity();
@@ -96,7 +96,7 @@ public class AuthController {
                     .build();
 
             response.addHeader("Set-Cookie", cookie.toString());
-            return authResponse;
+            return ResponseEntity.ok(authResponse);
 
     }
 
