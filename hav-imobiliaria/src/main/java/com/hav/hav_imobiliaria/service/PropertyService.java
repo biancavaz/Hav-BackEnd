@@ -536,8 +536,25 @@ public class PropertyService {
     }
 
     public List<PropertyCardGetResponseDTO> similarProperties() {
-        PageRequest pageRequest = PageRequest.of(0, 3); // 3 prop
+        PageRequest pageRequest = PageRequest.of(0, 9); // quant prop
         List<Property> properties = repository.findByPriceRange(100000.0, 150000.0, pageRequest);
+
+        return properties.stream().map(p -> new PropertyCardGetResponseDTO(
+                p.getPropertyFeatures(),
+                p.getAddress(),
+                p.getPrice(),
+                p.getPurpose(),
+                p.getPropertyStatus(),
+                p.getPromotionalPrice(),
+                p.getId(),
+                p.getPropertyType(),
+                p.getArea()
+        )).collect(Collectors.toList());
+    }
+
+    public List<PropertyCardGetResponseDTO> findMostRecentProperties(){
+        PageRequest pageRequest = PageRequest.of(0,9);
+        List<Property> properties = repository.findMostRecentProperties(pageRequest);
 
         return properties.stream().map(p -> new PropertyCardGetResponseDTO(
                 p.getPropertyFeatures(),

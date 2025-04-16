@@ -177,4 +177,9 @@ public class PropertyController {
     public List<PropertyCardGetResponseDTO> similarProperties(){
         return service.similarProperties();
     }
+
+    @GetMapping("/getMostRecentProperties")
+    public List<PropertyCardGetResponseDTO> findMostRecentProperties(){
+        return service.findMostRecentProperties();
+    }
 }
