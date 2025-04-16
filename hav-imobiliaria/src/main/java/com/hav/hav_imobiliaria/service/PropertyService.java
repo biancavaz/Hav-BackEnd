@@ -1,5 +1,7 @@
 package com.hav.hav_imobiliaria.service;
 
+import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationDTO;
+import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressCardGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressGetResponseDTO;
@@ -21,8 +23,10 @@ import com.hav.hav_imobiliaria.model.DTO.Property.*;
 import com.hav.hav_imobiliaria.model.entity.Properties.Taxes;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.ImagePropertyRepository;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
+import com.hav.hav_imobiliaria.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -35,6 +39,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.List;
@@ -57,6 +62,8 @@ public class PropertyService {
     private final ImagePropertyRepository imagePropertyRepository;
     private final S3Service s3Service;
     private final SchedulesService schedulesService;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     public PropertyListGetResponseDTO create(@Valid PropertyPostRequestDTO propertyDTO, List<MultipartFile> images) {
 
@@ -76,6 +83,8 @@ public class PropertyService {
             imageService.uploadPropertyImages(savedProperty.getId(), images);
         }
 
+        // enviar notificação da nova propriedade salva ->
+        userService.checkAndNotifyUsersAboutNewProperty(savedProperty);
 
         return modelMapper.map(savedProperty, PropertyListGetResponseDTO.class);
     }
@@ -525,5 +534,6 @@ public class PropertyService {
                 .filter(Property:: isArchived)
                 .count();
     }
+
 }
 
