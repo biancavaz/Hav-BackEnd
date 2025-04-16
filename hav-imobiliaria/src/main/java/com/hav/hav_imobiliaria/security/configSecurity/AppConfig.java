@@ -105,6 +105,8 @@ public class AppConfig {
                         .requestMatchers("/schedules/history/realtor/**").hasRole("REALTOR")
                         /* TAXES CONTROLLER */
                         .requestMatchers(HttpMethod.GET, "/taxes/**").authenticated()
+                        /* USER CONTROLLER */
+                        .requestMatchers(HttpMethod.GET, "/users/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtTokenValidator(), UsernamePasswordAuthenticationFilter.class)

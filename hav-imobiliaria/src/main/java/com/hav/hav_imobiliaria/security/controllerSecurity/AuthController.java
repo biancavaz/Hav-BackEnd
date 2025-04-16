@@ -75,7 +75,7 @@ public class AuthController {
             customer.setUserSecurity(newUserSec);
             customerReporitory.save(customer);
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, List.of(new SimpleGrantedAuthority("CUSTOMER")));
+            Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER")));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
