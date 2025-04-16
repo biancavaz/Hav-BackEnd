@@ -73,4 +73,9 @@ public class ProprietorController {
         return ResponseEntity.ok(proprietorDTO);
     }
 
+    @GetMapping("/getAll")
+    public Long getQuantityProprietor() {
+        return service.getQuantityProprietor();
+    }
+
 }

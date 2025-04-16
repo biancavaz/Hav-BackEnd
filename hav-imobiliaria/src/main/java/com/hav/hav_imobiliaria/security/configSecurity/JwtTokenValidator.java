@@ -25,11 +25,18 @@ public class JwtTokenValidator extends OncePerRequestFilter {
     protected void doFilterInternal(
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String jwt = request.getHeader("Authorization");
+
+        String jwt = request.getCookies() != null ? 
+            java.util.Arrays.stream(request.getCookies())
+                .filter(c -> "token".equals(c.getName()))
+                .map(c -> c.getValue())
+                .findFirst()
+                .orElse(null) : null;
+
         System.out.println(jwt);
+        
         if (jwt != null) {
             try {
-                jwt = jwt.substring(7);
                 System.out.println(jwt);
                 SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
                 Claims claims = Jwts.parser().setSigningKey(key).build().parseClaimsJws(jwt).getBody();

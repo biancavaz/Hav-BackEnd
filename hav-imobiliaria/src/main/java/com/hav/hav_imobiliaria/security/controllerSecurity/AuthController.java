@@ -10,11 +10,13 @@ import com.hav.hav_imobiliaria.security.modelSecurity.UserSecurity;
 import com.hav.hav_imobiliaria.security.repositorySecurity.UserRepositorySecurity;
 import com.hav.hav_imobiliaria.security.requestSecurity.LoginRequest;
 import com.hav.hav_imobiliaria.security.serviceSecurity.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -45,7 +47,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public AuthResponse createUserHandler(@Valid @RequestBody UserSecurity userSec) throws UserException {
+    public ResponseEntity<AuthResponse> createUserHandler(@Valid @RequestBody UserSecurity userSec, HttpServletResponse response) throws UserException {
 
             String email = userSec.getEmail();
             String password = userSec.getPassword();
@@ -58,7 +60,7 @@ public class AuthController {
                 AuthResponse errorResponse = new AuthResponse();
                 errorResponse.setStatus(false);
                 errorResponse.setMessage("Email já existente.");
-                return errorResponse;
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
             }
 
             UserSecurity newUserSec = new UserSecurity();
@@ -75,7 +77,7 @@ public class AuthController {
             customer.setUserSecurity(newUserSec);
             customerReporitory.save(customer);
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, List.of(new SimpleGrantedAuthority("CUSTOMER")));
+            Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER")));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -84,13 +86,23 @@ public class AuthController {
             AuthResponse authResponse = new AuthResponse();
             authResponse.setStatus(true);
             authResponse.setJwt(token);
-            return authResponse;
+
+            ResponseCookie cookie = ResponseCookie.from("token", token)
+                    .httpOnly(true)
+                    .secure(false)
+                    .sameSite("Strict")
+                    .domain("localhost") // Add this line
+                    .path("/") // Available to all routes
+                    .build();
+
+            response.addHeader("Set-Cookie", cookie.toString());
+            return ResponseEntity.ok(authResponse);
 
     }
 
     @PostMapping("/signin")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody LoginRequest req) {
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody LoginRequest req, HttpServletResponse response) {
         String username = req.getEmail();
         String password = req.getPassword();
 
@@ -132,6 +144,16 @@ public class AuthController {
             authResponse.setStatus(true);
             authResponse.setJwt(token);
             authResponse.setUser(user);
+
+            ResponseCookie cookie = ResponseCookie.from("token", token)
+                    .httpOnly(true)
+                    .secure(false)
+                    .sameSite("Strict")
+                    .domain("localhost") // Add this line
+                    .path("/") // Available to all routes
+                    .build();
+
+            response.addHeader("Set-Cookie", cookie.toString());
 
             return ResponseEntity.ok(authResponse);
 

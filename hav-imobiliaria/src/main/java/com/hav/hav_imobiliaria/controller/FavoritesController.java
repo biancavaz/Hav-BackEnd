@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,29 +23,27 @@ public class FavoritesController {
 
     @PostMapping("/favoritar/{idProperty}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void favoritar(@RequestHeader("Authorization") String authorizationHeader, @PathVariable Integer idProperty) {
-        favoritesService.favoritar(idProperty, authorizationHeader);
+    public void favoritar(@CookieValue("token") String token, @PathVariable Integer idProperty) {
+        favoritesService.favoritar(idProperty, token);
     }
 
     @GetMapping("/map/{id}")
-    public List<PropertyMapGetResponseDTO> findByFilterMapFavorite(@RequestHeader("Authorization") String authorizationHeader) {
-        return favoritesService.findAllByFilterMapFavorite(authorizationHeader);
+    public List<PropertyMapGetResponseDTO> findByFilterMapFavorite(@CookieValue("token") String token) {
+        return favoritesService.findAllByFilterMapFavorite(token);
     }
-
 
     @DeleteMapping("/desfavoritar/{idProperty}")
     @ResponseStatus(HttpStatus.OK)
-    public void desfavoritar(@RequestHeader("Authorization") String authorizationHeader, @PathVariable Integer idProperty) {
-        favoritesService.desfavoritar(idProperty, authorizationHeader);
+    public void desfavoritar(@CookieValue("token") String token, @PathVariable Integer idProperty) {
+        favoritesService.desfavoritar(idProperty, token);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<PropertyCardGetResponseDTO> returnFavorites(
-            @RequestHeader("Authorization") String authorizationHeader,
+            @CookieValue("token") String token,
             @RequestParam Integer page) {
         Pageable pageable = PageRequest.of(page, 12);
-        return favoritesService.returnFavorites(pageable, authorizationHeader);
+        return favoritesService.returnFavorites(pageable, token);
     }
-
 }

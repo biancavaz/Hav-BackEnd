@@ -30,7 +30,7 @@ public class ChatController {
     @ResponseStatus(HttpStatus.CREATED)
     public Chat createChatHandler(
             @Valid @RequestBody SingleChatRequest singleChatRequest,
-            @RequestHeader("Authorization") String jwt
+            @CookieValue("token") String jwt
     ) throws UserException, ChatException {
 
         UserSecurity reqUser = userSecurityService.findUserProfile(jwt);
@@ -42,7 +42,7 @@ public class ChatController {
     @ResponseStatus(HttpStatus.CREATED)
     public Chat createGroupHandler(
             @Valid @RequestBody GroupChatRequest groupChatRequest,
-            @RequestHeader("Authorization") String jwt
+            @CookieValue("token") String jwt
     ) throws UserException {
 
         UserSecurity reqUser = userSecurityService.findUserProfile(jwt);
@@ -54,7 +54,7 @@ public class ChatController {
     @ResponseStatus(HttpStatus.OK)
     public Optional<Chat> findChatByIdHandler(
             @Positive @PathVariable Integer chatId,
-            @RequestHeader("Authorization") String jwt)
+            @CookieValue("token") String jwt)
             throws UserException, ChatException {
 
         return chatService.findChatById(chatId);
@@ -63,7 +63,7 @@ public class ChatController {
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
     public List<Chat> findAllChatByUserIdHandler(
-            @RequestHeader("Authorization") String jwt
+            @CookieValue("token") String jwt
     ) throws UserException {
 
         UserSecurity reqUser = userSecurityService.findUserProfile(jwt);
@@ -74,7 +74,7 @@ public class ChatController {
     @PutMapping("/{chatId}/add/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public Chat addUserToGroupHandler(
-            @RequestHeader("Authorization") String jwt,
+            @CookieValue("token") String jwt,
             @PathVariable Integer chatId,
             @PathVariable Integer userId) throws UserException, ChatException {
 
@@ -86,7 +86,7 @@ public class ChatController {
     @PutMapping("/{chatId}/remove/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public Chat removeUserFromGroupHandler(
-            @RequestHeader("Authorization") String jwt,
+            @CookieValue("token") String jwt,
             @PathVariable Integer chatId,
             @PathVariable Integer userId) throws UserException, ChatException {
 
@@ -98,7 +98,7 @@ public class ChatController {
     @DeleteMapping("/delete/{chatId}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse deleteChatHandler(
-            @RequestHeader("Authorization") String jwt,
+            @CookieValue("token") String jwt,
             @PathVariable Integer chatId)
             throws UserException, ChatException {
 
