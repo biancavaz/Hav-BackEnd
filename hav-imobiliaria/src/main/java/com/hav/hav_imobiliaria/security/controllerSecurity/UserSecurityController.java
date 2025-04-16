@@ -22,7 +22,7 @@ public class UserSecurityController {
 
     @GetMapping("/profile")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public UserSecurity getUserProfileHandler(@RequestHeader("Authorization") String token)
+    public UserSecurity getUserProfileHandler(@CookieValue("token") String token)
             throws UserException {
         return userSecurityService.findUserProfile(token);
     }
@@ -38,7 +38,7 @@ public class UserSecurityController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ApiResponse updateUserSecurityHandler(
             @RequestBody UpdateUserSecurityRequest req,
-            @RequestHeader("Authorization") String token, SessionStatus sessionStatus)
+            @CookieValue("token") String token, SessionStatus sessionStatus)
             throws UserException {
 
         UserSecurity userSecurity = userSecurityService.findUserProfile(token);

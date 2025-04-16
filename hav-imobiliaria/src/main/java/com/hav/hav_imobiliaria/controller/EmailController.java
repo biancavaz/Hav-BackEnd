@@ -25,8 +25,8 @@ public class EmailController {
     TokenProvider tokenProvider;
 
     @PostMapping("/contactus")
-    public String sendContactUsEmail(@RequestBody EmailComplainDTO email, @RequestHeader("Authorization") String authorizationHeader){
-        send(authorizationHeader, email.getSubject(), email.getBody());
+    public String sendContactUsEmail(@RequestBody EmailComplainDTO email, @CookieValue("token") String token){
+        send(token, email.getSubject(), email.getBody());
         return "email sent";
     };
 

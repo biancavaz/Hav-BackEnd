@@ -25,7 +25,7 @@ public class MessageController {
     @PostMapping("/create")
     public Message sendMessageHandler(
             @RequestBody SendMessageRequest req,
-            @RequestHeader("Authorization") String jwt) throws ChatException, UserException {
+            @CookieValue("token") String jwt) throws ChatException, UserException {
 
         UserSecurity user = userSecurityService.findUserProfile(jwt);
 
@@ -37,7 +37,7 @@ public class MessageController {
     @GetMapping("/chat/{chatId}")
     public List<Message> getChatsMessagesHandler(
             @PathVariable Integer chatId,
-            @RequestHeader("Authorization") String jwt)
+            @CookieValue("token") String jwt)
             throws ChatException, UserException {
 
         UserSecurity user = userSecurityService.findUserProfile(jwt);
@@ -48,7 +48,7 @@ public class MessageController {
     @DeleteMapping("/{messageId}")
     public ApiResponse deleteMessagesByIdHandler(
             @PathVariable Integer messageId,
-            @RequestHeader("Authorization") String jwt)
+            @CookieValue("token") String jwt)
             throws UserException, MessageException {
 
         UserSecurity user = userSecurityService.findUserProfile(jwt);
