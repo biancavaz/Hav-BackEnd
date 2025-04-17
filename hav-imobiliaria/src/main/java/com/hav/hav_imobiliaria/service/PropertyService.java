@@ -552,9 +552,28 @@ public class PropertyService {
         )).collect(Collectors.toList());
     }
 
-    public List<PropertyCardGetResponseDTO> findMostRecentProperties(){
+    public List<PropertyCardGetResponseDTO> findMostRecentSellProperties(){
         PageRequest pageRequest = PageRequest.of(0,9);
-        List<Property> properties = repository.findMostRecentProperties(pageRequest);
+        List<Property> properties =
+                repository.findMostRecentSellProperties("VENDA", pageRequest);
+
+        return properties.stream().map(p -> new PropertyCardGetResponseDTO(
+                p.getPropertyFeatures(),
+                p.getAddress(),
+                p.getPrice(),
+                p.getPurpose(),
+                p.getPropertyStatus(),
+                p.getPromotionalPrice(),
+                p.getId(),
+                p.getPropertyType(),
+                p.getArea()
+        )).collect(Collectors.toList());
+    }
+
+    public List<PropertyCardGetResponseDTO> findMostRecentLeaseProperties(){
+        PageRequest pageRequest = PageRequest.of(0,9);
+        List<Property> properties =
+                repository.findMostRecentSellProperties("LOCACAO", pageRequest);
 
         return properties.stream().map(p -> new PropertyCardGetResponseDTO(
                 p.getPropertyFeatures(),

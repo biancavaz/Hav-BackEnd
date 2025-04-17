@@ -35,8 +35,18 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
     List<Property> findByPriceRange(@Param("minPrice") Double minPrice, @Param("maxPrice")
     Double maxPrice, Pageable pageable);
 
-    @Query("SELECT p FROM Property p ORDER BY p.createdAt DESC")
-    List<Property> findMostRecentProperties(Pageable pageable);
+    @Query("""
+                SELECT p FROM Property p 
+                WHERE (:purpose IS NULL OR p.purpose = :purpose) 
+                ORDER BY p.createdAt DESC
+            """)
+    List<Property> findMostRecentSellProperties(@Param("purpose") String purpose, Pageable pageable);
 
+    @Query("""
+                SELECT p FROM Property p 
+                WHERE (:purpose IS NULL OR p.purpose = :purpose) 
+                ORDER BY p.createdAt DESC
+            """)
+    List<Property> findMostRecentLeaseProperties(@Param("purpose") String purpose, Pageable pageable);
 
 }
