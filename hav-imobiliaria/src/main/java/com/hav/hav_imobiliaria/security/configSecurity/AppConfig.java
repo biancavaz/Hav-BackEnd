@@ -81,7 +81,7 @@ public class AppConfig {
                         .requestMatchers(HttpMethod.GET, "/property").hasRole("EDITOR")
                         .requestMatchers("/property/filter",
                                 "/property/filter/card",
-                                "/property/filter/map").authenticated()
+                                "/property/filter/map").permitAll()
                         .requestMatchers("/property/changeArchiveStatus").hasRole("EDITOR")
                         .requestMatchers("/property/changeArchiveStatus").hasRole("EDITOR")
                         .requestMatchers(HttpMethod.DELETE, "/property/**").hasRole("EDITOR")
