@@ -26,11 +26,18 @@ public class ImageController {
 //                .body(imageData);
 //    }
 
+//    @PostMapping("/property/images")
+//    public ResponseEntity<List<ImageResponseDTO>> getPropertyImages(@RequestBody List<Integer> imageIds) {
+//        List<ImageResponseDTO> images = imageService.getPropertyImages(imageIds);
+//        return ResponseEntity.ok(images);
+//    }
+
     @PostMapping("/property/images")
-    public ResponseEntity<List<ImageResponseDTO>> getPropertyImages(@RequestBody List<Integer> imageIds) {
-        List<ImageResponseDTO> images = imageService.getPropertyImages(imageIds);
+    public ResponseEntity<List<byte[]>> getPropertyImages(@RequestBody List<Integer> imageIds) {
+        List<byte[]> images = imageService.getPropertyImages(imageIds);
         return ResponseEntity.ok(images);
     }
+
 
 
     @GetMapping("/user/{imageId}")

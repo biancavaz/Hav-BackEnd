@@ -293,8 +293,8 @@ public class PropertyService {
     public Property updateProperty(
             Integer propertyId,
             PropertyPutRequestDTO propertyDTO,
-            List<Integer> deletedImageIds,
             List<MultipartFile> newImages) {
+
         Property property = repository.findById(propertyId)
                 .orElseThrow(() -> new EntityNotFoundException("Propriedade não encontrada"));
 
@@ -313,14 +313,13 @@ public class PropertyService {
         modelMapper.map(propertyDTO.getPropertyFeatures(), property.getPropertyFeatures());
         modelMapper.map(propertyDTO.getTaxes(), property.getTaxes());
         modelMapper.map(propertyDTO.getAddress(), property.getAddress());
-
         updateRealtors(property, propertyDTO.getRealtors());
         updateProprietor(property, propertyDTO.getProprietor());
         updateAdditionals(property, propertyDTO.getAdditionals());
 
         repository.save(property);
 
-        processImages(propertyId, deletedImageIds, newImages);
+        processImages(propertyId, newImages);
 
         return property;
     }
@@ -345,10 +344,9 @@ public class PropertyService {
         }
     }
 
-    private void processImages(Integer propertyId, List<Integer> deletedImageIds, List<MultipartFile> newImages) {
-        if ((deletedImageIds != null && !deletedImageIds.isEmpty()) &&
-                (newImages != null && !newImages.isEmpty())) {
-            imageService.deletePropertyImages(deletedImageIds);
+    private void processImages(Integer propertyId, List<MultipartFile> newImages) {
+        if (newImages != null && !newImages.isEmpty()) {
+            imageService.deletePropertyImages(propertyId);
             imageService.uploadPropertyImages(propertyId, newImages);
         }
     }

@@ -82,10 +82,12 @@ public class Property {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_taxes", nullable = false)
+    @JsonManagedReference
     private Taxes taxes;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_property_feature", nullable = false)
+    @JsonManagedReference
     private PropertyFeature propertyFeatures;
 
     @JsonManagedReference
@@ -116,6 +118,7 @@ public class Property {
     private List<User> users;
 
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ImageProperty> imageProperties;
 
     public void changeArchiveStatus() {

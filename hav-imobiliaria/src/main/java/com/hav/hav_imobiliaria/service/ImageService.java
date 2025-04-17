@@ -58,11 +58,12 @@ public class ImageService {
         }
     }
 
-    public void deletePropertyImages(List<Integer> imageIds) {
-        List<ImageProperty> images = imagePropertyRepository.findAllById(imageIds);
+    public void deletePropertyImages(Integer propertyId) {
+
+        List<ImageProperty> images = imagePropertyRepository.findAllByProperty_Id(propertyId);
 
         if (images.isEmpty()) {
-            throw new RuntimeException("Nenhuma imagem encontrada para os IDs fornecidos.");
+            return;
         }
 
         for (ImageProperty image : images) {
@@ -80,24 +81,25 @@ public class ImageService {
         imageUserRepository.delete(image);
     }
 
-    //    public List<byte[]> getPropertyImages(List<Integer> imageIds) {
-//        return imageIds.stream()
-//                .map(id -> imagePropertyRepository.findById(id)
-//                        .orElseThrow(() -> new RuntimeException("Imagem com ID " + id + " não encontrada.")))
-//                .map(image -> s3Service.downloadFile(image.getS3Key()))
-//                .collect(Collectors.toList());
-//    }
-    public List<ImageResponseDTO> getPropertyImages(List<Integer> imageIds) {
+    public List<byte[]> getPropertyImages(List<Integer> imageIds) {
         return imageIds.stream()
                 .map(id -> imagePropertyRepository.findById(id)
                         .orElseThrow(() -> new RuntimeException("Imagem com ID " + id + " não encontrada.")))
-                .map(image -> {
-                    byte[] fileData = s3Service.downloadFile(image.getS3Key());
-                    String base64 = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(fileData);
-                    return new ImageResponseDTO(image.getId(), base64);
-                })
+                .map(image -> s3Service.downloadFile(image.getS3Key()))
                 .collect(Collectors.toList());
     }
+
+//    public List<ImageResponseDTO> getPropertyImages(List<Integer> imageIds) {
+//        return imageIds.stream()
+//                .map(id -> imagePropertyRepository.findById(id)
+//                        .orElseThrow(() -> new RuntimeException("Imagem com ID " + id + " não encontrada.")))
+//                .map(image -> {
+//                    byte[] fileData = s3Service.downloadFile(image.getS3Key());
+//                    String base64 = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(fileData);
+//                    return new ImageResponseDTO(image.getId(), base64);
+//                })
+//                .collect(Collectors.toList());
+//    }
 
 
     public byte[] getUserImage(Integer imageId) {
