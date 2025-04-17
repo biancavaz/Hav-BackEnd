@@ -102,8 +102,7 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.OK)
     public CustomerPutRequestDTO searchRealtor(
             @PathVariable Integer id) {
-        CustomerPutRequestDTO customer = service.searchCustumer(id);
-        return customer;
+        return service.searchCustumer(id);
     }
 //
 //    @DeleteMapping("/{id}")

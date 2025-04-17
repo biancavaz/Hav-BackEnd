@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.service;
 
+import com.hav.hav_imobiliaria.model.DTO.Image.ImageResponseDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.ImageProperty;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Users.ImageUser;
@@ -9,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,16 +27,35 @@ public class ImageService {
     private final S3Service s3Service;
 
 
+    //    public void uploadPropertyImages(Integer propertyId, List<MultipartFile> images) {
+//        Property property = propertyRepository.findById(propertyId)
+//                .orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
+//
+//        List<ImageProperty> imageEntities = images.stream()
+//                .map(image -> new ImageProperty(s3Service.uploadFile(image), property))
+//                .collect(Collectors.toList());
+//
+//        imagePropertyRepository.saveAll(imageEntities);
+//    }
     public void uploadPropertyImages(Integer propertyId, List<MultipartFile> images) {
         Property property = propertyRepository.findById(propertyId)
                 .orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
 
-        List<ImageProperty> imageEntities = images.stream()
-                .map(image -> new ImageProperty(s3Service.uploadFile(image), property))
-                .collect(Collectors.toList());
+        List<ImageProperty> imageEntities = new ArrayList<>();
+
+        for (int i = 0; i < images.size(); i++) {
+            MultipartFile image = images.get(i);
+            String s3Key = s3Service.uploadFile(image);
+
+            ImageProperty imageProperty = new ImageProperty(s3Key, property);
+            imageProperty.setMainImage(i == 0); // A primeira imagem será a principal
+
+            imageEntities.add(imageProperty);
+        }
 
         imagePropertyRepository.saveAll(imageEntities);
     }
+
 
     public void uploadUserImage(Integer userId, MultipartFile image) {
         User user = userRepository.findById(userId)
@@ -56,11 +78,12 @@ public class ImageService {
         }
     }
 
-    public void deletePropertyImages(List<Integer> imageIds) {
-        List<ImageProperty> images = imagePropertyRepository.findAllById(imageIds);
+    public void deletePropertyImages(Integer propertyId) {
+
+        List<ImageProperty> images = imagePropertyRepository.findAllByProperty_Id(propertyId);
 
         if (images.isEmpty()) {
-            throw new RuntimeException("Nenhuma imagem encontrada para os IDs fornecidos.");
+            return;
         }
 
         for (ImageProperty image : images) {
@@ -78,12 +101,26 @@ public class ImageService {
         imageUserRepository.delete(image);
     }
 
-    public byte[] getPropertyImage(Integer imageId) {
-        ImageProperty image = imagePropertyRepository.findById(imageId)
-                .orElseThrow(() -> new RuntimeException("Imagem não encontrada."));
-
-        return s3Service.downloadFile(image.getS3Key());
+    public List<byte[]> getPropertyImages(List<Integer> imageIds) {
+        return imageIds.stream()
+                .map(id -> imagePropertyRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Imagem com ID " + id + " não encontrada.")))
+                .map(image -> s3Service.downloadFile(image.getS3Key()))
+                .collect(Collectors.toList());
     }
+
+//    public List<ImageResponseDTO> getPropertyImages(List<Integer> imageIds) {
+//        return imageIds.stream()
+//                .map(id -> imagePropertyRepository.findById(id)
+//                        .orElseThrow(() -> new RuntimeException("Imagem com ID " + id + " não encontrada.")))
+//                .map(image -> {
+//                    byte[] fileData = s3Service.downloadFile(image.getS3Key());
+//                    String base64 = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(fileData);
+//                    return new ImageResponseDTO(image.getId(), base64);
+//                })
+//                .collect(Collectors.toList());
+//    }
+
 
     public byte[] getUserImage(Integer imageId) {
         ImageUser image = imageUserRepository.findById(imageId)

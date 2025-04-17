@@ -85,11 +85,8 @@ public class EditorService {
 
         modelMapper.map(editorPutDTO, editor);
 
-        if (deletedImageId != null) {
+        if (deletedImageId != null && newImage != null) {
             imageService.deleteUserImage(deletedImageId);
-        }
-
-        if (newImage != null) {
             imageService.uploadUserImage(id, newImage);
         }
 
@@ -133,7 +130,12 @@ public class EditorService {
         Editor editor = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Realtor not found"));
 
-        // Converte a entidade Realtor para o DTO
-        return modelMapper.map(editor, EditorPutRequestDTO.class);
+        EditorPutRequestDTO editorPutRequestDTO = modelMapper.map(editor, EditorPutRequestDTO.class);
+
+        if (editor.getImageUser() != null) {
+            editorPutRequestDTO.setImageId(editor.getImageUser().getId());
+        }
+
+        return editorPutRequestDTO;
     }
 }

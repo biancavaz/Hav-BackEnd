@@ -8,6 +8,7 @@ import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
+import jakarta.persistence.EntityNotFoundException;
 import com.hav.hav_imobiliaria.security.modelSecurity.Role;
 import com.hav.hav_imobiliaria.security.modelSecurity.UserSecurity;
 import com.hav.hav_imobiliaria.security.repositorySecurity.UserRepositorySecurity;
@@ -81,11 +82,8 @@ public class RealtorService {
 
         modelMapper.map(realtorPutDTO, realtor);
 
-        if (deletedImageId != null) {
+        if (deletedImageId != null && newImage != null) {
             imageService.deleteUserImage(deletedImageId);
-        }
-
-        if (newImage != null) {
             imageService.uploadUserImage(id, newImage);
         }
 
@@ -182,10 +180,16 @@ public class RealtorService {
     }
 
     public RealtorPutRequestDTO findRealtorById(Integer id) {
-        Realtor realtor = repository.findById(id).get();
+        Realtor realtor = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Realtor not found"));
 
-        // Converte a entidade Realtor para o DTO
-        return modelMapper.map(realtor, RealtorPutRequestDTO.class);
+        RealtorPutRequestDTO realtorDTO = modelMapper.map(realtor, RealtorPutRequestDTO.class);
+
+        if (realtor.getImageUser() != null) {
+            realtorDTO.setImageId(realtor.getImageUser().getId());
+        }
+
+        return realtorDTO;
     }
 
     public Long getAllRegistredNumber() {

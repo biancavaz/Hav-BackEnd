@@ -47,14 +47,10 @@ public class PropertyPutRequestDTO {
     List<RealtorsPropertyDataExtra> realtorsExtraData;
     @NotNull
     AddressPostRequestDTO address;
-
-    public AddressPostRequestDTO getAddress() {
-        return address;
-    }
-
     @NotNull
     Integer proprietor;
     ProprietorPropertyDataExtra proprietorExtraData;
     @NotNull
     List<Integer> additionals;
+    List<Integer> imageIds;
 }

@@ -95,7 +95,10 @@ public class FavoritesService {
                 property.getPromotionalPrice(),
                 property.getId(),
                 property.getPropertyType(),
-                property.getArea()
+                property.getArea(),
+                null
+
+
         )).toList();
 
         int start = pageable.getPageNumber() * pageable.getPageSize(); // Calculando o índice de início

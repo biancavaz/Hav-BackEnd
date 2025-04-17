@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.model.entity.Properties;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +21,12 @@ public class ImageProperty {
     @Column(nullable = false, unique = true)
     private String s3Key;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_property", nullable = false)
     private Property property;
+
+    private Boolean mainImage = false;
 
     public ImageProperty(String s3Key, Property property) {
         this.s3Key = s3Key;

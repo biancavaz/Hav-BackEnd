@@ -24,14 +24,11 @@ public class PropertyCardGetResponseDTO {
     String purpose;
     @NotNull
     String propertyStatus;
-
     Double promotionalPrice;
-
-
     Integer id;
     String propertyType;
     Double area;
-
+    Integer mainImageId;
 
     public PropertyCardGetResponseDTO(PropertyFeature propertyFeatures, Address address, Double price, String purpose, String propertyStatus, Double promotionalPrice, Integer id, String propertyType, Double area) {
         this.propertyFeatures = new PropertyFeatureCardGetResponseDTO(propertyFeatures);

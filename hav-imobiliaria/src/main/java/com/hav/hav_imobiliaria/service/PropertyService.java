@@ -18,6 +18,7 @@ import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPropertySpecificGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Additionals;
+import com.hav.hav_imobiliaria.model.entity.Properties.ImageProperty;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.DTO.Property.*;
 import com.hav.hav_imobiliaria.model.entity.Properties.Taxes;
@@ -127,7 +128,6 @@ public class PropertyService {
 
     public Page<PropertyCardGetResponseDTO> findAllByFilterCard(PropertyFilterPostResponseDTO propertyDto, Pageable pageable) {
 
-
         Integer bedRoom = null;
         Integer bathRoom = null;
         Integer garageSpace = null;
@@ -157,7 +157,6 @@ public class PropertyService {
 
         }
 
-
         Property property = modelMapper.map(propertyDto, Property.class);
 
         //criando o example matcher específico dos filtros do imóvel
@@ -167,7 +166,6 @@ public class PropertyService {
 
 
         List<Property> allProperties = repository.findAll(example);
-
 
         List<Property> filteredAllProperties = allProperties.stream().filter(propertyPrice -> propertyPrice.getPrice() >= propertyDto.getMinPric() && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
                 .collect(Collectors.toList());
@@ -301,8 +299,13 @@ public class PropertyService {
     }
 
     @Transactional
-    public Property updateProperty(Integer propertyId, PropertyPutRequestDTO propertyDTO, List<Integer> deletedImageIds, List<MultipartFile> newImages) {
-        Property property = repository.findById(propertyId).orElseThrow(() -> new EntityNotFoundException("Propriedade não encontrada"));
+    public Property updateProperty(
+            Integer propertyId,
+            PropertyPutRequestDTO propertyDTO,
+            List<MultipartFile> newImages) {
+
+        Property property = repository.findById(propertyId)
+                .orElseThrow(() -> new EntityNotFoundException("Propriedade não encontrada"));
 
         property.setTitle(propertyDTO.getTitle());
         property.setPropertyDescription(propertyDTO.getPropertyDescription());
@@ -319,7 +322,6 @@ public class PropertyService {
         modelMapper.map(propertyDTO.getPropertyFeatures(), property.getPropertyFeatures());
         modelMapper.map(propertyDTO.getTaxes(), property.getTaxes());
         modelMapper.map(propertyDTO.getAddress(), property.getAddress());
-
         updateRealtors(property, propertyDTO.getRealtors());
         updateProprietor(property, propertyDTO.getProprietor());
         updateAdditionals(property, propertyDTO.getAdditionals());
@@ -327,8 +329,7 @@ public class PropertyService {
 
         repository.save(property);
 
-
-        processImages(propertyId, deletedImageIds, newImages);
+        processImages(propertyId, newImages);
 
         return property;
     }
@@ -353,11 +354,9 @@ public class PropertyService {
         }
     }
 
-    private void processImages(Integer propertyId, List<Integer> deletedImageIds, List<MultipartFile> newImages) {
-        if (deletedImageIds != null && !deletedImageIds.isEmpty()) {
-            imageService.deletePropertyImages(deletedImageIds);
-        }
+    private void processImages(Integer propertyId, List<MultipartFile> newImages) {
         if (newImages != null && !newImages.isEmpty()) {
+            imageService.deletePropertyImages(propertyId);
             imageService.uploadPropertyImages(propertyId, newImages);
         }
     }
@@ -375,8 +374,9 @@ public class PropertyService {
     }
 
     public PropertyPutRequestDTO findPropertyById(Integer id) {
-        System.out.println(id);
-        Property property = repository.findById(id).get();
+
+        Property property = repository.findById(id).
+                orElseThrow(() -> new NoSuchElementException("Property not found"));
 
         ProprietorPropertyDataExtra proprietorExtra = null;
         if (property.getProprietor() != null) {
@@ -391,6 +391,14 @@ public class PropertyService {
                 .map(r -> new RealtorsPropertyDataExtra(r.getName(), r.getCpf()))
                 .toList()
                 : List.of();
+
+        List<Integer> idImages = new ArrayList<>();
+
+        if (property.getImageProperties() != null && !property.getImageProperties().isEmpty()) {
+            for (ImageProperty images : property.getImageProperties()) {
+                idImages.add(images.getId());
+            }
+        }
 
         return PropertyPutRequestDTO.builder()
                 .title(property.getTitle())
@@ -435,9 +443,8 @@ public class PropertyService {
                 .proprietorExtraData(proprietorExtra)
                 .proprietorExtraData(proprietorExtra)
                 .realtorsExtraData(realtorExtras)
-
+                .imageIds(idImages)
                 .build();
-
     }
 
     public Page<PropertyCardGetResponseDTO> findPropertyCard(Pageable pageable) {
@@ -450,7 +457,8 @@ public class PropertyService {
                 property.getPromotionalPrice(),
                 property.getId(),
                 property.getPropertyType(),
-                property.getArea()
+                property.getArea(),
+                null
 
         )).toList();
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
@@ -468,8 +476,26 @@ public class PropertyService {
         }).map(realtor -> modelMapper.map(realtor, RealtorGetResponseDTOwithId.class)).collect(Collectors.toList());
     }
 
+    //    public List<PropertyCardGetResponseDTO> findRandomHighlights() {
+//        return repository.findRandomHighlighted5().stream()
+//                .map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+//    }
     public List<PropertyCardGetResponseDTO> findRandomHighlights() {
-        return repository.findRandomHighlighted5().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+        return repository.findRandomHighlighted5().stream()
+                .map(property -> {
+                    PropertyCardGetResponseDTO dto = modelMapper.map(property, PropertyCardGetResponseDTO.class);
+
+                    // Buscar a imagem principal e setar o ID
+                    if (property.getImageProperties() != null && !property.getImageProperties().isEmpty()) {
+                        property.getImageProperties().stream()
+                                .filter(ImageProperty::getMainImage)
+                                .findFirst()
+                                .ifPresent(image -> dto.setMainImageId(image.getId()));
+                    }
+
+                    return dto;
+                })
+                .toList();
     }
 
     public Long getAllRegistredNumber() {

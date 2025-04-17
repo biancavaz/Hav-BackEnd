@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ImagePropertyRepository extends JpaRepository<ImageProperty, Integer> {
-    List<ImageProperty> findByProperty_Id(Integer propertyId);
+    List<ImageProperty> findAllByProperty_Id(Integer propertyId);
 }
-
