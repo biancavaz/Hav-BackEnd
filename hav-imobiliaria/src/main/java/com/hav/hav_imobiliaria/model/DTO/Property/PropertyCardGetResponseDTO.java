@@ -22,15 +22,9 @@ public class PropertyCardGetResponseDTO {
     String purpose;
     @NotNull
     String propertyStatus;
-
     Double promotionalPrice;
-
-
-
     Integer id;
     String propertyType;
     Double area;
-
-
-
+    Integer mainImageId;
 }

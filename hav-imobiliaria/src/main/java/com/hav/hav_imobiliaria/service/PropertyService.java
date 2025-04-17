@@ -447,7 +447,8 @@ public class PropertyService {
                 property.getPromotionalPrice(),
                 property.getId(),
                 property.getPropertyType(),
-                property.getArea()
+                property.getArea(),
+                null
 
         )).toList();
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
@@ -465,8 +466,26 @@ public class PropertyService {
         }).map(realtor -> modelMapper.map(realtor, RealtorGetResponseDTOwithId.class)).collect(Collectors.toList());
     }
 
+    //    public List<PropertyCardGetResponseDTO> findRandomHighlights() {
+//        return repository.findRandomHighlighted5().stream()
+//                .map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+//    }
     public List<PropertyCardGetResponseDTO> findRandomHighlights() {
-        return repository.findRandomHighlighted5().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+        return repository.findRandomHighlighted5().stream()
+                .map(property -> {
+                    PropertyCardGetResponseDTO dto = modelMapper.map(property, PropertyCardGetResponseDTO.class);
+
+                    // Buscar a imagem principal e setar o ID
+                    if (property.getImageProperties() != null && !property.getImageProperties().isEmpty()) {
+                        property.getImageProperties().stream()
+                                .filter(ImageProperty::getMainImage)
+                                .findFirst()
+                                .ifPresent(image -> dto.setMainImageId(image.getId()));
+                    }
+
+                    return dto;
+                })
+                .toList();
     }
 
     public Long getAllRegistredNumber() {

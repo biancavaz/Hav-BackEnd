@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -26,16 +27,35 @@ public class ImageService {
     private final S3Service s3Service;
 
 
+    //    public void uploadPropertyImages(Integer propertyId, List<MultipartFile> images) {
+//        Property property = propertyRepository.findById(propertyId)
+//                .orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
+//
+//        List<ImageProperty> imageEntities = images.stream()
+//                .map(image -> new ImageProperty(s3Service.uploadFile(image), property))
+//                .collect(Collectors.toList());
+//
+//        imagePropertyRepository.saveAll(imageEntities);
+//    }
     public void uploadPropertyImages(Integer propertyId, List<MultipartFile> images) {
         Property property = propertyRepository.findById(propertyId)
                 .orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
 
-        List<ImageProperty> imageEntities = images.stream()
-                .map(image -> new ImageProperty(s3Service.uploadFile(image), property))
-                .collect(Collectors.toList());
+        List<ImageProperty> imageEntities = new ArrayList<>();
+
+        for (int i = 0; i < images.size(); i++) {
+            MultipartFile image = images.get(i);
+            String s3Key = s3Service.uploadFile(image);
+
+            ImageProperty imageProperty = new ImageProperty(s3Key, property);
+            imageProperty.setMainImage(i == 0); // A primeira imagem será a principal
+
+            imageEntities.add(imageProperty);
+        }
 
         imagePropertyRepository.saveAll(imageEntities);
     }
+
 
     public void uploadUserImage(Integer userId, MultipartFile image) {
         User user = userRepository.findById(userId)

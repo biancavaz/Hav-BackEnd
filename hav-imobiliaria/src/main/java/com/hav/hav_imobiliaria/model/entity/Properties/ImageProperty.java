@@ -26,6 +26,8 @@ public class ImageProperty {
     @JoinColumn(name = "id_property", nullable = false)
     private Property property;
 
+    private Boolean mainImage = false;
+
     public ImageProperty(String s3Key, Property property) {
         this.s3Key = s3Key;
         this.property = property;

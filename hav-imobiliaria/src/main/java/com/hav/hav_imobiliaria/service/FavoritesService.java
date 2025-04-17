@@ -92,7 +92,8 @@ public class FavoritesService {
                 property.getPromotionalPrice(),
                 property.getId(),
                 property.getPropertyType(),
-                property.getArea()
+                property.getArea(),
+                null
 
 
         )).toList();
