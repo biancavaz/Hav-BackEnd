@@ -43,7 +43,6 @@ public class AdmService {
     private final UserRepositorySecurity userRepositorySecurity;
     private final PasswordEncoder passwordEncoder;
 
-
     public AdmPostRequestDTO createAdm(
             @Valid AdmPostRequestDTO admPostDTO,
             MultipartFile image) {
@@ -123,8 +122,12 @@ public class AdmService {
 
     @Transactional
     public void removeList(List<Integer> idList) {
+        List<Adm> admList = repository.findAllById(idList);
         repository.deleteByIdIn(idList);
-
+        for(Adm adm : admList){
+            UserSecurity userSecurity = userRepositorySecurity.findUserSecurityByEmail(adm.getEmail());
+            userRepositorySecurity.delete(userSecurity);
+        }
     }
 
     public void changeArchiveStatus(List<Integer> admIds) {
