@@ -53,7 +53,7 @@ public class UserService {
         user.setAddress(modelMapper.map(userConfigurationDtoEdit.getAddress(), Address.class));        
         user.setName(userConfigurationDtoEdit.getName());
         user.setEmail(userConfigurationDtoEdit.getEmail());
-        user.setCelphone(userConfigurationDtoEdit.getCelphone());
+        user.setCellphone(userConfigurationDtoEdit.getCelphone());
         user.setPhoneNumber(userConfigurationDtoEdit.getPhoneNumber());
 
         userRepository.save(user);
