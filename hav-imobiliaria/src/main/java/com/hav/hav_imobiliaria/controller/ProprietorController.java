@@ -73,4 +73,9 @@ public class ProprietorController {
         return service.findProprietorById(id);
     }
 
+    @GetMapping("/getAll")
+    public Long getQuantityProprietor() {
+        return service.getQuantityProprietor();
+    }
+
 }

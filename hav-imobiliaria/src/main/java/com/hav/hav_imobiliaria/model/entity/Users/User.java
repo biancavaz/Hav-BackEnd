@@ -1,10 +1,9 @@
 package com.hav.hav_imobiliaria.model.entity.Users;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hav.hav_imobiliaria.WebSocket.Notification.Model.Notification;
 import com.hav.hav_imobiliaria.model.entity.Address;
-import com.hav.hav_imobiliaria.model.entity.Properties.ImageProperty;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -39,7 +38,7 @@ public class User {
     @Column(unique = true)
     private String cpf;
 
-    @Column(nullable = false)
+    @Column()
     private String cellphone;
 
     @Column(name = "phone_number")
@@ -50,15 +49,11 @@ public class User {
 
     @JsonManagedReference
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_address", nullable = false)
+    @JoinColumn(name = "id_address")
     private Address address;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ImageUser imageUser;
-
-
-
-
 
     @ManyToMany
     @JoinTable(
@@ -77,6 +72,14 @@ public class User {
             return new ArrayList<>();
         }
     }
+    @ManyToMany
+    @JsonManagedReference
+    @JoinTable(
+            name = "user_notifications",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "notification_id")
+    )
+    private List<Notification> notifications = new ArrayList<>();
 
     public @NotNull boolean getArchived() {
         return this.archived;

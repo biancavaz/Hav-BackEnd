@@ -40,8 +40,8 @@ public class UserSecurityServiceImplementation implements UserSecurityService {
     public UserSecurity updateUserSecurity(Integer userSecurityId, UpdateUserSecurityRequest req) throws UserException {
         UserSecurity userSecurity = findUserSecurityById(userSecurityId);
 
-        if (userSecurity.getFull_name() != null) {
-            userSecurity.setFull_name(userSecurity.getFull_name());
+        if (userSecurity.getName() != null) {
+            userSecurity.setName(userSecurity.getName());
         }
 
         if (userSecurity.getProfile_picture() != null) {

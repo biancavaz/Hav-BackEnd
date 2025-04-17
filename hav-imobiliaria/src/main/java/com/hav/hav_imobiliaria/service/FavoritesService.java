@@ -8,6 +8,8 @@ import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import com.hav.hav_imobiliaria.repository.UserRepository;
+import com.hav.hav_imobiliaria.security.configSecurity.JwtTokenValidator;
+import com.hav.hav_imobiliaria.security.configSecurity.TokenProvider;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -28,9 +30,10 @@ public class FavoritesService {
     private UserRepository userRepository;
     private PropertyRepository propertyRepository;
     private final ModelMapper modelMapper;
+    private final TokenProvider tokenProvider;
+    public void favoritar(Integer idProperty, String jwt) {
 
-    public void favoritar(Integer idProperty, Integer idUser) {
-        User user = userRepository.findById(idUser).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        User user = userRepository.findByEmail(tokenProvider.getEmailFromToken(jwt)).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         Property property = propertyRepository.findById(idProperty).orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
 
         if (user.getProperties() == null) {
@@ -49,8 +52,8 @@ public class FavoritesService {
         }
     }
 
-    public void desfavoritar(Integer idProperty, Integer idUser) {
-        User user = userRepository.findById(idUser).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    public void desfavoritar(Integer idProperty, String jwt) {
+        User user = userRepository.findByEmail(tokenProvider.getEmailFromToken(jwt)).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         Property property = propertyRepository.findById(idProperty).orElseThrow(() -> new RuntimeException("Propriedade não encontrada"));
 
         if (user.getProperties().contains(property)) {
@@ -63,9 +66,9 @@ public class FavoritesService {
     }
 
 
-    public List<PropertyMapGetResponseDTO> findAllByFilterMapFavorite(Integer id){
+    public List<PropertyMapGetResponseDTO> findAllByFilterMapFavorite(String jwt){
 
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findByEmail(tokenProvider.getEmailFromToken(jwt)).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         List<Property> allProperties = user.getProperties();
 
@@ -79,8 +82,8 @@ public class FavoritesService {
 
     }
 
-    public Page<PropertyCardGetResponseDTO> returnFavorites(Pageable pageable, Integer idUser) {
-        User user = userRepository.findById(idUser).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    public Page<PropertyCardGetResponseDTO> returnFavorites(Pageable pageable, String jwt) {
+        User user = userRepository.findByEmail(tokenProvider.getEmailFromToken(jwt)).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         List<Property> favoriteProperties = user.getProperties();
 
@@ -97,7 +100,14 @@ public class FavoritesService {
 
 
         )).toList();
-        return new PageImpl<>(dtos, pageable, idUser);
+
+        int start = pageable.getPageNumber() * pageable.getPageSize(); // Calculando o índice de início
+        int end = Math.min(start + pageable.getPageSize(), dtos.size());
+
+        List<PropertyCardGetResponseDTO> pageProperty = dtos.subList(start, end);
+
+
+        return new PageImpl<>(pageProperty, pageable, favoriteProperties.size());
     }
 
 }

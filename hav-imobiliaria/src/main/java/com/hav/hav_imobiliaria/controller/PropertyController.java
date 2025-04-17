@@ -172,4 +172,14 @@ public class PropertyController {
     public long getQuantityOfArchivedProperties() {
         return service.getQuantityOfArchivedProperties();
     }
+
+    @GetMapping("/getSliderContentOfThree")
+    public List<PropertyCardGetResponseDTO> similarProperties(){
+        return service.similarProperties();
+    }
+
+    @GetMapping("/getMostRecentProperties")
+    public List<PropertyCardGetResponseDTO> findMostRecentProperties(){
+        return service.findMostRecentProperties();
+    }
 }

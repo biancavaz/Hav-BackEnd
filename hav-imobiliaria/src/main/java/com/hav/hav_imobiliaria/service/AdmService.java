@@ -9,6 +9,9 @@ import com.hav.hav_imobiliaria.model.entity.Users.Editor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 //import com.hav.hav_imobiliaria.model.entity.Users.UsersDetails;
 import com.hav.hav_imobiliaria.repository.AdmRepository;
+import com.hav.hav_imobiliaria.security.modelSecurity.Role;
+import com.hav.hav_imobiliaria.security.modelSecurity.UserSecurity;
+import com.hav.hav_imobiliaria.security.repositorySecurity.UserRepositorySecurity;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -21,6 +24,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +40,9 @@ public class AdmService {
     private final ImageService imageService;
     private final PasswordGeneratorService passwordGeneratorService;
     private final EmailSenderService emailSenderService;
+    private final UserRepositorySecurity userRepositorySecurity;
+    private final PasswordEncoder passwordEncoder;
+
 
     public AdmPostRequestDTO createAdm(
             @Valid AdmPostRequestDTO admPostDTO,
@@ -46,7 +53,24 @@ public class AdmService {
         String password = passwordGeneratorService.generateSecurePassword();
 
 
+
+
+
+
+        UserSecurity newUserSec = new UserSecurity();
+
+        newUserSec.setEmail(adm.getEmail());
+        newUserSec.setPassword(passwordEncoder.encode(password));
+        newUserSec.setName(adm.getName());
+        newUserSec.setRole(Role.valueOf("ADMIN"));
+
+        userRepositorySecurity.save(newUserSec);
+
+        adm.setUserSecurity(newUserSec);
+
         Adm savedAdm = repository.save(adm);
+
+        emailSenderService.sendPasswordNewAccount(adm.getEmail(), password, "Administrador");
 
         if (image != null) {
             imageService.uploadUserImage(savedAdm.getId(), image);

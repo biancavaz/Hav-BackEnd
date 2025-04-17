@@ -157,4 +157,8 @@ public class ProprietorService {
     public Proprietor findById(Integer id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Proprietor not found"));
     }
+
+    public Long getQuantityProprietor(){
+        return repository.count();
+    }
 }

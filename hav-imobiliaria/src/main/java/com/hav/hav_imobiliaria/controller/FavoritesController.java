@@ -6,9 +6,9 @@ import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.service.FavoritesService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,30 +21,29 @@ public class FavoritesController {
 
     private final FavoritesService favoritesService;
 
-    @PostMapping("/favoritar/{idUser}/{idProperty}")
+    @PostMapping("/favoritar/{idProperty}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void favoritar(@PathVariable Integer idUser, @PathVariable Integer idProperty) {
-        favoritesService.favoritar(idProperty, idUser);
+    public void favoritar(@CookieValue("token") String token, @PathVariable Integer idProperty) {
+        favoritesService.favoritar(idProperty, token);
     }
 
     @GetMapping("/map/{id}")
-    public List<PropertyMapGetResponseDTO> findByFilterMapFavorite(@PathVariable Integer id) {
-        return favoritesService.findAllByFilterMapFavorite(id);
+    public List<PropertyMapGetResponseDTO> findByFilterMapFavorite(@CookieValue("token") String token) {
+        return favoritesService.findAllByFilterMapFavorite(token);
     }
 
-
-    @DeleteMapping("/desfavoritar/{idUser}/{idProperty}")
+    @DeleteMapping("/desfavoritar/{idProperty}")
     @ResponseStatus(HttpStatus.OK)
-    public void desfavoritar(@PathVariable Integer idUser, @PathVariable Integer idProperty) {
-        favoritesService.desfavoritar(idProperty, idUser);
+    public void desfavoritar(@CookieValue("token") String token, @PathVariable Integer idProperty) {
+        favoritesService.desfavoritar(idProperty, token);
     }
 
-    @GetMapping("/{idUser}")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<PropertyCardGetResponseDTO> returnFavorites(
-            @PathVariable Integer idUser,
-            Pageable pageable) {
-        return favoritesService.returnFavorites(pageable, idUser);
+            @CookieValue("token") String token,
+            @RequestParam Integer page) {
+        Pageable pageable = PageRequest.of(page, 12);
+        return favoritesService.returnFavorites(pageable, token);
     }
-
 }

@@ -18,6 +18,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -126,10 +128,25 @@ public class Property {
     }
 
     public List<Realtor> getRealtors() {
-        if(realtors!=null){
+        if (realtors != null) {
             System.out.println(realtors);
             return realtors;
         }
         return new ArrayList<>();
     }
+
+    public String getPreferredPropertyType(User user) {
+        List<Property> properties = user.getProperties();
+        if (properties == null || properties.isEmpty()) {
+            return null;
+        }
+        return user.getProperties().stream()
+                .collect(Collectors.groupingBy(Property::getPropertyType, Collectors.counting()))
+                .entrySet().stream()
+                .max(Map.Entry.comparingByValue()) // tipo mais frequente
+                .map(Map.Entry::getKey)
+                .orElse(null);
+    }
+
 }
+
