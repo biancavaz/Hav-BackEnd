@@ -106,7 +106,7 @@ public class AdmService {
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
         Example<Adm> example = Example.of(adm, matcher);
-
+        
         Page<Adm> admList = repository.findAll(example, pageable);
 
 

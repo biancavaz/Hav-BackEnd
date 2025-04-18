@@ -16,7 +16,19 @@ public class PropertyFilterPostResponseDTO {
     boolean archived;
     PropertyFeatureFilterPostResponseDto propertyFeatures;
 
-
+    @Override
+    public String toString() {
+        return "PropertyFilterPostResponseDTO{" +
+                "propertyCode='" + propertyCode + '\'' +
+                ", minPric=" + minPric +
+                ", maxPric=" + maxPric +
+                ", propertyType='" + propertyType + '\'' +
+                ", purpose='" + purpose + '\'' +
+                ", propertyStatus='" + propertyStatus + '\'' +
+                ", archived=" + archived +
+                ", propertyFeatures=" + propertyFeatures +
+                '}';
+    }
     public PropertyFeatureFilterPostResponseDto getPropertyFeatures() {
         return propertyFeatures;
     }

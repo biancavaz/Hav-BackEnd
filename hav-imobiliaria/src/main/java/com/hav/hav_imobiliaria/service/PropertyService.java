@@ -243,13 +243,29 @@ public class PropertyService {
         Property property = modelMapper.map(propertyDto, Property.class);
 
         //criando o example matcher específico dos filtros do imóvel
-        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withIgnoreNullValues().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        System.out.println(property.toString());
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase()
+                .withIgnoreNullValues()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
+                //ignore propertyFeatures if they are null
+                .withIgnorePaths("propertyFeatures");
+
         //chamando o matcher
         Example<Property> example = Example.of(property, matcher);
 
 
         List<Property> allProperties = repository.findAll(example);
-
+        System.out.println(allProperties.size());
+        //filtrando archived
+        System.out.println("archived" +propertyDto.isArchived());
+   
+        if(propertyDto.isArchived()){
+            allProperties = allProperties.stream().filter(propertyx -> propertyx.isArchived()).collect(Collectors.toList());
+        }
+        else{
+            allProperties = allProperties.stream().filter(propertyx -> !propertyx.isArchived()).collect(Collectors.toList());
+        }
 
         List<Property> filteredAllProperties = allProperties.stream().filter(propertyPrice -> propertyPrice.getPrice() >= propertyDto.getMinPric() && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
                 .collect(Collectors.toList());
