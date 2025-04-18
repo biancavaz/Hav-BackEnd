@@ -128,4 +128,11 @@ public class ImageService {
 
         return s3Service.downloadFile(image.getS3Key());
     }
+
+    public byte[] getMainPropertyImage(Integer imageId) {
+        ImageProperty image = imagePropertyRepository.findById(imageId)
+                .orElseThrow(() -> new RuntimeException("Imagem não encontrada."));
+
+        return s3Service.downloadFile(image.getS3Key());
+    }
 }
