@@ -4,6 +4,7 @@ import com.hav.hav_imobiliaria.model.DTO.Image.ImageResponseDTO;
 import com.hav.hav_imobiliaria.service.ImageService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,11 @@ public class ImageController {
         return ResponseEntity.ok(images);
     }
 
-
+    @GetMapping("/property/{imageId}")
+    @ResponseStatus(HttpStatus.OK)
+    public byte[] getMainPropertyImage(@PathVariable Integer imageId) {
+        return imageService.getMainPropertyImage(imageId);
+    }
 
     @GetMapping("/user/{imageId}")
     public ResponseEntity<byte[]> getCustomerImage(@PathVariable Integer imageId) {
