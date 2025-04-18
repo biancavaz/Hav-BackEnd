@@ -178,8 +178,18 @@ public class PropertyController {
         return service.similarProperties();
     }
 
-    @GetMapping("/getMostRecentProperties")
-    public List<PropertyCardGetResponseDTO> findMostRecentProperties(){
-        return service.findMostRecentProperties();
+    @GetMapping("/getMostRecentSellProperties")
+    public List<PropertyCardGetResponseDTO> findMostRecentSellProperties(){
+        return service.findMostRecentSellProperties();
+    }
+
+    @GetMapping("/getMostRecentLeaseProperties")
+    public List<PropertyCardGetResponseDTO> findMostRecentLeaseProperties(){
+        return service.findMostRecentLeaseProperties();
+    }
+
+    @GetMapping("/getHighlightedHome")
+    public List<PropertyCardGetResponseDTO> findRandomHighlighted9(){
+        return service.findRandomHighlighted9();
     }
 }

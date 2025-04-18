@@ -28,12 +28,25 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
     @Query("SELECT p FROM Property p WHERE p.highlight = true ORDER BY FUNCTION('RAND') LIMIT 5")
     List<Property> findRandomHighlighted5();
 
+    @Query ("SELECT p FROM Property p WHERE p.highlight = true ORDER BY FUNCTION('RAND') LIMIT 9")
+    List<Property> findRandomHighlighted9();
+
     @Query("SELECT p FROM Property p WHERE p.price BETWEEN :minPrice AND :maxPrice")
     List<Property> findByPriceRange(@Param("minPrice") Double minPrice, @Param("maxPrice")
     Double maxPrice, Pageable pageable);
 
-    @Query("SELECT p FROM Property p ORDER BY p.createdAt DESC")
-    List<Property> findMostRecentProperties(Pageable pageable);
+    @Query("""
+                SELECT p FROM Property p 
+                WHERE (:purpose IS NULL OR p.purpose = :purpose) 
+                ORDER BY p.createdAt DESC
+            """)
+    List<Property> findMostRecentSellProperties(@Param("purpose") String purpose, Pageable pageable);
 
+    @Query("""
+                SELECT p FROM Property p 
+                WHERE (:purpose IS NULL OR p.purpose = :purpose) 
+                ORDER BY p.createdAt DESC
+            """)
+    List<Property> findMostRecentLeaseProperties(@Param("purpose") String purpose, Pageable pageable);
 
 }
