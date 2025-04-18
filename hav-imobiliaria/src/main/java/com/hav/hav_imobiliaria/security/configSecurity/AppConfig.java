@@ -98,7 +98,7 @@ public class AppConfig {
                         /* SCHEDULES CONTROLLER */
                         .requestMatchers(HttpMethod.GET, "/schedules/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/schedules/**").hasRole("REALTOR")
-                        .requestMatchers(HttpMethod.PUT, "/schedules/**").hasRole("REALTOR")
+                        .requestMatchers(HttpMethod.PUT, "/schedules/**").hasRole("CUSTOMER")
                         .requestMatchers(HttpMethod.DELETE, "/schedules/**").hasRole("REALTOR")
                         .requestMatchers(HttpMethod.PATCH, "/schedules/**").hasRole("REALTOR")
                         .requestMatchers("/schedules/history/customer/**").hasRole("CUSTOMER")

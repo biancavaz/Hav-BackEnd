@@ -23,4 +23,6 @@ public interface RealtorRepository extends JpaRepository<Realtor, Integer> {
     boolean existsByEmail(String email);
 
     boolean existsByCreci(String creci);
+
+    Realtor findByEmail(String email);
 }

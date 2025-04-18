@@ -8,11 +8,14 @@ import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
+import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
 import com.hav.hav_imobiliaria.repository.PropertyRepository;
 import com.hav.hav_imobiliaria.repository.RealtorRepository;
 import com.hav.hav_imobiliaria.repository.ScheduleRepository;
+import com.hav.hav_imobiliaria.security.configSecurity.TokenProvider;
+
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -34,8 +37,17 @@ public class SchedulesService {
     private final RealtorRepository realtorRepository;
     private final CustumerRepository custumerRepository;
     private final PropertyRepository propertyRepository;
+    private final TokenProvider tokenProvider;
+    public List<Schedules> findAllByRealtorIdAndFuture(String token) {
+        String realtorEmail = tokenProvider.getEmailFromToken(token);
+        Realtor realtor = realtorRepository.findByEmail(realtorEmail);
 
+        List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByRealtorIdAndDayGreaterThanEqual(realtor.getId(), LocalDate.now()));
+
+        return sortedList;
+    }
     public List<Schedules> findAllByRealtorIdAndFuture(Integer id) {
+
         List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByRealtorIdAndDayGreaterThanEqual(id, LocalDate.now()));
 
         return sortedList;
@@ -76,35 +88,39 @@ public class SchedulesService {
         return sortedList;
     }
 
-    public List<Schedules> createSchedules(List<SchedulesPostDTO> schedulesPostDto){
-        schedulesPostDto.forEach(schedulesPostDtox -> System.out.println(schedulesPostDtox.toString()));
+    public List<Schedules> createSchedules(List<SchedulesPostDTO> schedulesPostDto, String token){
+
         List<Schedules> schedulesList = schedulesPostDto.stream().map(
                 schedulesPostDtox -> modelMapper.map(schedulesPostDtox, Schedules.class)).toList();
 
-        System.out.println(schedulesList.size());
         for (int i = 0; i < schedulesList.size(); i++) {
-            Integer realtorId = schedulesPostDto.get(i).getRealtor_id();
-            Optional<Realtor> realtorOptional = realtorRepository.findById(realtorId);
+            String realtorEmail = tokenProvider.getEmailFromToken(token);
 
-            if (realtorOptional.isPresent()) {
-                schedulesList.get(i).setRealtor(realtorOptional.get());
+            Realtor realtor = realtorRepository.findByEmail(realtorEmail);
+
+            if (realtor != null) {
+                schedulesList.get(i).setRealtor(realtor);
             } else {
-                System.err.println("erro n tratado");
+                throw new RuntimeException("Realtor not found");
             }
         }
-        schedulesList.forEach(schedulesPostDtox -> System.out.println(schedulesPostDtox.toString()));
 
-        List<Schedules> schedulesFinal = repository.saveAll(schedulesList);
+        repository.saveAll(schedulesList);
         return schedulesList;
 
     }
 
-    public List<ScheduleGetDTO> addCustomerToSchedule(ScheduleChangeCustomerDTO scheduleChangeCustomerDTO) {
+    public List<ScheduleGetDTO> addCustomerToSchedule(ScheduleChangeCustomerDTO scheduleChangeCustomerDTO, String token) {
+        String customerEmail = tokenProvider.getEmailFromToken(token);
+        Customer customer = custumerRepository.findByEmail(customerEmail);
+        if(customer == null){
+            throw new RuntimeException("Customer not found");
+        }
         List<Schedules> schedules = repository.findAllById(scheduleChangeCustomerDTO.getSchedule_id());
         for(int i=0; i<schedules.size(); i++){
             schedules.get(i).setStatus(scheduleChangeCustomerDTO.getStatus());
             if(schedules.get(i).getCustomer() ==null){
-                schedules.get(i).setCustomer(custumerRepository.findById(scheduleChangeCustomerDTO.getCustomer_id()).get());
+                schedules.get(i).setCustomer(custumerRepository.findById(customer.getId()).get());
             }else{
                 System.err.println("erro não tratado de customer ja no schedule");
             }
@@ -180,4 +196,12 @@ public class SchedulesService {
         schedules.setStatus(status);
         repository.save(schedules);
     }
+    public List<ScheduleGetDTO> findAllSchedulesCustomer(String token) {
+        String customerEmail = tokenProvider.getEmailFromToken(token);
+        Customer customer = custumerRepository.findByEmail(customerEmail);
+
+        List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByCustomerIdAndDayGreaterThanEqual(customer.getId(), LocalDate.now()));
+        return sortedList.stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
+    }
+    
 }

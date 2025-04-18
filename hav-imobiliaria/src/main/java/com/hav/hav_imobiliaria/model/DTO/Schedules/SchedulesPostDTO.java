@@ -15,7 +15,6 @@ public class SchedulesPostDTO {
 
     private LocalTime start_hour;
 
-    private Integer realtor_id;
 
 
 

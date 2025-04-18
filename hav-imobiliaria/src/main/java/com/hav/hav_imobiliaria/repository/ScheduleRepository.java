@@ -34,6 +34,8 @@ public interface ScheduleRepository extends JpaRepository<Schedules, Integer> {
 
     List<Schedules> findByRealtorIdAndDayGreaterThanEqual(Integer realtorId, LocalDate today);
 
+    List<Schedules> findByCustomerIdAndDayGreaterThanEqual(Integer customerId, LocalDate today);
+
     @Query("SELECT s FROM Schedules s WHERE s.day = :day AND s.start_hour = :start_hour")
     List<Schedules> findByDayAndStartHour(@Param("day") LocalDate day,
                                          @Param("start_hour") LocalTime startHour);
