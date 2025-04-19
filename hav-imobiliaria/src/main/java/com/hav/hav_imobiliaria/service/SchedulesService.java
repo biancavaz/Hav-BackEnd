@@ -179,14 +179,18 @@ public class SchedulesService {
                 .collect(Collectors.toList());
     }
 
-    public Page<ScheduleGetDTO> findRealtorScheduleHistory(Integer id, Pageable pageable) {
-        Page<Schedules> schedules = repository.findByRealtorIdAndDayLessThanAndCustomerIsNotNullAndPropertyIsNotNull(
-                id, LocalDate.now(), pageable);
+    public Page<ScheduleGetDTO> findRealtorScheduleHistory(String token, LocalDate latestDate, String status, Pageable pageable) {
+        String realtorEmail = tokenProvider.getEmailFromToken(token);
+        Realtor realtor = realtorRepository.findByEmail(realtorEmail);
+        Page<Schedules> schedules = repository.findByRealtorIdAndDayLessThanAndCustomerIsNotNullAndPropertyIsNotNullAndStatusEquals(
+                realtor.getId(), LocalDate.now(), latestDate, status, pageable);
         return schedules.map(schedule -> modelMapper.map(schedule, ScheduleGetDTO.class));
     }
-    public Page<ScheduleGetDTO> findCustomerScheduleHistory(Integer id, LocalDate latestDate, String status, Pageable pageable) {
+    public Page<ScheduleGetDTO> findCustomerScheduleHistory(String token, LocalDate latestDate, String status, Pageable pageable) {
+        String customerEmail = tokenProvider.getEmailFromToken(token);
+        Customer customer = custumerRepository.findByEmail(customerEmail);
         Page<Schedules> schedules = repository.findByCustomerIdAndDayLessThanAndCustomerIsNotNullAndPropertyIsNotNullAndStatusEquals(
-                id, LocalDate.now(), latestDate, status, pageable);
+                customer.getId(), LocalDate.now(), latestDate, status, pageable);
 
         return schedules.map(schedule -> modelMapper.map(schedule, ScheduleGetDTO.class));
     }
