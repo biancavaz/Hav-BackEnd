@@ -615,7 +615,7 @@ public class PropertyService {
     public List<PropertyCardGetResponseDTO> findMostRecentLeaseProperties(){
         PageRequest pageRequest = PageRequest.of(0,9);
         List<Property> properties =
-                repository.findMostRecentSellProperties("LOCACAO", pageRequest);
+                repository.findMostRecentLeaseProperties("LOCACAO", pageRequest);
 
         return properties.stream().map(p -> new PropertyCardGetResponseDTO(
                 p.getPropertyFeatures(),
@@ -630,8 +630,17 @@ public class PropertyService {
         )).collect(Collectors.toList());
     }
 
-    public List<PropertyCardGetResponseDTO> findRandomHighlighted9() {
-        return repository.findRandomHighlighted9().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+    //Sem filtro
+//    public List<PropertyCardGetResponseDTO> findRandomHighlighted9() {
+//        return repository.findRandomHighlighted9().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+//    }
+
+    public List<PropertyCardGetResponseDTO> findRandomHighlighted9Sale() {
+        return repository.findRandomHighlighted9ForSale().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+    }
+
+    public List<PropertyCardGetResponseDTO> findRandomHighlighted9Lease() {
+        return repository.findRandomHighlighted9ForLease().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
     }
 }
 
