@@ -65,13 +65,14 @@ public class JwtTokenValidator extends OncePerRequestFilter {
                 
                 UserSecurity userSecurity = userRepositorySecurity.findUserSecurityByEmail(username);
                 if(userSecurity == null){
-                    throw new BadCredentialsException("User not found");
+                    System.out.println("User not found");
                 }
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 System.out.println("Auth no contexto: " + SecurityContextHolder.getContext().getAuthentication());
 
             } catch (Exception e) {
-                throw new BadCredentialsException("Invalid JWT token");
+
+                System.out.println("Invalid JWT token");
             }
         }
         filterChain.doFilter(request, response);

@@ -100,7 +100,7 @@ public class AppConfig {
                         .requestMatchers(HttpMethod.POST, "/schedules/**").hasRole("REALTOR")
                         .requestMatchers(HttpMethod.PUT, "/schedules/**").hasRole("CUSTOMER")
                         .requestMatchers(HttpMethod.DELETE, "/schedules/**").hasRole("REALTOR")
-                        .requestMatchers(HttpMethod.PATCH, "/schedules/**").hasRole("REALTOR")
+                        .requestMatchers(HttpMethod.PATCH, "/schedules/**").hasRole("CUSTOMER")
                         .requestMatchers("/schedules/history/customer/**").hasRole("CUSTOMER")
                         .requestMatchers("/schedules/history/realtor/**").hasRole("REALTOR")
                         /* TAXES CONTROLLER */

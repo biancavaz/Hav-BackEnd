@@ -23,7 +23,6 @@ public class SchedulesPostDTO {
         return "SchedulesPostDTO{" +
                 "day=" + day +
                 ", start_hour=" + start_hour +
-                ", realtor_id=" + realtor_id +
                 '}';
     }
 }

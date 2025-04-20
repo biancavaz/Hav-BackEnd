@@ -27,7 +27,7 @@ public class FavoritesController {
         favoritesService.favoritar(idProperty, token);
     }
 
-    @GetMapping("/map/{id}")
+    @GetMapping("/map")
     public List<PropertyMapGetResponseDTO> findByFilterMapFavorite(@CookieValue("token") String token) {
         return favoritesService.findAllByFilterMapFavorite(token);
     }
