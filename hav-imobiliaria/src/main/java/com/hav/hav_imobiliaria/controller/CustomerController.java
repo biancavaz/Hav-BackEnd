@@ -48,7 +48,7 @@ public class CustomerController {
     ) {
         log.info("DTO recebido: {}", custumer);
         log.info("imageId: {}", deletedImageId);
-        log.info("newImage: {}", newImage != null ? newImage.getOriginalFilename() : "sem imagem nova");
+        log.info("newImage: {}", newImage != null ? newImage : "sem imagem nova");
 
         return service.updateCustomer(id, custumer, deletedImageId, newImage);
     }

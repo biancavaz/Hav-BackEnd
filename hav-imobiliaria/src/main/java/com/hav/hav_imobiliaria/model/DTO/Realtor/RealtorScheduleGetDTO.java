@@ -10,6 +10,6 @@ public class RealtorScheduleGetDTO {
     String email;
     String celphone;
     String creci;
-    String imageId;
+    String mainImageRealtor;
 
 }

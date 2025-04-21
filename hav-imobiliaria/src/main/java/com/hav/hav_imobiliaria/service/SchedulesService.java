@@ -24,9 +24,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +41,8 @@ public class SchedulesService {
     private final CustumerRepository custumerRepository;
     private final PropertyRepository propertyRepository;
     private final TokenProvider tokenProvider;
+    private final ImageService imageService;
+
     public List<ScheduleGetDTO> findAllByRealtorIdAndFuture(String token) {
         String realtorEmail = tokenProvider.getEmailFromToken(token);
         Realtor realtor = realtorRepository.findByEmail(realtorEmail);
@@ -48,14 +52,19 @@ public class SchedulesService {
         try{
             for(int i=0; i<sortedList.size(); i++){
                 if(sortedList.get(i).getRealtor().getImageUser() !=null){
-                    list.get(i).getRealtor().setImageId(sortedList.get(i).getRealtor().getImageUser().getS3Key());
+                    String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(sortedList.get(i).getRealtor().getImageUser().getId()));
+
+                    list.get(i).getRealtor().setMainImageRealtor(mainImage);
                 }
-                if(sortedList.get(i).getCustomer().getImageUser().getS3Key() !=null){
-                    list.get(i).getCustomer().setImageId(sortedList.get(i).getCustomer().getImageUser().getS3Key());
+                if(sortedList.get(i).getCustomer().getImageUser() !=null){
+                    String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(sortedList.get(i).getCustomer().getImageUser().getId()));
+
+                    list.get(i).getCustomer().setMainImageCustomer(mainImage);
                 }
                 for(ImageProperty image: sortedList.get(i).getProperty().getImageProperties()){
                     if(image.getMainImage()){
-                        list.get(i).getProperty().setImageId(image.getS3Key());
+                        String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(image.getId()));
+                        list.get(i).getProperty().setMainImageProperty(mainImage);
                     }
                 }
 
@@ -228,14 +237,19 @@ public class SchedulesService {
         try{
             for(int i=0; i<sortedList.size(); i++){
                 if(sortedList.get(i).getRealtor().getImageUser() !=null){
-                    list.get(i).getRealtor().setImageId(sortedList.get(i).getRealtor().getImageUser().getS3Key());
+                    String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(sortedList.get(i).getRealtor().getImageUser().getId()));
+
+                    list.get(i).getRealtor().setMainImageRealtor(mainImage);
                 }
-                if(sortedList.get(i).getCustomer().getImageUser().getS3Key() !=null){
-                    list.get(i).getCustomer().setImageId(sortedList.get(i).getCustomer().getImageUser().getS3Key());
+                if(sortedList.get(i).getCustomer().getImageUser() !=null){
+                    String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(sortedList.get(i).getCustomer().getImageUser().getId()));
+
+                    list.get(i).getCustomer().setMainImageCustomer(mainImage);
                 }
                 for(ImageProperty image: sortedList.get(i).getProperty().getImageProperties()){
                     if(image.getMainImage()){
-                        list.get(i).getProperty().setImageId(image.getS3Key());
+                        String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(image.getId()));
+                        list.get(i).getProperty().setMainImageProperty(mainImage);
                     }
                 }
 

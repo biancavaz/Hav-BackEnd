@@ -9,7 +9,7 @@ public class CustomerScheduleGetDTO {
     String name;
     String email;
     String celphone;
-    String imageId;
+    String mainImageCustomer;
 
 
 }
