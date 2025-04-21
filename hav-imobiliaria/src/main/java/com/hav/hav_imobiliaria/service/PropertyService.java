@@ -204,7 +204,18 @@ public class PropertyService {
 
         //tranformando o page propery pro page da dto
         Page<PropertyCardGetResponseDTO> PropertyCardGetResponseDTO = propertyFinal.map(propertyx -> modelMapper.map(propertyx, PropertyCardGetResponseDTO.class));
+        for(int i=0; i<propertyFinal.getContent().size(); i++){
+            for(int y=0; y<pageProperty.get(i).getImageProperties().size(); y++){
+                if(pageProperty.get(i).getImageProperties().get(y).getMainImage()){
 
+                    String image = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(pageProperty.get(i).getImageProperties().get(y).getId()));
+
+                    PropertyCardGetResponseDTO.getContent().get(i).setMainImage(image);
+
+                }
+            }
+
+        }
         return PropertyCardGetResponseDTO;
     }
 
@@ -505,8 +516,8 @@ public class PropertyService {
                     if (property.getImageProperties() != null && !property.getImageProperties().isEmpty()) {
                         property.getImageProperties().stream()
                                 .filter(ImageProperty::getMainImage)
-                                .findFirst()
-                                .ifPresent(image -> dto.setMainImageId(image.getId()));
+                                .findFirst();
+//                                .ifPresent(image -> dto.setMainImage(image.getId()));
                     }
 
                     return dto;

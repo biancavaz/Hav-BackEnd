@@ -35,7 +35,7 @@ public class SchedulesController {
     @GetMapping
     @RequestMapping
     public List<ScheduleGetDTO> getSchedulesByRealtor(@CookieValue("token") String token){
-        return service.findAllByRealtorIdAndFuture(token).stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
+        return service.findAllByRealtorIdAndFuture(token);
     }
     @GetMapping
     @RequestMapping("/free/{id}")

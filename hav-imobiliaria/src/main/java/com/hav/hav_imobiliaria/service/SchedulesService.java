@@ -6,6 +6,7 @@ import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleChangeCustomerDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
+import com.hav.hav_imobiliaria.model.entity.Properties.ImageProperty;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
@@ -38,13 +39,31 @@ public class SchedulesService {
     private final CustumerRepository custumerRepository;
     private final PropertyRepository propertyRepository;
     private final TokenProvider tokenProvider;
-    public List<Schedules> findAllByRealtorIdAndFuture(String token) {
+    public List<ScheduleGetDTO> findAllByRealtorIdAndFuture(String token) {
         String realtorEmail = tokenProvider.getEmailFromToken(token);
         Realtor realtor = realtorRepository.findByEmail(realtorEmail);
 
         List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByRealtorIdAndDayGreaterThanEqual(realtor.getId(), LocalDate.now()));
+        List<ScheduleGetDTO> list = sortedList.stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
+        try{
+            for(int i=0; i<sortedList.size(); i++){
+                if(sortedList.get(i).getRealtor().getImageUser() !=null){
+                    list.get(i).getRealtor().setImageId(sortedList.get(i).getRealtor().getImageUser().getS3Key());
+                }
+                if(sortedList.get(i).getCustomer().getImageUser().getS3Key() !=null){
+                    list.get(i).getCustomer().setImageId(sortedList.get(i).getCustomer().getImageUser().getS3Key());
+                }
+                for(ImageProperty image: sortedList.get(i).getProperty().getImageProperties()){
+                    if(image.getMainImage()){
+                        list.get(i).getProperty().setImageId(image.getS3Key());
+                    }
+                }
 
-        return sortedList;
+            }
+        }catch (Exception e){
+            System.err.println(e);
+        }
+        return list;
     }
     public List<Schedules> findAllByRealtorIdAndFuture(Integer id) {
 
@@ -205,7 +224,27 @@ public class SchedulesService {
         Customer customer = custumerRepository.findByEmail(customerEmail);
 
         List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByCustomerIdAndDayGreaterThanEqual(customer.getId(), LocalDate.now()));
-        return sortedList.stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
+        List<ScheduleGetDTO> list = sortedList.stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
+        try{
+            for(int i=0; i<sortedList.size(); i++){
+                if(sortedList.get(i).getRealtor().getImageUser() !=null){
+                    list.get(i).getRealtor().setImageId(sortedList.get(i).getRealtor().getImageUser().getS3Key());
+                }
+                if(sortedList.get(i).getCustomer().getImageUser().getS3Key() !=null){
+                    list.get(i).getCustomer().setImageId(sortedList.get(i).getCustomer().getImageUser().getS3Key());
+                }
+                for(ImageProperty image: sortedList.get(i).getProperty().getImageProperties()){
+                    if(image.getMainImage()){
+                        list.get(i).getProperty().setImageId(image.getS3Key());
+                    }
+                }
+
+            }
+        }catch (Exception e){
+            System.err.println(e);
+        }
+
+        return list;
     }
     
 }

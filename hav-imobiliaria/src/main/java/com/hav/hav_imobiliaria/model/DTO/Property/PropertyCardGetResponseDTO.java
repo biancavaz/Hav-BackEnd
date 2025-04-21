@@ -28,7 +28,7 @@ public class PropertyCardGetResponseDTO {
     Integer id;
     String propertyType;
     Double area;
-    Integer mainImageId;
+    String mainImage;
 
     public PropertyCardGetResponseDTO(PropertyFeature propertyFeatures, Address address, Double price, String purpose, String propertyStatus, Double promotionalPrice, Integer id, String propertyType, Double area) {
         this.propertyFeatures = new PropertyFeatureCardGetResponseDTO(propertyFeatures);
