@@ -165,6 +165,29 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
+    @GetMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<AuthResponse> logoutUser(HttpServletResponse response) {
+        SecurityContextHolder.clearContext();
+
+        // Invalidate the cookie
+        ResponseCookie cookie = ResponseCookie.from("token", "123")
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Strict")
+                .domain("localhost")
+                .path("/")
+                .maxAge(0) // This deletes the cookie
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setStatus(true);
+        authResponse.setMessage("Logout realizado com sucesso.");
+
+        return ResponseEntity.ok(authResponse);
+    }
 
     private Authentication authenticate(String username, String password) {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
