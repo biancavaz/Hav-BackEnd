@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.security.controllerSecurity;
 
+import com.hav.hav_imobiliaria.model.DTO.Login.ResetPasswordRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.repository.CustumerRepository;
 import com.hav.hav_imobiliaria.security.configSecurity.TokenProvider;
@@ -10,6 +11,7 @@ import com.hav.hav_imobiliaria.security.modelSecurity.UserSecurity;
 import com.hav.hav_imobiliaria.security.repositorySecurity.UserRepositorySecurity;
 import com.hav.hav_imobiliaria.security.requestSecurity.LoginRequest;
 import com.hav.hav_imobiliaria.security.serviceSecurity.CustomUserDetailsService;
+import com.hav.hav_imobiliaria.service.EmailSenderService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -44,6 +47,44 @@ public class AuthController {
     private final CustomUserDetailsService customUserDetailsService;
     private final CustumerRepository customerReporitory;
     private final ModelMapper modelMapper;
+    private final EmailSenderService emailSenderService;
+
+
+
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
+        try {
+            UserSecurity user = userRepositorySecurity.findUserSecurityByEmail(email);
+
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                        "status", false,
+                        "message", "Usuário com este e-mail não foi encontrado."
+                ));
+            }
+
+            // Generate token
+            String token = tokenProvider.generatePasswordResetToken(user.getId());
+
+            // Send email
+            emailSenderService.sendResetPasswordEmail(email, token);
+
+            return ResponseEntity.ok(Map.of(
+                    "status", true,
+                    "message", "Link de redefinição de senha enviado para o e-mail fornecido."
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", false,
+                    "message", "Erro ao enviar e-mail: " + e.getMessage()
+            ));
+        }
+    }
+
+
+
+
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
@@ -99,6 +140,33 @@ public class AuthController {
             return ResponseEntity.ok(authResponse);
 
     }
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequestDTO resetRequest) {
+        try {
+            String token = resetRequest.getToken();
+            String newPassword = resetRequest.getNewPassword();
+
+            // Validar e extrair o ID do token
+            Integer userId = tokenProvider.getUserIdFromPasswordResetToken(token);
+
+            UserSecurity user = userRepositorySecurity.findById(userId)
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com ID: " + userId));
+
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepositorySecurity.save(user);
+
+            return ResponseEntity.ok(Map.of(
+                    "status", true,
+                    "message", "Senha alterada com sucesso."
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                    "status", false,
+                    "message", e.getMessage()
+            ));
+        }
+    }
+
 
     @PostMapping("/signin")
     @ResponseStatus(HttpStatus.OK)
@@ -109,6 +177,7 @@ public class AuthController {
         System.out.println(username + " ------ " + password);
 
         // Verificando se o usuário existe
+
         UserSecurity user = userRepositorySecurity.findUserSecurityByEmail(username);
         if (user == null) {
             // Retorna um erro 404 (Not Found) se a conta não existe
