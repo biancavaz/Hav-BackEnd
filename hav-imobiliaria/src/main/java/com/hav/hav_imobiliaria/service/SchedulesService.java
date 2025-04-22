@@ -11,10 +11,8 @@ import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
-import com.hav.hav_imobiliaria.repository.CustumerRepository;
-import com.hav.hav_imobiliaria.repository.PropertyRepository;
-import com.hav.hav_imobiliaria.repository.RealtorRepository;
-import com.hav.hav_imobiliaria.repository.ScheduleRepository;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
+import com.hav.hav_imobiliaria.repository.*;
 import com.hav.hav_imobiliaria.security.configSecurity.TokenProvider;
 
 import lombok.AllArgsConstructor;
@@ -42,6 +40,7 @@ public class SchedulesService {
     private final PropertyRepository propertyRepository;
     private final TokenProvider tokenProvider;
     private final ImageService imageService;
+    private final UserRepository userRepository;
 
     public List<ScheduleGetDTO> findAllByRealtorIdAndFuture(String token) {
         String realtorEmail = tokenProvider.getEmailFromToken(token);
@@ -51,27 +50,33 @@ public class SchedulesService {
         List<ScheduleGetDTO> list = sortedList.stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
         try{
             for(int i=0; i<sortedList.size(); i++){
-                if(sortedList.get(i).getRealtor().getImageUser() !=null){
-                    String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(sortedList.get(i).getRealtor().getImageUser().getId()));
+                if(sortedList.get(i).getCustomer() !=null){
+                    if(sortedList.get(i).getRealtor().getImageUser() !=null){
+                        System.out.println("entrou");
+                        String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(sortedList.get(i).getRealtor().getImageUser().getId()));
+                        System.out.println(mainImage);
+                        list.get(i).getRealtor().setMainImageRealtor(mainImage);
+                    }
+                    if(sortedList.get(i).getCustomer().getImageUser() !=null){
+                        String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(sortedList.get(i).getCustomer().getImageUser().getId()));
 
-                    list.get(i).getRealtor().setMainImageRealtor(mainImage);
-                }
-                if(sortedList.get(i).getCustomer().getImageUser() !=null){
-                    String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(sortedList.get(i).getCustomer().getImageUser().getId()));
+                        list.get(i).getCustomer().setMainImageCustomer(mainImage);
+                    }
 
-                    list.get(i).getCustomer().setMainImageCustomer(mainImage);
-                }
-                for(ImageProperty image: sortedList.get(i).getProperty().getImageProperties()){
-                    if(image.getMainImage()){
-                        String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(image.getId()));
-                        list.get(i).getProperty().setMainImageProperty(mainImage);
+                    for(ImageProperty image: sortedList.get(i).getProperty().getImageProperties()){
+                        if(image.getMainImage()){
+                            String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(image.getId()));
+                            list.get(i).getProperty().setMainImageProperty(mainImage);
+                        }
                     }
                 }
+
 
             }
         }catch (Exception e){
             System.err.println(e);
         }
+        
         return list;
     }
     public List<Schedules> findAllByRealtorIdAndFuture(Integer id) {
@@ -230,28 +235,33 @@ public class SchedulesService {
     }
     public List<ScheduleGetDTO> findAllSchedulesCustomer(String token) {
         String customerEmail = tokenProvider.getEmailFromToken(token);
-        Customer customer = custumerRepository.findByEmail(customerEmail);
+        User user = userRepository.findByEmail(customerEmail).get();
 
-        List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByCustomerIdAndDayGreaterThanEqual(customer.getId(), LocalDate.now()));
+        List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByCustomerIdAndDayGreaterThanEqual(user.getId(), LocalDate.now()));
         List<ScheduleGetDTO> list = sortedList.stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
         try{
             for(int i=0; i<sortedList.size(); i++){
-                if(sortedList.get(i).getRealtor().getImageUser() !=null){
-                    String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(sortedList.get(i).getRealtor().getImageUser().getId()));
+                if(sortedList.get(i).getCustomer() !=null){
+                    if(sortedList.get(i).getRealtor().getImageUser() !=null){
+                        System.out.println("entrou");
+                        String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(sortedList.get(i).getRealtor().getImageUser().getId()));
+                        System.out.println(mainImage);
+                        list.get(i).getRealtor().setMainImageRealtor(mainImage);
+                    }
+                    if(sortedList.get(i).getCustomer().getImageUser() !=null){
+                        String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(sortedList.get(i).getCustomer().getImageUser().getId()));
 
-                    list.get(i).getRealtor().setMainImageRealtor(mainImage);
-                }
-                if(sortedList.get(i).getCustomer().getImageUser() !=null){
-                    String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(sortedList.get(i).getCustomer().getImageUser().getId()));
+                        list.get(i).getCustomer().setMainImageCustomer(mainImage);
+                    }
 
-                    list.get(i).getCustomer().setMainImageCustomer(mainImage);
-                }
-                for(ImageProperty image: sortedList.get(i).getProperty().getImageProperties()){
-                    if(image.getMainImage()){
-                        String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(image.getId()));
-                        list.get(i).getProperty().setMainImageProperty(mainImage);
+                    for(ImageProperty image: sortedList.get(i).getProperty().getImageProperties()){
+                        if(image.getMainImage()){
+                            String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(image.getId()));
+                            list.get(i).getProperty().setMainImageProperty(mainImage);
+                        }
                     }
                 }
+
 
             }
         }catch (Exception e){
