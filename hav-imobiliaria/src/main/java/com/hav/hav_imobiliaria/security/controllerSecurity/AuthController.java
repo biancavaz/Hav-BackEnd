@@ -165,7 +165,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AuthResponse> logoutUser(HttpServletResponse response) {
         SecurityContextHolder.clearContext();
