@@ -39,6 +39,7 @@ public class MessageServiceImplementation implements MessageService {
         message.setUser(user.get());
         message.setContent(req.getContent());
         message.setCreatedAt(LocalDateTime.now());
+        message.setIsRead(false);
 
         return messageRepository.save(message);
     }

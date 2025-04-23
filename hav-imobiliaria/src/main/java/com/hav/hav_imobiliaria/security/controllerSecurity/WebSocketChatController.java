@@ -18,11 +18,11 @@ public class WebSocketChatController {
     private final MessageService messageService; // serviço onde salva a msg e busca dados se necessário
     private final SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/chat/send") // ou /app/chat/send
+    @MessageMapping("/chat/send")
     public void sendMessage(@Payload SendMessageRequest messageDTO) throws ChatException, UserException {
         Message savedMessage = messageService.sendMessage(messageDTO); // salva no banco
         messagingTemplate.convertAndSend(
-                STR."/topic/chat/\{messageDTO.getChatId()}", // envia para os usuários do chat certo
+                "/topic/chat/" + messageDTO.getChatId(), // envia para os usuários do chat certo
                 savedMessage
         );
     }
