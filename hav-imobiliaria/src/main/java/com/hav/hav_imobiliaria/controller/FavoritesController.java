@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @RequestMapping("/favorites")
 @RestController
-public class FavoritesController {
+public class    FavoritesController {
 
     private final FavoritesService favoritesService;
 
@@ -45,4 +45,12 @@ public class FavoritesController {
 
         return favoritesService.returnFavorites(token);
     }
+
+    //funcionando
+    @GetMapping("/isFavorited/{idProperty}")
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean isFavorited(@CookieValue("token") String token, @PathVariable Integer idProperty) {
+        return favoritesService.isFavorited(idProperty, token);
+    }
+
 }
