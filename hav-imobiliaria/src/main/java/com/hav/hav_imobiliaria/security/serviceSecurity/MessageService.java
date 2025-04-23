@@ -7,6 +7,7 @@ import com.hav.hav_imobiliaria.security.exceptionsSecurity.UserException;
 import com.hav.hav_imobiliaria.security.modelSecurity.Message;
 import com.hav.hav_imobiliaria.security.modelSecurity.UserSecurity;
 import com.hav.hav_imobiliaria.security.requestSecurity.SendMessageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,5 +25,5 @@ public interface MessageService {
 
     List<UnreadCountDTO> getUnreadCountsForUser(UserSecurity user) throws UserException;
 
-    // boolean messageIsRead(Integer messageId, UserSecurity user) throws UserException;
+    void markMessagesAsRead(Integer chatId, Integer userId);
 }

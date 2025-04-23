@@ -88,4 +88,9 @@ public class MessageServiceImplementation implements MessageService {
         return result;
     }
 
+    @Override
+    public void markMessagesAsRead(Integer chatId, Integer userId) {
+        messageRepository.markMessagesAsRead(chatId, userId);
+    }
+
 }

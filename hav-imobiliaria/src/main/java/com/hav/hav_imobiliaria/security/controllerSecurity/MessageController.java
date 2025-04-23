@@ -70,4 +70,17 @@ public class MessageController {
 
         return ResponseEntity.ok(counts);
     }
+
+    @PutMapping("/read/{chatId}")
+    public ResponseEntity<Void> markMessagesAsRead(
+            @PathVariable Integer chatId,
+            @CookieValue("token") String jwt
+    ) throws UserException {
+
+        UserSecurity user = userSecurityService.findUserProfile(jwt);
+
+        messageService.markMessagesAsRead(chatId, user.getId());
+
+        return ResponseEntity.ok().build();
+    }
 }
