@@ -56,6 +56,7 @@ public class NotificationService {
                 not.getDataEnvio()
         );
         notificationPreferredPropertyType(dto, notificationdto.getIds());
+        notificationSchedule(dto, notificationdto.getIds());
         enviarNotificacao(dto, notificationdto.getIds());
     }
 
@@ -134,5 +135,13 @@ public class NotificationService {
         );
 
         enviarNotificacao(dto, List.of(user.getId()));
+    }
+
+    public void notificationSchedule(NotificationGetResponseDTO dto, List<Integer> ids){
+        for (Integer id : ids) {
+            String destino = "/topic/api/" + id;
+            System.out.println("Enviando para: " + destino + " | ID da notificação: " + dto.getId());
+            simpMessagingTemplate.convertAndSend(destino, dto);
+        }
     }
 }

@@ -1,5 +1,8 @@
 package com.hav.hav_imobiliaria.service;
 
+import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationDTO;
+import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationGetResponseDTO;
+import com.hav.hav_imobiliaria.WebSocket.Service.NotificationService;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorScheduleGetDTO;
@@ -21,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,6 +38,7 @@ public class SchedulesService {
     private final RealtorRepository realtorRepository;
     private final CustumerRepository custumerRepository;
     private final PropertyRepository propertyRepository;
+    private final NotificationService notificationService;
 
     public List<Schedules> findAllByRealtorIdAndFuture(Integer id) {
         List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByRealtorIdAndDayGreaterThanEqual(id, LocalDate.now()));
@@ -77,26 +82,53 @@ public class SchedulesService {
     }
 
     public List<Schedules> createSchedules(List<SchedulesPostDTO> schedulesPostDto){
-        schedulesPostDto.forEach(schedulesPostDtox -> System.out.println(schedulesPostDtox.toString()));
-        List<Schedules> schedulesList = schedulesPostDto.stream().map(
-                schedulesPostDtox -> modelMapper.map(schedulesPostDtox, Schedules.class)).toList();
+        schedulesPostDto.forEach(dto -> System.out.println(dto.toString()));
 
-        System.out.println(schedulesList.size());
+        List<Schedules> schedulesList = schedulesPostDto.stream()
+                .map(dto -> modelMapper.map(dto, Schedules.class))
+                .toList();
+
         for (int i = 0; i < schedulesList.size(); i++) {
             Integer realtorId = schedulesPostDto.get(i).getRealtor_id();
             Optional<Realtor> realtorOptional = realtorRepository.findById(realtorId);
 
             if (realtorOptional.isPresent()) {
                 schedulesList.get(i).setRealtor(realtorOptional.get());
+
+                // Enviar notificação para o corretor (associado ao agendamento)
+                Realtor realtor = realtorRepository.findById(realtorId)
+                        .orElseThrow(() -> new RuntimeException("Realtor não encontrado com id: " + realtorId));
+
+                NotificationDTO notificationDTO = new NotificationDTO();
+                notificationDTO.setTitle("Novo agendamento");
+                notificationDTO.setContent("Você foi selecionado para um agendamento");
+                notificationDTO.setDataEnvio(LocalDateTime.now());
+                notificationDTO.setRead(false);
+
+                NotificationGetResponseDTO notification = new NotificationGetResponseDTO();
+                notification.setTitle(notificationDTO.getTitle());
+                notification.setContent(notificationDTO.getContent());
+                notification.setRead(false);
+                notification.setDataEnvio(LocalDateTime.now());
+
+                realtorRepository.save(realtor);
+                notificationDTO.setIds(List.of(realtorId));
+
+                NotificationGetResponseDTO notDTO = new NotificationGetResponseDTO(
+                        notification.getId(),
+                        notification.getTitle(),
+                        notification.getContent(),
+                        notification.getRead(),
+                        notification.getDataEnvio()
+                );
+
+                notificationService.enviarNotificacao(notDTO, List.of(realtor.getId()));
             } else {
-                System.err.println("erro n tratado");
+                System.err.println("Realtor não encontrado: id=" + schedulesPostDto.get(i).getRealtor_id());
             }
         }
-        schedulesList.forEach(schedulesPostDtox -> System.out.println(schedulesPostDtox.toString()));
 
-        List<Schedules> schedulesFinal = repository.saveAll(schedulesList);
-        return schedulesList;
-
+        return repository.saveAll(schedulesList);
     }
 
     public List<ScheduleGetDTO> addCustomerToSchedule(ScheduleChangeCustomerDTO scheduleChangeCustomerDTO) {
@@ -179,5 +211,9 @@ public class SchedulesService {
         Schedules schedules = repository.findById(id).get();
         schedules.setStatus(status);
         repository.save(schedules);
+    }
+
+    public void notifyNewSchedule(Schedules schedule){
+
     }
 }
