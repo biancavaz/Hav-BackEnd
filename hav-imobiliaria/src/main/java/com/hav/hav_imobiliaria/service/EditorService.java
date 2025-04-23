@@ -85,11 +85,13 @@ public class EditorService {
 
         modelMapper.map(editorPutDTO, editor);
 
-        if (deletedImageId != null && newImage != null) {
+        if (deletedImageId != null){
             imageService.deleteUserImage(deletedImageId);
+
+        }
+        if( newImage != null) {
             imageService.uploadUserImage(id, newImage);
         }
-
         return repository.save(editor);
     }
 

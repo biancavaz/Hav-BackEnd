@@ -9,13 +9,15 @@ import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleChangeCustomerDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.ScheduleGetDTO;
 import com.hav.hav_imobiliaria.model.DTO.Schedules.SchedulesPostDTO;
+import com.hav.hav_imobiliaria.model.entity.Properties.ImageProperty;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
+import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
-import com.hav.hav_imobiliaria.repository.CustumerRepository;
-import com.hav.hav_imobiliaria.repository.PropertyRepository;
-import com.hav.hav_imobiliaria.repository.RealtorRepository;
-import com.hav.hav_imobiliaria.repository.ScheduleRepository;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
+import com.hav.hav_imobiliaria.repository.*;
+import com.hav.hav_imobiliaria.security.configSecurity.TokenProvider;
+
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -23,10 +25,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,8 +43,49 @@ public class SchedulesService {
     private final CustumerRepository custumerRepository;
     private final PropertyRepository propertyRepository;
     private final NotificationService notificationService;
+    private final TokenProvider tokenProvider;
+    private final ImageService imageService;
+    private final UserRepository userRepository;
 
+    public List<ScheduleGetDTO> findAllByRealtorIdAndFuture(String token) {
+        String realtorEmail = tokenProvider.getEmailFromToken(token);
+        Realtor realtor = realtorRepository.findByEmail(realtorEmail);
+
+        List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByRealtorIdAndDayGreaterThanEqual(realtor.getId(), LocalDate.now()));
+        List<ScheduleGetDTO> list = sortedList.stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
+        try{
+            for(int i=0; i<sortedList.size(); i++){
+                if(sortedList.get(i).getCustomer() !=null){
+                    if(sortedList.get(i).getRealtor().getImageUser() !=null){
+                        System.out.println("entrou");
+                        String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(sortedList.get(i).getRealtor().getImageUser().getId()));
+                        System.out.println(mainImage);
+                        list.get(i).getRealtor().setMainImageRealtor(mainImage);
+                    }
+                    if(sortedList.get(i).getCustomer().getImageUser() !=null){
+                        String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(sortedList.get(i).getCustomer().getImageUser().getId()));
+
+                        list.get(i).getCustomer().setMainImageCustomer(mainImage);
+                    }
+
+                    for(ImageProperty image: sortedList.get(i).getProperty().getImageProperties()){
+                        if(image.getMainImage()){
+                            String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(image.getId()));
+                            list.get(i).getProperty().setMainImageProperty(mainImage);
+                        }
+                    }
+                }
+
+
+            }
+        }catch (Exception e){
+            System.err.println(e);
+        }
+        
+        return list;
+    }
     public List<Schedules> findAllByRealtorIdAndFuture(Integer id) {
+
         List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByRealtorIdAndDayGreaterThanEqual(id, LocalDate.now()));
 
         return sortedList;
@@ -81,62 +126,40 @@ public class SchedulesService {
         return sortedList;
     }
 
-    public List<Schedules> createSchedules(List<SchedulesPostDTO> schedulesPostDto){
-        schedulesPostDto.forEach(dto -> System.out.println(dto.toString()));
+    public List<Schedules> createSchedules(List<SchedulesPostDTO> schedulesPostDto, String token){
 
-        List<Schedules> schedulesList = schedulesPostDto.stream()
-                .map(dto -> modelMapper.map(dto, Schedules.class))
-                .toList();
+        List<Schedules> schedulesList = schedulesPostDto.stream().map(
+                schedulesPostDtox -> modelMapper.map(schedulesPostDtox, Schedules.class)).toList();
 
         for (int i = 0; i < schedulesList.size(); i++) {
-            Integer realtorId = schedulesPostDto.get(i).getRealtor_id();
-            Optional<Realtor> realtorOptional = realtorRepository.findById(realtorId);
+            String realtorEmail = tokenProvider.getEmailFromToken(token);
 
-            if (realtorOptional.isPresent()) {
-                schedulesList.get(i).setRealtor(realtorOptional.get());
+            Realtor realtor = realtorRepository.findByEmail(realtorEmail);
 
-                // Enviar notificação para o corretor (associado ao agendamento)
-                Realtor realtor = realtorRepository.findById(realtorId)
-                        .orElseThrow(() -> new RuntimeException("Realtor não encontrado com id: " + realtorId));
-
-                NotificationDTO notificationDTO = new NotificationDTO();
-                notificationDTO.setTitle("Novo agendamento");
-                notificationDTO.setContent("Você foi selecionado para um agendamento");
-                notificationDTO.setDataEnvio(LocalDateTime.now());
-                notificationDTO.setRead(false);
-
-                NotificationGetResponseDTO notification = new NotificationGetResponseDTO();
-                notification.setTitle(notificationDTO.getTitle());
-                notification.setContent(notificationDTO.getContent());
-                notification.setRead(false);
-                notification.setDataEnvio(LocalDateTime.now());
-
-                realtorRepository.save(realtor);
-                notificationDTO.setIds(List.of(realtorId));
-
-                NotificationGetResponseDTO notDTO = new NotificationGetResponseDTO(
-                        notification.getId(),
-                        notification.getTitle(),
-                        notification.getContent(),
-                        notification.getRead(),
-                        notification.getDataEnvio()
-                );
-
-                notificationService.enviarNotificacao(notDTO, List.of(realtor.getId()));
+            if (realtor != null) {
+                schedulesList.get(i).setRealtor(realtor);
             } else {
-                System.err.println("Realtor não encontrado: id=" + schedulesPostDto.get(i).getRealtor_id());
+                throw new RuntimeException("Realtor not found");
             }
         }
+
+        repository.saveAll(schedulesList);
+        return schedulesList;
 
         return repository.saveAll(schedulesList);
     }
 
-    public List<ScheduleGetDTO> addCustomerToSchedule(ScheduleChangeCustomerDTO scheduleChangeCustomerDTO) {
+    public List<ScheduleGetDTO> addCustomerToSchedule(ScheduleChangeCustomerDTO scheduleChangeCustomerDTO, String token) {
+        String customerEmail = tokenProvider.getEmailFromToken(token);
+        Customer customer = custumerRepository.findByEmail(customerEmail);
+        if(customer == null){
+            throw new RuntimeException("Customer not found");
+        }
         List<Schedules> schedules = repository.findAllById(scheduleChangeCustomerDTO.getSchedule_id());
         for(int i=0; i<schedules.size(); i++){
             schedules.get(i).setStatus(scheduleChangeCustomerDTO.getStatus());
             if(schedules.get(i).getCustomer() ==null){
-                schedules.get(i).setCustomer(custumerRepository.findById(scheduleChangeCustomerDTO.getCustomer_id()).get());
+                schedules.get(i).setCustomer(custumerRepository.findById(customer.getId()).get());
             }else{
                 System.err.println("erro não tratado de customer ja no schedule");
             }
@@ -195,14 +218,18 @@ public class SchedulesService {
                 .collect(Collectors.toList());
     }
 
-    public Page<ScheduleGetDTO> findRealtorScheduleHistory(Integer id, Pageable pageable) {
-        Page<Schedules> schedules = repository.findByRealtorIdAndDayLessThanAndCustomerIsNotNullAndPropertyIsNotNull(
-                id, LocalDate.now(), pageable);
+    public Page<ScheduleGetDTO> findRealtorScheduleHistory(String token, LocalDate latestDate, String status, Pageable pageable) {
+        String realtorEmail = tokenProvider.getEmailFromToken(token);
+        Realtor realtor = realtorRepository.findByEmail(realtorEmail);
+        Page<Schedules> schedules = repository.findByRealtorIdAndDayLessThanAndCustomerIsNotNullAndPropertyIsNotNullAndStatusEquals(
+                realtor.getId(), LocalDate.now(), latestDate, status, pageable);
         return schedules.map(schedule -> modelMapper.map(schedule, ScheduleGetDTO.class));
     }
-    public Page<ScheduleGetDTO> findCustomerScheduleHistory(Integer id, LocalDate latestDate, String status, Pageable pageable) {
+    public Page<ScheduleGetDTO> findCustomerScheduleHistory(String token, LocalDate latestDate, String status, Pageable pageable) {
+        String customerEmail = tokenProvider.getEmailFromToken(token);
+        Customer customer = custumerRepository.findByEmail(customerEmail);
         Page<Schedules> schedules = repository.findByCustomerIdAndDayLessThanAndCustomerIsNotNullAndPropertyIsNotNullAndStatusEquals(
-                id, LocalDate.now(), latestDate, status, pageable);
+                customer.getId(), LocalDate.now(), latestDate, status, pageable);
 
         return schedules.map(schedule -> modelMapper.map(schedule, ScheduleGetDTO.class));
     }
@@ -216,4 +243,42 @@ public class SchedulesService {
     public void notifyNewSchedule(Schedules schedule){
 
     }
+    public List<ScheduleGetDTO> findAllSchedulesCustomer(String token) {
+        String customerEmail = tokenProvider.getEmailFromToken(token);
+        User user = userRepository.findByEmail(customerEmail).get();
+
+        List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByCustomerIdAndDayGreaterThanEqual(user.getId(), LocalDate.now()));
+        List<ScheduleGetDTO> list = sortedList.stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
+        try{
+            for(int i=0; i<sortedList.size(); i++){
+                if(sortedList.get(i).getCustomer() !=null){
+                    if(sortedList.get(i).getRealtor().getImageUser() !=null){
+                        System.out.println("entrou");
+                        String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(sortedList.get(i).getRealtor().getImageUser().getId()));
+                        System.out.println(mainImage);
+                        list.get(i).getRealtor().setMainImageRealtor(mainImage);
+                    }
+                    if(sortedList.get(i).getCustomer().getImageUser() !=null){
+                        String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(sortedList.get(i).getCustomer().getImageUser().getId()));
+
+                        list.get(i).getCustomer().setMainImageCustomer(mainImage);
+                    }
+
+                    for(ImageProperty image: sortedList.get(i).getProperty().getImageProperties()){
+                        if(image.getMainImage()){
+                            String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(image.getId()));
+                            list.get(i).getProperty().setMainImageProperty(mainImage);
+                        }
+                    }
+                }
+
+
+            }
+        }catch (Exception e){
+            System.err.println(e);
+        }
+
+        return list;
+    }
+    
 }

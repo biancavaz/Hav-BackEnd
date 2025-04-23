@@ -98,9 +98,9 @@ public class AppConfig {
                         /* SCHEDULES CONTROLLER */
                         .requestMatchers(HttpMethod.GET, "/schedules/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/schedules/**").hasRole("REALTOR")
-                        .requestMatchers(HttpMethod.PUT, "/schedules/**").hasRole("REALTOR")
+                        .requestMatchers(HttpMethod.PUT, "/schedules/**").hasRole("CUSTOMER")
                         .requestMatchers(HttpMethod.DELETE, "/schedules/**").hasRole("REALTOR")
-                        .requestMatchers(HttpMethod.PATCH, "/schedules/**").hasRole("REALTOR")
+                        .requestMatchers(HttpMethod.PATCH, "/schedules/**").hasRole("CUSTOMER")
                         .requestMatchers("/schedules/history/customer/**").hasRole("CUSTOMER")
                         .requestMatchers("/schedules/history/realtor/**").hasRole("REALTOR")
                         /* TAXES CONTROLLER */
@@ -110,10 +110,7 @@ public class AppConfig {
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtTokenValidator(), UsernamePasswordAuthenticationFilter.class)
-                .formLogin(AbstractHttpConfigurer::disable)
-
-                .httpBasic(Customizer.withDefaults());
-
+                .formLogin(AbstractHttpConfigurer::disable);
         return http.build();
     }
 

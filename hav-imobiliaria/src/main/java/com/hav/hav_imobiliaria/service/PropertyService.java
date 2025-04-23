@@ -13,6 +13,7 @@ import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureCardGetR
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureSpecifiGetRespondeDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPropertySpecificGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPropertySpecificGetResponseDTO;
@@ -133,6 +134,59 @@ public class PropertyService {
                 property.getRealtors().stream().map(realtor ->
                         new RealtorPropertySpecificGetResponseDTO(realtor.getName(),
                                 realtor.getEmail(), realtor.getCreci(), realtor.getPhoneNumber())).toList());
+
+        List<Integer> imageIds = new ArrayList<>();
+
+        for (ImageProperty image : property.getImageProperties()) {
+            if (image.getMainImage()) {
+                imageIds.add(0, image.getId()); // Adiciona no início se for imagem principal
+            } else {
+                imageIds.add(image.getId()); // Adiciona normalmente
+            }
+        }
+        long startTime = System.currentTimeMillis(); // Marca o início
+
+        List<byte[]> imageBytesList = imageService.getPropertyImages(imageIds);
+
+        List<String> imagesString = imageBytesList.stream()
+                .map(bytes -> Base64.getEncoder().encodeToString(bytes))
+                .toList();
+        long endTime = System.currentTimeMillis(); // Marca o fim
+
+        System.out.println("Tempo de execução de getPropertyImages: " + (endTime - startTime) + " ms");
+        ProprietorPropertySpecificGetResponseDTO proprietorDto = new ProprietorPropertySpecificGetResponseDTO(property.getProprietor().getName(),
+                property.getProprietor().getEmail(), property.getProprietor().getPhoneNumber());
+
+        // Agora passa 17 argumentos, incluindo imagens
+        PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(
+                property.getPropertyCode(),
+                property.getPropertyType(),
+                property.getPropertyStatus(),
+                property.getPurpose(),
+                property.getPropertyDescription(),
+                property.getArea(),
+                property.getPrice(),
+                property.getPromotionalPrice(),
+                property.getHighlight(),
+                property.getFloors(),
+                modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class),
+                modelMapper.map(property.getAddress(), AddressGetResponseDTO.class),
+                modelMapper.map(property.getPropertyFeatures(), PropertyFeatureSpecifiGetRespondeDTO.class),
+                property.getAdditionals()
+                        .stream()
+                        .map(additional -> new AdditionalsGetResponseDTO(additional.getName()))
+                        .toList(),
+                property.getRealtors()
+                        .stream()
+                        .map(realtor -> new RealtorPropertySpecificGetResponseDTO(
+                                realtor.getName(),
+                                realtor.getEmail(),
+                                realtor.getCreci(),
+                                realtor.getPhoneNumber()))
+                        .toList(),
+                proprietorDto,
+                imagesString
+        );
         return dtos;
     }
 
@@ -228,7 +282,18 @@ public class PropertyService {
 
         //tranformando o page propery pro page da dto
         Page<PropertyCardGetResponseDTO> PropertyCardGetResponseDTO = propertyFinal.map(propertyx -> modelMapper.map(propertyx, PropertyCardGetResponseDTO.class));
+        for(int i=0; i<propertyFinal.getContent().size(); i++){
+            for(int y=0; y<pageProperty.get(i).getImageProperties().size(); y++){
+                if(pageProperty.get(i).getImageProperties().get(y).getMainImage()){
 
+                    String image = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(pageProperty.get(i).getImageProperties().get(y).getId()));
+
+                    PropertyCardGetResponseDTO.getContent().get(i).setMainImage(image);
+
+                }
+            }
+
+        }
         return PropertyCardGetResponseDTO;
     }
 
@@ -367,8 +432,8 @@ public class PropertyService {
 
 
         repository.save(property);
-
-        processImages(propertyId, newImages);
+//        vai ter que add isso
+//        processImages(propertyId, newImages);
 
         return property;
     }
@@ -528,8 +593,8 @@ public class PropertyService {
                     if (property.getImageProperties() != null && !property.getImageProperties().isEmpty()) {
                         property.getImageProperties().stream()
                                 .filter(ImageProperty::getMainImage)
-                                .findFirst()
-                                .ifPresent(image -> dto.setMainImageId(image.getId()));
+                                .findFirst();
+//                                .ifPresent(image -> dto.setMainImage(image.getId()));
                     }
 
                     return dto;

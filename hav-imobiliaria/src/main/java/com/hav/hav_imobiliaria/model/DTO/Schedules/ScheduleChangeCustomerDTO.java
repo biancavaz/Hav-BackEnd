@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class ScheduleChangeCustomerDTO {
-    private Integer customer_id;
+
     private Integer property_id;
     private List<Integer> schedule_id;
     private String status="pendente";
