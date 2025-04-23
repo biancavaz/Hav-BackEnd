@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.security.controllerSecurity;
 
 import com.hav.hav_imobiliaria.security.ResponseSecurity.ApiResponse;
+import com.hav.hav_imobiliaria.security.ResponseSecurity.UnreadCountDTO;
 import com.hav.hav_imobiliaria.security.exceptionsSecurity.ChatException;
 import com.hav.hav_imobiliaria.security.exceptionsSecurity.MessageException;
 import com.hav.hav_imobiliaria.security.exceptionsSecurity.UserException;
@@ -10,6 +11,7 @@ import com.hav.hav_imobiliaria.security.requestSecurity.SendMessageRequest;
 import com.hav.hav_imobiliaria.security.serviceSecurity.MessageService;
 import com.hav.hav_imobiliaria.security.serviceSecurity.UserSecurityService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,5 +58,16 @@ public class MessageController {
         messageService.deleteMessageById(messageId, user);
 
         return new ApiResponse("Message deleted successfully", false);
+    }
+
+    @GetMapping("/unread-counts")
+    public ResponseEntity<List<UnreadCountDTO>> getAllUnreadCounts(@CookieValue("token") String jwt)
+            throws UserException {
+
+        UserSecurity currentUser = userSecurityService.findUserProfile(jwt);
+
+        List<UnreadCountDTO> counts = messageService.getUnreadCountsForUser(currentUser);
+
+        return ResponseEntity.ok(counts);
     }
 }

@@ -13,19 +13,19 @@ import java.util.Optional;
 @Service
 public interface ChatService {
 
-    public Chat createChat(UserSecurity reqUser, Integer userId2) throws UserException, ChatException;
+    Chat createChat(UserSecurity reqUser, Integer userId2) throws UserException, ChatException;
 
-    public Optional<Chat> findChatById(Integer chatId) throws ChatException;
+    Optional<Chat> findChatById(Integer chatId) throws ChatException;
 
-    public List<Chat> findChatsByUserId(Integer userId) throws UserException;
+    List<Chat> findChatsByUserId(Integer userId) throws UserException;
 
-    public Chat createGroupChat(GroupChatRequest req, UserSecurity reqUser) throws UserException;
+    Chat createGroupChat(GroupChatRequest req, UserSecurity reqUser) throws UserException;
 
-    public Chat addUserToGroupChat(Integer userId, Integer chatId, UserSecurity reqUser) throws UserException, ChatException;
+    Chat addUserToGroupChat(Integer userId, Integer chatId, UserSecurity reqUser) throws UserException, ChatException;
 
-    public Chat removeUserFromGroupChat(Integer chatId, Integer userId, UserSecurity reqUser) throws UserException, ChatException;
+    Chat removeUserFromGroupChat(Integer chatId, Integer userId, UserSecurity reqUser) throws UserException, ChatException;
 
-    public Chat renameGroup(Integer chatId, String groupName, UserSecurity reqUser) throws UserException, ChatException;
+    Chat renameGroup(Integer chatId, String groupName, UserSecurity reqUser) throws UserException, ChatException;
 
-    public void deleteChat(Integer chatId, Integer userId) throws ChatException;
+    void deleteChat(Integer chatId, Integer userId) throws ChatException;
 }
