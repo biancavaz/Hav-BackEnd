@@ -108,7 +108,56 @@ public class PropertyService {
 
     public PropertyGetSpecificResponseDTO findPropertySpecificById(Integer id) {
         Property property = repository.findById(id).get();
-        PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(property.getPropertyCode(), property.getPropertyType(), property.getPropertyStatus(), property.getPurpose(), property.getPropertyDescription(), property.getArea(), property.getPrice(), property.getPromotionalPrice(), property.getHighlight(), property.getFloors(), modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class), modelMapper.map(property.getAddress(), AddressGetResponseDTO.class), modelMapper.map(property.getPropertyFeatures(), PropertyFeatureSpecifiGetRespondeDTO.class), property.getAdditionals().stream().map(additionals -> new AdditionalsGetResponseDTO(additionals.getName())).toList(), property.getRealtors().stream().map(realtor -> new RealtorPropertySpecificGetResponseDTO(realtor.getName(), realtor.getEmail(), realtor.getCreci(), realtor.getPhoneNumber())).toList());
+
+        List<Integer> imageIds = new ArrayList<>();
+
+        for (ImageProperty image : property.getImageProperties()) {
+            if (image.getMainImage()) {
+                imageIds.add(0, image.getId()); // Adiciona no início se for imagem principal
+            } else {
+                imageIds.add(image.getId()); // Adiciona normalmente
+            }
+        }
+        long startTime = System.currentTimeMillis(); // Marca o início
+
+        List<byte[]> imageBytesList = imageService.getPropertyImages(imageIds);
+
+        List<String> imagesString = imageBytesList.stream()
+                .map(bytes -> Base64.getEncoder().encodeToString(bytes))
+                .toList();
+        long endTime = System.currentTimeMillis(); // Marca o fim
+
+        System.out.println("Tempo de execução de getPropertyImages: " + (endTime - startTime) + " ms");
+
+        // Agora passa 17 argumentos, incluindo imagens
+        PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(
+                property.getPropertyCode(),
+                property.getPropertyType(),
+                property.getPropertyStatus(),
+                property.getPurpose(),
+                property.getPropertyDescription(),
+                property.getArea(),
+                property.getPrice(),
+                property.getPromotionalPrice(),
+                property.getHighlight(),
+                property.getFloors(),
+                modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class),
+                modelMapper.map(property.getAddress(), AddressGetResponseDTO.class),
+                modelMapper.map(property.getPropertyFeatures(), PropertyFeatureSpecifiGetRespondeDTO.class),
+                property.getAdditionals()
+                        .stream()
+                        .map(additional -> new AdditionalsGetResponseDTO(additional.getName()))
+                        .toList(),
+                property.getRealtors()
+                        .stream()
+                        .map(realtor -> new RealtorPropertySpecificGetResponseDTO(
+                                realtor.getName(),
+                                realtor.getEmail(),
+                                realtor.getCreci(),
+                                realtor.getPhoneNumber()))
+                        .toList(),
+                imagesString
+        );
         return dtos;
     }
 

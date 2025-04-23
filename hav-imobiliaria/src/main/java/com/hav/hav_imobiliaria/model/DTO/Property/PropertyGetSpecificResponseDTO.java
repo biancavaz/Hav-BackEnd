@@ -57,4 +57,6 @@ public class PropertyGetSpecificResponseDTO {
 
 
     List<RealtorPropertySpecificGetResponseDTO> realtorPropertySpecific;
+
+    List<String> imagesProperty;
 }
