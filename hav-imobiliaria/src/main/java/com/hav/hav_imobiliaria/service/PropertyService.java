@@ -13,6 +13,7 @@ import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureCardGetR
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureSpecifiGetRespondeDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPropertySpecificGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPropertySpecificGetResponseDTO;
@@ -128,6 +129,8 @@ public class PropertyService {
         long endTime = System.currentTimeMillis(); // Marca o fim
 
         System.out.println("Tempo de execução de getPropertyImages: " + (endTime - startTime) + " ms");
+        ProprietorPropertySpecificGetResponseDTO proprietorDto = new ProprietorPropertySpecificGetResponseDTO(property.getProprietor().getName(),
+                property.getProprietor().getEmail(), property.getProprietor().getPhoneNumber());
 
         // Agora passa 17 argumentos, incluindo imagens
         PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(
@@ -156,6 +159,7 @@ public class PropertyService {
                                 realtor.getCreci(),
                                 realtor.getPhoneNumber()))
                         .toList(),
+                proprietorDto,
                 imagesString
         );
         return dtos;
@@ -404,8 +408,8 @@ public class PropertyService {
 
 
         repository.save(property);
-
-        processImages(propertyId, newImages);
+//        vai ter que add isso
+//        processImages(propertyId, newImages);
 
         return property;
     }

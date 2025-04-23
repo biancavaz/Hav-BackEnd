@@ -5,6 +5,7 @@ import com.hav.hav_imobiliaria.model.DTO.Additionals.AdditionalsPutRequestDto;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureGetResposeDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureSpecifiGetRespondeDTO;
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPropertySpecificGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPropertySpecificGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Taxes.TaxesPutRequestDTO;
@@ -57,6 +58,7 @@ public class PropertyGetSpecificResponseDTO {
 
 
     List<RealtorPropertySpecificGetResponseDTO> realtorPropertySpecific;
+    ProprietorPropertySpecificGetResponseDTO proprietor;
 
     List<String> imagesProperty;
 }
