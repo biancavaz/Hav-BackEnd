@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c766ba9e-4b97-4d7a-b859-1103cfdd73df" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/ResponseSecurity/MessageWSDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/Configuration/AwsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/Configuration/AwsConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/controllerSecurity/WebSocketChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/controllerSecurity/WebSocketChatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/serviceSecurity/MessageServiceImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/serviceSecurity/MessageServiceImplementation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/modelSecurity/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/hav-imobiliaria/src/main/java/com/hav/hav_imobiliaria/security/modelSecurity/Chat.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
