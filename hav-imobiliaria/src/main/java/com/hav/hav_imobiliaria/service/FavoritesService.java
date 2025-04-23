@@ -82,7 +82,7 @@ public class FavoritesService {
 
     }
 
-    public Page<PropertyCardGetResponseDTO> returnFavorites(Pageable pageable, String jwt) {
+    public List<PropertyCardGetResponseDTO> returnFavorites(String jwt) {
         User user = userRepository.findByEmail(tokenProvider.getEmailFromToken(jwt)).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         List<Property> favoriteProperties = user.getProperties();
@@ -101,13 +101,8 @@ public class FavoritesService {
 
         )).toList();
 
-        int start = pageable.getPageNumber() * pageable.getPageSize(); // Calculando o índice de início
-        int end = Math.min(start + pageable.getPageSize(), dtos.size());
 
-        List<PropertyCardGetResponseDTO> pageProperty = dtos.subList(start, end);
-
-
-        return new PageImpl<>(pageProperty, pageable, favoriteProperties.size());
+        return dtos;
     }
 
 }

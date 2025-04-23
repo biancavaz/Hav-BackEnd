@@ -6,6 +6,7 @@ import com.hav.hav_imobiliaria.WebSocket.Notification.Model.Notification;
 import com.hav.hav_imobiliaria.WebSocket.Repository.NotificationRepository;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.UserRepository;
+import com.hav.hav_imobiliaria.security.configSecurity.TokenProvider;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class NotificationService {
     private final UserRepository userRepository;
     @Autowired
     private final SimpMessagingTemplate simpMessagingTemplate;
+
+    private final TokenProvider tokenProvider;
 
     public void salvarNotificacao(NotificationDTO notificationdto) {
         Notification not = new Notification();
@@ -76,8 +79,12 @@ public class NotificationService {
         notificationRepository.delete(not);
     }
 
-    public List<NotificationGetResponseDTO> notifications(Integer userId) {
-        List<Notification> notifications = notificationRepository.findByRecipientIdOrderByDataEnvioDesc(userId);
+    public List<NotificationGetResponseDTO> notifications(String token) {
+        String email = tokenProvider.getEmailFromToken(token);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o e-mail: " + email));
+
+        List<Notification> notifications = notificationRepository.findByRecipientIdOrderByDataEnvioDesc(user.getId());
         return notifications.stream().map(n ->
                         new NotificationGetResponseDTO(
                                 n.getId(),
@@ -86,6 +93,7 @@ public class NotificationService {
                                 n.getRead(),
                                 n.getDataEnvio()))
                 .collect(Collectors.toList());
+
     }
 
     public void marcarComoLida(Integer notificationId) {
