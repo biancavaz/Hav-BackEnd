@@ -144,4 +144,29 @@ public class NotificationService {
             simpMessagingTemplate.convertAndSend(destino, dto);
         }
     }
+
+    public void salvarNotificacaoSchedule(User user, NotificationGetResponseDTO not){
+        Notification notification = new Notification();
+        notification.setTitle(not.getTitle());
+        notification.setContent(not.getContent());
+        notification.setRead(false);
+        notification.setDataEnvio(LocalDateTime.now());
+
+        notificationRepository.save(notification);
+
+        user.getNotifications().add(notification);
+        userRepository.save(user);
+
+        notification.setRecipient(List.of(user));
+
+        NotificationGetResponseDTO dto = new NotificationGetResponseDTO(
+                notification.getId(),
+                notification.getTitle(),
+                notification.getContent(),
+                notification.getRead(),
+                notification.getDataEnvio()
+        );
+
+        enviarNotificacao(dto, List.of(user.getId()));
+    }
 }

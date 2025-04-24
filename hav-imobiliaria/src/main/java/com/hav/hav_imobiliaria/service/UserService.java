@@ -123,12 +123,4 @@ public class UserService {
         }
     }
 
-    public void checkAndNotifyUsersAboutNewSchedule(Schedules schedules){
-        List<Realtor> realtors = realtorRepository.findAll();
-        List<User> users = userRepository.findAll();
-
-        for (Realtor realtor: realtors){
-
-        }
-    }
 }
