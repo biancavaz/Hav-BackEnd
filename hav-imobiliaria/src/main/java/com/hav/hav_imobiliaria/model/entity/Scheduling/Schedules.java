@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
 import com.hav.hav_imobiliaria.model.entity.Users.Customer;
 import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import lombok.Data;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -91,4 +93,5 @@ public class Schedules {
     public LocalTime getStart_hour() {
         return start_hour;
     }
+
 }

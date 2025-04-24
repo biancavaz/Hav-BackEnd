@@ -11,7 +11,10 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -60,5 +63,10 @@ public class S3Service {
         ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
 
         return objectBytes.asByteArray();
+    }
+    public List<byte[]> downloadFiles(List<String> s3Keys) {
+        return s3Keys.parallelStream()
+                .map(this::downloadFile) // Usa o método que já baixa um por vez
+                .collect(Collectors.toList());
     }
 }

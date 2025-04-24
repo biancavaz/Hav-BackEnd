@@ -110,10 +110,7 @@ public class AppConfig {
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtTokenValidator(), UsernamePasswordAuthenticationFilter.class)
-                .formLogin(AbstractHttpConfigurer::disable)
-
-                .httpBasic(Customizer.withDefaults());
-
+                .formLogin(AbstractHttpConfigurer::disable);
         return http.build();
     }
 

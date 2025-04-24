@@ -22,5 +22,4 @@ public class UserSecurity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
 }

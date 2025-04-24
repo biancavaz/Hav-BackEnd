@@ -90,54 +90,54 @@ public class AuthController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<AuthResponse> createUserHandler(@Valid @RequestBody UserSecurity userSec, HttpServletResponse response) throws UserException {
 
-            String email = userSec.getEmail();
-            String password = userSec.getPassword();
-            String full_name = userSec.getName();
+        String email = userSec.getEmail();
+        String password = userSec.getPassword();
+        String full_name = userSec.getName();
 
 
-            UserSecurity isEmailExist = userRepositorySecurity.findUserSecurityByEmail(email);
+        UserSecurity isEmailExist = userRepositorySecurity.findUserSecurityByEmail(email);
 
-            if (isEmailExist != null) {
-                AuthResponse errorResponse = new AuthResponse();
-                errorResponse.setStatus(false);
-                errorResponse.setMessage("Email já existente.");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-            }
+        if (isEmailExist != null) {
+            AuthResponse errorResponse = new AuthResponse();
+            errorResponse.setStatus(false);
+            errorResponse.setMessage("Email já existente.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
 
-            UserSecurity newUserSec = new UserSecurity();
+        UserSecurity newUserSec = new UserSecurity();
 
-            newUserSec.setEmail(email);
-            newUserSec.setPassword(passwordEncoder.encode(password));
-            newUserSec.setName(full_name);
-            newUserSec.setRole(Role.valueOf("CUSTOMER"));
-            System.out.println(newUserSec);
+        newUserSec.setEmail(email);
+        newUserSec.setPassword(passwordEncoder.encode(password));
+        newUserSec.setName(full_name);
+        newUserSec.setRole(Role.valueOf("CUSTOMER"));
+        System.out.println(newUserSec);
 
-            userRepositorySecurity.save(newUserSec);
+        userRepositorySecurity.save(newUserSec);
 
-            Customer customer = modelMapper.map(userSec, Customer.class);
-            customer.setUserSecurity(newUserSec);
-            customerReporitory.save(customer);
+        Customer customer = modelMapper.map(userSec, Customer.class);
+        customer.setUserSecurity(newUserSec);
+        customerReporitory.save(customer);
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER")));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER")));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            String token = tokenProvider.generateToken(authentication);
+        String token = tokenProvider.generateToken(authentication);
 
-            AuthResponse authResponse = new AuthResponse();
-            authResponse.setStatus(true);
-            authResponse.setJwt(token);
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setStatus(true);
+        authResponse.setJwt(token);
 
-            ResponseCookie cookie = ResponseCookie.from("token", token)
-                    .httpOnly(true)
-                    .secure(false)
-                    .sameSite("Strict")
-                    .domain("localhost") // Add this line
-                    .path("/") // Available to all routes
-                    .build();
+        ResponseCookie cookie = ResponseCookie.from("token", token)
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Strict")
+                .domain("localhost") // Add this line
+                .path("/") // Available to all routes
+                .build();
 
-            response.addHeader("Set-Cookie", cookie.toString());
-            return ResponseEntity.ok(authResponse);
+        response.addHeader("Set-Cookie", cookie.toString());
+        return ResponseEntity.ok(authResponse);
 
     }
     @PostMapping("/reset-password")
