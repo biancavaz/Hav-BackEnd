@@ -21,6 +21,34 @@ public class EmailSenderService {
 
     private CustumerRepository custumerRepository;
 
+    public void sendResetPasswordEmail(String email, String token) {
+        try{
+            String resetUrl = "http://localhost:3000/changepassword?token=" + token;
+            String subject = "Redefinição de Senha";
+
+            String body = "<p>Olá,</p>" +
+                    "<p>Você solicitou a redefinição de sua senha. Clique no link abaixo para criar uma nova senha:</p>" +
+                    "<p><a href=\"" + resetUrl + "\">Redefinir senha, Clique aqui</a></p>" +
+                    "<br>" +
+                    "<p>Se você não solicitou isso, ignore este e-mail.</p>";
+
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(email); // ou algum destinatário fixo para testes
+            helper.setSubject(subject);
+
+            String content = "<p><strong>Email enviado para:</strong> " + email + "</p>" +
+                    body;
+
+            helper.setText(content, true); // true = HTML
+
+            mailSender.send(message);
+        }catch (MessagingException e){
+            e.printStackTrace();
+        }
+
+    }
     public void sendEmailContactUs(String email, String subject, String body) {
 
         try {

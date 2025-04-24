@@ -32,7 +32,23 @@ public interface ScheduleRepository extends JpaRepository<Schedules, Integer> {
     Page<Schedules> findByRealtorIdAndDayLessThanAndCustomerIsNotNullAndPropertyIsNotNull(
             Integer id, LocalDate today, Pageable pageable);
 
+        @Query("SELECT s FROM Schedules s " +
+            "WHERE s.realtor.id = :id " +
+            "AND s.day < :today " +
+            "AND s.customer IS NOT NULL " +
+            "AND s.property IS NOT NULL " +
+            "AND (:latestDate IS NULL OR s.day > :latestDate) " +
+            "AND (:status IS NULL OR s.status = :status)")
+    Page<Schedules> findByRealtorIdAndDayLessThanAndCustomerIsNotNullAndPropertyIsNotNullAndStatusEquals(
+        @Param("id") Integer id,
+        @Param("today") LocalDate today,
+        @Param("latestDate") LocalDate latestDate,
+        @Param("status") String status,
+         Pageable pageable);
+
     List<Schedules> findByRealtorIdAndDayGreaterThanEqual(Integer realtorId, LocalDate today);
+
+    List<Schedules> findByCustomerIdAndDayGreaterThanEqual(Integer customerId, LocalDate today);
 
     @Query("SELECT s FROM Schedules s WHERE s.day = :day AND s.start_hour = :start_hour")
     List<Schedules> findByDayAndStartHour(@Param("day") LocalDate day,

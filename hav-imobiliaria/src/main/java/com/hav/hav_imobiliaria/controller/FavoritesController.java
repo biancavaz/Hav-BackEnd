@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @RequestMapping("/favorites")
 @RestController
-public class FavoritesController {
+public class    FavoritesController {
 
     private final FavoritesService favoritesService;
 
@@ -27,7 +27,7 @@ public class FavoritesController {
         favoritesService.favoritar(idProperty, token);
     }
 
-    @GetMapping("/map/{id}")
+    @GetMapping("/map")
     public List<PropertyMapGetResponseDTO> findByFilterMapFavorite(@CookieValue("token") String token) {
         return favoritesService.findAllByFilterMapFavorite(token);
     }
@@ -40,10 +40,17 @@ public class FavoritesController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<PropertyCardGetResponseDTO> returnFavorites(
-            @CookieValue("token") String token,
-            @RequestParam Integer page) {
-        Pageable pageable = PageRequest.of(page, 12);
-        return favoritesService.returnFavorites(pageable, token);
+    public List<PropertyCardGetResponseDTO> returnFavorites(
+            @CookieValue("token") String token) {
+
+        return favoritesService.returnFavorites(token);
     }
+
+    //funcionando
+    @GetMapping("/isFavorited/{idProperty}")
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean isFavorited(@CookieValue("token") String token, @PathVariable Integer idProperty) {
+        return favoritesService.isFavorited(idProperty, token);
+    }
+
 }

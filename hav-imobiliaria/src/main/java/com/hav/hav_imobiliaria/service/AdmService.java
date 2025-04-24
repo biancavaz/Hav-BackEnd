@@ -43,7 +43,6 @@ public class AdmService {
     private final UserRepositorySecurity userRepositorySecurity;
     private final PasswordEncoder passwordEncoder;
 
-
     public AdmPostRequestDTO createAdm(
             @Valid AdmPostRequestDTO admPostDTO,
             MultipartFile image) {
@@ -89,8 +88,11 @@ public class AdmService {
 
         modelMapper.map(admPutDTO, adm);
 
-        if (deletedImageId != null && newImage != null) {
+        if (deletedImageId != null){
             imageService.deleteUserImage(deletedImageId);
+
+        }
+        if( newImage != null) {
             imageService.uploadUserImage(id, newImage);
         }
 
@@ -107,7 +109,7 @@ public class AdmService {
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
         Example<Adm> example = Example.of(adm, matcher);
-
+        
         Page<Adm> admList = repository.findAll(example, pageable);
 
 
@@ -120,8 +122,12 @@ public class AdmService {
 
     @Transactional
     public void removeList(List<Integer> idList) {
+        List<Adm> admList = repository.findAllById(idList);
         repository.deleteByIdIn(idList);
-
+        for(Adm adm : admList){
+            UserSecurity userSecurity = userRepositorySecurity.findUserSecurityByEmail(adm.getEmail());
+            userRepositorySecurity.delete(userSecurity);
+        }
     }
 
     public void changeArchiveStatus(List<Integer> admIds) {

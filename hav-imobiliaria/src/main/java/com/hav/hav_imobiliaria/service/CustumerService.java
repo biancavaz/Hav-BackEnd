@@ -88,8 +88,11 @@ public class CustumerService {
 
         modelMapper.map(custumer, customer);
 
-        if (deletedImageId != null && newImage != null) {
+        if (deletedImageId != null){
             imageService.deleteUserImage(deletedImageId);
+
+        }
+        if( newImage != null) {
             imageService.uploadUserImage(id, newImage);
         }
 

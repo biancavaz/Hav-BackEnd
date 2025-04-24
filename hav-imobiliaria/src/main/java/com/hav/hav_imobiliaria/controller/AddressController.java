@@ -3,6 +3,9 @@ package com.hav.hav_imobiliaria.controller;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.Address.AddressPutRequestDTO;
 import com.hav.hav_imobiliaria.model.entity.Address;
+import com.hav.hav_imobiliaria.model.entity.Users.User;
+import com.hav.hav_imobiliaria.repository.UserRepository;
+import com.hav.hav_imobiliaria.security.configSecurity.TokenProvider;
 import com.hav.hav_imobiliaria.service.AddressService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -18,11 +21,11 @@ public class AddressController {
 
     private final AddressService service;
 
-
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public Address editAddress( @NotNull @Positive Integer id,
+    public Address editAddress(@NotNull @Positive Integer id,
                                @RequestBody @Valid AddressPutRequestDTO addressDTO){
+
         return service.editAddress(id, addressDTO);
     }
 

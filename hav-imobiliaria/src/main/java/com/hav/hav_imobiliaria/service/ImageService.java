@@ -102,11 +102,13 @@ public class ImageService {
     }
 
     public List<byte[]> getPropertyImages(List<Integer> imageIds) {
-        return imageIds.stream()
+        List<String> s3Keys = imageIds.stream()
                 .map(id -> imagePropertyRepository.findById(id)
                         .orElseThrow(() -> new RuntimeException("Imagem com ID " + id + " não encontrada.")))
-                .map(image -> s3Service.downloadFile(image.getS3Key()))
+                .map(ImageProperty::getS3Key)
                 .collect(Collectors.toList());
+
+        return s3Service.downloadFiles(s3Keys); // Chama o novo método para múltiplos downloads
     }
 
 //    public List<ImageResponseDTO> getPropertyImages(List<Integer> imageIds) {

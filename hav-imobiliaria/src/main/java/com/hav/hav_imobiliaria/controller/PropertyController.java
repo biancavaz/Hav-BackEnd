@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetSpecificResponseDTO;
 
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -178,8 +179,28 @@ public class PropertyController {
         return service.similarProperties();
     }
 
-    @GetMapping("/getMostRecentProperties")
-    public List<PropertyCardGetResponseDTO> findMostRecentProperties(){
-        return service.findMostRecentProperties();
+    @GetMapping("/getMostRecentSellProperties")
+    public List<PropertyCardGetResponseDTO> findMostRecentSellProperties(){
+        return service.findMostRecentSellProperties();
+    }
+
+    @GetMapping("/getMostRecentLeaseProperties")
+    public List<PropertyCardGetResponseDTO> findMostRecentLeaseProperties(){
+        return service.findMostRecentLeaseProperties();
+    }
+
+//    @GetMapping("/getHighlightedHome")
+//    public List<PropertyCardGetResponseDTO> findRandomHighlighted9(){
+//        return service.findRandomHighlighted9();
+//    }
+
+    @GetMapping("/getHighlightedHomeSale")
+    public List<PropertyCardGetResponseDTO> findRandomHighlighted9Sale(){
+        return service.findRandomHighlighted9Sale();
+    }
+
+    @GetMapping("/getHighlightedHomeLease")
+    public List<PropertyCardGetResponseDTO> findRandomHighlighted9Lease(){
+        return service.findRandomHighlighted9Lease();
     }
 }

@@ -13,6 +13,7 @@ public class PropertyScheduleGetDTO {
     String price;
     String purpose;
     String propertyType;
+    String mainImageProperty;
     AddressGetScheduleDTO address;
 
 }

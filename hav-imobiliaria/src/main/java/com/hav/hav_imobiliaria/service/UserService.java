@@ -6,6 +6,8 @@ import com.hav.hav_imobiliaria.model.DTO.Users.UserConfigurationDto;
 import com.hav.hav_imobiliaria.model.DTO.Users.UserConfigurationDtoEdit;
 import com.hav.hav_imobiliaria.model.entity.Address;
 import com.hav.hav_imobiliaria.model.entity.Properties.Property;
+import com.hav.hav_imobiliaria.model.entity.Scheduling.Schedules;
+import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
 import com.hav.hav_imobiliaria.model.entity.Users.User;
 import com.hav.hav_imobiliaria.repository.*;
 import com.hav.hav_imobiliaria.security.configSecurity.TokenProvider;
@@ -27,6 +29,7 @@ public class UserService {
     private final NotificationService notificationService;
     private final TokenProvider tokenProvider;
     private final ModelMapper modelMapper;
+    private final ScheduleRepository scheduleRepository;
 
     public UserConfigurationDto findUserByJwt(String cookie) {
         String email = tokenProvider.getEmailFromToken(cookie);
@@ -117,6 +120,15 @@ public class UserService {
 
                 notificationService.salvarNotificacaoDePreferencia(user, not);
             }
+        }
+    }
+
+    public void checkAndNotifyUsersAboutNewSchedule(Schedules schedules){
+        List<Realtor> realtors = realtorRepository.findAll();
+        List<User> users = userRepository.findAll();
+
+        for (Realtor realtor: realtors){
+
         }
     }
 }

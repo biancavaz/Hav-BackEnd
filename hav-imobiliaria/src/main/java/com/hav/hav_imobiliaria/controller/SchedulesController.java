@@ -28,9 +28,14 @@ public class SchedulesController {
     private SchedulesService service;
     private ModelMapper modelMapper;
     @GetMapping
-    @RequestMapping("{id}")
-    public List<ScheduleGetDTO> getSchedulesByRealtor(@PathVariable Integer id){
-        return service.findAllByRealtorIdAndFuture(id).stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
+    @RequestMapping("/customer")
+    public List<ScheduleGetDTO> getSchedulesByCustomer(@CookieValue("token") String token){
+        return service.findAllSchedulesCustomer(token);
+    }
+    @GetMapping
+    @RequestMapping
+    public List<ScheduleGetDTO> getSchedulesByRealtor(@CookieValue("token") String token){
+        return service.findAllByRealtorIdAndFuture(token);
     }
     @GetMapping
     @RequestMapping("/free/{id}")
@@ -51,8 +56,8 @@ public class SchedulesController {
     }
 
     @PostMapping
-    public List<Schedules> createSchedules(@RequestBody List<SchedulesPostDTO> schedulesPostDto){
-        return service.createSchedules(schedulesPostDto);
+    public List<Schedules> createSchedules( @CookieValue("token") String token, @RequestBody List<SchedulesPostDTO> schedulesPostDto){
+        return service.createSchedules(schedulesPostDto, token);
     }
     @DeleteMapping
     public String deleteSchedules(@RequestBody List<Integer> idList){
@@ -61,26 +66,27 @@ public class SchedulesController {
     }
 
     @PutMapping("/presence")
-    public List<ScheduleGetDTO> addCustomerToSchedule(@RequestBody ScheduleChangeCustomerDTO scheduleChangeCustomerDTO){
-        return service.addCustomerToSchedule(scheduleChangeCustomerDTO);
+    public List<ScheduleGetDTO> addCustomerToSchedule(@RequestBody ScheduleChangeCustomerDTO scheduleChangeCustomerDTO, @CookieValue("token") String token){
+        return service.addCustomerToSchedule(scheduleChangeCustomerDTO, token);
     }
-    @GetMapping("/history/realtor/{id}")
-    public Page<ScheduleGetDTO> getRealtorSchedulesHistory(
-            @PathVariable Integer id,
+    @GetMapping("/history/realtor")
+    public Page<ScheduleGetDTO> getRealtorSchedulesHistory(@CookieValue("token") String token,
+                @Nullable @RequestParam LocalDate latestDate,
+                @Nullable @RequestParam String status,
             @RequestParam(defaultValue = "0") int page) {
 
         Pageable pageable = PageRequest.of(page, 10);
-        return service.findRealtorScheduleHistory(id, pageable);
+        return service.findRealtorScheduleHistory(token, latestDate, status, pageable);
     }
 
-    @GetMapping("/history/customer/{id}")
-    public Page<ScheduleGetDTO> getCustomerSchedulesHistory(@PathVariable Integer id,
+    @GetMapping("/history/customer")
+    public Page<ScheduleGetDTO> getCustomerSchedulesHistory(@CookieValue("token") String token,
                                                             @RequestParam(defaultValue = "0") int page,
                                                             @Nullable @RequestParam LocalDate latestDate,
                                                             @Nullable @RequestParam String status) {
         
         Pageable pageable = PageRequest.of(page, 10);
-        return service.findCustomerScheduleHistory(id,latestDate, status, pageable);
+        return service.findCustomerScheduleHistory(token, latestDate, status, pageable);
     }
     @PatchMapping("/changeStatus/{id}/{status}")
     public void changeStatus(@PathVariable Integer id, @PathVariable String status){

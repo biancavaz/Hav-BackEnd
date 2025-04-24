@@ -17,4 +17,6 @@ public interface UserRepositorySecurity extends JpaRepository<UserSecurity, Inte
 
     @Query("SELECT u FROM UserSecurity u WHERE (u.name like %:name% or u.email like %:name%) AND u.role = 'REALTOR'")
     List<UserSecurity> searchUserSecurities(@Param("name") String name);
+
+    void deleteByIdIn(List<Integer> idList);
 }

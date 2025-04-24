@@ -13,6 +13,7 @@ import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureCardGetR
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePutRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureSpecifiGetRespondeDTO;
 import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorGetResponseDTO;
+import com.hav.hav_imobiliaria.model.DTO.Proprietor.ProprietorPropertySpecificGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPropertySpecificGetResponseDTO;
@@ -100,7 +101,17 @@ public class PropertyService {
         Page<Property> properties = repository.findAll(pageable);
 
         // Mapeia os objetos Property para PropertyGetResponseDTO manualmente
-        List<PropertyGetResponseDTO> dtos = properties.getContent().stream().map(property -> new PropertyGetResponseDTO(property.getPropertyCode(), property.getPropertyType(), property.getPropertyStatus(), property.getPurpose(), property.getRealtors().stream().map(realtor -> new RealtorGetResponseDTO(realtor.getName(), realtor.getEmail(), realtor.getCpf(), realtor.getCellphone(), realtor.getCreci())).toList(), new ProprietorGetResponseDTO(property.getProprietor().getName(), property.getProprietor().getEmail(), property.getProprietor().getCpf()))).toList();
+        List<PropertyGetResponseDTO> dtos =
+                properties.getContent().stream().map(property ->
+                        new PropertyGetResponseDTO(property.getPropertyCode(),
+                                property.getPropertyType(), property.getPropertyStatus(),
+                                property.getPurpose(), property.getRealtors().stream()
+                                .map(realtor ->
+                                        new RealtorGetResponseDTO(realtor.getName(),
+                                                realtor.getEmail(), realtor.getCpf(),
+                                                realtor.getCellphone(),
+                                                realtor.getCreci())).toList(),
+                                new ProprietorGetResponseDTO(property.getProprietor().getName(), property.getProprietor().getEmail(), property.getProprietor().getCpf()))).toList();
 
         // Retorna uma nova Page contendo os DTOs
         return new PageImpl<>(dtos, pageable, properties.getTotalElements());
@@ -108,7 +119,68 @@ public class PropertyService {
 
     public PropertyGetSpecificResponseDTO findPropertySpecificById(Integer id) {
         Property property = repository.findById(id).get();
-        PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(property.getPropertyCode(), property.getPropertyType(), property.getPropertyStatus(), property.getPurpose(), property.getPropertyDescription(), property.getArea(), property.getPrice(), property.getPromotionalPrice(), property.getHighlight(), property.getFloors(), modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class), modelMapper.map(property.getAddress(), AddressGetResponseDTO.class), modelMapper.map(property.getPropertyFeatures(), PropertyFeatureSpecifiGetRespondeDTO.class), property.getAdditionals().stream().map(additionals -> new AdditionalsGetResponseDTO(additionals.getName())).toList(), property.getRealtors().stream().map(realtor -> new RealtorPropertySpecificGetResponseDTO(realtor.getName(), realtor.getEmail(), realtor.getCreci(), realtor.getPhoneNumber())).toList());
+        List<Integer> imageIds = new ArrayList<>();
+
+        for (ImageProperty image : property.getImageProperties()) {
+            if (image.getMainImage()) {
+                imageIds.add(0, image.getId()); // Adiciona no início se for imagem principal
+            } else {
+                imageIds.add(image.getId()); // Adiciona normalmente
+            }
+        }
+        long startTime = System.currentTimeMillis(); // Marca o início
+
+        List<byte[]> imageBytesList = imageService.getPropertyImages(imageIds);
+
+        List<String> imagesString = imageBytesList.stream()
+                .map(bytes -> Base64.getEncoder().encodeToString(bytes))
+                .toList();
+        long endTime = System.currentTimeMillis(); // Marca o fim
+
+        System.out.println("Tempo de execução de getPropertyImages: " + (endTime - startTime) + " ms");
+        ProprietorPropertySpecificGetResponseDTO proprietorDto = null;
+        try{
+            String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(property.getProprietor().getImageUser().getId()));
+            proprietorDto = new ProprietorPropertySpecificGetResponseDTO(mainImage, property.getProprietor().getName(),
+                    property.getProprietor().getEmail(), property.getProprietor().getPhoneNumber());
+        }catch (Exception e){
+            System.err.println(e);
+            proprietorDto = new ProprietorPropertySpecificGetResponseDTO(null, property.getProprietor().getName(),
+                    property.getProprietor().getEmail(), property.getProprietor().getPhoneNumber());
+
+        }
+
+
+        // Agora passa 17 argumentos, incluindo imagens
+        PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(
+                property.getPropertyCode(),
+                property.getPropertyType(),
+                property.getPropertyStatus(),
+                property.getPurpose(),
+                property.getPropertyDescription(),
+                property.getArea(),
+                property.getPrice(),
+                property.getPromotionalPrice(),
+                property.getHighlight(),
+                property.getFloors(),
+                modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class),
+                modelMapper.map(property.getAddress(), AddressGetResponseDTO.class),
+                modelMapper.map(property.getPropertyFeatures(), PropertyFeatureSpecifiGetRespondeDTO.class),
+                property.getAdditionals()
+                        .stream()
+                        .map(additional -> new AdditionalsGetResponseDTO(additional.getName()))
+                        .toList(),
+                property.getRealtors()
+                        .stream()
+                        .map(realtor -> new RealtorPropertySpecificGetResponseDTO(
+                                realtor.getName(),
+                                realtor.getEmail(),
+                                realtor.getCreci(),
+                                realtor.getPhoneNumber()))
+                        .toList(),
+                proprietorDto,
+                imagesString
+        );
         return dtos;
     }
 
@@ -204,7 +276,18 @@ public class PropertyService {
 
         //tranformando o page propery pro page da dto
         Page<PropertyCardGetResponseDTO> PropertyCardGetResponseDTO = propertyFinal.map(propertyx -> modelMapper.map(propertyx, PropertyCardGetResponseDTO.class));
+        for (int i = 0; i < propertyFinal.getContent().size(); i++) {
+            for (int y = 0; y < pageProperty.get(i).getImageProperties().size(); y++) {
+                if (pageProperty.get(i).getImageProperties().get(y).getMainImage()) {
 
+                    String image = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(pageProperty.get(i).getImageProperties().get(y).getId()));
+
+                    PropertyCardGetResponseDTO.getContent().get(i).setMainImage(image);
+
+                }
+            }
+
+        }
         return PropertyCardGetResponseDTO;
     }
 
@@ -243,13 +326,28 @@ public class PropertyService {
         Property property = modelMapper.map(propertyDto, Property.class);
 
         //criando o example matcher específico dos filtros do imóvel
-        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withIgnoreNullValues().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        System.out.println(property.toString());
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase()
+                .withIgnoreNullValues()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
+                //ignore propertyFeatures if they are null
+                .withIgnorePaths("propertyFeatures");
+
         //chamando o matcher
         Example<Property> example = Example.of(property, matcher);
 
 
         List<Property> allProperties = repository.findAll(example);
+        System.out.println(allProperties.size());
+        //filtrando archived
+        System.out.println("archived" + propertyDto.isArchived());
 
+        if (propertyDto.isArchived()) {
+            allProperties = allProperties.stream().filter(propertyx -> propertyx.isArchived()).collect(Collectors.toList());
+        } else {
+            allProperties = allProperties.stream().filter(propertyx -> !propertyx.isArchived()).collect(Collectors.toList());
+        }
 
         List<Property> filteredAllProperties = allProperties.stream().filter(propertyPrice -> propertyPrice.getPrice() >= propertyDto.getMinPric() && propertyPrice.getPrice() <= propertyDto.getMaxPric()) // Compare prices
                 .collect(Collectors.toList());
@@ -328,8 +426,8 @@ public class PropertyService {
 
 
         repository.save(property);
-
-        processImages(propertyId, newImages);
+//        vai ter que add isso
+//        processImages(propertyId, newImages);
 
         return property;
     }
@@ -489,8 +587,8 @@ public class PropertyService {
                     if (property.getImageProperties() != null && !property.getImageProperties().isEmpty()) {
                         property.getImageProperties().stream()
                                 .filter(ImageProperty::getMainImage)
-                                .findFirst()
-                                .ifPresent(image -> dto.setMainImageId(image.getId()));
+                                .findFirst();
+//                                .ifPresent(image -> dto.setMainImage(image.getId()));
                     }
 
                     return dto;
@@ -578,9 +676,10 @@ public class PropertyService {
         )).collect(Collectors.toList());
     }
 
-    public List<PropertyCardGetResponseDTO> findMostRecentProperties(){
-        PageRequest pageRequest = PageRequest.of(0,9);
-        List<Property> properties = repository.findMostRecentProperties(pageRequest);
+    public List<PropertyCardGetResponseDTO> findMostRecentSellProperties() {
+        PageRequest pageRequest = PageRequest.of(0, 9);
+        List<Property> properties =
+                repository.findMostRecentSellProperties("VENDA", pageRequest);
 
         return properties.stream().map(p -> new PropertyCardGetResponseDTO(
                 p.getPropertyFeatures(),
@@ -593,6 +692,37 @@ public class PropertyService {
                 p.getPropertyType(),
                 p.getArea()
         )).collect(Collectors.toList());
+    }
+
+    public List<PropertyCardGetResponseDTO> findMostRecentLeaseProperties() {
+        PageRequest pageRequest = PageRequest.of(0, 9);
+        List<Property> properties =
+                repository.findMostRecentLeaseProperties("LOCACAO", pageRequest);
+
+        return properties.stream().map(p -> new PropertyCardGetResponseDTO(
+                p.getPropertyFeatures(),
+                p.getAddress(),
+                p.getPrice(),
+                p.getPurpose(),
+                p.getPropertyStatus(),
+                p.getPromotionalPrice(),
+                p.getId(),
+                p.getPropertyType(),
+                p.getArea()
+        )).collect(Collectors.toList());
+    }
+
+    //Sem filtro
+//    public List<PropertyCardGetResponseDTO> findRandomHighlighted9() {
+//        return repository.findRandomHighlighted9().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+//    }
+
+    public List<PropertyCardGetResponseDTO> findRandomHighlighted9Sale() {
+        return repository.findRandomHighlighted9ForSale().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+    }
+
+    public List<PropertyCardGetResponseDTO> findRandomHighlighted9Lease() {
+        return repository.findRandomHighlighted9ForLease().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
     }
 }
 
