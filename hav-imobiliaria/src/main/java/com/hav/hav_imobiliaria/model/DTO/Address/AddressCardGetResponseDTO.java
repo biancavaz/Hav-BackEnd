@@ -12,9 +12,14 @@ public class AddressCardGetResponseDTO {
 
     String neighborhood;
     String city;
+    String street;
+    Integer propertyNumber;
 
     public AddressCardGetResponseDTO(Address address) {
         this.neighborhood = address.getNeighborhood();
         this.city = address.getCity();
+        this.street = address.getStreet();
+        this.propertyNumber = address.getPropertyNumber();
+
     }
 }
