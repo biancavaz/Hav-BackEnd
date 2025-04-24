@@ -23,13 +23,15 @@ public class WebSocketChatController {
 
     @MessageMapping("/chat/send")
     public void sendMessage(@Payload SendMessageRequest messageDTO) throws ChatException, UserException {
-
+        System.out.println("mensagem recebida" + messageDTO);
         Message savedMessage = messageService.sendMessage(messageDTO); // salva no banco
 
         MessageWSDto messageWSDto = modelMapper.map(savedMessage, MessageWSDto.class); // Converte para uma Dto
 
+        System.out.println("mensagem sendo enviada" + messageWSDto);
+
         messagingTemplate.convertAndSend(
-                "/topic/chat/" + messageDTO.getChatId(),
+                "/topic/chat/" + savedMessage.getChat().getId(),
                 messageWSDto
         );
     }
