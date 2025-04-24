@@ -579,6 +579,7 @@ public class PropertyService {
 //                .map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
 //    }
     public List<PropertyCardGetResponseDTO> findRandomHighlights() {
+
         return repository.findRandomHighlighted5().stream()
                 .map(property -> {
                     PropertyCardGetResponseDTO dto = modelMapper.map(property, PropertyCardGetResponseDTO.class);
@@ -587,9 +588,18 @@ public class PropertyService {
                     if (property.getImageProperties() != null && !property.getImageProperties().isEmpty()) {
                         property.getImageProperties().stream()
                                 .filter(ImageProperty::getMainImage)
-                                .findFirst();
-//                                .ifPresent(image -> dto.setMainImage(image.getId()));
+                                .findFirst()
+                                .ifPresent(img -> {
+
+
+                                    byte[] imageBytes = imageService.getMainPropertyImage(img.getId());
+                                    if (imageBytes != null) {
+                                        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                                        dto.setMainImage(base64Image); // Supondo que seu DTO tenha esse setter
+                                    }
+                                });
                     }
+
 
                     return dto;
                 })
