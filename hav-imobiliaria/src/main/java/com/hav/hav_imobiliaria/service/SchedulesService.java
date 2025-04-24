@@ -145,8 +145,6 @@ public class SchedulesService {
 
         repository.saveAll(schedulesList);
         return schedulesList;
-
-        return repository.saveAll(schedulesList);
     }
 
     public List<ScheduleGetDTO> addCustomerToSchedule(ScheduleChangeCustomerDTO scheduleChangeCustomerDTO, String token) {

@@ -119,22 +119,6 @@ public class PropertyService {
 
     public PropertyGetSpecificResponseDTO findPropertySpecificById(Integer id) {
         Property property = repository.findById(id).get();
-        PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(property.getPropertyCode(),
-                property.getPropertyType(), property.getPropertyStatus(),
-                property.getPurpose(), property.getPropertyDescription(),
-                property.getArea(), property.getPrice(), property.getPromotionalPrice(),
-                property.getHighlight(), property.getFloors(),
-                modelMapper.map(property.getTaxes(), TaxesPutRequestDTO.class),
-                modelMapper.map(property.getAddress(), AddressGetResponseDTO.class),
-                modelMapper.map(property.getPropertyFeatures(),
-                        PropertyFeatureSpecifiGetRespondeDTO.class),
-                property.getAdditionals().stream().map(additionals ->
-                        new AdditionalsGetResponseDTO(additionals.getName())).toList(),
-                modelMapper.map(property.getProprietor(), ProprietorGetResponseDTO.class),
-                property.getRealtors().stream().map(realtor ->
-                        new RealtorPropertySpecificGetResponseDTO(realtor.getName(),
-                                realtor.getEmail(), realtor.getCreci(), realtor.getPhoneNumber())).toList());
-
         List<Integer> imageIds = new ArrayList<>();
 
         for (ImageProperty image : property.getImageProperties()) {
@@ -282,9 +266,9 @@ public class PropertyService {
 
         //tranformando o page propery pro page da dto
         Page<PropertyCardGetResponseDTO> PropertyCardGetResponseDTO = propertyFinal.map(propertyx -> modelMapper.map(propertyx, PropertyCardGetResponseDTO.class));
-        for(int i=0; i<propertyFinal.getContent().size(); i++){
-            for(int y=0; y<pageProperty.get(i).getImageProperties().size(); y++){
-                if(pageProperty.get(i).getImageProperties().get(y).getMainImage()){
+        for (int i = 0; i < propertyFinal.getContent().size(); i++) {
+            for (int y = 0; y < pageProperty.get(i).getImageProperties().size(); y++) {
+                if (pageProperty.get(i).getImageProperties().get(y).getMainImage()) {
 
                     String image = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(pageProperty.get(i).getImageProperties().get(y).getId()));
 

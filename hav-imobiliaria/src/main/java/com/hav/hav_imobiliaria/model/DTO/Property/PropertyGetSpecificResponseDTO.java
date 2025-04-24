@@ -57,8 +57,7 @@ public class PropertyGetSpecificResponseDTO {
     PropertyFeatureSpecifiGetRespondeDTO propertyFeature; //nao esta funcionando
     @NotNull
     List<AdditionalsGetResponseDTO> additionals;
-
-    ProprietorGetResponseDTO proprietor;
+;
 
     List<RealtorPropertySpecificGetResponseDTO> realtorPropertySpecific;
     ProprietorPropertySpecificGetResponseDTO proprietor;
