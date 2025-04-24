@@ -32,6 +32,25 @@ public class TokenProvider {
                 .signWith(key)
                 .compact();
     }
+    public String generatePasswordResetToken(Integer userId) {
+        return Jwts.builder()
+                .setIssuer("HAV")
+                .setSubject("PasswordReset")
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000)) // 15 minutos
+                .claim("userId", userId)
+                .signWith(key)
+                .compact();
+    }
+    public Integer getUserIdFromPasswordResetToken(String jwt) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(jwt)
+                .getBody();
+
+        return claims.get("userId", Integer.class);
+    }
 
     public String getEmailFromToken(String jwt) {
         Claims claims = Jwts.parser().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
