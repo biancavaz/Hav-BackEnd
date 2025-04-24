@@ -1,6 +1,7 @@
 package com.hav.hav_imobiliaria.security.serviceSecurity;
 
 import com.hav.hav_imobiliaria.repository.UserRepository;
+import com.hav.hav_imobiliaria.security.ResponseSecurity.UnreadCountDTO;
 import com.hav.hav_imobiliaria.security.exceptionsSecurity.ChatException;
 import com.hav.hav_imobiliaria.security.exceptionsSecurity.MessageException;
 import com.hav.hav_imobiliaria.security.exceptionsSecurity.UserException;
@@ -14,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +39,7 @@ public class MessageServiceImplementation implements MessageService {
         message.setUser(user.get());
         message.setContent(req.getContent());
         message.setCreatedAt(LocalDateTime.now());
+        message.setIsRead(false);
 
         return messageRepository.save(message);
     }
@@ -71,4 +74,24 @@ public class MessageServiceImplementation implements MessageService {
 
         throw new UserException("You are not authorized to delete this message" + message.getId());
     }
+
+    @Override
+    public List<UnreadCountDTO> getUnreadCountsForUser(UserSecurity user) throws UserException {
+        List<Chat> userChats = chatService.findChatsByUserId(user.getId());
+
+        List<UnreadCountDTO> result = new ArrayList<>();
+
+        for (Chat chat : userChats) {
+            int count = messageRepository.countUnreadMessages(chat.getId(), user.getId());
+            result.add(new UnreadCountDTO(chat.getId(), count));
+        }
+
+        return result;
+    }
+
+    @Override
+    public void markMessagesAsRead(Integer chatId, Integer userId) {
+        messageRepository.markMessagesAsRead(chatId, userId);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.security.modelSecurity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

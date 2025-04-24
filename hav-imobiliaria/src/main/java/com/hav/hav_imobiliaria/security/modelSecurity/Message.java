@@ -23,6 +23,8 @@ public class Message {
     @CurrentTimestamp
     private LocalDateTime createdAt;
 
+    private Boolean isRead = false;
+
     @ManyToOne
     private UserSecurity user;
 
