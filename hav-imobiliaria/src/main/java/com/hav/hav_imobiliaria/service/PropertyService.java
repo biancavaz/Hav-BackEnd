@@ -138,8 +138,18 @@ public class PropertyService {
         long endTime = System.currentTimeMillis(); // Marca o fim
 
         System.out.println("Tempo de execução de getPropertyImages: " + (endTime - startTime) + " ms");
-        ProprietorPropertySpecificGetResponseDTO proprietorDto = new ProprietorPropertySpecificGetResponseDTO(property.getProprietor().getName(),
-                property.getProprietor().getEmail(), property.getProprietor().getPhoneNumber());
+        ProprietorPropertySpecificGetResponseDTO proprietorDto = null;
+        try{
+            String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(property.getProprietor().getImageUser().getId()));
+            proprietorDto = new ProprietorPropertySpecificGetResponseDTO(mainImage, property.getProprietor().getName(),
+                    property.getProprietor().getEmail(), property.getProprietor().getPhoneNumber());
+        }catch (Exception e){
+            System.err.println(e);
+            proprietorDto = new ProprietorPropertySpecificGetResponseDTO(null, property.getProprietor().getName(),
+                    property.getProprietor().getEmail(), property.getProprietor().getPhoneNumber());
+
+        }
+
 
         // Agora passa 17 argumentos, incluindo imagens
         PropertyGetSpecificResponseDTO dtos = new PropertyGetSpecificResponseDTO(
