@@ -581,6 +581,8 @@ public class PropertyService {
     public List<PropertyCardGetResponseDTO> findRandomHighlights() {
 
         return repository.findRandomHighlighted5().stream()
+                .filter(property -> !property.isArchived()) // Filtra apenas propriedades não arquivadas
+
                 .map(property -> {
                     PropertyCardGetResponseDTO dto = modelMapper.map(property, PropertyCardGetResponseDTO.class);
 
