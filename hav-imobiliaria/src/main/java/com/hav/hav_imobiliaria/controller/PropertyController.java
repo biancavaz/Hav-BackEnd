@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.hav.hav_imobiliaria.model.DTO.Property.PropertyGetSpecificResponseDTO;
 
+import java.util.Base64;
 import java.util.List;
 
 @RestController
