@@ -1,11 +1,13 @@
 package com.hav.hav_imobiliaria.security.serviceSecurity;
 
+import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorPutRequestDTO;
 import com.hav.hav_imobiliaria.security.exceptionsSecurity.ChatException;
 import com.hav.hav_imobiliaria.security.exceptionsSecurity.UserException;
 import com.hav.hav_imobiliaria.security.modelSecurity.Chat;
 import com.hav.hav_imobiliaria.security.modelSecurity.UserSecurity;
 import com.hav.hav_imobiliaria.security.repositorySecurity.ChatRepository;
 import com.hav.hav_imobiliaria.security.requestSecurity.GroupChatRequest;
+import com.hav.hav_imobiliaria.service.RealtorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -140,5 +142,11 @@ public class ChatServiceImplementation implements ChatService {
                 .orElseThrow(() -> new ChatException("Chat not found with id " + chatId));
 
         chatRepository.deleteById(chat.getId());
+    }
+
+    @Override
+    public Optional<Chat> findChatByUsersId(Integer userId1, Integer userId2) throws ChatException, UserException {
+
+        return chatRepository.findChatByTwoUsers(userId1, userId2);
     }
 }

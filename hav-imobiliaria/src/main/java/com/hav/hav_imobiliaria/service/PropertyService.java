@@ -139,11 +139,11 @@ public class PropertyService {
 
         System.out.println("Tempo de execução de getPropertyImages: " + (endTime - startTime) + " ms");
         ProprietorPropertySpecificGetResponseDTO proprietorDto = null;
-        try{
+        try {
             String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(property.getProprietor().getImageUser().getId()));
             proprietorDto = new ProprietorPropertySpecificGetResponseDTO(mainImage, property.getProprietor().getName(),
                     property.getProprietor().getEmail(), property.getProprietor().getPhoneNumber());
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println(e);
             proprietorDto = new ProprietorPropertySpecificGetResponseDTO(null, property.getProprietor().getName(),
                     property.getProprietor().getEmail(), property.getProprietor().getPhoneNumber());
@@ -173,6 +173,7 @@ public class PropertyService {
                 property.getRealtors()
                         .stream()
                         .map(realtor -> new RealtorPropertySpecificGetResponseDTO(
+                                realtor.getId(),
                                 realtor.getName(),
                                 realtor.getEmail(),
                                 realtor.getCreci(),

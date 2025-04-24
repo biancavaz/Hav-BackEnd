@@ -1,5 +1,7 @@
 package com.hav.hav_imobiliaria.security.controllerSecurity;
 
+import com.hav.hav_imobiliaria.model.entity.Users.Realtor;
+import com.hav.hav_imobiliaria.repository.RealtorRepository;
 import com.hav.hav_imobiliaria.security.ResponseSecurity.ApiResponse;
 import com.hav.hav_imobiliaria.security.exceptionsSecurity.ChatException;
 import com.hav.hav_imobiliaria.security.exceptionsSecurity.UserException;
@@ -25,6 +27,7 @@ public class ChatController {
 
     private final ChatService chatService;
     private final UserSecurityService userSecurityService;
+    private final RealtorRepository realtorRepository;
 
     @PostMapping("/single")
     @ResponseStatus(HttpStatus.CREATED)
@@ -107,5 +110,20 @@ public class ChatController {
         chatService.deleteChat(chatId, reqUser.getId());
 
         return new ApiResponse("Chat was deleted successfully", false);
+    }
+
+    @GetMapping("/existing")
+    @ResponseStatus(HttpStatus.OK)
+    public Optional<Chat> findChatByUsersIdHandler(
+            @CookieValue("token") String jwt,
+            @Positive @RequestParam Integer userId2)
+            throws UserException, ChatException {
+
+        UserSecurity reqUser = userSecurityService.findUserProfile(jwt);
+
+        Realtor realtor = realtorRepository.findById(userId2)
+                .orElseThrow(() -> new UserException("Realtor not found"));
+
+        return chatService.findChatByUsersId(reqUser.getId(), realtor.getId());
     }
 }

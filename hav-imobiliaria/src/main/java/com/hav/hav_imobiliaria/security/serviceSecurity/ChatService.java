@@ -28,4 +28,6 @@ public interface ChatService {
     Chat renameGroup(Integer chatId, String groupName, UserSecurity reqUser) throws UserException, ChatException;
 
     void deleteChat(Integer chatId, Integer userId) throws ChatException;
+
+    Optional<Chat> findChatByUsersId(Integer userId1, Integer userId2) throws ChatException, UserException;
 }
