@@ -52,7 +52,6 @@ public class CustumerService {
         System.out.println(password);
 
 
-
         UserSecurity newUserSec = new UserSecurity();
 
         newUserSec.setEmail(customer.getEmail());
@@ -67,7 +66,6 @@ public class CustumerService {
         Customer savedCustomer = repository.save(customer);
 
         emailSenderService.sendPasswordNewAccount(customer.getEmail(), password);
-
 
 
         if (image != null) {
@@ -88,11 +86,11 @@ public class CustumerService {
 
         modelMapper.map(custumer, customer);
 
-        if (deletedImageId != null){
+        if (deletedImageId != null) {
             imageService.deleteUserImage(deletedImageId);
 
         }
-        if( newImage != null) {
+        if (newImage != null) {
             imageService.uploadUserImage(id, newImage);
         }
 
@@ -149,9 +147,21 @@ public class CustumerService {
 
         Page<Customer> customerList = repository.findAll(example, pageable);
 
-        Page<CustomerListGetResponseDTO> costumerListGetResponseDtos = customerList.map(customerx ->
-                modelMapper.map(customerx, CustomerListGetResponseDTO.class)
-        );
+//        Page<CustomerListGetResponseDTO> costumerListGetResponseDtos = customerList.map(customerx ->
+//                modelMapper.map(customerx, CustomerListGetResponseDTO.class)
+//        );
+//        return costumerListGetResponseDtos;
+        Page<CustomerListGetResponseDTO> costumerListGetResponseDtos = customerList.map(customerx -> {
+            CustomerListGetResponseDTO dto = new CustomerListGetResponseDTO();
+            dto.setId(customerx.getId());
+            dto.setCpf(customerx.getCpf());
+            dto.setName(customerx.getName());
+            dto.setEmail(customerx.getEmail());
+            dto.setCellphone(customerx.getCellphone());
+            dto.setStatus(customerx.getArchived());
+            return dto;
+        });
+
         return costumerListGetResponseDtos;
     }
 
