@@ -1,4 +1,5 @@
 package com.hav.hav_imobiliaria.service;
+
 import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationDTO;
 import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationGetResponseDTO;
 import com.hav.hav_imobiliaria.WebSocket.Service.NotificationService;
@@ -14,6 +15,7 @@ import com.hav.hav_imobiliaria.security.configSecurity.TokenProvider;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,17 +36,19 @@ public class UserService {
     public UserConfigurationDto findUserByJwt(String cookie) {
         String email = tokenProvider.getEmailFromToken(cookie);
         User user = userRepository.findByEmail(email).get();
-        
+
         //make the model mapper ignore the user type
-        
+
 
         UserConfigurationDto userConfigurationDto = modelMapper.map(user, UserConfigurationDto.class);
-        
-        
-        try{
-            userConfigurationDto.setS3key(user.getImageUser().getS3Key());
-        }catch (NullPointerException e){
+
+
+        try {
+            userConfigurationDto.setImageId(user.getImageUser().getId());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
+
         return userConfigurationDto;
     }
 
@@ -52,16 +56,16 @@ public class UserService {
     public void editUserByJwt(String cookie, UserConfigurationDtoEdit userConfigurationDtoEdit) {
         String email = tokenProvider.getEmailFromToken(cookie);
         User user = userRepository.findByEmail(email).get();
-        
-        user.setAddress(modelMapper.map(userConfigurationDtoEdit.getAddress(), Address.class));        
+
+        user.setAddress(modelMapper.map(userConfigurationDtoEdit.getAddress(), Address.class));
         user.setName(userConfigurationDtoEdit.getName());
         user.setEmail(userConfigurationDtoEdit.getEmail());
         user.setCellphone(userConfigurationDtoEdit.getCelphone());
         user.setPhoneNumber(userConfigurationDtoEdit.getPhoneNumber());
 
         userRepository.save(user);
-        
-        
+
+
     }
 
     public Long getAllRegistredNumber() {
@@ -110,7 +114,7 @@ public class UserService {
 
     }
 
-    public Long getQuantityArchived(){
+    public Long getQuantityArchived() {
         return userRepository.findAll()
                 .stream()
                 .filter(User::getArchived)

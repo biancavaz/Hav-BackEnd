@@ -7,15 +7,11 @@ import lombok.Data;
 
 @Data
 public class UserConfigurationDto {
-    private String s3key;
     private String name;
     private String email;
-    private String celphone;
+    private String cellphone;
     private String phoneNumber;
     private String cpf;
     private AddressGetResponseDTO address;
-
-    public void setS3key(String s3key) {
-        this.s3key = s3key;
-    }
+    private Integer imageId;
 }

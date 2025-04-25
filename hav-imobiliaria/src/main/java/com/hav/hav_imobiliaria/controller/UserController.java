@@ -16,9 +16,10 @@ public class UserController {
 
     @GetMapping("/getAll")
     @ResponseStatus(HttpStatus.OK)
-    public Long getAllRegistredNumber(){
+    public Long getAllRegistredNumber() {
         return userService.getAllRegistredNumber();
     }
+
     @GetMapping("/getPercentageProprietors")
     public Long getPercentageProprietors() {
         return userService.getPercentageProprietors();
@@ -45,11 +46,12 @@ public class UserController {
     }
 
     @GetMapping("/configuration")
-    public UserConfigurationDto getUser(@CookieValue("token") String token){
+    public UserConfigurationDto getUser(@CookieValue("token") String token) {
         return userService.findUserByJwt(token);
     }
+
     @PutMapping("/configuration")
-    public void editUser(@CookieValue("token") String token, @RequestBody UserConfigurationDtoEdit userConfigurationDtoEdit){
+    public void editUser(@CookieValue("token") String token, @RequestBody UserConfigurationDtoEdit userConfigurationDtoEdit) {
         System.out.println(userConfigurationDtoEdit);
         System.out.println("------------------  ");
         userService.editUserByJwt(token, userConfigurationDtoEdit);
