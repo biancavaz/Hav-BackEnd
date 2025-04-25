@@ -128,16 +128,13 @@ public class PropertyService {
                 imageIds.add(image.getId()); // Adiciona normalmente
             }
         }
-        long startTime = System.currentTimeMillis(); // Marca o início
 
         List<byte[]> imageBytesList = imageService.getPropertyImages(imageIds);
 
         List<String> imagesString = imageBytesList.stream()
                 .map(bytes -> Base64.getEncoder().encodeToString(bytes))
                 .toList();
-        long endTime = System.currentTimeMillis(); // Marca o fim
 
-        System.out.println("Tempo de execução de getPropertyImages: " + (endTime - startTime) + " ms");
         ProprietorPropertySpecificGetResponseDTO proprietorDto = null;
         try {
             String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(property.getProprietor().getImageUser().getId()));
@@ -149,6 +146,35 @@ public class PropertyService {
                     property.getProprietor().getEmail(), property.getProprietor().getPhoneNumber());
 
         }
+
+
+        List<RealtorPropertySpecificGetResponseDTO> realtors = new ArrayList<>();
+        for (Realtor realtor : property.getRealtors()) {
+            if (realtor.getImageUser() !=null) {
+                byte[] img = imageService.getUserImage(realtor.getImageUser().getId());
+
+                String imgsString = Base64.getEncoder().encodeToString(img);
+
+                realtors.add(new RealtorPropertySpecificGetResponseDTO(
+                        realtor.getId(),
+                        realtor.getName(),
+                        realtor.getEmail(),
+                        realtor.getCreci(),
+                        realtor.getPhoneNumber(),
+                        imgsString
+                        ));
+            } else {
+                realtors.add(new RealtorPropertySpecificGetResponseDTO(
+                        realtor.getId(),
+                        realtor.getName(),
+                        realtor.getEmail(),
+                        realtor.getCreci(),
+                        realtor.getPhoneNumber(),
+                        null
+                )); // Adiciona normalmente
+            }
+        }
+
 
 
         // Agora passa 17 argumentos, incluindo imagens
@@ -170,15 +196,7 @@ public class PropertyService {
                         .stream()
                         .map(additional -> new AdditionalsGetResponseDTO(additional.getName()))
                         .toList(),
-                property.getRealtors()
-                        .stream()
-                        .map(realtor -> new RealtorPropertySpecificGetResponseDTO(
-                                realtor.getId(),
-                                realtor.getName(),
-                                realtor.getEmail(),
-                                realtor.getCreci(),
-                                realtor.getPhoneNumber()))
-                        .toList(),
+                realtors,
                 proprietorDto,
                 imagesString
         );
