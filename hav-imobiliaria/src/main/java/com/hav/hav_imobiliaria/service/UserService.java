@@ -96,6 +96,27 @@ public class UserService {
         return (quantityClients * 100) / allUsers;
     }
 
+    public double getPercentageArchived() {
+        List<User> archived = userRepository.findAll();
+        if (archived.isEmpty()) {
+            return 0.0;
+        }
+
+        long archiveStatus = archived
+                .stream()
+                .filter(User::getArchived)
+                .count();
+        return (archiveStatus * 100.0) / archived.size();
+
+    }
+
+    public Long getQuantityArchived(){
+        return userRepository.findAll()
+                .stream()
+                .filter(User::getArchived)
+                .count();
+    }
+
     public void checkAndNotifyUsersAboutNewProperty(Property newProperty) {
         List<User> allUsers = userRepository.findAll();
         for (User user : allUsers) {
