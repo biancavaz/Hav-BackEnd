@@ -21,12 +21,15 @@ Este projeto visa desenvolver um sistema web completo para a HAV Imobiliária, f
 
 As seguintes tecnologias foram utilizadas no desenvolvimento deste projeto:
 
+<div style="display: flex; gap: 10px; align-items: center;">
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" width="30"/>
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" width="30"/>
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" width="30"/>
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" width="30"/>
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" width="30"/>
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" width="30"/>
+</div>
+
 
 ## Arquitetura e Organização do Projeto
 O sistema foi desenvolvido seguindo o padrão MVC (Model - View - Controller) com camadas bem definidas e separação de responsabilidades. A estrutura do back-end em Java + Spring Boot foi organizada em pastas específicas, conforme descrito abaixo:
@@ -77,7 +80,7 @@ As seguintes tecnologias e APIs externas foram utilizadas no desenvolvimento des
 O diagrama de classes do banco de dados representa a estrutura das entidades que compõem o sistema e como elas se relacionam. Ele foi desenvolvido para mapear as tabelas do banco de dados de forma clara e compreensível, facilitando a gestão das informações e a interação entre as diferentes partes do sistema.
 
 
-![img.png](img.png)
+![Diagrama de classe](https://i.imgur.com/P9AOllC.png)
 
 # Instalação
 
