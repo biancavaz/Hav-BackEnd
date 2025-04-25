@@ -29,9 +29,11 @@ public class NotificationController {
         notificationService.deletarNotificacao(id);
     }
 
-    @GetMapping("/getNotifications/{id}")
-    public List<NotificationGetResponseDTO> getNotifications(@PathVariable Integer id) {
-        return notificationService.notifications(id);
+    @GetMapping("/getNotifications")
+    public List<NotificationGetResponseDTO> getNotifications(@CookieValue("token")
+                                                             String token) {
+        System.out.println("TOKEN RECEBIDO: " + token);
+        return notificationService.notifications(token);
     }
 
     @PutMapping("/readNotification/{id}")

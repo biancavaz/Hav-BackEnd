@@ -1,5 +1,8 @@
 package com.hav.hav_imobiliaria.service;
 
+import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationDTO;
+import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationGetResponseDTO;
+import com.hav.hav_imobiliaria.WebSocket.Service.NotificationService;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorScheduleGetDTO;
@@ -24,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.List;
@@ -38,6 +42,7 @@ public class SchedulesService {
     private final RealtorRepository realtorRepository;
     private final CustumerRepository custumerRepository;
     private final PropertyRepository propertyRepository;
+    private final NotificationService notificationService;
     private final TokenProvider tokenProvider;
     private final ImageService imageService;
     private final UserRepository userRepository;
@@ -140,7 +145,6 @@ public class SchedulesService {
 
         repository.saveAll(schedulesList);
         return schedulesList;
-
     }
 
     public List<ScheduleGetDTO> addCustomerToSchedule(ScheduleChangeCustomerDTO scheduleChangeCustomerDTO, String token) {
@@ -232,6 +236,10 @@ public class SchedulesService {
         Schedules schedules = repository.findById(id).get();
         schedules.setStatus(status);
         repository.save(schedules);
+    }
+
+    public void notifyNewSchedule(Schedules schedule){
+
     }
     public List<ScheduleGetDTO> findAllSchedulesCustomer(String token) {
         String customerEmail = tokenProvider.getEmailFromToken(token);

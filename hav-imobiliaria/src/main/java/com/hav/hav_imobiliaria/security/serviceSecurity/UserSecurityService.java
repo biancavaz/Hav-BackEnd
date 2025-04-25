@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface UserSecurityService {
 
-    public UserSecurity findUserProfile(String jwt) throws UserException;
-    public UserSecurity updateUserSecurity(Integer userSecurityId, UpdateUserSecurityRequest req) throws UserException;
-    public UserSecurity findUserSecurityById(Integer id) throws UserException;
-    public List<UserSecurity> searchUserSecurity(String query) throws UserException;
+    UserSecurity findUserProfile(String jwt) throws UserException;
+    UserSecurity updateUserSecurity(Integer userSecurityId, UpdateUserSecurityRequest req) throws UserException;
+    UserSecurity findUserSecurityById(Integer id) throws UserException;
+    List<UserSecurity> searchUserSecurity(String query) throws UserException;
 }
