@@ -231,6 +231,22 @@ public class HavImobiliariaApplication {
                 property.setRealtors(List.of(realtor));
                 propertyRepository.save(property);
             }
+            Additionals additionals = new Additionals();
+            additionals.setName("Piscina");
+            additionalsRepository.save(additionals);
+            Additionals additionals1 = new Additionals();
+
+            additionals1.setName("Área de festa");
+            additionalsRepository.save(additionals1);
+            Additionals additionals2 = new Additionals();
+
+            additionals2.setName("Sauna");
+            additionalsRepository.save(additionals2);
+            Additionals additionals3 = new Additionals();
+
+            additionals3.setName("Quadra esportiva");
+            additionalsRepository.save(additionals3);
+
 
             System.out.println("Dados iniciais cadastrados com sucesso!");
 
