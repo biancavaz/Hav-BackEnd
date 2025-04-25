@@ -636,7 +636,7 @@ public class PropertyService {
         }
 
         long rentalCount = allProperties.stream()
-                .filter(property -> "Locacao".equals(property.getPurpose()))
+                .filter(property -> "locacao".equals(property.getPurpose()))
                 .count();
         return (rentalCount * 100.0) / allProperties.size();
     }
@@ -649,7 +649,7 @@ public class PropertyService {
 
         long forSaleCount = allProperties
                 .stream()
-                .filter(property -> "Venda".equals(property.getPurpose()))
+                .filter(property -> "venda".equals(property.getPurpose()))
                 .count();
         return (forSaleCount * 100.0) / allProperties.size();
     }
@@ -670,14 +670,14 @@ public class PropertyService {
     public long getQuantityOfRentalProperties() {
         return repository.findAll()
                 .stream()
-                .filter(property -> "Locacao".equals(property.getPurpose()))
+                .filter(property -> "locacao".equals(property.getPurpose()))
                 .count();
     }
 
     public long getQuantityOfForSaleProperties() {
         return repository.findAll()
                 .stream()
-                .filter(property -> "Venda".equals(property.getPurpose()))
+                .filter(property -> "venda".equals(property.getPurpose()))
                 .count();
     }
 

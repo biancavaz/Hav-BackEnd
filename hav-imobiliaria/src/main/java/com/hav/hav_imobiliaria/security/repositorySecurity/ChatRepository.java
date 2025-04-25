@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ChatRepository extends JpaRepository<Chat, Integer> {
 
@@ -21,4 +22,15 @@ public interface ChatRepository extends JpaRepository<Chat, Integer> {
     Chat findSingleChatByUsersId(
             @Param("user") UserSecurity userSecurity,
             @Param("reqUser") UserSecurity reqUser) throws ChatException;
+
+    @Query("""
+                SELECT c FROM Chat c
+                JOIN c.users u
+                WHERE u.id IN (:userId1, :userId2)
+                GROUP BY c.id
+                HAVING COUNT(DISTINCT u.id) = 2
+            """)
+    Optional<Chat> findChatByTwoUsers(@Param("userId1") Integer userId1,
+                                      @Param("userId2") Integer userId2);
+
 }

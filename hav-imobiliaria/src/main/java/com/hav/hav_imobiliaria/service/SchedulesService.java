@@ -2,6 +2,7 @@ package com.hav.hav_imobiliaria.service;
 
 import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationDTO;
 import com.hav.hav_imobiliaria.WebSocket.Notification.DTO.NotificationGetResponseDTO;
+import com.hav.hav_imobiliaria.WebSocket.Repository.NotificationRepository;
 import com.hav.hav_imobiliaria.WebSocket.Service.NotificationService;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.Realtor.RealtorGetResponseDTOwithId;
@@ -46,6 +47,7 @@ public class SchedulesService {
     private final TokenProvider tokenProvider;
     private final ImageService imageService;
     private final UserRepository userRepository;
+    private final NotificationRepository notificationRepository;
 
     public List<ScheduleGetDTO> findAllByRealtorIdAndFuture(String token) {
         String realtorEmail = tokenProvider.getEmailFromToken(token);
@@ -53,23 +55,23 @@ public class SchedulesService {
 
         List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByRealtorIdAndDayGreaterThanEqual(realtor.getId(), LocalDate.now()));
         List<ScheduleGetDTO> list = sortedList.stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
-        try{
-            for(int i=0; i<sortedList.size(); i++){
-                if(sortedList.get(i).getCustomer() !=null){
-                    if(sortedList.get(i).getRealtor().getImageUser() !=null){
+        try {
+            for (int i = 0; i < sortedList.size(); i++) {
+                if (sortedList.get(i).getCustomer() != null) {
+                    if (sortedList.get(i).getRealtor().getImageUser() != null) {
                         System.out.println("entrou");
                         String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(sortedList.get(i).getRealtor().getImageUser().getId()));
                         System.out.println(mainImage);
                         list.get(i).getRealtor().setMainImageRealtor(mainImage);
                     }
-                    if(sortedList.get(i).getCustomer().getImageUser() !=null){
+                    if (sortedList.get(i).getCustomer().getImageUser() != null) {
                         String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(sortedList.get(i).getCustomer().getImageUser().getId()));
 
                         list.get(i).getCustomer().setMainImageCustomer(mainImage);
                     }
 
-                    for(ImageProperty image: sortedList.get(i).getProperty().getImageProperties()){
-                        if(image.getMainImage()){
+                    for (ImageProperty image : sortedList.get(i).getProperty().getImageProperties()) {
+                        if (image.getMainImage()) {
                             String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(image.getId()));
                             list.get(i).getProperty().setMainImageProperty(mainImage);
                         }
@@ -78,18 +80,20 @@ public class SchedulesService {
 
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println(e);
         }
-        
+
         return list;
     }
+
     public List<Schedules> findAllByRealtorIdAndFuture(Integer id) {
 
         List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByRealtorIdAndDayGreaterThanEqual(id, LocalDate.now()));
 
         return sortedList;
     }
+
     public List<Schedules> findAllByRealtorIdAndFutureFree(Integer id) {
 
         List<Schedules> schedules = repository.findByRealtorIdAndDayGreaterThanEqual(id, LocalDate.now());
@@ -98,6 +102,7 @@ public class SchedulesService {
 
         return sortedList;
     }
+
     public List<Schedules> findAllByPropertyIdAndFutureFree(Integer id) {
         Property property = propertyRepository.findById(id).get();
         List<Schedules> schedules = new ArrayList<>();
@@ -122,55 +127,79 @@ public class SchedulesService {
         List<Schedules> sortedList = sortSchedulesDayAndHour(schedulesFree);
 
 
-
         return sortedList;
     }
 
-    public List<Schedules> createSchedules(List<SchedulesPostDTO> schedulesPostDto, String token){
+    public List<Schedules> createSchedules(List<SchedulesPostDTO> schedulesPostDto, String token) {
+        String realtorEmail = tokenProvider.getEmailFromToken(token);
 
-        List<Schedules> schedulesList = schedulesPostDto.stream().map(
-                schedulesPostDtox -> modelMapper.map(schedulesPostDtox, Schedules.class)).toList();
-
-        for (int i = 0; i < schedulesList.size(); i++) {
-            String realtorEmail = tokenProvider.getEmailFromToken(token);
-
-            Realtor realtor = realtorRepository.findByEmail(realtorEmail);
-
-            if (realtor != null) {
-                schedulesList.get(i).setRealtor(realtor);
-            } else {
-                throw new RuntimeException("Realtor not found");
-            }
+        Realtor realtor = realtorRepository.findByEmail(realtorEmail);
+        if (realtor == null) {
+            throw new RuntimeException("Realtor not found");
         }
 
+        List<Schedules> schedulesList = schedulesPostDto.stream()
+                .map(dto -> {
+                    Schedules schedule = modelMapper.map(dto, Schedules.class);
+                    schedule.setRealtor(realtor);
+                    return schedule;
+                }).toList();
+
         repository.saveAll(schedulesList);
+
+        NotificationDTO notification = new NotificationDTO();
+        notification.setTitle("Novo agendamento");
+        notification.setContent("Você tem um novo agendamento marcado");
+        notification.setRead(false);
+        notification.setDataEnvio(LocalDateTime.now());
+
+        User user = userRepository.findByEmail(realtorEmail)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado para envio de notificação"));
+
+        userRepository.save(user);
+
+        notification.setIds(List.of(user.getId()));
+
+
+        NotificationGetResponseDTO dto = new NotificationGetResponseDTO(
+                notification.getId(),
+                notification.getTitle(),
+                notification.getContent(),
+                notification.getRead(),
+                notification.getDataEnvio()
+        );
+
+        notificationService.salvarNotificacaoSchedule(user, dto);
+
         return schedulesList;
     }
+
 
     public List<ScheduleGetDTO> addCustomerToSchedule(ScheduleChangeCustomerDTO scheduleChangeCustomerDTO, String token) {
         String customerEmail = tokenProvider.getEmailFromToken(token);
         Customer customer = custumerRepository.findByEmail(customerEmail);
-        if(customer == null){
+        if (customer == null) {
             throw new RuntimeException("Customer not found");
         }
         List<Schedules> schedules = repository.findAllById(scheduleChangeCustomerDTO.getSchedule_id());
-        for(int i=0; i<schedules.size(); i++){
+        for (int i = 0; i < schedules.size(); i++) {
             schedules.get(i).setStatus(scheduleChangeCustomerDTO.getStatus());
-            if(schedules.get(i).getCustomer() ==null){
+            if (schedules.get(i).getCustomer() == null) {
                 schedules.get(i).setCustomer(custumerRepository.findById(customer.getId()).get());
-            }else{
+            } else {
                 System.err.println("erro não tratado de customer ja no schedule");
             }
-            if(schedules.get(i).getProperty() ==null){
+            if (schedules.get(i).getProperty() == null) {
                 schedules.get(i).setProperty(propertyRepository.findById(scheduleChangeCustomerDTO.getProperty_id()).get());
-            }else{
+            } else {
                 System.err.println("erro não tratado de customer ja no schedule");
             }
         }
 
         List<Schedules> savedSchedules = repository.saveAll(schedules);
 
-        return modelMapper.map(savedSchedules, new TypeToken<List<ScheduleGetDTO>>() {}.getType());
+        return modelMapper.map(savedSchedules, new TypeToken<List<ScheduleGetDTO>>() {
+        }.getType());
 
     }
 
@@ -178,15 +207,15 @@ public class SchedulesService {
         repository.deleteAllById(idList);
     }
 
-    public List<Schedules> sortSchedulesDayAndHour(List<Schedules> list){
+    public List<Schedules> sortSchedulesDayAndHour(List<Schedules> list) {
         List<Schedules> muttableList = new ArrayList<>(list); // Make it mutable
-        if(list.size()>0){
+        if (list.size() > 0) {
 
             muttableList.sort(Comparator.comparing(Schedules::getDay));
-            for(int i=0; i<muttableList.size(); i++){
-                for(int y=0; y<muttableList.size(); y++){
-                    if(muttableList.get(i).getDay().equals(muttableList.get(y).getDay())){
-                        if(muttableList.get(i).getStart_hour().isAfter(muttableList.get(y).getStart_hour()) && y>i){
+            for (int i = 0; i < muttableList.size(); i++) {
+                for (int y = 0; y < muttableList.size(); y++) {
+                    if (muttableList.get(i).getDay().equals(muttableList.get(y).getDay())) {
+                        if (muttableList.get(i).getStart_hour().isAfter(muttableList.get(y).getStart_hour()) && y > i) {
                             Schedules momentSchedule = muttableList.get(i);
                             muttableList.set(i, muttableList.get(y));
                             muttableList.set(y, momentSchedule);
@@ -223,6 +252,7 @@ public class SchedulesService {
                 realtor.getId(), LocalDate.now(), latestDate, status, pageable);
         return schedules.map(schedule -> modelMapper.map(schedule, ScheduleGetDTO.class));
     }
+
     public Page<ScheduleGetDTO> findCustomerScheduleHistory(String token, LocalDate latestDate, String status, Pageable pageable) {
         String customerEmail = tokenProvider.getEmailFromToken(token);
         Customer customer = custumerRepository.findByEmail(customerEmail);
@@ -238,32 +268,33 @@ public class SchedulesService {
         repository.save(schedules);
     }
 
-    public void notifyNewSchedule(Schedules schedule){
+    public void notifyNewSchedule(Schedules schedule) {
 
     }
+
     public List<ScheduleGetDTO> findAllSchedulesCustomer(String token) {
         String customerEmail = tokenProvider.getEmailFromToken(token);
         User user = userRepository.findByEmail(customerEmail).get();
 
         List<Schedules> sortedList = sortSchedulesDayAndHour(repository.findByCustomerIdAndDayGreaterThanEqual(user.getId(), LocalDate.now()));
         List<ScheduleGetDTO> list = sortedList.stream().map(x -> modelMapper.map(x, ScheduleGetDTO.class)).collect(Collectors.toList());
-        try{
-            for(int i=0; i<sortedList.size(); i++){
-                if(sortedList.get(i).getCustomer() !=null){
-                    if(sortedList.get(i).getRealtor().getImageUser() !=null){
+        try {
+            for (int i = 0; i < sortedList.size(); i++) {
+                if (sortedList.get(i).getCustomer() != null) {
+                    if (sortedList.get(i).getRealtor().getImageUser() != null) {
                         System.out.println("entrou");
                         String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(sortedList.get(i).getRealtor().getImageUser().getId()));
                         System.out.println(mainImage);
                         list.get(i).getRealtor().setMainImageRealtor(mainImage);
                     }
-                    if(sortedList.get(i).getCustomer().getImageUser() !=null){
+                    if (sortedList.get(i).getCustomer().getImageUser() != null) {
                         String mainImage = Base64.getEncoder().encodeToString(imageService.getUserImage(sortedList.get(i).getCustomer().getImageUser().getId()));
 
                         list.get(i).getCustomer().setMainImageCustomer(mainImage);
                     }
 
-                    for(ImageProperty image: sortedList.get(i).getProperty().getImageProperties()){
-                        if(image.getMainImage()){
+                    for (ImageProperty image : sortedList.get(i).getProperty().getImageProperties()) {
+                        if (image.getMainImage()) {
                             String mainImage = Base64.getEncoder().encodeToString(imageService.getMainPropertyImage(image.getId()));
                             list.get(i).getProperty().setMainImageProperty(mainImage);
                         }
@@ -272,11 +303,11 @@ public class SchedulesService {
 
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println(e);
         }
 
         return list;
     }
-    
+
 }

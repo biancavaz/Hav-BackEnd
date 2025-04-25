@@ -7,7 +7,7 @@ public class CustomerFilterPostResponseDTO {
     String cpf;
     String name;
     String email;
-    String celphone;
+    String cellphone;
     String status;
     boolean archived;
 

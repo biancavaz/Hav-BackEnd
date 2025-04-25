@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class RealtorPropertySpecificGetResponseDTO {
-
+    Integer id;
     String name;
 
     String email;
