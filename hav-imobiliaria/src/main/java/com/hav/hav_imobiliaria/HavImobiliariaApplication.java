@@ -160,24 +160,37 @@ public class HavImobiliariaApplication {
             proprietorRepository.save(proprietor);
 
             // Create properties
-            for (int i = 1; i <= 5; i++) {
+            for (int i = 1; i <= 15; i++) {
                 // Create property with address
                 Property property = new Property();
                 property.setPropertyCode("prop_" + i);
                 property.setTitle("imovel_" + i + "_em_jaragua_do_sul");
                 property.setPropertyDescription("excelente_imovel_localizado_em_jaragua_do_sul_com_" + (2 + i) + "_quartos_" + (i % 2 == 0 ? "apartamento" : "casa") + "_em_otimo_estado_de_conservacao");
                 property.setPropertyType(i % 2 == 0 ? "apartamento" : "casa");
-                property.setPurpose(i % 2 == 0 ? "venda" : "aluguel");
+                property.setPurpose(i % 2 == 0 ? "venda" : "locacao");
                 property.setPropertyStatus("disponivel");
                 property.setArea(100.0 + i * 20);
                 property.setPrice(200000.0 + i * 50000);
-                property.setPromotionalPrice(180000.0 + i * 45000);
+
+                // Randomly decide if this property should have a promotional price (50% chance)
+                boolean hasPromotionalPrice = Math.random() < 0.5;
+
+                if (hasPromotionalPrice) {
+                    // Set promotional price (10-20% discount from regular price)
+                    double discount = 0.10 + (Math.random() * 0.10); // 10-20% discount
+                    double promotionalPrice = property.getPrice() * (1 - discount);
+                    property.setPromotionalPrice(Math.round(promotionalPrice * 100.0) / 100.0);
+                    property.setPropertyStatus("promocao"); // Change status to "promocao"
+                } else {
+                    property.setPromotionalPrice(0.0); // No promotional price
+                }
+
                 property.setHighlight(i % 2 == 0);
                 property.setFloors(i);
 
                 // Create and set address
                 Address propertyAddress = new Address();
-                propertyAddress.setCep("89250-000");
+                propertyAddress.setCep("89250000");
                 propertyAddress.setStreet("rua_" + (i == 1 ? "getulio_vargas" : i == 2 ? "reinoldo_rau" : i == 3 ? "joao_bauer" : i == 4 ? "mal_deodoro" : "alberto_bauer"));
                 propertyAddress.setNeighborhood(i == 1 ? "centro" : i == 2 ? "nova_brasilia" : i == 3 ? "vila_lalau" : i == 4 ? "vila_lenzi" : "vila_nova");
                 propertyAddress.setCity("jaragua_do_sul");

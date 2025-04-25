@@ -34,6 +34,16 @@ public class UserController {
         return userService.getPercentageClients();
     }
 
+    @GetMapping("/getPercentageArchived")
+    public double getPercentageArchived() {
+        return userService.getPercentageArchived();
+    }
+
+    @GetMapping("/getPercentageQuantityArchived")
+    public double getQuantityArchived() {
+        return userService.getQuantityArchived();
+    }
+
     @GetMapping("/configuration")
     public UserConfigurationDto getUser(@CookieValue("token") String token){
         return userService.findUserByJwt(token);

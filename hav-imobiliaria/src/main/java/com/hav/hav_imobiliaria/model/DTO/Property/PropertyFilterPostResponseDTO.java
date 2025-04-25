@@ -1,5 +1,6 @@
 package com.hav.hav_imobiliaria.model.DTO.Property;
 
+import com.hav.hav_imobiliaria.model.DTO.Address.AddressFilterPostResponseDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeatureFilterPostResponseDto;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePostRequestDTO;
 import com.hav.hav_imobiliaria.model.DTO.PropertyFeature.PropertyFeaturePutRequestDTO;
@@ -13,6 +14,8 @@ public class PropertyFilterPostResponseDTO {
     String propertyType;
     String purpose;
     String propertyStatus;
+    AddressFilterPostResponseDTO address;
+
     boolean archived;
     PropertyFeatureFilterPostResponseDto propertyFeatures;
 
