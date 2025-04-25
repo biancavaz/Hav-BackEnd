@@ -428,7 +428,7 @@ public class PropertyService {
 
         repository.save(property);
 //        vai ter que add isso
-//        processImages(propertyId, newImages);
+        processImages(propertyId, newImages);
 
         return property;
     }
@@ -673,56 +673,84 @@ public class PropertyService {
     }
 
     public List<PropertyCardGetResponseDTO> similarProperties() {
-        PageRequest pageRequest = PageRequest.of(0, 9); // quant prop
-        List<Property> properties = repository.findByPriceRange(100000.0, 150000.0, pageRequest);
+        List<Property> properties = repository.findMostRecentSellProperties("VENDA");
 
-        return properties.stream().map(p -> new PropertyCardGetResponseDTO(
-                p.getPropertyFeatures(),
-                p.getAddress(),
-                p.getPrice(),
-                p.getPurpose(),
-                p.getPropertyStatus(),
-                p.getPromotionalPrice(),
-                p.getId(),
-                p.getPropertyType(),
-                p.getArea()
-        )).collect(Collectors.toList());
+        List<PropertyCardGetResponseDTO> list = properties.stream()
+                .map(property -> modelMapper.map(property, PropertyCardGetResponseDTO.class))
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < properties.size(); i++) {
+            for (ImageProperty imageProperty : properties.get(i).getImageProperties()) {
+                if (Boolean.TRUE.equals(imageProperty.getMainImage())) { // Verifica se é a imagem principal
+                    try {
+                        byte[] imageBytes = imageService.getMainPropertyImage(imageProperty.getId());
+                        if (imageBytes != null) {
+                            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                            list.get(i).setMainImage(base64Image);
+                            break; // Sai do loop após encontrar a imagem principal
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Erro ao carregar imagem principal da propriedade: " + e.getMessage());
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 
     public List<PropertyCardGetResponseDTO> findMostRecentSellProperties() {
-        PageRequest pageRequest = PageRequest.of(0, 9);
-        List<Property> properties =
-                repository.findMostRecentSellProperties("VENDA", pageRequest);
+        List<Property> properties = repository.findMostRecentSellProperties("VENDA");
 
-        return properties.stream().map(p -> new PropertyCardGetResponseDTO(
-                p.getPropertyFeatures(),
-                p.getAddress(),
-                p.getPrice(),
-                p.getPurpose(),
-                p.getPropertyStatus(),
-                p.getPromotionalPrice(),
-                p.getId(),
-                p.getPropertyType(),
-                p.getArea()
-        )).collect(Collectors.toList());
+        List<PropertyCardGetResponseDTO> list = properties.stream()
+                .map(property -> modelMapper.map(property, PropertyCardGetResponseDTO.class))
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < properties.size(); i++) {
+            for (ImageProperty imageProperty : properties.get(i).getImageProperties()) {
+                if (Boolean.TRUE.equals(imageProperty.getMainImage())) { // Verifica se é a imagem principal
+                    try {
+                        byte[] imageBytes = imageService.getMainPropertyImage(imageProperty.getId());
+                        if (imageBytes != null) {
+                            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                            list.get(i).setMainImage(base64Image);
+                            break; // Sai do loop após encontrar a imagem principal
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Erro ao carregar imagem principal da propriedade: " + e.getMessage());
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 
     public List<PropertyCardGetResponseDTO> findMostRecentLeaseProperties() {
-        PageRequest pageRequest = PageRequest.of(0, 9);
-        List<Property> properties =
-                repository.findMostRecentLeaseProperties("LOCACAO", pageRequest);
+        List<Property> properties = repository.findMostRecentLeaseProperties("LOCACAO");
 
-        return properties.stream().map(p -> new PropertyCardGetResponseDTO(
-                p.getPropertyFeatures(),
-                p.getAddress(),
-                p.getPrice(),
-                p.getPurpose(),
-                p.getPropertyStatus(),
-                p.getPromotionalPrice(),
-                p.getId(),
-                p.getPropertyType(),
-                p.getArea()
-        )).collect(Collectors.toList());
+        List<PropertyCardGetResponseDTO> list = properties.stream()
+                .map(property -> modelMapper.map(property, PropertyCardGetResponseDTO.class))
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < properties.size(); i++) {
+            for (ImageProperty imageProperty : properties.get(i).getImageProperties()) {
+                if (Boolean.TRUE.equals(imageProperty.getMainImage())) { // Verifica se é a imagem principal
+                    try {
+                        byte[] imageBytes = imageService.getMainPropertyImage(imageProperty.getId());
+                        if (imageBytes != null) {
+                            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                            list.get(i).setMainImage(base64Image);
+                            break; // Sai do loop após encontrar a imagem principal
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Erro ao carregar imagem principal da propriedade: " + e.getMessage());
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 
     //Sem filtro
@@ -731,11 +759,60 @@ public class PropertyService {
 //    }
 
     public List<PropertyCardGetResponseDTO> findRandomHighlighted9Sale() {
-        return repository.findRandomHighlighted9ForSale().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+        List<Property> promotionalProperties = repository.findRandomPromotional9ForSale();
+
+        List<PropertyCardGetResponseDTO> list = promotionalProperties.stream()
+                .map(property -> modelMapper.map(property, PropertyCardGetResponseDTO.class))
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < promotionalProperties.size(); i++) {
+            for (ImageProperty imageProperty : promotionalProperties.get(i).getImageProperties()) {
+                if (imageProperty.getMainImage()) {  // Verifica se é a imagem principal
+                    try {
+                        byte[] imageBytes = imageService.getMainPropertyImage(imageProperty.getId());
+                        if (imageBytes != null) {
+                            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                            list.get(i).setMainImage(base64Image);
+                            break;  // Sai do loop após encontrar a imagem principal
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Erro ao carregar imagem principal da propriedade {}");
+                    }
+                }
+            }
+
+
+        }
+        return list;
+
     }
 
     public List<PropertyCardGetResponseDTO> findRandomHighlighted9Lease() {
-        return repository.findRandomHighlighted9ForLease().stream().map(sch -> modelMapper.map(sch, PropertyCardGetResponseDTO.class)).toList();
+        List<Property> promotionalProperties = repository.findRandomPromotional9ForLease();
+
+        List<PropertyCardGetResponseDTO> list = promotionalProperties.stream()
+                .map(property -> modelMapper.map(property, PropertyCardGetResponseDTO.class))
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < promotionalProperties.size(); i++) {
+            for (ImageProperty imageProperty : promotionalProperties.get(i).getImageProperties()) {
+                if (imageProperty.getMainImage()) {  // Verifica se é a imagem principal
+                    try {
+                        byte[] imageBytes = imageService.getMainPropertyImage(imageProperty.getId());
+                        if (imageBytes != null) {
+                            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                            list.get(i).setMainImage(base64Image);
+                            break;  // Sai do loop após encontrar a imagem principal
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Erro ao carregar imagem principal da propriedade {}");
+                    }
+                }
+            }
+        }
+
+
+        return list;
     }
 }
 
