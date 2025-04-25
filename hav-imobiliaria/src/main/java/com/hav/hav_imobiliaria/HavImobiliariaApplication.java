@@ -89,10 +89,13 @@ public class HavImobiliariaApplication {
             // Create user entities with their addresses
             Adm admin = new Adm();
             admin.setName("Admin User");
+            admin.setCellphone("10101010101");
+            admin.setPhoneNumber("1010101010");
+            admin.setCpf("71613483074");
             admin.setEmail("admin@hav.com");
             admin.setUserSecurity(adminSecurity);
             Address adminAddress = new Address();
-            adminAddress.setCep("12345-678");
+            adminAddress.setCep("12345678");
             adminAddress.setStreet("Admin Street");
             adminAddress.setNeighborhood("Admin Neighborhood");
             adminAddress.setCity("Admin City");
@@ -103,10 +106,13 @@ public class HavImobiliariaApplication {
 
             Editor editor = new Editor();
             editor.setName("Editor User");
+            editor.setCellphone("10101010102");
+            editor.setPhoneNumber("1010101011");
+            editor.setCpf("52129025099");
             editor.setEmail("editor@hav.com");
             editor.setUserSecurity(editorSecurity);
             Address editorAddress = new Address();
-            editorAddress.setCep("12345-678");
+            editorAddress.setCep("12345678");
             editorAddress.setStreet("Editor Street");
             editorAddress.setNeighborhood("Editor Neighborhood");
             editorAddress.setCity("Editor City");
@@ -117,11 +123,14 @@ public class HavImobiliariaApplication {
 
             Realtor realtor = new Realtor();
             realtor.setName("Realtor User");
+            realtor.setCellphone("10101010103");
+            realtor.setPhoneNumber("1010101012");
+            realtor.setCpf("69204953098");
             realtor.setEmail("realtor@hav.com");
             realtor.setCreci("12345");
             realtor.setUserSecurity(realtorSecurity);
             Address realtorAddress = new Address();
-            realtorAddress.setCep("12345-678");
+            realtorAddress.setCep("12345678");
             realtorAddress.setStreet("Realtor Street");
             realtorAddress.setNeighborhood("Realtor Neighborhood");
             realtorAddress.setCity("Realtor City");
@@ -132,10 +141,13 @@ public class HavImobiliariaApplication {
 
             Customer customer = new Customer();
             customer.setName("Customer User");
+            customer.setCellphone("10101010104");
+            customer.setPhoneNumber("1010101013");
+            customer.setCpf("28674668062");
             customer.setEmail("customer@hav.com");
             customer.setUserSecurity(customerSecurity);
             Address customerAddress = new Address();
-            customerAddress.setCep("12345-678");
+            customerAddress.setCep("12345678");
             customerAddress.setStreet("Customer Street");
             customerAddress.setNeighborhood("Customer Neighborhood");
             customerAddress.setCity("Customer City");
@@ -150,7 +162,7 @@ public class HavImobiliariaApplication {
             proprietor.setEmail("proprietor@hav.com");
             proprietor.setCnpj("12345678901234");
             Address proprietorAddress = new Address();
-            proprietorAddress.setCep("12345-678");
+            proprietorAddress.setCep("12345678");
             proprietorAddress.setStreet("Proprietor Street");
             proprietorAddress.setNeighborhood("Proprietor Neighborhood");
             proprietorAddress.setCity("Proprietor City");

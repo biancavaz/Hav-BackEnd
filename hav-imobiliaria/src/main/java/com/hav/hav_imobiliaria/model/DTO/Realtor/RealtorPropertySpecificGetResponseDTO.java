@@ -9,8 +9,11 @@ import lombok.Data;
 public class RealtorPropertySpecificGetResponseDTO {
 
     String name;
+
     String email;
     String creci;
     String phoneNumber;
+    String image;
+
 
 }
