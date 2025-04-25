@@ -156,6 +156,7 @@ public class PropertyService {
                 String imgsString = Base64.getEncoder().encodeToString(img);
 
                 realtors.add(new RealtorPropertySpecificGetResponseDTO(
+                        realtor.getId(),
                         realtor.getName(),
                         realtor.getEmail(),
                         realtor.getCreci(),
@@ -164,6 +165,7 @@ public class PropertyService {
                         ));
             } else {
                 realtors.add(new RealtorPropertySpecificGetResponseDTO(
+                        realtor.getId(),
                         realtor.getName(),
                         realtor.getEmail(),
                         realtor.getCreci(),
